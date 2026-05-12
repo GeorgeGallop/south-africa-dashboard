@@ -6,6 +6,8 @@
   <title>Economy • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
@@ -17,11 +19,110 @@
 
   <div class="container mt-4">
     <h1 class="display-5 fw-bold text-sa-green">📈 Economy & GDP</h1>
-    <p class="lead">Mining’s contribution to GDP, growth rates, unemployment, trade balance, and key economic indicators.</p>
-    
-    <div class="alert alert-info mt-4">
-      Drop your GDP and mining CSV files into the <strong>data/</strong> folder and we can add interactive charts here.
+    <p class="lead">USD/ZAR Exchange Rate — Historical Data from Your CSV</p>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">💱 USD to ZAR Exchange Rate</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div id="current-rate" class="fs-3 fw-bold text-sa-green">Loading data...</div>
+          <div class="btn-group" role="group">
+            <button onclick="setTimeframe(30)"  class="btn btn-outline-success btn-sm">30 Days</button>
+            <button onclick="setTimeframe(90)"  class="btn btn-outline-success btn-sm">3 Months</button>
+            <button onclick="setTimeframe(365)" class="btn btn-outline-success btn-sm">1 Year</button>
+            <button onclick="setTimeframe(9999)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+        
+        <canvas id="zarChart" height="160"></canvas>
+      </div>
     </div>
   </div>
+
+  <script>
+    let zarChart;
+    let rateHistory = [];
+
+    async function loadCSVData() {
+      try {
+        const response = await fetch('data/USDZAR.csv');
+        const text = await response.text();
+        
+        const parsed = Papa.parse(text, { 
+          header: true, 
+          dynamicTyping: true,
+          skipEmptyLines: true 
+        });
+
+        rateHistory = parsed.data
+          .filter(row => row.observation_date && row.DEXSFUS)   // Use your exact column names
+          .map(row => ({
+            time: row.observation_date,
+            rate: parseFloat(row.DEXSFUS)
+          }))
+          .sort((a, b) => new Date(a.time) - new Date(b.time));
+
+        if (rateHistory.length > 0) {
+          const latest = rateHistory[rateHistory.length - 1];
+          document.getElementById('current-rate').innerHTML = 
+            `1 USD = <strong>${latest.rate.toFixed(4)}</strong> ZAR`;
+        }
+
+        renderChart(9999); // Show all data by default
+      } catch (e) {
+        document.getElementById('current-rate').innerHTML = 
+          `<span class="text-danger">Error loading USDZAR.csv — Check file path and column names</span>`;
+        console.error(e);
+      }
+    }
+
+    function renderChart(days) {
+      let filtered = rateHistory;
+      if (days < 9999) {
+        filtered = rateHistory.slice(-days);
+      }
+
+      if (zarChart) {
+        zarChart.data.labels = filtered.map(h => h.time);
+        zarChart.data.datasets[0].data = filtered.map(h => h.rate);
+        zarChart.update();
+      } else {
+        zarChart = new Chart(document.getElementById('zarChart'), {
+          type: 'line',
+          data: {
+            labels: filtered.map(h => h.time),
+            datasets: [{
+              label: 'USD/ZAR',
+              data: filtered.map(h => h.rate),
+              borderColor: '#007A4D',
+              backgroundColor: 'rgba(0, 122, 77, 0.1)',
+              borderWidth: 3,
+              tension: 0.2,
+              pointRadius: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { 
+                title: { display: true, text: 'ZAR per 1 USD' }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function setTimeframe(days) {
+      document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderChart(days);
+    }
+
+    window.onload = loadCSVData;
+  </script>
 </body>
 </html>

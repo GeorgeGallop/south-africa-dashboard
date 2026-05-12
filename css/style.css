@@ -1,24 +1,50 @@
 body {
   background-color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+/* Sidebar Styling */
 .list-group-item {
   border: none;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   border-radius: 8px;
   font-weight: 500;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  color: #212529;
 }
 
-.list-group-item.active,
-.list-group-item:hover {
+.list-group-item:hover,
+.list-group-item.active {
   background-color: #007A4D !important;
   color: white !important;
-  transform: translateX(8px);
+  transform: translateX(6px);
+}
+
+/* History dropdown items */
+.list-group .list-group-item small {
+  font-size: 0.95rem;
+}
+
+/* Make sure links inside history look good */
+.list-group-item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.list-group-item a:hover {
+  color: white;
 }
 
 /* South Africa accent colors */
 .text-sa-green { color: #007A4D; }
 .text-sa-gold { color: #FFCD00; }
 .bg-sa-black { background-color: #000000; }
+
+/* Nice card hover effects */
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
