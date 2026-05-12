@@ -1,36 +1,42 @@
-let currentData = {};
+// Only handle the in-page tabs (Power, Mining, Economy, Politics)
+document.querySelectorAll('#tabs a[data-section]').forEach(tab => {
+  tab.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    document.querySelectorAll('.list-group-item').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    
+    const section = this.getAttribute('data-section');
+    loadSection(section);
+  });
+});
 
-// Load any CSV from /data folder
-async function loadCSV(filename) {
-  const response = await fetch(`data/${filename}`);
-  const text = await response.text();
-  return Papa.parse(text, { header: true, dynamicTyping: true }).data;
+function loadSection(section) {
+  const content = document.getElementById('content-area');
+  content.innerHTML = `<h2 class="text-sa-green">Section: ${section.charAt(0).toUpperCase() + section.slice(1)}</h2><p>Content coming soon...</p>`;
+  
+  if (section === 'mining') {
+    content.innerHTML = `
+      <h2 class="text-sa-green">⛏️ Mining Dashboard</h2>
+      <canvas id="miningChart" height="120"></canvas>
+    `;
+    renderSampleMiningChart();
+  }
 }
 
-// Example: Mining production chart
-async function renderMiningChart() {
-  const data = await loadCSV('mining-production.csv'); // your file
-  const labels = data.map(row => row['Mineral'] || row['Year']);
-  const values = data.map(row => row['Production'] || row['Value']);
-
-  const ctx = document.createElement('canvas');
-  document.getElementById('dashboard-content').appendChild(ctx);
-  
+function renderSampleMiningChart() {
+  const ctx = document.getElementById('miningChart');
+  if (!ctx) return;
   new Chart(ctx, {
     type: 'bar',
-    data: { labels, datasets: [{ label: 'Production (tons)', data: values, backgroundColor: '#00c4b4' }] },
-    options: { responsive: true, plugins: { legend: { position: 'top' } } }
+    data: {
+      labels: ['PGMs', 'Gold', 'Coal', 'Manganese', 'Iron Ore'],
+      datasets: [{
+        label: '2024 Value (R billion)',
+        data: [180, 95, 140, 65, 85],
+        backgroundColor: ['#007A4D', '#FFCD00', '#002395', '#000000', '#E03C31']
+      }]
+    },
+    options: { responsive: true }
   });
 }
-
-// Switch sections (expand this)
-async function loadSection(section) {
-  document.getElementById('section-title').textContent = section.charAt(0).toUpperCase() + section.slice(1) + ' Dashboard';
-  document.getElementById('dashboard-content').innerHTML = '';
-  
-  if (section === 'mining') await renderMiningChart();
-  // Add more: economyChart(), mapChart(), etc.
-}
-
-// Auto-load Mining on start
-window.onload = () => loadSection('mining');

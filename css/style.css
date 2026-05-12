@@ -1,0 +1,24 @@
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.list-group-item {
+  border: none;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.list-group-item.active,
+.list-group-item:hover {
+  background-color: #007A4D !important;
+  color: white !important;
+  transform: translateX(8px);
+}
+
+/* South Africa accent colors */
+.text-sa-green { color: #007A4D; }
+.text-sa-gold { color: #FFCD00; }
+.bg-sa-black { background-color: #000000; }

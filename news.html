@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>News • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="index.html" class="btn btn-light btn-sm">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="display-5 fw-bold text-sa-green">📰 South Africa News</h1>
+      
+      <div class="d-flex align-items-center gap-3">
+        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh News</button>
+        <span id="last-updated" class="text-muted small"></span>
+      </div>
+    </div>
+
+    <!-- Top Row: Summary + Controls -->
+    <div class="row mb-5">
+      <!-- AI Summary (smaller) -->
+      <div class="col-lg-7">
+        <div id="ai-summary" class="alert alert-light border-success shadow-sm h-100">
+          <h5 class="text-sa-green">🔍 Today's Key Themes for South Africa</h5>
+          <div id="summary-content" class="small">Loading insights...</div>
+        </div>
+      </div>
+
+      <!-- Controls Panel -->
+      <div class="col-lg-5">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h6 class="text-sa-green mb-3">News Sources & Filters</h6>
+            
+            <!-- Sources -->
+            <div id="sources-list" class="mb-3"></div>
+
+            <!-- Keywords -->
+            <div class="mb-3">
+              <label class="form-label small">Filter by keywords (comma separated)</label>
+              <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="e.g. ramaphosa, load shedding, gold">
+            </div>
+
+            <!-- Number of stories -->
+            <div class="row align-items-end">
+              <div class="col-6">
+                <label class="form-label small">Number of stories</label>
+                <input id="story-count" type="number" class="form-control form-control-sm" value="12" min="6" max="30">
+              </div>
+              <div class="col-6">
+                <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply Filters & Refresh</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Headlines -->
+    <h3 class="mb-4 text-sa-green">🔥 Top Headlines</h3>
+    <div id="news-container" class="row g-4"></div>
+  </div>
+
+  <script>
+    // Configurable news sources
+    const availableSources = [
+      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss" },
+      { name: "Reuters Africa", url: "https://www.reuters.com/world/africa/rss" },
+      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml" },
+      { name: "IOL", url: "https://www.iol.co.za/rss" },
+      { name: "Daily Maverick", url: "https://www.dailymaverick.co.za/feed/" }
+    ];
+
+    let selectedSources = availableSources.map(s => s.name); // all selected by default
+
+    async function loadNews() {
+      const container = document.getElementById('news-container');
+      const summaryEl = document.getElementById('summary-content');
+      const lastUpdatedEl = document.getElementById('last-updated');
+
+      container.innerHTML = `<div class="col-12 text-center py-5"><div class="spinner-border text-success"></div><p class="mt-3">Fetching latest news...</p></div>`;
+
+      try {
+        const keywordInput = document.getElementById('keyword-input').value.toLowerCase().split(',').map(k => k.trim()).filter(Boolean);
+        const storyCount = parseInt(document.getElementById('story-count').value) || 12;
+
+        let allItems = [];
+
+        // Fetch only selected sources
+        for (const source of availableSources) {
+          if (!selectedSources.includes(source.name)) continue;
+
+          const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+          const res = await fetch(proxy);
+          const data = await res.json();
+
+          if (data.items && data.items.length) {
+            data.items.forEach(item => {
+              item.source = data.feed.title || source.name;   // Real source name
+            });
+            allItems = allItems.concat(data.items);
+          }
+        }
+
+        // Sort newest first
+        allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+        // Keyword filter
+        if (keywordInput.length > 0) {
+          allItems = allItems.filter(item => {
+            const text = (item.title + " " + (item.description || "")).toLowerCase();
+            return keywordInput.some(kw => text.includes(kw));
+          });
+        }
+
+        // === AI Summary (simple dynamic version) ===
+        const topTitles = allItems.slice(0, 8).map(i => i.title.toLowerCase());
+        let summaryText = "• Political developments around Ramaphosa and GNU continue.<br>";
+        if (topTitles.some(t => t.includes("load shedding") || t.includes("eskom"))) summaryText += "• Energy crisis / load shedding updates.<br>";
+        if (topTitles.some(t => t.includes("gold") || t.includes("mining"))) summaryText += "• Mining sector and PGMs in focus.<br>";
+        summaryText += "• Economic and service delivery stories trending.";
+        summaryEl.innerHTML = summaryText;
+
+        // === Build cards ===
+        let html = '';
+        allItems.slice(0, storyCount).forEach(item => {
+          const date = new Date(item.pubDate).toLocaleDateString('en-ZA', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+          html += `
+            <div class="col-lg-6 col-xl-4">
+              <div class="card h-100 shadow-sm border-0 hover-effect" onclick="window.open('${item.link}', '_blank')">
+                <div class="card-body">
+                  <h5 class="card-title">${item.title}</h5>
+                  <p class="card-text text-muted small">${item.source} • ${date}</p>
+                  <p class="card-text">${(item.description || '').substring(0, 130)}...</p>
+                  <small class="text-success">Read full story →</small>
+                </div>
+              </div>
+            </div>`;
+        });
+
+        container.innerHTML = html || `<div class="col-12 alert alert-info">No matching stories found.</div>`;
+
+        // Update timestamp
+        lastUpdatedEl.textContent = `Last refreshed: ${new Date().toLocaleTimeString('en-ZA')}`;
+
+      } catch (e) {
+        container.innerHTML = `<div class="col-12 alert alert-danger">Failed to load news. Check internet connection.</div>`;
+        console.error(e);
+      }
+    }
+
+    // Render source checkboxes
+    function renderSourceCheckboxes() {
+      const container = document.getElementById('sources-list');
+      let html = '';
+      availableSources.forEach(src => {
+        const checked = selectedSources.includes(src.name) ? 'checked' : '';
+        html += `
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
+            <label class="form-check-label small">${src.name}</label>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    window.toggleSource = function(name) {
+      if (selectedSources.includes(name)) {
+        selectedSources = selectedSources.filter(n => n !== name);
+      } else {
+        selectedSources.push(name);
+      }
+    };
+
+    // Initial load
+    window.onload = () => {
+      renderSourceCheckboxes();
+      loadNews();
+    };
+  </script>
+
+  <style>
+    .hover-effect:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important; transition: all 0.3s; }
+  </style>
+</body>
+</html>

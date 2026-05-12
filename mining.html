@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mining • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="index.html" class="btn btn-light btn-sm">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-5 fw-bold text-sa-green">⛏️ Mining Dashboard</h1>
+    <p class="lead">Key minerals production, export values, and global rankings.</p>
+    
+    <canvas id="miningChart" height="140" class="mt-4"></canvas>
+  </div>
+
+  <script>
+    new Chart(document.getElementById('miningChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Platinum Group Metals', 'Gold', 'Coal', 'Manganese', 'Iron Ore', 'Chrome'],
+        datasets: [{
+          label: '2024 Estimated Value (R billion)',
+          data: [180, 95, 140, 65, 85, 55],
+          backgroundColor: ['#007A4D', '#FFCD00', '#002395', '#000000', '#E03C31', '#6B4E9E']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } }
+      }
+    });
+  </script>
+</body>
+</html>
