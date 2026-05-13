@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendar • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="index.html" class="btn btn-light btn-sm">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="display-5 fw-bold text-sa-green">📅 South Africa Calendar</h1>
+      <div>
+        <button onclick="suggestEventsFromNews()" class="btn btn-success me-2">🔄 Refresh from News</button>
+        <button onclick="showAddEventModal()" class="btn btn-outline-success">+ Add Event Manually</button>
+        <button onclick="calendar.view = 'multiMonthYear'" class="btn btn-outline-primary">📆 View Full Year</button>
+      </div>
+    </div>
+
+    <div id="calendar" style="background:white; padding:20px; border-radius:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
+  </div>
+
+  <!-- Add Event Modal -->
+  <div class="modal fade" id="addEventModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input id="eventTitle" class="form-control mb-3" placeholder="Event title">
+          <input id="eventDate" type="date" class="form-control mb-3">
+          <textarea id="eventDesc" class="form-control" rows="2" placeholder="Description"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button onclick="addManualEvent()" class="btn btn-success">Save Event</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let calendar;
+    let events = JSON.parse(localStorage.getItem('saCalendarEvents')) || [];
+
+    function initCalendar() {
+      const calendarEl = document.getElementById('calendar');
+      
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,multiMonthYear,timeGridWeek'
+        },
+        events: events,
+        eventClick: function(info) {
+          if (confirm(`Delete "${info.event.title}"?`)) {
+            events = events.filter(e => e.id !== info.event.id);
+            localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+            calendar.refetchEvents();
+          }
+        }
+      });
+
+      calendar.render();
+    }
+
+    // Add manual event
+    function showAddEventModal() {
+      new bootstrap.Modal(document.getElementById('addEventModal')).show();
+    }
+
+    function addManualEvent() {
+      const title = document.getElementById('eventTitle').value.trim();
+      const date = document.getElementById('eventDate').value;
+      if (!title || !date) return alert("Title and date required");
+
+      events.push({
+        id: Date.now(),
+        title: title,
+        start: date,
+        color: "#007A4D"
+      });
+
+      localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+      calendar.refetchEvents();
+      bootstrap.Modal.getInstance(document.getElementById('addEventModal')).hide();
+    }
+
+    // Pre-loaded important South Africa dates (2026)
+    function addImportantDates() {
+      const important = [
+        { title: "🗳️ Local Government Elections 2026", start: "2026-11-04", color: "#d32f2f" },
+        { title: "📊 Stats SA Q1 GDP Release", start: "2026-06-10", color: "#007A4D" },
+        { title: "📊 Quarterly Labour Force Survey (Q1)", start: "2026-05-12", color: "#007A4D" },
+        { title: "Human Rights Day", start: "2026-03-21", color: "#FFCD00" },
+        { title: "Freedom Day", start: "2026-04-27", color: "#FFCD00" },
+        { title: "Workers' Day", start: "2026-05-01", color: "#FFCD00" },
+        { title: "Youth Day", start: "2026-06-16", color: "#FFCD00" },
+        { title: "National Women's Day", start: "2026-08-09", color: "#FFCD00" },
+        { title: "Heritage Day", start: "2026-09-24", color: "#FFCD00" },
+        { title: "Mining Indaba / Sector Events", start: "2026-06-15", color: "#388e3c" },
+      ];
+
+      important.forEach(ev => {
+        if (!events.some(e => e.title === ev.title)) {
+          events.push({ ...ev, id: Date.now() + Math.random() });
+        }
+      });
+      localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+    }
+
+    window.onload = () => {
+      addImportantDates();
+      initCalendar();
+    };
+  </script>
+</body>
+</html>
