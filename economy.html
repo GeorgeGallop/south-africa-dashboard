@@ -28,36 +28,60 @@
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div id="current-rate" class="fs-3 fw-bold text-sa-green">Loading data...</div>
-          <div class="btn-group" role="group">
-            <button onclick="setTimeframe(30)"  class="btn btn-outline-success btn-sm">30 Days</button>
-            <button onclick="setTimeframe(90)"  class="btn btn-outline-success btn-sm">3 Months</button>
-            <button onclick="setTimeframe(365)" class="btn btn-outline-success btn-sm">1 Year</button>
-            <button onclick="setTimeframe(9999)" class="btn btn-outline-success btn-sm active">All Time</button>
+          <div class="btn-group currency-btn-group" role="group">
+            <button onclick="setTimeframe(30, this)" class="btn btn-outline-success btn-sm">30 Days</button>
+            <button onclick="setTimeframe(90, this)" class="btn btn-outline-success btn-sm">3 Months</button>
+            <button onclick="setTimeframe(365, this)" class="btn btn-outline-success btn-sm">1 Year</button>
+            <button onclick="setTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
           </div>
         </div>
         
         <canvas id="zarChart" height="160"></canvas>
       </div>
     </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">📊 South Africa GDP (current US$)</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div id="current-gdp" class="fs-3 fw-bold text-sa-green">Loading GDP data...</div>
+          <div class="btn-group gdp-btn-group" role="group">
+            <button onclick="setGdpTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setGdpTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setGdpTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+        <canvas id="gdpChart" height="160"></canvas>
+      </div>
+    </div>
   </div>
 
   <script>
     let zarChart;
+    let gdpChart;
     let rateHistory = [];
+    let gdpHistory = [];
 
     async function loadCSVData() {
+      await Promise.all([loadRateData(), loadGdpData()]);
+      renderChart(9999);
+      renderGdpChart(9999);
+    }
+
+    async function loadRateData() {
       try {
         const response = await fetch('data/USDZAR.csv');
         const text = await response.text();
-        
-        const parsed = Papa.parse(text, { 
-          header: true, 
+        const parsed = Papa.parse(text, {
+          header: true,
           dynamicTyping: true,
-          skipEmptyLines: true 
+          skipEmptyLines: true
         });
 
         rateHistory = parsed.data
-          .filter(row => row.observation_date && row.DEXSFUS)   // Use your exact column names
+          .filter(row => row.observation_date && row.DEXSFUS)
           .map(row => ({
             time: row.observation_date,
             rate: parseFloat(row.DEXSFUS)
@@ -66,14 +90,55 @@
 
         if (rateHistory.length > 0) {
           const latest = rateHistory[rateHistory.length - 1];
-          document.getElementById('current-rate').innerHTML = 
+          document.getElementById('current-rate').innerHTML =
             `1 USD = <strong>${latest.rate.toFixed(4)}</strong> ZAR`;
         }
-
-        renderChart(9999); // Show all data by default
       } catch (e) {
-        document.getElementById('current-rate').innerHTML = 
+        document.getElementById('current-rate').innerHTML =
           `<span class="text-danger">Error loading USDZAR.csv — Check file path and column names</span>`;
+        console.error(e);
+      }
+    }
+
+    async function loadGdpData() {
+      try {
+        const response = await fetch('data/GDP.csv');
+        const text = await response.text();
+        const parsed = Papa.parse(text, {
+          header: false,
+          dynamicTyping: false,
+          skipEmptyLines: true
+        });
+
+        const rows = parsed.data;
+        const headerRow = rows.find(row => row[0] === 'Country Name' && row[1] === 'Country Code');
+        const dataRow = rows.find(row => row[0] === 'South Africa' && row[2] === 'GDP (current US$)');
+
+        if (!headerRow || !dataRow) {
+          throw new Error('GDP data or header row not found');
+        }
+
+        gdpHistory = headerRow
+          .map((col, i) => ({ col, index: i }))
+          .filter(col => /^[0-9]{4}$/.test(col.col) && dataRow[col.index] != null && dataRow[col.index] !== '')
+          .map(col => ({
+            time: col.col,
+            gdp: parseFloat(dataRow[col.index])
+          }))
+          .filter(entry => !Number.isNaN(entry.gdp))
+          .sort((a, b) => parseInt(a.time, 10) - parseInt(b.time, 10));
+
+        if (gdpHistory.length > 0) {
+          const latest = gdpHistory[gdpHistory.length - 1];
+          document.getElementById('current-gdp').innerHTML =
+            `In ${latest.time}: <strong>$${latest.gdp.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong>`;
+        } else {
+          document.getElementById('current-gdp').innerHTML =
+            `<span class="text-warning">No GDP rows found in GDP.csv</span>`;
+        }
+      } catch (e) {
+        document.getElementById('current-gdp').innerHTML =
+          `<span class="text-danger">Error loading GDP.csv — Check file path and data format</span>`;
         console.error(e);
       }
     }
@@ -107,7 +172,7 @@
             responsive: true,
             plugins: { legend: { display: false } },
             scales: {
-              y: { 
+              y: {
                 title: { display: true, text: 'ZAR per 1 USD' }
               }
             }
@@ -116,10 +181,64 @@
       }
     }
 
-    function setTimeframe(days) {
-      document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
+    function renderGdpChart(years) {
+      let filtered = gdpHistory;
+      if (years < 9999) {
+        filtered = gdpHistory.slice(-years);
+      }
+
+      if (gdpChart) {
+        gdpChart.data.labels = filtered.map(h => h.time);
+        gdpChart.data.datasets[0].data = filtered.map(h => h.gdp);
+        gdpChart.update();
+      } else {
+        gdpChart = new Chart(document.getElementById('gdpChart'), {
+          type: 'line',
+          data: {
+            labels: filtered.map(h => h.time),
+            datasets: [{
+              label: 'GDP (current US$)',
+              data: filtered.map(h => h.gdp),
+              borderColor: '#002395',
+              backgroundColor: 'rgba(0, 35, 149, 0.1)',
+              borderWidth: 3,
+              tension: 0.2,
+              pointRadius: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: context => `$${context.raw.toLocaleString(undefined, {maximumFractionDigits: 0})}`
+                }
+              }
+            },
+            scales: {
+              y: {
+                title: { display: true, text: 'GDP in current US$' },
+                ticks: {
+                  callback: value => `$${Number(value).toLocaleString()}`
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function setTimeframe(days, button) {
+      document.querySelectorAll('.currency-btn-group button').forEach(b => b.classList.remove('active'));
+      if (button) button.classList.add('active');
       renderChart(days);
+    }
+
+    function setGdpTimeframe(years, button) {
+      document.querySelectorAll('.gdp-btn-group button').forEach(b => b.classList.remove('active'));
+      if (button) button.classList.add('active');
+      renderGdpChart(years);
     }
 
     window.onload = loadCSVData;
