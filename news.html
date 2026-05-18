@@ -18,9 +18,9 @@
 
   <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="display-5 fw-bold text-sa-green">📰 South Africa News</h1>
+      <h1 class="display-5 fw-bold text-sa-green">📰 Africa News Brief</h1>
       <div class="d-flex align-items-center gap-3">
-        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh News</button>
+        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
         <span id="last-updated" class="text-muted small"></span>
       </div>
     </div>
@@ -28,7 +28,7 @@
     <div class="row mb-5">
       <div class="col-lg-7">
         <div id="ai-summary" class="alert alert-light border-success shadow-sm h-100">
-          <h5 class="text-sa-green mb-3">🔍 Today's Key Themes for South Africa</h5>
+          <h5 class="text-sa-green mb-3">🔍 Morning Brief</h5>
           <div id="summary-content" class="small"></div>
         </div>
       </div>
@@ -36,21 +36,22 @@
       <div class="col-lg-5">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
-            <h6 class="text-sa-green mb-3">News Sources & Filters</h6>
+            <h6 class="text-sa-green mb-3">Sources & Filters</h6>
+            <div id="category-pills" class="mb-3"></div>
             <div id="sources-list" class="mb-3"></div>
 
             <div class="mb-3">
-              <label class="form-label small">Keywords (comma separated)</label>
+              <label class="form-label small">Keywords</label>
               <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="ramaphosa, eskom, mining, load shedding">
             </div>
 
             <div class="row align-items-end">
               <div class="col-6">
-                <label class="form-label small">Number of stories</label>
-                <input id="story-count" type="number" class="form-control form-control-sm" value="15" min="6" max="40">
+                <label class="form-label small">Stories</label>
+                <input id="story-count" type="number" class="form-control form-control-sm" value="20" min="8" max="60">
               </div>
               <div class="col-6">
-                <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply & Refresh</button>
+                <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply</button>
               </div>
             </div>
           </div>
@@ -58,152 +59,191 @@
       </div>
     </div>
 
-    <h3 class="mb-4 text-sa-green">🔥 Top Headlines (Ranked by Importance)</h3>
-    <div id="news-container" class="row g-4"></div>
+    <h3 class="mb-3 text-sa-green">🔥 Top Headlines</h3>
+    <div id="news-container" class="list-group"></div>
   </div>
 
   <script>
     const availableSources = [
-      { name: "Semafor Africa", url: "https://www.semafor.com/vertical/africa" },   // Note: may have limited RSS support
-      { name: "Africanews", url: "https://www.africanews.com/feed/rss" },
-      { name: "Reuters Africa", url: "https://www.reuters.com/world/africa/rss" },
-      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml" },
-      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss" },
-      { name: "SABC News", url: "http://www.sabcnews.com/sabcnews/category/south-africa/feed/" },
-      { name: "TimesLIVE", url: "https://www.timeslive.co.za/rss/" },
-      { name: "eNCA", url: "https://www.enca.com/rss" },
-      { name: "Sunday Times", url: "https://www.timeslive.co.za/sunday-times/rss/" },
-      { name: "The Citizen", url: "https://citizen.co.za/feed/" },
-      { name: "Moneyweb", url: "https://www.moneyweb.co.za/feed/" },
-      { name: "GroundUp", url: "https://www.groundup.org.za/feed/" },
-      { name: "Business Day", url: "https://www.businesslive.co.za/rss/" },
-      { name: "Defence Web", url: "https://www.defenceweb.co.za/feed/" },
-      { name: "France 24", url: "https://www.france24.com/en/rss" }
+      { name: "Reuters Africa", url: "https://www.reuters.com/world/africa/rss", categories: ["Africa", "Global"] },
+      { name: "Bloomberg Africa", url: "https://www.bloomberg.com/feeds/site/africa.xml", categories: ["Africa", "Global"] },
+      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml", categories: ["Africa", "Global"] },
+      { name: "Africanews", url: "https://www.africanews.com/feed/rss", categories: ["Africa", "Global"] },
+      { name: "CNBC Africa", url: "https://www.cnbcafrica.com/feed/", categories: ["Africa", "Energy", "Global"] },
+      { name: "Al Jazeera English", url: "https://www.aljazeera.com/xml/rss/all.xml", categories: ["Global", "Africa"] },
+      { name: "FT Global", url: "https://www.ft.com/?format=rss", categories: ["Global", "Finance"] },
+      { name: "The Economist - World News", url: "https://www.economist.com/world-this-week/rss.xml", categories: ["Global", "Finance"] },
+      { name: "Business Day", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Finance", "Energy"] },
+      { name: "Moneyweb", url: "https://www.moneyweb.co.za/feed/", categories: ["South Africa", "Finance"] },
+      { name: "TimesLIVE", url: "https://www.timeslive.co.za/rss/", categories: ["South Africa", "General"] },
+      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", categories: ["South Africa", "General"] },
+      { name: "eNCA", url: "https://www.enca.com/rss", categories: ["South Africa", "General"] },
+      { name: "The Citizen", url: "https://citizen.co.za/feed/", categories: ["South Africa", "General"] },
+      { name: "BusinessLIVE", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Finance", "Energy"] },
+      { name: "France 24", url: "https://www.france24.com/en/rss", categories: ["Global", "Africa"] }
     ];
 
-    // Only these four selected by default
-    let selectedSources = ["Semafor Africa", "Africanews", "Reuters Africa", "BBC Africa"];
+    const categoryOptions = ["All", "Africa", "Africa Energy", "South Africa", "Global"];
+    let selectedCategory = "Africa";
+    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English"];
 
-    // (Rest of the script remains the same as last version with importance scoring)
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const dt = new Date(dateString);
+      return dt.toLocaleString('en-ZA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
 
-    async function loadNews() {
-      const container = document.getElementById('news-container');
-      const summaryEl = document.getElementById('summary-content');
-      const lastUpdatedEl = document.getElementById('last-updated');
+    function buildTeaser(item) {
+      const description = (item.description || item.contentSnippet || "").replace(/<[^>]*>/g, '');
+      const firstSentence = description.split('. ')[0] || '';
+      if (firstSentence.length > 120) return firstSentence.slice(0, 117) + '...';
+      return firstSentence || item.title;
+    }
 
-      container.innerHTML = `<div class="col-12 text-center py-5"><div class="spinner-border text-success"></div><p class="mt-3">Loading & ranking news...</p></div>`;
+    function calculateImportanceScore(item) {
+      const text = (item.title + ' ' + (item.description || '')).toLowerCase();
+      const ageHours = (Date.now() - new Date(item.pubDate)) / (1000 * 60 * 60);
+      let score = Math.max(0, 120 - ageHours * 3);
+      if (["Reuters", "Bloomberg", "BBC", "FT", "Economist", "CNBC", "Al Jazeera"].some(name => item.source.includes(name))) score += 45;
+      if (item.source.includes('Africa') || item.source.includes('South Africa')) score += 25;
+      const highImpact = ["eskom", "load shedding", "electricity", "power", "ramaphosa", "coal", "renewable", "mining", "pgm", "gold", "corruption", "strike", "energy", "politics", "court", "government", "inflation", "debt", "investment"];
+      highImpact.forEach(keyword => { if (text.includes(keyword)) score += 12; });
+      const lowImpact = ["celebrity", "match", "entertainment", "festival", "recipe", "birthday", "viral", "lifestyle"];
+      lowImpact.forEach(keyword => { if (text.includes(keyword)) score -= 40; });
+      return Math.max(0, score);
+    }
 
-      try {
-        const keywords = document.getElementById('keyword-input').value.toLowerCase().split(',').map(k => k.trim()).filter(Boolean);
-        const storyCount = parseInt(document.getElementById('story-count').value) || 15;
+    function getCategoryButtonClass(cat) {
+      return selectedCategory === cat ? 'btn-success' : 'btn-outline-secondary';
+    }
 
-        let allItems = [];
-
-        for (const source of availableSources) {
-          if (!selectedSources.includes(source.name)) continue;
-          try {
-            const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
-            const res = await fetch(proxy);
-            const data = await res.json();
-            if (data.items) {
-              data.items.forEach(item => item.source = source.name);
-              allItems = allItems.concat(data.items);
-            }
-          } catch (e) {}
-        }
-
-        // Importance scoring (same strong algorithm as before)
-        function calculateImportanceScore(item) {
-          let score = 0;
-          const text = (item.title + " " + (item.description || "")).toLowerCase();
-          const hoursOld = (Date.now() - new Date(item.pubDate)) / (1000 * 60 * 60);
-
-          score += Math.max(0, 100 - hoursOld * 2.5);
-          if (["Semafor", "Reuters", "BBC", "Business Day", "Moneyweb"].some(s => item.source.includes(s))) score += 50;
-          
-          const keyTopics = ["ramaphosa", "gnu", "eskom", "load shedding", "mining", "pgm", "gold", "corruption", "crime", "court"];
-          keyTopics.forEach(kw => { if (text.includes(kw)) score += 45; });
-
-          const trivial = ["dream job", "petrol", "marathon", "dies", "wedding", "viral", "heartwarming"];
-          if (trivial.some(w => text.includes(w))) score -= 90;
-
-          return Math.max(0, score);
-        }
-
-        allItems.forEach(item => item.importanceScore = calculateImportanceScore(item));
-        allItems.sort((a, b) => b.importanceScore - a.importanceScore);
-
-        if (keywords.length > 0) {
-          allItems = allItems.filter(item => {
-            const text = (item.title + " " + (item.description || "")).toLowerCase();
-            return keywords.some(kw => text.includes(kw));
-          });
-        }
-
-        // AI Summary
-        const summaryHTML = `
-          <strong>1. Political Developments:</strong> Government of National Unity, Ramaphosa, and coalition updates.<br>
-          <strong>2. Energy Crisis:</strong> Eskom, load shedding, and power supply developments.<br>
-          <strong>3. Mining & Economy:</strong> PGMs, gold, chrome, and broader economic indicators.<br>
-          <strong>4. Crime & Justice:</strong> Major cases, SAPS operations, and court rulings.<br>
-          <strong>5. Society & Delivery:</strong> Service delivery, protests, and social issues.
-        `;
-        summaryEl.innerHTML = summaryHTML;
-
-        let html = '';
-        allItems.slice(0, storyCount).forEach(item => {
-          const date = new Date(item.pubDate).toLocaleDateString('en-ZA', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-          html += `
-            <div class="col-lg-6 col-xl-4">
-              <div class="card h-100 shadow-sm border-0 hover-effect" onclick="window.open('${item.link}', '_blank')">
-                <div class="card-body">
-                  <h5 class="card-title">${item.title}</h5>
-                  <p class="card-text text-muted small">${item.source} • ${date}</p>
-                  <p class="card-text">${(item.description || '').substring(0, 130)}...</p>
-                  <small class="text-success">Read full story →</small>
-                </div>
-              </div>
-            </div>`;
-        });
-
-        container.innerHTML = html || `<div class="col-12 alert alert-info">No high-importance stories found.</div>`;
-        lastUpdatedEl.textContent = `Last refreshed: ${new Date().toLocaleTimeString('en-ZA')}`;
-
-      } catch (e) {
-        container.innerHTML = `<div class="col-12 alert alert-danger">Failed to load some sources.</div>`;
-      }
+    function renderCategoryPills() {
+      const container = document.getElementById('category-pills');
+      container.innerHTML = categoryOptions.map(cat => `
+        <button type="button" class="btn ${getCategoryButtonClass(cat)} btn-sm me-2 mb-2" onclick="setCategory('${cat}')">${cat}</button>
+      `).join('');
     }
 
     function renderSourceCheckboxes() {
       const container = document.getElementById('sources-list');
       let html = '';
       availableSources.forEach(src => {
+        if (selectedCategory !== 'All' && !src.categories.some(c => c === selectedCategory || (selectedCategory === 'Africa Energy' && c === 'Energy'))) return;
         const checked = selectedSources.includes(src.name) ? 'checked' : '';
         html += `
-          <div class="form-check form-check-inline me-2 mb-1">
-            <input class="form-check-input" type="checkbox" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
-            <label class="form-check-label small">${src.name}</label>
+          <div class="form-check form-check-inline me-2 mb-2">
+            <input class="form-check-input" type="checkbox" id="src-${src.name}" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
+            <label class="form-check-label small" for="src-${src.name}">${src.name}</label>
           </div>`;
       });
+      if (!html) html = '<div class="text-muted small">No sources available for this category.</div>';
       container.innerHTML = html;
+    }
+
+    function setCategory(category) {
+      selectedCategory = category;
+      renderCategoryPills();
+      renderSourceCheckboxes();
     }
 
     window.toggleSource = function(name) {
       if (selectedSources.includes(name)) {
-        selectedSources = selectedSources.filter(n => n !== name);
+        selectedSources = selectedSources.filter(src => src !== name);
       } else {
         selectedSources.push(name);
       }
     };
 
-    window.onload = () => {
+    function buildSummary(items) {
+      const titles = items.map(item => item.title.toLowerCase()).join(' ');
+      const bullets = [];
+      if (/(eskom|load shedding|electricity|power|grid)/.test(titles)) bullets.push('Energy supply and Eskom remain the dominant risk for South Africa’s morning briefing.');
+      if (/(ramaphosa|government|parliament|coalition|election|politic)/.test(titles)) bullets.push('Politics and governing stability are under close watch, especially ANC and coalition developments.');
+      if (/(mining|gold|pgm|chrome|manganese|vanadium|iron ore)/.test(titles)) bullets.push('Mining and commodity flows are the key economic themes, with export risk and market momentum top of mind.');
+      if (/(inflation|debt|rating|investment|economy|finance|bank)/.test(titles)) bullets.push('Macro and finance stories are shaping investor sentiment for the region.');
+      if (bullets.length === 0) bullets.push('Focus is on the most important Africa and South Africa stories across energy, markets and politics.');
+      return bullets.map(line => `<p class="mb-1">• ${line}</p>`).join('');
+    }
+
+    async function loadNews() {
+      const container = document.getElementById('news-container');
+      const summaryEl = document.getElementById('summary-content');
+      const lastUpdatedEl = document.getElementById('last-updated');
+      container.innerHTML = '<div class="list-group-item text-center py-5"><div class="spinner-border text-success"></div><div class="mt-3">Loading and ranking top Africa headlines…</div></div>';
+
+      try {
+        const keywordText = document.getElementById('keyword-input').value.toLowerCase();
+        const keywords = keywordText.split(',').map(k => k.trim()).filter(Boolean);
+        const storyCount = parseInt(document.getElementById('story-count').value, 10) || 20;
+
+        let allItems = [];
+        for (const source of availableSources) {
+          if (!selectedSources.includes(source.name)) continue;
+          try {
+            const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+            const response = await fetch(proxy);
+            const data = await response.json();
+            if (data && data.items) {
+              data.items.forEach(item => { item.source = source.name; allItems.push(item); });
+            }
+          } catch (error) {
+            console.warn('Failed source', source.name, error);
+          }
+        }
+
+        if (allItems.length === 0) {
+          container.innerHTML = '<div class="list-group-item text-center py-5">No stories loaded yet. Try a different source selection or refresh.</div>';
+          summaryEl.innerHTML = '';
+          return;
+        }
+
+        allItems = allItems.map(item => ({ ...item, importanceScore: calculateImportanceScore(item) }));
+        allItems.sort((a, b) => b.importanceScore - a.importanceScore);
+
+        if (keywords.length > 0) {
+          allItems = allItems.filter(item => {
+            const text = (item.title + ' ' + (item.description || '')).toLowerCase();
+            return keywords.some(kw => text.includes(kw));
+          });
+        }
+
+        const topItems = allItems.slice(0, storyCount);
+        summaryEl.innerHTML = buildSummary(topItems);
+
+        const html = topItems.map(item => {
+          const teaser = buildTeaser(item);
+          const date = formatDate(item.pubDate);
+          return `
+            <a href="${item.link}" target="_blank" class="list-group-item list-group-item-action border-0 py-3" style="border-bottom:1px solid rgba(0,0,0,0.05);">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong>${item.title}</strong>
+                  <div class="small text-muted">${item.source}</div>
+                </div>
+                <small class="text-muted text-end">${date}</small>
+              </div>
+              <p class="mb-0 mt-2 text-truncate text-muted">${teaser}</p>
+            </a>`;
+        }).join('');
+
+        container.innerHTML = html || '<div class="list-group-item text-center py-5">No stories matched your filters.</div>';
+        lastUpdatedEl.textContent = `Updated ${new Date().toLocaleTimeString('en-ZA')}`;
+      } catch (error) {
+        container.innerHTML = '<div class="list-group-item text-center py-5 text-danger">Unable to refresh news. Please try again.</div>';
+        summaryEl.innerHTML = '';
+      }
+    }
+
+    window.onload = function() {
+      renderCategoryPills();
       renderSourceCheckboxes();
       loadNews();
     };
   </script>
 
   <style>
-    .hover-effect:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important; transition: all 0.3s; }
+    .list-group-item-action:hover { background: rgba(13,110,253,0.04); }
+    .text-truncate { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 </body>
 </html>

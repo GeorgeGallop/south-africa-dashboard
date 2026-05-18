@@ -20,11 +20,50 @@
 
   <div class="container mt-4">
     <h1 class="display-4 fw-bold text-success text-center">IRP2025</h1>
-    <p class="lead text-center">Integrated Resource Plan 2025: South Africa's updated energy roadmap with a stronger focus on gas, renewables, and a managed coal phase-out.</p>
+    <p class="lead text-center">South Africa’s power system is at a historic turning point. For decades coal has been the bedrock—reliable, abundant, and the foundation of mining and manufacturing. But the fleet is aging, and the country faces a choice: cling to the past or build a resilient, lower-emission future. The Integrated Resource Plan 2025 tells the full story of that deliberate transition: a massive, R2.23-trillion capital push that retires old coal plants on a planned schedule, surges renewable energy to world-class levels, brings online flexible gas-fired power as the bridge, expands nuclear and storage, and modernises the transmission grid to make it all work—while keeping the lights on, the economy growing, and emissions in check.</p>
+
+    <!-- Story starts here -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">The IRP Objective – Why this plan exists</h5>
+        <p>The IRP’s core mandate is clear: plan an adequate power system that meets electricity demand, survives contingencies, and delivers the lowest possible cost to the economy while minimising both global and local emissions. It does this by collating planning assumptions, modelling scenarios, and selecting a least-cost reference plan that respects technical constraints and government policy goals.</p>
+        
+        <p class="mt-3">In the short-to-medium term the plan uses hourly chronological modelling (Plexos with Monte Carlo stochastic simulation) to test operational, capacity and energy adequacy under real-world uncertainties—demand swings, renewable variability and unplanned outages. In the medium-to-long term it switches to linear optimisation to find the optimal mix of new generation and transmission out to 2050, minimising the net present value of total system costs (capital, fixed and operating).</p>
+      </div>
+    </div>
 
     <div class="card shadow-sm mt-4">
       <div class="card-body">
-        <h5 class="card-title">Core focus areas</h5>
+        <h5 class="card-title">What the IRP is really saying</h5>
+        <p>Behind the headline numbers, IRP 2025 is a whole-system plan. It balances hourly operational security with long-term capacity investment, ensuring that the generation fleet, the transmission network and the fuel supply chain all move together. This makes the document much more than a “least-cost resource plan”; it is an integrated energy roadmap that reflects the realities of an ageing coal base, the emergence of large-scale renewables, the need for firm and flexible power, and the role of transmission in unlocking that new supply.</p>
+        <p class="mt-3">That is why the TDP matters. The TDP bullet points reinforce the IRP’s signal that new renewable zones and gas projects are only useful if the high-voltage backbone can carry power to the major demand centres. The plan therefore treats transmission as an enabler, not an afterthought: corridor reinforcements, substation upgrades, and zonal interconnection are explicitly modelled so that the IRP is consistent with the grid investments needed to make it deliverable.</p>
+        <p class="mt-3">The IRP also sends a strong message to investors and implementers: commit to dispatchable gas, keep plant performance strong, and build the committed pipeline on schedule. When the emissions and system security trade-offs are compared, the safest path is a rapid push into renewables plus gas and storage, while planning nuclear and infrastructure projects early enough to coincide with coal retirements.</p>
+        <ul class="list-group list-group-flush mt-3">
+          <li class="list-group-item"><strong>It links generation and transmission</strong> so the new power projects can reach load centres.</li>
+          <li class="list-group-item"><strong>It treats coal retirement as a managed process</strong> rather than a shock event, giving the market time to replace lost capacity.</li>
+          <li class="list-group-item"><strong>It combines public, Eskom, and private pipelines</strong> into a single near-term execution story.</li>
+          <li class="list-group-item"><strong>It keeps the system secure</strong> by using firm gas, storage, imported hydro and nuclear to compensate for variable renewables.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">The Current Landscape – Coal’s dominance and the coming crunch</h5>
+        <p>Coal-fired stations still provide ~42 GW of installed capacity and have powered South Africa’s energy-intensive industries for generations. Yet the majority are approaching the end of their operational lives. Under Eskom’s 50-year retirement profile, the phased shutdown begins in 2029 with an 8 GW drop between 2029–2030, followed by a further 15 GW reduction between 2034–2042. Koeberg nuclear (1.86 GW) has already received a 20-year life extension to keep nuclear in the mix until 2045–2046.</p>
+        
+        <p class="mt-3">The Energy Availability Factor (EAF) of the existing Eskom fleet is the single most important variable. The IRP shows that an EAF of 66–68 % between 2025 and 2030 is required simply to meet the moderate GDP-growth demand forecast of 255 TWh in 2030. Anything below 60 % would leave the system fragile and unable to support economic expansion.</p>
+        
+        <div class="mt-4">
+          <canvas id="coalChart" height="150"></canvas>
+        </div>
+        <p class="mt-3 small text-muted">The chart above shows how dramatically coal capacity declines under the 50-year versus 60-year life assumptions. The gap drives the urgency of new-build replacement capacity.</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Core focus areas – The balanced transition strategy</h5>
         <ul>
           <li><strong>Gas generation:</strong> stronger policy support for gas-fired capacity to provide flexible, firm power as renewables grow.</li>
           <li><strong>Renewables expansion:</strong> accelerated procurement for solar and wind to boost clean energy supply.</li>
@@ -37,8 +76,8 @@
 
     <div class="card shadow-sm mt-4">
       <div class="card-body">
-        <h5 class="card-title">IRP 2025 proposed capacity mix</h5>
-        <p>This table presents the proposed new generation capacity additions from the IRP balance plan shown on page 42, alongside the existing 2025 base. It highlights the strong emphasis on renewables and gas flexibility.</p>
+        <h5 class="card-title">IRP 2025 proposed capacity mix – The build-out that replaces retiring coal</h5>
+        <p>This table presents the proposed new generation capacity additions from the IRP balance plan (page 42), alongside the existing 2025 base. The story is unmistakable: zero new coal, a massive renewables surge, and gas plus storage providing the flexible backbone.</p>
         <div class="table-responsive">
           <table class="table table-bordered table-hover mt-3">
             <thead class="table-light">
@@ -70,14 +109,14 @@
           <canvas id="irpChart" height="150"></canvas>
         </div>
 
-        <p class="mt-4"><strong>General analysis:</strong> The IRP balance plan strongly prioritises solar and wind additions, with more than 70 GW of renewables proposed over the planning horizon. Gas IPP growth is also significant, adding over 15 GW of flexible capacity, while nuclear is targeted at roughly 5 GW and pumped storage at 1.3 GW. In total, the plan points to a major shift away from new coal build, instead leaning on renewables, storage, and gas to meet future demand.</p>
+        <p class="mt-4"><strong>What this means for the future:</strong> More than 70 GW of new renewables (solar + wind) will be added, renewables will rise from ~17 GW today to over 45 GW by 2030 (5 GW per year), and gas will supply the firm, dispatchable power needed as coal retires. Nuclear and pumped storage provide long-duration stability. The result is a diversified, lower-emission system capable of supporting sustained economic growth.</p>
       </div>
     </div>
 
     <div class="card shadow-sm mt-4">
       <div class="card-body">
-        <h5 class="card-title">Committed generation pipeline</h5>
-        <p>Near-term execution is driven by both public and private projects. Private capacity commitments are dominated by solar and wind, while public commitments are shaped by gas and storage to keep the grid stable as coal retires.</p>
+        <h5 class="card-title">Committed generation pipeline – What is already in motion</h5>
+        <p>Near-term execution is already under way through three parallel streams: public programmes, Eskom’s own projects, and private investment. Private capacity (mainly solar and wind) dominates the immediate ramp-up in 2026–2027, while Eskom and public commitments deliver the critical gas, storage and hybrid projects needed for stability.</p>
         <div class="table-responsive">
           <table class="table table-bordered table-hover mt-3">
             <thead class="table-light">
@@ -103,23 +142,59 @@
           <canvas id="committedChart" height="150"></canvas>
         </div>
 
-        <p class="mt-4"><strong>Interpretation:</strong> The committed pipeline reveals three distinct streams: public, Eskom, and private. Private projects dominate the near-term additions in 2026-2027, while Eskom’s largest commitment is a 3,000 MW capacity step in 2029 and public commitments fill the 2025-2029 transition with gas, storage, and hybrid projects. Together, they show a market where private renewables drive volume, Eskom secures dispatchable capacity, and public programs provide supporting grid backup.</p>
+        <p class="mt-4"><strong>Interpretation:</strong> Private renewables drive volume in the next few years; Eskom and public programmes secure the dispatchable capacity that keeps the grid stable as coal plants begin to close. This three-stream approach is exactly what the IRP needs to succeed.</p>
+      </div>
+    </div>
 
-        <h5 class="card-title mt-4">Coal retirement path</h5>
-        <p>The IRP includes a coal retirement modelling comparison. Under a 50-year retirement profile, coal capacity falls more rapidly, creating a gap of roughly 15.2 GW versus a 60-year lifetime path by 2046, and still about 8.7 GW by 2050.</p>
-        <div class="mt-4">
-          <canvas id="coalChart" height="150"></canvas>
-        </div>
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Energy security hinges on five critical levers</h5>
+        <p>The IRP is blunt: without these levers the transition will fail. They are the practical bridge between today’s coal-heavy system and tomorrow’s diversified future.</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>1. Sustained plant performance</strong> – Keep Eskom’s existing fleet EAF above 60 % (target 66–68 % to 2030).</li>
+          <li class="list-group-item"><strong>2. 6 GW of new CCGT gas capacity by 2030</strong> – This is non-negotiable to replace the 8 GW of retiring baseload coal and avoid supply shortfalls. After 2030 an additional 1 GW of gas-to-power must be added each year through 2040 (minimum 51 % annual capacity factor).</li>
+          <li class="list-group-item"><strong>3. Roll-out of all committed generation</strong> – Renewables, peaking gas and storage must be built on time.</li>
+          <li class="list-group-item"><strong>4. Long-lead-time resources</strong> – Nuclear (5.2 GW new) and pumped storage (1.3 GW new) must be implemented now so they are ready when needed.</li>
+          <li class="list-group-item"><strong>5. Transmission grid expansion</strong> – The Transmission Development Plan (TDP) must be executed in lock-step with new generation, especially renewables and gas molecules. The IRP is the first plan to fully integrate geographic location of supply with transmission modelling (linearised DC Optimal Power Flow).</li>
+        </ul>
+      </div>
+    </div>
 
-        <p class="mt-4">This coal-life gap is a major system driver: a shorter retirement profile requires earlier replacement capacity and more aggressive renewables and gas deployment, while a longer life delays the need for this replacement.</p>
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Renewables, gas, nuclear &amp; storage – The new power mix</h5>
+        <p>South Africa is blessed with some of the world’s best solar and wind resources. The IRP seizes that advantage: renewables jump from ~17 GW to >45 GW by 2030. Gas CCGT plants provide the flexible, dispatchable power that wind and solar cannot. Nuclear and pumped storage add long-duration firmness. Hybrid IPP projects and distributed generation (behind-the-meter) further strengthen resilience. The Electricity Regulation Amendment Act 2024 has already opened the market, enabling private investment on an unprecedented scale—6.2 GW of renewable IPP capacity already operational and 13 GW more in the pipeline with grid allocation secured.</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">The R2.23-trillion investment plan – What it really means</h5>
+        <p>This is not just another planning document. The IRP 2025 is a R2.23-trillion roadmap that deliberately shifts capital from old coal to new renewables, gas, nuclear, storage and transmission. By embedding transmission infrastructure and the geographic location of new capacity, the plan removes the single biggest historical barrier to renewable deployment. The result is a power system that is cleaner, more flexible, and—crucially—able to support sustained economic growth rather than constrain it.</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Clear policy direction – What must happen next</h5>
+        <ul>
+          <li>Maintain Eskom fleet EAF above 60 % at all costs.</li>
+          <li>Deliver the full 6 GW of CCGT gas capacity by 2030 and continue adding 1 GW per year thereafter.</li>
+          <li>Fast-track all committed public, Eskom and private generation projects.</li>
+          <li>Advance the Independent Transmission Project initiative and the Gas Master Plan in tandem with power-station construction.</li>
+          <li>Develop a Nuclear Industrialisation Plan and implement the South African Renewable Energy Industrialisation Masterplan.</li>
+          <li>Launch a demonstration plant for clean-coal technologies by 2030 and consider a transformative “mega bid window” for renewables.</li>
+          <li>Continue regional hydro imports (Cahora Bassa) and explore new pumped-storage opportunities (e.g. Kobong with Lesotho).</li>
+        </ul>
+        <p class="mt-3">These statements flow directly from the technical analysis and give every stakeholder—Eskom, private developers, government and financiers—the certainty they need to invest with confidence.</p>
       </div>
     </div>
 
     <div class="card shadow-sm mt-4 mb-4">
       <div class="card-body">
-        <h5 class="card-title">Why this update matters</h5>
-        <p>The 2025 IRP update reflects South Africa’s shift toward a more balanced and resilient power system. It combines renewable growth with gas-based flexibility and a phased reduction in coal dependence, helping to support economic development while improving reliability.</p>
-        <a href="https://www.gov.za/sites/default/files/gcis_document/202510/53596gon6767.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-success">View the official IRP2025 document</a>
+        <h5 class="card-title">Why this update matters – The future it alludes to</h5>
+        <p>The 2025 IRP is South Africa’s explicit roadmap to a modern, diversified, lower-emission power system. It replaces retiring coal with renewables at massive scale, uses gas as the essential flexible bridge, keeps nuclear and storage in the mix, and modernises the grid to make the whole system work. The plan is technically rigorous, economically optimised, and environmentally responsible. If the five critical levers are pulled—EAF recovery, gas delivery, committed build-out, long-lead projects and transmission—the country will enjoy energy security, economic growth and a just transition all at once.</p>
+        <a href="https://www.gov.za/sites/default/files/gcis_document/202510/53596gon6767.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-success">View the official IRP2025 document (PDF)</a>
       </div>
     </div>
   </div>
