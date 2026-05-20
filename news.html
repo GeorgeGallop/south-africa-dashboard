@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -17,38 +17,40 @@
   </nav>
 
   <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="display-5 fw-bold text-sa-green">📰 Africa News Brief</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-3">
+      <div>
+        <h1 class="display-5 fw-bold text-sa-green">📰 Africa News Brief</h1>
+        <p class="lead mb-0">A dense scan view of Africa energy, politics and economy stories, including X search signals and a large sample of headlines.</p>
+      </div>
       <div class="d-flex align-items-center gap-3">
         <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
         <span id="last-updated" class="text-muted small"></span>
       </div>
     </div>
 
-    <div class="row mb-5">
-      <div class="col-lg-7">
+    <div class="row mb-4">
+      <div class="col-lg-8">
         <div id="ai-summary" class="alert alert-light border-success shadow-sm h-100">
-          <h5 class="text-sa-green mb-3">🔍 Morning Brief</h5>
+          <h5 class="text-sa-green mb-3">🔍 Top story snapshot</h5>
           <div id="summary-content" class="small"></div>
         </div>
       </div>
-
-      <div class="col-lg-5">
+      <div class="col-lg-4">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
-            <h6 class="text-sa-green mb-3">Sources & Filters</h6>
+            <h6 class="text-sa-green mb-3">Sources & filters</h6>
             <div id="category-pills" class="mb-3"></div>
             <div id="sources-list" class="mb-3"></div>
 
             <div class="mb-3">
               <label class="form-label small">Keywords</label>
-              <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="ramaphosa, eskom, mining, load shedding">
+              <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="ramaphosa, eskom, mining, load shedding" onkeydown="if(event.key==='Enter') loadNews()">
             </div>
 
             <div class="row align-items-end">
               <div class="col-6">
                 <label class="form-label small">Stories</label>
-                <input id="story-count" type="number" class="form-control form-control-sm" value="20" min="8" max="60">
+                <input id="story-count" type="number" class="form-control form-control-sm" value="75" min="75" max="200">
               </div>
               <div class="col-6">
                 <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply</button>
@@ -58,34 +60,31 @@
         </div>
       </div>
     </div>
-
-    <h3 class="mb-3 text-sa-green">🔥 Top Headlines</h3>
-    <div id="news-container" class="list-group"></div>
   </div>
 
   <script>
     const availableSources = [
-      { name: "Reuters Africa", url: "https://www.reuters.com/world/africa/rss", categories: ["Africa", "Global"] },
-      { name: "Bloomberg Africa", url: "https://www.bloomberg.com/feeds/site/africa.xml", categories: ["Africa", "Global"] },
-      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml", categories: ["Africa", "Global"] },
-      { name: "Africanews", url: "https://www.africanews.com/feed/rss", categories: ["Africa", "Global"] },
-      { name: "CNBC Africa", url: "https://www.cnbcafrica.com/feed/", categories: ["Africa", "Energy", "Global"] },
-      { name: "Al Jazeera English", url: "https://www.aljazeera.com/xml/rss/all.xml", categories: ["Global", "Africa"] },
-      { name: "FT Global", url: "https://www.ft.com/?format=rss", categories: ["Global", "Finance"] },
-      { name: "The Economist - World News", url: "https://www.economist.com/world-this-week/rss.xml", categories: ["Global", "Finance"] },
-      { name: "Business Day", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Finance", "Energy"] },
-      { name: "Moneyweb", url: "https://www.moneyweb.co.za/feed/", categories: ["South Africa", "Finance"] },
-      { name: "TimesLIVE", url: "https://www.timeslive.co.za/rss/", categories: ["South Africa", "General"] },
-      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", categories: ["South Africa", "General"] },
-      { name: "eNCA", url: "https://www.enca.com/rss", categories: ["South Africa", "General"] },
-      { name: "The Citizen", url: "https://citizen.co.za/feed/", categories: ["South Africa", "General"] },
-      { name: "BusinessLIVE", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Finance", "Energy"] },
-      { name: "France 24", url: "https://www.france24.com/en/rss", categories: ["Global", "Africa"] }
+      { name: "Reuters Africa", url: "https://www.reuters.com/rssFeed/africaNews", categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], credibility: 5, bias: "neutral" },
+      { name: "Bloomberg Africa", url: "https://www.bloomberg.com/feeds/site/africa.xml", categories: ["Africa", "Africa Energy", "Africa Economy", "Global"], credibility: 5, bias: "neutral" },
+      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 5, bias: "neutral" },
+      { name: "Africanews", url: "https://www.africanews.com/feed/rss", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 4, bias: "centrist" },
+      { name: "CNBC Africa", url: "https://www.cnbcafrica.com/feed/", categories: ["Africa", "Africa Energy", "Africa Economy", "Global"], credibility: 4, bias: "business" },
+      { name: "Al Jazeera English", url: "https://www.aljazeera.com/xml/rss/all.xml", categories: ["Global", "Africa", "Africa Politics"], credibility: 4, bias: "center-left" },
+      { name: "FT Global", url: "https://www.ft.com/?format=rss", categories: ["Global", "Africa Economy"], credibility: 5, bias: "business" },
+      { name: "The Economist - World News", url: "https://www.economist.com/world-this-week/rss.xml", categories: ["Global", "Africa Economy"], credibility: 5, bias: "business" },
+      { name: "Business Day", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Africa Economy", "Africa Energy", "Africa Politics"], credibility: 4, bias: "business" },
+      { name: "Engineering News", url: "https://www.engineeringnews.co.za/feed/", categories: ["South Africa", "Africa Energy", "Africa Economy"], credibility: 4, bias: "industry" },
+      { name: "Moneyweb", url: "https://www.moneyweb.co.za/feed/", categories: ["South Africa", "Africa Economy"], credibility: 3, bias: "business" },
+      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", categories: ["South Africa", "Africa Politics"], credibility: 3, bias: "general" },
+      { name: "eNCA", url: "https://www.enca.com/rss", categories: ["South Africa", "Africa Politics"], credibility: 3, bias: "general" },
+      { name: "The Citizen", url: "https://citizen.co.za/feed/", categories: ["South Africa", "Africa Politics", "Africa Economy"], credibility: 3, bias: "general" },
+      { name: "France 24", url: "https://www.france24.com/en/rss", categories: ["Global", "Africa", "Africa Politics"], credibility: 4, bias: "international" },
+      { name: "X Search", url: "https://twitrss.me/twitter_search_to_rss/?term=%28africa%20OR%20South%20Africa%29%20%28energy%20OR%20gas%20OR%20LNG%20OR%20oil%20OR%20policy%20OR%20power%20OR%20economy%20OR%20eskom%29", categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], credibility: 3, bias: "social" }
     ];
 
-    const categoryOptions = ["All", "Africa", "Africa Energy", "South Africa", "Global"];
+    const categoryOptions = ["All", "Africa", "Africa Energy", "Africa Politics", "Africa Economy", "South Africa", "Global"];
     let selectedCategory = "Africa";
-    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English"];
+    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English", "Business Day", "Engineering News", "X Search"];
 
     function formatDate(dateString) {
       if (!dateString) return "";
@@ -104,13 +103,31 @@
       const text = (item.title + ' ' + (item.description || '')).toLowerCase();
       const ageHours = (Date.now() - new Date(item.pubDate)) / (1000 * 60 * 60);
       let score = Math.max(0, 120 - ageHours * 3);
-      if (["Reuters", "Bloomberg", "BBC", "FT", "Economist", "CNBC", "Al Jazeera"].some(name => item.source.includes(name))) score += 45;
-      if (item.source.includes('Africa') || item.source.includes('South Africa')) score += 25;
-      const highImpact = ["eskom", "load shedding", "electricity", "power", "ramaphosa", "coal", "renewable", "mining", "pgm", "gold", "corruption", "strike", "energy", "politics", "court", "government", "inflation", "debt", "investment"];
-      highImpact.forEach(keyword => { if (text.includes(keyword)) score += 12; });
-      const lowImpact = ["celebrity", "match", "entertainment", "festival", "recipe", "birthday", "viral", "lifestyle"];
-      lowImpact.forEach(keyword => { if (text.includes(keyword)) score -= 40; });
+      const source = availableSources.find(src => src.name === item.source);
+      if (source) score += source.credibility * 10;
+      if (/\b(africa|south africa|energy|eskom|load shedding|ramaphosa|mining|commodities|inflation|debt|power|electricity|renewable|hydrogen|investor|rating|policy)\b/.test(text)) score += 20;
+      if (/\b(celebrity|match|entertainment|festival|recipe|birthday|viral|sports|movie)\b/.test(text)) score -= 35;
       return Math.max(0, score);
+    }
+
+    function categorizeStory(item) {
+      const text = (item.title + ' ' + (item.description || '')).toLowerCase();
+      if (/\b(power|electricity|eskom|gas|renewable|solar|wind|hydro|energy|oil|lpg|lignite|coal|pipeline|lng|fsru|regas|fuel)\b/i.test(text)) return 'Africa Energy';
+      if (/\b(election|parliament|government|ramaphosa|anc|da|coalition|corruption|court|politics|policy|ministry|cabinet|vote|regulator|strike)\b/i.test(text)) return 'Africa Politics';
+      if (/\b(inflation|economic|growth|GDP|debt|investment|market|finance|rand|export|import|commodity|mining|bank|rating|trade|budget|reserve bank)\b/i.test(text)) return 'Africa Economy';
+      if (/\b(south africa|africa|continent|regional|african)\b/i.test(text)) return 'Africa';
+      return 'Global';
+    }
+
+    function getSourceTag(sourceName) {
+      const source = availableSources.find(src => src.name === sourceName);
+      if (!source) return '';
+      const labels = [];
+      if (source.credibility >= 5) labels.push('<span class="badge bg-success me-1">High credibility</span>');
+      else if (source.credibility >= 4) labels.push('<span class="badge bg-info text-dark me-1">Strong</span>');
+      else labels.push('<span class="badge bg-secondary me-1">Medium</span>');
+      labels.push(`<span class="badge bg-warning text-dark">${source.bias}</span>`);
+      return labels.join(' ');
     }
 
     function getCategoryButtonClass(cat) {
@@ -128,12 +145,12 @@
       const container = document.getElementById('sources-list');
       let html = '';
       availableSources.forEach(src => {
-        if (selectedCategory !== 'All' && !src.categories.some(c => c === selectedCategory || (selectedCategory === 'Africa Energy' && c === 'Energy'))) return;
+        if (selectedCategory !== 'All' && !src.categories.includes(selectedCategory)) return;
         const checked = selectedSources.includes(src.name) ? 'checked' : '';
         html += `
           <div class="form-check form-check-inline me-2 mb-2">
             <input class="form-check-input" type="checkbox" id="src-${src.name}" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
-            <label class="form-check-label small" for="src-${src.name}">${src.name}</label>
+            <label class="form-check-label small" for="src-${src.name}">${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
           </div>`;
       });
       if (!html) html = '<div class="text-muted small">No sources available for this category.</div>';
@@ -155,26 +172,23 @@
     };
 
     function buildSummary(items) {
-      const titles = items.map(item => item.title.toLowerCase()).join(' ');
-      const bullets = [];
-      if (/(eskom|load shedding|electricity|power|grid)/.test(titles)) bullets.push('Energy supply and Eskom remain the dominant risk for South Africa’s morning briefing.');
-      if (/(ramaphosa|government|parliament|coalition|election|politic)/.test(titles)) bullets.push('Politics and governing stability are under close watch, especially ANC and coalition developments.');
-      if (/(mining|gold|pgm|chrome|manganese|vanadium|iron ore)/.test(titles)) bullets.push('Mining and commodity flows are the key economic themes, with export risk and market momentum top of mind.');
-      if (/(inflation|debt|rating|investment|economy|finance|bank)/.test(titles)) bullets.push('Macro and finance stories are shaping investor sentiment for the region.');
-      if (bullets.length === 0) bullets.push('Focus is on the most important Africa and South Africa stories across energy, markets and politics.');
-      return bullets.map(line => `<p class="mb-1">• ${line}</p>`).join('');
+      const links = items.map(item => {
+        const date = formatDate(item.pubDate);
+        return `<a href="${item.link}" target="_blank" class="summary-link">${item.title} <span class="summary-meta">| ${item.source} | ${date}</span></a>`;
+      }).join('');
+
+      return `<div class="summary-links">${links}</div>`;
     }
 
     async function loadNews() {
-      const container = document.getElementById('news-container');
       const summaryEl = document.getElementById('summary-content');
       const lastUpdatedEl = document.getElementById('last-updated');
-      container.innerHTML = '<div class="list-group-item text-center py-5"><div class="spinner-border text-success"></div><div class="mt-3">Loading and ranking top Africa headlines…</div></div>';
+      summaryEl.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success"></div><div class="mt-3">Loading top Africa headlines…</div></div>';
 
       try {
         const keywordText = document.getElementById('keyword-input').value.toLowerCase();
-        const keywords = keywordText.split(',').map(k => k.trim()).filter(Boolean);
-        const storyCount = parseInt(document.getElementById('story-count').value, 10) || 20;
+        const keywords = keywordText.split(/[\s,]+/).map(k => k.trim()).filter(Boolean);
+        const storyCount = Math.max(parseInt(document.getElementById('story-count').value, 10) || 75, 75);
 
         let allItems = [];
         for (const source of availableSources) {
@@ -184,7 +198,11 @@
             const response = await fetch(proxy);
             const data = await response.json();
             if (data && data.items) {
-              data.items.forEach(item => { item.source = source.name; allItems.push(item); });
+              data.items.forEach(item => {
+                item.source = source.name;
+                item.category = categorizeStory(item);
+                allItems.push(item);
+              });
             }
           } catch (error) {
             console.warn('Failed source', source.name, error);
@@ -192,45 +210,38 @@
         }
 
         if (allItems.length === 0) {
-          container.innerHTML = '<div class="list-group-item text-center py-5">No stories loaded yet. Try a different source selection or refresh.</div>';
-          summaryEl.innerHTML = '';
+          summaryEl.innerHTML = '<div class="text-center py-5">No stories loaded yet. Try a different source selection or refresh.</div>';
           return;
+        }
+
+        if (keywords.length > 0) {
+          allItems = allItems.filter(item => {
+            const text = [
+              item.title,
+              item.description,
+              item.contentSnippet,
+              item.content,
+              item.summary,
+              item.fullText,
+              item['content:encoded'],
+              item['dc:creator']
+            ]
+              .filter(Boolean)
+              .join(' ')
+              .toLowerCase();
+            return keywords.some(kw => text.includes(kw));
+          });
         }
 
         allItems = allItems.map(item => ({ ...item, importanceScore: calculateImportanceScore(item) }));
         allItems.sort((a, b) => b.importanceScore - a.importanceScore);
 
-        if (keywords.length > 0) {
-          allItems = allItems.filter(item => {
-            const text = (item.title + ' ' + (item.description || '')).toLowerCase();
-            return keywords.some(kw => text.includes(kw));
-          });
-        }
-
         const topItems = allItems.slice(0, storyCount);
         summaryEl.innerHTML = buildSummary(topItems);
-
-        const html = topItems.map(item => {
-          const teaser = buildTeaser(item);
-          const date = formatDate(item.pubDate);
-          return `
-            <a href="${item.link}" target="_blank" class="list-group-item list-group-item-action border-0 py-3" style="border-bottom:1px solid rgba(0,0,0,0.05);">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <strong>${item.title}</strong>
-                  <div class="small text-muted">${item.source}</div>
-                </div>
-                <small class="text-muted text-end">${date}</small>
-              </div>
-              <p class="mb-0 mt-2 text-truncate text-muted">${teaser}</p>
-            </a>`;
-        }).join('');
-
-        container.innerHTML = html || '<div class="list-group-item text-center py-5">No stories matched your filters.</div>';
         lastUpdatedEl.textContent = `Updated ${new Date().toLocaleTimeString('en-ZA')}`;
       } catch (error) {
-        container.innerHTML = '<div class="list-group-item text-center py-5 text-danger">Unable to refresh news. Please try again.</div>';
-        summaryEl.innerHTML = '';
+        console.error(error);
+        summaryEl.innerHTML = '<div class="text-center py-5 text-danger">Unable to refresh news. Please try again.</div>';
       }
     }
 
@@ -244,6 +255,28 @@
   <style>
     .list-group-item-action:hover { background: rgba(13,110,253,0.04); }
     .text-truncate { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .summary-link {
+      display: block;
+      font-size: 0.88rem;
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+      text-decoration: none;
+      color: #0d6efd;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .summary-link:hover {
+      text-decoration: underline;
+    }
+    .summary-meta {
+      color: #6c757d;
+      font-size: 0.78rem;
+    }
+    #summary-content {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
   </style>
 </body>
 </html>

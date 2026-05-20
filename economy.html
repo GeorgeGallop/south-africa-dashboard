@@ -56,23 +56,43 @@
         <canvas id="gdpChart" height="160"></canvas>
       </div>
     </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">📈 South Africa Inflation Rate (%)</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div id="current-inflation" class="fs-3 fw-bold text-sa-green">Loading inflation data...</div>
+          <div class="btn-group inflation-btn-group" role="group">
+            <button onclick="setInflationTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setInflationTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setInflationTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+        <canvas id="inflationChart" height="160"></canvas>
+      </div>
+    </div>
   </div>
 
   <script>
     let zarChart;
     let gdpChart;
+    let inflationChart;
     let rateHistory = [];
     let gdpHistory = [];
+    let inflationHistory = [];
 
     async function loadCSVData() {
-      await Promise.all([loadRateData(), loadGdpData()]);
+      await Promise.all([loadRateData(), loadGdpData(), loadInflationData()]);
       renderChart(9999);
       renderGdpChart(9999);
+      renderInflationChart(9999);
     }
 
     async function loadRateData() {
       try {
-        const response = await fetch('data/USDZAR.csv');
+        const response = await fetch('data/USDZAR2.csv');
         const text = await response.text();
         const parsed = Papa.parse(text, {
           header: true,
@@ -143,7 +163,91 @@
       }
     }
 
-    function renderChart(days) {
+    async function loadInflationData() {
+      try {
+        const response = await fetch('data/SAInflation.csv');
+        const text = await response.text();
+        const parsed = Papa.parse(text, {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true
+        });
+
+        inflationHistory = parsed.data
+          .filter(row => row.observation_date && row.FPCPITOTLZGZAF != null)
+          .map(row => ({
+            time: row.observation_date.substring(0, 4),
+            inflation: parseFloat(row.FPCPITOTLZGZAF)
+          }))
+          .sort((a, b) => parseInt(a.time, 10) - parseInt(b.time, 10));
+
+        if (inflationHistory.length > 0) {
+          const latest = inflationHistory[inflationHistory.length - 1];
+          document.getElementById('current-inflation').innerHTML =
+            `In ${latest.time}: <strong>${latest.inflation.toFixed(2)}%</strong>`;
+        }
+      } catch (e) {
+        document.getElementById('current-inflation').innerHTML =
+          `<span class="text-danger">Error loading SAInflation.csv — Check file path and column names</span>`;
+        console.error(e);
+      }
+    }
+
+    function renderInflationChart(years) {
+      let filtered = inflationHistory;
+      if (years < 9999) {
+        filtered = inflationHistory.slice(-years);
+      }
+
+      if (inflationChart) {
+        inflationChart.data.labels = filtered.map(h => h.time);
+        inflationChart.data.datasets[0].data = filtered.map(h => h.inflation);
+        inflationChart.update();
+      } else {
+        inflationChart = new Chart(document.getElementById('inflationChart'), {
+          type: 'line',
+          data: {
+            labels: filtered.map(h => h.time),
+            datasets: [{
+              label: 'Inflation Rate (%)',
+              data: filtered.map(h => h.inflation),
+              borderColor: '#FFCD00',
+              backgroundColor: 'rgba(255, 205, 0, 0.1)',
+              borderWidth: 3,
+              tension: 0.2,
+              pointRadius: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: context => `${context.raw.toFixed(2)}%`
+                }
+              }
+            },
+            scales: {
+              y: {
+                title: { display: true, text: 'Inflation Rate (%)' },
+                ticks: {
+                  callback: value => `${value.toFixed(1)}%`
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function setInflationTimeframe(years, button) {
+      document.querySelectorAll('.inflation-btn-group button').forEach(b => b.classList.remove('active'));
+      if (button) button.classList.add('active');
+      renderInflationChart(years);
+    }
+
+    function setTimeframe(days, button) {
       let filtered = rateHistory;
       if (days < 9999) {
         filtered = rateHistory.slice(-days);
@@ -239,6 +343,98 @@
       document.querySelectorAll('.gdp-btn-group button').forEach(b => b.classList.remove('active'));
       if (button) button.classList.add('active');
       renderGdpChart(years);
+    }
+
+    function renderChart(days) {
+      let filtered = rateHistory;
+      if (days < 9999) {
+        filtered = rateHistory.slice(-days);
+      }
+
+      if (zarChart) {
+        zarChart.data.labels = filtered.map(h => h.time);
+        zarChart.data.datasets[0].data = filtered.map(h => h.rate);
+        zarChart.update();
+      } else {
+        zarChart = new Chart(document.getElementById('zarChart'), {
+          type: 'line',
+          data: {
+            labels: filtered.map(h => h.time),
+            datasets: [{
+              label: 'USD/ZAR',
+              data: filtered.map(h => h.rate),
+              borderColor: '#007A4D',
+              backgroundColor: 'rgba(0, 122, 77, 0.1)',
+              borderWidth: 3,
+              tension: 0.2,
+              pointRadius: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                title: { display: true, text: 'ZAR per 1 USD' }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderGdpChart(years) {
+      let filtered = gdpHistory;
+      if (years < 9999) {
+        filtered = gdpHistory.slice(-years);
+      }
+
+      if (gdpChart) {
+        gdpChart.data.labels = filtered.map(h => h.time);
+        gdpChart.data.datasets[0].data = filtered.map(h => h.gdp);
+        gdpChart.update();
+      } else {
+        gdpChart = new Chart(document.getElementById('gdpChart'), {
+          type: 'line',
+          data: {
+            labels: filtered.map(h => h.time),
+            datasets: [{
+              label: 'GDP (current US$)',
+              data: filtered.map(h => h.gdp),
+              borderColor: '#002395',
+              backgroundColor: 'rgba(0, 35, 149, 0.1)',
+              borderWidth: 3,
+              tension: 0.2,
+              pointRadius: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: context => `$${context.raw.toLocaleString(undefined, {maximumFractionDigits: 0})}`
+                }
+              }
+            },
+            scales: {
+              y: {
+                title: { display: true, text: 'GDP in current US$' },
+                ticks: {
+                  callback: value => `$${Number(value).toLocaleString()}`
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function setTimeframe(days, button) {
+      document.querySelectorAll('.currency-btn-group button').forEach(b => b.classList.remove('active'));
+      if (button) button.classList.add('active');
+      renderChart(days);
     }
 
     window.onload = loadCSVData;
