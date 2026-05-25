@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prerequisites • Hidden Markov Models</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="index.html" class="btn btn-light btn-sm">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold text-sa-green">Prerequisites for HMMs</h1>
+    <h5 class="text-muted">What you need to know before diving into Hidden Markov Models</h5>
+
+    <div class="row mt-4">
+      <div class="col-lg-8">
+
+        <h5>Why Prerequisites Matter</h5>
+        <p>Hidden Markov Models combine probability, sequences, and dynamic systems. A solid grasp of the topics below will make HMMs much easier to understand.</p>
+
+        <h5>1. Basic Probability Concepts</h5>
+        <p>Probability is the foundation of HMMs. You should be comfortable with:</p>
+        
+        <ul>
+          <li><strong>Conditional Probability</strong>: The probability of event A happening given that B has already occurred.<br>
+              <span class="math">P(A|B) = P(A and B) / P(B)</span></li>
+          <li><strong>Joint Probability</strong>: Probability that two or more events happen together.</li>
+          <li><strong>Marginal Probability</strong>: The probability of an event regardless of other variables (obtained by summing or integrating over other variables).</li>
+          <li><strong>Chain Rule</strong>: Decomposing joint probabilities: <span class="math">P(A,B,C) = P(A) × P(B|A) × P(C|A,B)</span></li>
+        </ul>
+
+        <h5>2. Bayes' Theorem</h5>
+        <p>One of the most important tools in probabilistic modeling. It lets you update beliefs with new evidence.</p>
+        <p class="math">P(A|B) = [P(B|A) × P(A)] / P(B)</p>
+        <p>In HMMs, we constantly use Bayes' theorem to infer hidden states from observations.</p>
+
+        <h5>3. Markov Property (The Markov Assumption)</h5>
+        <p>This is the core idea behind Markov Chains and HMMs.</p>
+        <p><strong>Definition:</strong> The future state depends only on the current state, not on the sequence of past states.</p>
+        <p class="math">P(S_{t+1} | S_t, S_{t-1}, ..., S_1) = P(S_{t+1} | S_t)</p>
+        <p>This "memoryless" property greatly simplifies computation in sequential models.</p>
+
+        <h5>4. Markov Chains</h5>
+        <p>A Markov Chain is a sequence of states where each state transition follows the Markov property.</p>
+        <p>Key elements:</p>
+        <ul>
+          <li>States (e.g., Sunny, Rainy)</li>
+          <li>Transition probabilities (probability of moving from one state to another)</li>
+          <li>Initial state probabilities</li>
+        </ul>
+        <p>Hidden Markov Models are an extension of Markov Chains where the states are not directly observable.</p>
+
+        <h5>5. Sequences and Time Series</h5>
+        <p>HMMs are designed for data that has order and evolves over time or steps.</p>
+        <p>Examples include:</p>
+        <ul>
+          <li>Speech (sequence of sounds)</li>
+          <li>Text (sequence of words)</li>
+          <li>Stock prices or weather over days</li>
+          <li>DNA sequences in bioinformatics</li>
+        </ul>
+
+        <h5>6. Basic Linear Algebra (Helpful but not mandatory at first)</h5>
+        <p>Understanding matrices helps when working with:</p>
+        <ul>
+          <li>Transition matrices</li>
+          <li>Emission matrices</li>
+          <li>Matrix multiplication for efficient calculations</li>
+        </ul>
+
+        <hr>
+
+        <h5 class="mt-5">Recommended Quick Review Resources</h5>
+        <ul>
+          <li>Khan Academy: Probability and Statistics (especially conditional probability and Bayes)</li>
+          <li>StatQuest YouTube: Markov Chains video</li>
+          <li>3Blue1Brown: Essence of Probability series</li>
+        </ul>
+
+        <p class="mt-4 text-muted">Once you're comfortable with these concepts, you're ready to learn the core components of Hidden Markov Models (states, transitions, emissions, etc.).</p>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
