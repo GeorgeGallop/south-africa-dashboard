@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Africa Legends • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="index.html" class="btn btn-light btn-sm">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-5 fw-bold text-sa-green text-center mb-4">🌍 Pan-African Legends of Africa</h1>
+    <p class="text-center lead mb-5">A legendary pan-africanist & Sahel-affiliated leaders gallery across Africa’s modern history.</p>
+
+    <div class="row g-4" id="people-grid"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="personModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-sa-green text-white">
+          <h5 class="modal-title" id="modalName"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <img id="modalPhoto" class="img-fluid rounded shadow" style="max-height: 420px; object-fit: cover;" alt="">
+            </div>
+            <div class="col-md-8" id="modalContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const people = [
+      {
+        name: "Kwame Nkrumah",
+        term: "Ghana • Pan-Africanism",
+        photo: "images/people/kwame_nkrumah.jpg",
+        para1: "Kwame Nkrumah was a leading figure in Ghana’s independence movement and a central architect of modern Pan-African thought.",
+        para2: "He advocated African unity as the foundation for political independence, economic development, and global influence.",
+        para3: "His legacy continues to shape discussions on decolonization, sovereignty, and continental integration.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Kwame_Nkrumah' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Patrice Lumumba",
+        term: "DR Congo • Anti-colonial leadership",
+        photo: "images/people/patrice_lumumba.jpg",
+        para1: "Patrice Lumumba was a major anti-colonial leader during the transition to independence in the Democratic Republic of the Congo.",
+        para2: "He championed national sovereignty and sought to keep the new state free from external domination.",
+        para3: "His political rise and tragic aftermath remain central to debates about decolonization and foreign interference in Africa.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Patrice_Lumumba' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Muammar Gaddafi",
+        term: "Libya • Pan-African & Sahel outreach",
+        photo: "images/people/mummar_gaddafi.jpg",
+        para1: "Muammar Gaddafi became Libya’s transformative revolutionary leader and a vocal supporter of Pan-African causes.",
+        para2: "His influence extended beyond borders through diplomacy, ideological outreach, and involvement in regional debates.",
+        para3: "He remains a controversial but frequently cited figure in accounts of Africa’s post-colonial political evolution.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Muammar_Gaddafi' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Akiko Dangote",
+        term: "Nigeria • Business philanthropy (profile)",
+        photo: "images/people/akiko_dangote.jpg",
+        para1: "Akiko Dangote is associated with the Dangote name and modern philanthropic and social investment efforts.",
+        para2: "Her public visibility reflects the growing role of African wealth in institutional development and community support.",
+        para3: "In many biographies, her work is positioned within broader narratives of entrepreneurship and African capacity-building.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Akiko_Dangote' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Marcus Garvey",
+        term: "Jamaica / Diaspora • Black nationalism",
+        photo: "images/people/marcus_garvey.jpg",
+        para1: "Marcus Garvey was a global advocate of Black empowerment and self-determination through economic and cultural strength.",
+        para2: "His messaging influenced Pan-African and diaspora politics across the Atlantic world.",
+        para3: "Garvey is frequently credited with helping popularize ideas of unity, dignity, and African-centered global pride.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Marcus_Garvey' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "W. E. B. Du Bois",
+        term: "US • Pan-African intellectualism",
+        photo: "images/people/web_dubois.jpg",
+        para1: "W. E. B. Du Bois was a foundational intellectual of Pan-Africanism and a leading voice for civil rights and global Black equality.",
+        para2: "He connected struggles against racism with debates about Africa, imperialism, and self-rule.",
+        para3: "His scholarship shaped generations of activists and scholars across Africa and the diaspora.",
+        sources: "<a href='https://en.wikipedia.org/wiki/W._E._B._Du_Bois' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Haile Selassie",
+        term: "Ethiopia • Sovereignty & modern statecraft",
+        photo: "images/people/haile_selassie.jpg",
+        para1: "Haile Selassie became a symbol of Ethiopian sovereignty and state transformation in the early 20th century.",
+        para2: "His rule is frequently remembered through the lens of modernization, diplomacy, and resistance to invasion.",
+        para3: "Selassie’s legacy remains intertwined with Ethiopia’s identity and Africa’s wider political history.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Haile_Selassie' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Julius Nyerere",
+        term: "Tanzania • Ujamaa & unity",
+        photo: "images/people/julius_nyerere.jpg",
+        para1: "Julius Nyerere led Tanzania with a strong emphasis on unity, education, and nation-building after independence.",
+        para2: "His political vision is often associated with Ujamaa and policies aimed at social cohesion and self-reliance.",
+        para3: "Nyerere’s influence extends beyond Tanzania, shaping how many Africans interpret development, governance, and Pan-African solidarity.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Julius_Nyerere' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Jomo Kenyatta",
+        term: "Kenya • Independence & state leadership",
+        photo: "images/people/jomo_kenyatta.jpg",
+        para1: "Jomo Kenyatta was Kenya’s independence leader and later a defining figure in early state governance.",
+        para2: "His leadership is commonly discussed in the context of decolonization, national identity, and the political formation of Kenya’s modern state.",
+        para3: "Kenyatta’s legacy is central to many histories of Pan-African leadership in East Africa.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Jomo_Kenyatta' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Amílcar Cabral",
+        term: "Guinea-Bissau / Cape Verde • Liberation strategy",
+        photo: "images/people/amilcar_cabral.jpg",
+        para1: "Amílcar Cabral was a leading strategist and theorist of liberation in Guinea-Bissau and Cape Verde.",
+        para2: "He emphasized political consciousness, grassroots mobilization, and disciplined struggle.",
+        para3: "Cabral is widely recognized as one of Africa’s most important anti-colonial thinkers.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Am%C3%ADlcar_Cabral' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Thomas Sankara",
+        term: "Burkina Faso • Revolutionary reform",
+        photo: "images/people/thomas_sankara.jpg",
+        para1: "Thomas Sankara is remembered for radical reforms and a distinctive approach to governance in Burkina Faso.",
+        para2: "He promoted anti-corruption, education, and economic self-confidence in a post-colonial context.",
+        para3: "Sankara’s image has become iconic across Africa’s activist communities and student movements.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Thomas_Sankara' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Léopold Senghor",
+        term: "Senegal • Negritude & literature",
+        photo: "images/people/leopold_senghor.jpg",
+        para1: "Léopold Senghor was a major cultural and political leader associated with the Negritude movement.",
+        para2: "He contributed to intellectual frameworks that affirmed Black identity and challenged colonial cultural hierarchies.",
+        para3: "Senghor’s legacy spans literature, philosophy, and African state leadership.",
+        sources: "<a href='https://en.wikipedia.org/wiki/L%C3%A9opold_Senghor' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Nnamdi Azikiwe",
+        term: "Nigeria • Nationalism & scholarship",
+        photo: "images/people/nnamdi_azikiwe.jpg",
+        para1: "Nnamdi Azikiwe was a leading Nigerian nationalist and influential writer and political organiser.",
+        para2: "He helped shape debates about self-governance, unity, and African political maturity.",
+        para3: "Azikiwe’s role in Nigeria’s transition to independence positions him as an important Pan-African figure.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Nnamdi_Azikiwe' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Robert Mugabe",
+        term: "Zimbabwe • Post-colonial governance",
+        photo: "images/people/robert_mugabe.jpg",
+        para1: "Robert Mugabe rose to prominence during Zimbabwe’s struggle for independence and later led the country for decades.",
+        para2: "His leadership is often discussed through changing policy directions over time and their social impacts.",
+        para3: "Mugabe remains a central, contested figure in Africa’s post-colonial political history.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Robert_Mugabe' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Steve Biko",
+        term: "South Africa • Black Consciousness",
+        photo: "images/people/steve_biko.jpg",
+        para1: "Steve Biko was a key figure in the Black Consciousness movement against apartheid-era oppression.",
+        para2: "He emphasized psychological liberation, dignity, and community-led political awakening.",
+        para3: "Biko’s legacy is widely remembered as a turning point in how resistance and identity were framed in South Africa.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Steve_Biko' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Ibrahim Traoré",
+        term: "Burkina Faso • Sahel leadership",
+        photo: "images/people/ibrahim_traore.jpg",
+        para1: "Ibrahim Traoré is associated with recent political developments in Burkina Faso and broader Sahel security debates.",
+        para2: "His role is often discussed in relation to institutional change, governance, and regional alliances.",
+        para3: "In the context of Pan-African political discourse, Sahel leadership is frequently tied to debates about sovereignty and security.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Ibrahim_Traor%C3%A9' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Assimi Goïta",
+        term: "Mali • Sahel leadership",
+        photo: "images/people/assimi_goita.jpg",
+        para1: "Assimi Goïta has been a prominent figure in Mali’s governance during the Sahel’s ongoing political transitions.",
+        para2: "His leadership is commonly framed in discussions about regional stability and state legitimacy amid conflict.",
+        para3: "In wider African political narratives, Sahel leaders are frequently connected to sovereignty and security cooperation themes.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Assimi_Go%C3%AFta' target='_blank'>Wikipedia</a>"
+      },
+      {
+        name: "Abdourahamane Tchiani",
+        term: "Niger • Sahel leadership",
+        photo: "images/people/abdourahamane_tchiani.jpg",
+        para1: "Abdourahamane Tchiani is associated with recent political shifts in Niger and broader Sahel governance discussions.",
+        para2: "His role is typically explained through the lens of state authority, regional alignment, and political change.",
+        para3: "Sahel leadership figures are often central to conversations about African sovereignty and security coordination.",
+        sources: "<a href='https://en.wikipedia.org/wiki/Abdourahamane_Tchiani' target='_blank'>Wikipedia</a>"
+      }
+    ];
+
+    function renderPeople() {
+      const grid = document.getElementById('people-grid');
+      grid.innerHTML = people.map((p, i) => `
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm" onclick="showPerson(${i})" style="cursor:pointer;">
+            <img src="${p.photo}" class="card-img-top" style="height: 260px; object-fit: cover;" alt="${p.name}">
+            <div class="card-body text-center">
+              <h5 class="card-title text-sa-green">${p.name}</h5>
+              <p class="card-text text-muted">${p.term}</p>
+              <button class="btn btn-outline-success btn-sm w-100">View Profile</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.showPerson = function(i) {
+      const p = people[i];
+      document.getElementById('modalName').textContent = `${p.name} (${p.term})`;
+      document.getElementById('modalPhoto').src = p.photo;
+
+      document.getElementById('modalContent').innerHTML = `
+        <p>${p.para1}</p>
+        <p>${p.para2}</p>
+        <p>${p.para3}</p>
+        <hr>
+        <strong>Source:</strong> ${p.sources}
+      `;
+
+      new bootstrap.Modal(document.getElementById('personModal')).show();
+    };
+
+    window.onload = renderPeople;
+  </script>
+
+  <style>
+    .card:hover { transform: scale(1.04); transition: 0.3s; }
+  </style>
+</body>
+</html>

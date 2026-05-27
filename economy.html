@@ -6,9 +6,11 @@
   <title>Economy • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
+
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
     <div class="container-fluid">
@@ -21,31 +23,44 @@
     <h1 class="display-5 fw-bold text-sa-green">📈 Economy & GDP</h1>
     <p class="lead">USD/ZAR Exchange Rate — Historical Data from Your CSV</p>
 
+    <!-- USD/ZAR -->
     <div class="card shadow-sm mt-4">
       <div class="card-header bg-light">
         <h5 class="mb-0">💱 USD to ZAR Exchange Rate</h5>
       </div>
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
           <div id="current-rate" class="fs-3 fw-bold text-sa-green">Loading data...</div>
           <div class="btn-group currency-btn-group" role="group">
-            <button onclick="setTimeframe(30, this)" class="btn btn-outline-success btn-sm">30 Days</button>
-            <button onclick="setTimeframe(90, this)" class="btn btn-outline-success btn-sm">3 Months</button>
-            <button onclick="setTimeframe(365, this)" class="btn btn-outline-success btn-sm">1 Year</button>
-            <button onclick="setTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+            <button onclick="setTimeframeZar(30, this)" class="btn btn-outline-success btn-sm">30 Days</button>
+            <button onclick="setTimeframeZar(90, this)" class="btn btn-outline-success btn-sm">3 Months</button>
+            <button onclick="setTimeframeZar(365, this)" class="btn btn-outline-success btn-sm">1 Year</button>
+            <button onclick="setTimeframeZar(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
           </div>
         </div>
-        
-        <canvas id="zarChart" height="160"></canvas>
+
+        <canvas id="zarChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="zarStartLabel"></span>
+            <span id="zarEndLabel"></span>
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <input id="zarStartRange" type="range" class="form-range flex-grow-1" />
+            <input id="zarEndRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- GDP -->
     <div class="card shadow-sm mt-4">
       <div class="card-header bg-light">
         <h5 class="mb-0">📊 South Africa GDP (current US$)</h5>
       </div>
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
           <div id="current-gdp" class="fs-3 fw-bold text-sa-green">Loading GDP data...</div>
           <div class="btn-group gdp-btn-group" role="group">
             <button onclick="setGdpTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
@@ -53,16 +68,29 @@
             <button onclick="setGdpTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
           </div>
         </div>
-        <canvas id="gdpChart" height="160"></canvas>
+
+        <canvas id="gdpChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="gdpStartLabel"></span>
+            <span id="gdpEndLabel"></span>
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <input id="gdpStartRange" type="range" class="form-range flex-grow-1" />
+            <input id="gdpEndRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Inflation -->
     <div class="card shadow-sm mt-4">
       <div class="card-header bg-light">
         <h5 class="mb-0">📈 South Africa Inflation Rate (%)</h5>
       </div>
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
           <div id="current-inflation" class="fs-3 fw-bold text-sa-green">Loading inflation data...</div>
           <div class="btn-group inflation-btn-group" role="group">
             <button onclick="setInflationTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
@@ -70,53 +98,412 @@
             <button onclick="setInflationTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
           </div>
         </div>
-        <canvas id="inflationChart" height="160"></canvas>
+
+        <canvas id="inflationChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="inflationStartLabel"></span>
+            <span id="inflationEndLabel"></span>
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <input id="inflationStartRange" type="range" class="form-range flex-grow-1" />
+            <input id="inflationEndRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Access to Electricity (SAPP) -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">⚡ Access to Electricity (SAPP • 12 countries)</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
+          <div id="current-access" class="fs-3 fw-bold text-sa-green">Loading access data...</div>
+          <div class="text-muted small">SAPP members (by year)</div>
+          <div class="btn-group access-btn-group" role="group">
+            <button onclick="setAccessTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setAccessTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setAccessTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+
+        <canvas id="accessChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="accessStartLabel"></span>
+            <span id="accessEndLabel"></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <input id="accessWindowRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Population with access (SAPP) -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">👥 Population (SAPP • 12 countries)</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
+          <div id="current-pop-access" class="fs-3 fw-bold text-sa-green">Loading population (with access)...</div>
+          <div class="text-muted small">SAPP members (by year)</div>
+          <div class="btn-group pop-access-btn-group" role="group">
+            <button onclick="setPopAccessTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setPopAccessTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setPopAccessTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+
+        <canvas id="popAccessChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="popAccessStartLabel"></span>
+            <span id="popAccessEndLabel"></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <input id="popAccessWindowRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Population without access (SAPP) -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">🚫 Population without Access to Electricity (SAPP • 12 countries)</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
+          <div id="current-pop-without" class="fs-3 fw-bold text-sa-green">Loading population (without access)...</div>
+          <div class="text-muted small">SAPP members (by year)</div>
+          <div class="btn-group pop-without-btn-group" role="group">
+            <button onclick="setPopWithoutTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setPopWithoutTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setPopWithoutTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+
+        <canvas id="popWithoutChart" height="170"></canvas>
+
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="popWithoutStartLabel"></span>
+            <span id="popWithoutEndLabel"></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <input id="popWithoutWindowRange" type="range" class="form-range flex-grow-1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
+  <style>
+    .chart-range-controls input[type="range"] { min-width: 120px; }
+  </style>
+
   <script>
-    let zarChart;
-    let gdpChart;
-    let inflationChart;
+    // ------------------------
+    // Charts + full data caches
+    // ------------------------
+    let zarChart, gdpChart, inflationChart;
+    let accessChart, popAccessChart, popWithoutChart;
+
     let rateHistory = [];
     let gdpHistory = [];
     let inflationHistory = [];
 
+    // Exactly the 12 countries the user wants shown in the bottom charts.
+    const SAPP_CANONICAL = [
+      "Angola",
+      "Botswana",
+      "DRC",
+      "Lesotho",
+      "Malawi",
+      "Mozambique",
+      "Namibia",
+      "South Africa",
+      "Swaziland",
+      "Tanzania",
+      "Zambia",
+      "Zimbabwe"
+    ];
+
+    const COUNTRY_ALIASES = {
+      "angola": "Angola",
+      "botswana": "Botswana",
+
+      "drc": "DRC",
+      "drc.": "DRC",
+      "dr congo": "DRC",
+      "dr congo,": "DRC",
+      "democratic republic of the congo": "DRC",
+      "congo dr": "DRC",
+      "congo, democratic republic": "DRC",
+
+      "eswatini": "Swaziland",
+      "swaziland": "Swaziland",
+      "swazilannd": "Swaziland",
+
+      "lesotho": "Lesotho",
+      "mozambique": "Mozambique",
+      "malawi": "Malawi",
+      "namibia": "Namibia",
+      "south africa": "South Africa",
+      "tanzania": "Tanzania",
+      "zambia": "Zambia",
+      "zimbabwe": "Zimbabwe"
+    };
+
+    function normalizeCountryName(s) {
+      return String(s ?? "")
+        .toLowerCase()
+        .replace(/[\u2013\u2014]/g, "-")
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\b(the|and|of)\b/g, " ")
+        .replace(/\\s+/g, " ")
+        .trim();
+    }
+
+    function mapToCanonicalCountry(countryName) {
+      const n = normalizeCountryName(countryName);
+      return COUNTRY_ALIASES[n] || null;
+    }
+
+    const chartColors = [
+      "#007A4D","#FFCD00","#002395","#6f42c1","#fd7e14","#20c997",
+      "#dc3545","#17a2b8","#6610f2","#28a745","#e83e8c","#343a40"
+    ];
+
+    // Access caches
+    let accessYears = [];
+    let accessValuesByCountry = {};
+    let accessCountriesOrdered = [];
+
+    let popAccessYears = [];
+    let popAccessValuesByCountry = {};
+    let popAccessCountriesOrdered = [];
+
+    let popWithoutYears = [];
+    let popWithoutValuesByCountry = {};
+    let popWithoutCountriesOrdered = [];
+
+    // Full label/value arrays
+    let zarLabelsFull = [], zarValuesFull = [];
+    let gdpLabelsFull = [], gdpValuesFull = [];
+    let inflationLabelsFull = [], inflationValuesFull = [];
+
+    let fullAccessLabels = [], fullPopAccessLabels = [], fullPopWithoutLabels = [];
+
+    // Bottom chart window sizes (10/20/all-time)
+    let accessWindowSize = 9999;
+    let popAccessWindowSize = 9999;
+    let popWithoutWindowSize = 9999;
+
+    // ------------------------
+    // Utilities
+    // ------------------------
+    function parseNumberLoose(value) {
+      if (value === null || value === undefined) return null;
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      const s = String(value).replace(/,/g, '').trim();
+      if (!s) return null;
+      const n = parseFloat(s);
+      if (Number.isNaN(n)) return null;
+      return n;
+    }
+
+    function setButtonActive(groupSelector, btn, activeClass="active") {
+      document.querySelectorAll(groupSelector + " button").forEach(b => b.classList.remove(activeClass));
+      if (btn) btn.classList.add(activeClass);
+    }
+
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function commonLineStyle() {
+      return {
+        borderWidth: 3,
+        tension: 0.2,
+        pointRadius: 3,
+        pointHoverRadius: 7,
+        pointHitRadius: 12
+      };
+    }
+
+    function commonChartOptions(yTitle) {
+      return {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: { mode: 'nearest', intersect: false },
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { boxWidth: 12 } },
+          tooltip: { enabled: true }
+        },
+        spanGaps: true,
+        scales: {
+          y: { title: { display: true, text: yTitle } }
+        }
+      };
+    }
+
+    // Dual slider (top charts)
+    function setupDualRangeControls(cfg) {
+      const { startEl, endEl, startLabelEl, endLabelEl, fullLabels, updateFn } = cfg;
+      const max = fullLabels.length - 1;
+
+      startEl.min = 0; startEl.max = max; endEl.min = 0; endEl.max = max;
+      startEl.value = 0; endEl.value = max;
+
+      const renderLabels = () => {
+        const s = parseInt(startEl.value, 10);
+        const e = parseInt(endEl.value, 10);
+        startLabelEl.textContent = fullLabels[s];
+        endLabelEl.textContent = fullLabels[e];
+      };
+
+      const apply = () => {
+        let s = parseInt(startEl.value, 10);
+        let e = parseInt(endEl.value, 10);
+        if (s > e) { const tmp = s; s = e; e = tmp; }
+        startEl.value = String(s);
+        endEl.value = String(e);
+        renderLabels();
+        updateFn(s, e);
+      };
+
+      startEl.addEventListener('input', apply);
+      endEl.addEventListener('input', apply);
+      renderLabels();
+    }
+
+    // ------------------------
+    // Data loading
+    // ------------------------
     async function loadCSVData() {
-      await Promise.all([loadRateData(), loadGdpData(), loadInflationData()]);
-      renderChart(9999);
-      renderGdpChart(9999);
-      renderInflationChart(9999);
+      await Promise.all([
+        loadRateData(),
+        loadGdpData(),
+        loadInflationData(),
+        loadAccessToElectricityData(),
+        loadPopulationWithAccessData(),
+        loadPopulationWithoutAccessData()
+      ]);
+
+      // Full arrays for top charts
+      zarLabelsFull = rateHistory.map(x => x.time);
+      zarValuesFull = rateHistory.map(x => x.rate);
+
+      gdpLabelsFull = gdpHistory.map(x => x.time);
+      gdpValuesFull = gdpHistory.map(x => x.gdp);
+
+      inflationLabelsFull = inflationHistory.map(x => x.time);
+      inflationValuesFull = inflationHistory.map(x => x.inflation);
+
+      // Full arrays for bottom charts
+      fullAccessLabels = accessYears;
+      fullPopAccessLabels = popAccessYears;
+      fullPopWithoutLabels = popWithoutYears;
+
+      // Create charts on full range initially
+      createZarChart();
+      createGdpChart();
+      createInflationChart();
+      createAccessChart();
+      createPopAccessChart();
+      createPopWithoutChart();
+
+      // Top chart sliders
+      setupDualRangeControls({
+        startEl: document.getElementById('zarStartRange'),
+        endEl: document.getElementById('zarEndRange'),
+        startLabelEl: document.getElementById('zarStartLabel'),
+        endLabelEl: document.getElementById('zarEndLabel'),
+        fullLabels: zarLabelsFull,
+        updateFn: (s,e) => updateZarRange(s,e)
+      });
+
+      setupDualRangeControls({
+        startEl: document.getElementById('gdpStartRange'),
+        endEl: document.getElementById('gdpEndRange'),
+        startLabelEl: document.getElementById('gdpStartLabel'),
+        endLabelEl: document.getElementById('gdpEndLabel'),
+        fullLabels: gdpLabelsFull,
+        updateFn: (s,e) => updateGdpRange(s,e)
+      });
+
+      setupDualRangeControls({
+        startEl: document.getElementById('inflationStartRange'),
+        endEl: document.getElementById('inflationEndRange'),
+        startLabelEl: document.getElementById('inflationStartLabel'),
+        endLabelEl: document.getElementById('inflationEndLabel'),
+        fullLabels: inflationLabelsFull,
+        updateFn: (s,e) => updateInflationRange(s,e)
+      });
+
+      // Bottom single sliders (connected window) listeners are set after window sizes are computed.
+      
+      // Ensure default is All Time (last window == full range)
+      accessWindowSize = fullAccessLabels.length || 9999;
+      popAccessWindowSize = fullPopAccessLabels.length || 9999;
+      popWithoutWindowSize = fullPopWithoutLabels.length || 9999;
+
+      updateAccessWindowFromStart(0);
+      updatePopAccessWindowFromStart(0);
+      updatePopWithoutWindowFromStart(0);
+
+      // Wire single "connected window" sliders
+      const accessSlider = document.getElementById('accessWindowRange');
+      if (accessSlider) {
+        accessSlider.addEventListener('input', () => {
+          const startIdx = parseInt(accessSlider.value, 10);
+          updateAccessWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
+        });
+      }
+
+      const popAccessSlider = document.getElementById('popAccessWindowRange');
+      if (popAccessSlider) {
+        popAccessSlider.addEventListener('input', () => {
+          const startIdx = parseInt(popAccessSlider.value, 10);
+          updatePopAccessWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
+        });
+      }
+
+      const popWithoutSlider = document.getElementById('popWithoutWindowRange');
+      if (popWithoutSlider) {
+        popWithoutSlider.addEventListener('input', () => {
+          const startIdx = parseInt(popWithoutSlider.value, 10);
+          updatePopWithoutWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
+        });
+      }
     }
 
     async function loadRateData() {
       try {
         const response = await fetch('data/USDZAR2.csv');
         const text = await response.text();
-        const parsed = Papa.parse(text, {
-          header: true,
-          dynamicTyping: true,
-          skipEmptyLines: true
-        });
+        const parsed = Papa.parse(text, { header: true, dynamicTyping: true, skipEmptyLines: true });
 
         rateHistory = parsed.data
           .filter(row => row.observation_date && row.DEXSFUS)
-          .map(row => ({
-            time: row.observation_date,
-            rate: parseFloat(row.DEXSFUS)
-          }))
-          .sort((a, b) => new Date(a.time) - new Date(b.time));
+          .map(row => ({ time: row.observation_date, rate: parseFloat(row.DEXSFUS) }))
+          .sort((a,b) => new Date(a.time) - new Date(b.time));
 
-        if (rateHistory.length > 0) {
+        if (rateHistory.length) {
           const latest = rateHistory[rateHistory.length - 1];
-          document.getElementById('current-rate').innerHTML =
-            `1 USD = <strong>${latest.rate.toFixed(4)}</strong> ZAR`;
+          document.getElementById('current-rate').innerHTML = `1 USD = <strong>${latest.rate.toFixed(4)}</strong> ZAR`;
         }
       } catch (e) {
-        document.getElementById('current-rate').innerHTML =
-          `<span class="text-danger">Error loading USDZAR.csv — Check file path and column names</span>`;
-        console.error(e);
+        document.getElementById('current-rate').innerHTML = `<span class="text-danger">Error loading USDZAR.csv</span>`;
       }
     }
 
@@ -124,42 +511,28 @@
       try {
         const response = await fetch('data/GDP.csv');
         const text = await response.text();
-        const parsed = Papa.parse(text, {
-          header: false,
-          dynamicTyping: false,
-          skipEmptyLines: true
-        });
+        const parsed = Papa.parse(text, { header: false, dynamicTyping: false, skipEmptyLines: true });
 
         const rows = parsed.data;
         const headerRow = rows.find(row => row[0] === 'Country Name' && row[1] === 'Country Code');
         const dataRow = rows.find(row => row[0] === 'South Africa' && row[2] === 'GDP (current US$)');
 
-        if (!headerRow || !dataRow) {
-          throw new Error('GDP data or header row not found');
-        }
+        if (!headerRow || !dataRow) throw new Error('GDP data or header row not found');
 
         gdpHistory = headerRow
-          .map((col, i) => ({ col, index: i }))
+          .map((col,i) => ({ col, index: i }))
           .filter(col => /^[0-9]{4}$/.test(col.col) && dataRow[col.index] != null && dataRow[col.index] !== '')
-          .map(col => ({
-            time: col.col,
-            gdp: parseFloat(dataRow[col.index])
-          }))
-          .filter(entry => !Number.isNaN(entry.gdp))
-          .sort((a, b) => parseInt(a.time, 10) - parseInt(b.time, 10));
+          .map(col => ({ time: col.col, gdp: parseFloat(dataRow[col.index]) }))
+          .filter(x => !Number.isNaN(x.gdp))
+          .sort((a,b) => parseInt(a.time,10) - parseInt(b.time,10));
 
-        if (gdpHistory.length > 0) {
+        const el = document.getElementById('current-gdp');
+        if (gdpHistory.length) {
           const latest = gdpHistory[gdpHistory.length - 1];
-          document.getElementById('current-gdp').innerHTML =
-            `In ${latest.time}: <strong>$${latest.gdp.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong>`;
-        } else {
-          document.getElementById('current-gdp').innerHTML =
-            `<span class="text-warning">No GDP rows found in GDP.csv</span>`;
+          el.innerHTML = `In ${latest.time}: <strong>$${latest.gdp.toLocaleString(undefined,{maximumFractionDigits:0})}</strong>`;
         }
       } catch (e) {
-        document.getElementById('current-gdp').innerHTML =
-          `<span class="text-danger">Error loading GDP.csv — Check file path and data format</span>`;
-        console.error(e);
+        document.getElementById('current-gdp').innerHTML = `<span class="text-danger">Error loading GDP.csv</span>`;
       }
     }
 
@@ -167,274 +540,563 @@
       try {
         const response = await fetch('data/SAInflation.csv');
         const text = await response.text();
-        const parsed = Papa.parse(text, {
-          header: true,
-          dynamicTyping: true,
-          skipEmptyLines: true
-        });
+        const parsed = Papa.parse(text, { header: true, dynamicTyping: true, skipEmptyLines: true });
 
         inflationHistory = parsed.data
           .filter(row => row.observation_date && row.FPCPITOTLZGZAF != null)
-          .map(row => ({
-            time: row.observation_date.substring(0, 4),
-            inflation: parseFloat(row.FPCPITOTLZGZAF)
-          }))
-          .sort((a, b) => parseInt(a.time, 10) - parseInt(b.time, 10));
+          .map(row => ({ time: row.observation_date.substring(0,4), inflation: parseFloat(row.FPCPITOTLZGZAF) }))
+          .sort((a,b) => parseInt(a.time,10) - parseInt(b.time,10));
 
-        if (inflationHistory.length > 0) {
+        const el = document.getElementById('current-inflation');
+        if (inflationHistory.length) {
           const latest = inflationHistory[inflationHistory.length - 1];
-          document.getElementById('current-inflation').innerHTML =
-            `In ${latest.time}: <strong>${latest.inflation.toFixed(2)}%</strong>`;
+          el.innerHTML = `In ${latest.time}: <strong>${latest.inflation.toFixed(2)}%</strong>`;
         }
       } catch (e) {
-        document.getElementById('current-inflation').innerHTML =
-          `<span class="text-danger">Error loading SAInflation.csv — Check file path and column names</span>`;
-        console.error(e);
+        document.getElementById('current-inflation').innerHTML = `<span class="text-danger">Error loading SAInflation.csv</span>`;
       }
     }
 
-    function renderInflationChart(years) {
-      let filtered = inflationHistory;
-      if (years < 9999) {
-        filtered = inflationHistory.slice(-years);
-      }
+    async function loadAccessToElectricityData() {
+      const el = document.getElementById('current-access');
+      try {
+        const response = await fetch('data/Access%20to%20Electricity.csv');
+        const text = await response.text();
+        const parsed = Papa.parse(text, { header: true, dynamicTyping: false, skipEmptyLines: true });
 
-      if (inflationChart) {
-        inflationChart.data.labels = filtered.map(h => h.time);
-        inflationChart.data.datasets[0].data = filtered.map(h => h.inflation);
-        inflationChart.update();
-      } else {
-        inflationChart = new Chart(document.getElementById('inflationChart'), {
-          type: 'line',
-          data: {
-            labels: filtered.map(h => h.time),
-            datasets: [{
-              label: 'Inflation Rate (%)',
-              data: filtered.map(h => h.inflation),
-              borderColor: '#FFCD00',
-              backgroundColor: 'rgba(255, 205, 0, 0.1)',
-              borderWidth: 3,
-              tension: 0.2,
-              pointRadius: 1.5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: context => `${context.raw.toFixed(2)}%`
-                }
-              }
-            },
-            scales: {
-              y: {
-                title: { display: true, text: 'Inflation Rate (%)' },
-                ticks: {
-                  callback: value => `${value.toFixed(1)}%`
-                }
-              }
-            }
+        const fields = (parsed.meta && parsed.meta.fields) ? parsed.meta.fields : [];
+        if (fields.length < 2) throw new Error('Unexpected Access CSV structure');
+
+        const countryKey = fields[0];
+        accessYears = fields
+          .slice(1)
+          .map(String)
+          .filter(y => /^\d{4}$/.test(y))
+          .sort((a,b) => parseInt(a,10) - parseInt(b,10));
+
+        accessValuesByCountry = {};
+        accessCountriesOrdered = [];
+
+        for (const row of parsed.data) {
+          const rawCountry = row[countryKey];
+          const canonical = mapToCanonicalCountry(rawCountry);
+          if (!canonical) continue;
+
+          if (!accessValuesByCountry[canonical]) {
+            accessValuesByCountry[canonical] = accessYears.map(y => parseNumberLoose(row[y]));
+            accessCountriesOrdered.push(canonical);
           }
-        });
+        }
+
+        accessCountriesOrdered = SAPP_CANONICAL.filter(c => accessValuesByCountry[c]);
+        el.textContent = `Showing ${accessCountriesOrdered.length} SAPP members`;
+      } catch (e) {
+        el.textContent = `Error loading Access to Electricity.csv`;
       }
     }
 
-    function setInflationTimeframe(years, button) {
-      document.querySelectorAll('.inflation-btn-group button').forEach(b => b.classList.remove('active'));
-      if (button) button.classList.add('active');
-      renderInflationChart(years);
-    }
+    async function loadPopulationWithAccessData() {
+      const el = document.getElementById('current-pop-access');
+      try {
+        const response = await fetch('data/Population.csv');
+        const text = await response.text();
+        const parsed = Papa.parse(text, { header: true, dynamicTyping: false, skipEmptyLines: true });
 
-    function setTimeframe(days, button) {
-      let filtered = rateHistory;
-      if (days < 9999) {
-        filtered = rateHistory.slice(-days);
-      }
+        const fields = (parsed.meta && parsed.meta.fields) ? parsed.meta.fields : [];
+        popAccessYears = fields
+          .slice(1)
+          .map(String)
+          .filter(y => /^\d{4}$/.test(y))
+          .sort((a,b) => parseInt(a,10) - parseInt(b,10));
 
-      if (zarChart) {
-        zarChart.data.labels = filtered.map(h => h.time);
-        zarChart.data.datasets[0].data = filtered.map(h => h.rate);
-        zarChart.update();
-      } else {
-        zarChart = new Chart(document.getElementById('zarChart'), {
-          type: 'line',
-          data: {
-            labels: filtered.map(h => h.time),
-            datasets: [{
-              label: 'USD/ZAR',
-              data: filtered.map(h => h.rate),
-              borderColor: '#007A4D',
-              backgroundColor: 'rgba(0, 122, 77, 0.1)',
-              borderWidth: 3,
-              tension: 0.2,
-              pointRadius: 1.5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-              y: {
-                title: { display: true, text: 'ZAR per 1 USD' }
-              }
-            }
+        popAccessValuesByCountry = {};
+        popAccessCountriesOrdered = [];
+
+        for (const row of parsed.data) {
+          const rawCountry = row['Country Name'];
+          const canonical = mapToCanonicalCountry(rawCountry);
+          if (!canonical) continue;
+
+          if (!popAccessValuesByCountry[canonical]) {
+            popAccessValuesByCountry[canonical] = popAccessYears.map(y => parseNumberLoose(row[y]));
+            popAccessCountriesOrdered.push(canonical);
           }
-        });
+        }
+
+        popAccessCountriesOrdered = SAPP_CANONICAL.filter(c => popAccessValuesByCountry[c]);
+        el.textContent = `Showing ${popAccessCountriesOrdered.length} SAPP members`;
+      } catch (e) {
+        el.textContent = `Error loading Population.csv`;
       }
     }
 
-    function renderGdpChart(years) {
-      let filtered = gdpHistory;
-      if (years < 9999) {
-        filtered = gdpHistory.slice(-years);
-      }
+    async function loadPopulationWithoutAccessData() {
+      const el = document.getElementById('current-pop-without');
+      try {
+        const response = await fetch('data/Population%20Without%20Access.csv');
+        const text = await response.text();
+        const parsed = Papa.parse(text, { header: true, dynamicTyping: false, skipEmptyLines: true });
 
-      if (gdpChart) {
-        gdpChart.data.labels = filtered.map(h => h.time);
-        gdpChart.data.datasets[0].data = filtered.map(h => h.gdp);
-        gdpChart.update();
-      } else {
-        gdpChart = new Chart(document.getElementById('gdpChart'), {
-          type: 'line',
-          data: {
-            labels: filtered.map(h => h.time),
-            datasets: [{
-              label: 'GDP (current US$)',
-              data: filtered.map(h => h.gdp),
-              borderColor: '#002395',
-              backgroundColor: 'rgba(0, 35, 149, 0.1)',
-              borderWidth: 3,
-              tension: 0.2,
-              pointRadius: 1.5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: context => `$${context.raw.toLocaleString(undefined, {maximumFractionDigits: 0})}`
-                }
-              }
-            },
-            scales: {
-              y: {
-                title: { display: true, text: 'GDP in current US$' },
-                ticks: {
-                  callback: value => `$${Number(value).toLocaleString()}`
-                }
-              }
-            }
+        const fields = (parsed.meta && parsed.meta.fields) ? parsed.meta.fields : [];
+        const yearFields = fields
+          .filter(f => /^\d{4}$/.test(String(f).trim()))
+          .map(f => parseInt(String(f).trim(), 10))
+          .filter(y => Number.isFinite(y))
+          .sort((a,b) => a-b);
+
+        if (!yearFields.length) throw new Error('No valid year columns found in CSV');
+
+        popWithoutYears = yearFields;
+        popWithoutValuesByCountry = {};
+        popWithoutCountriesOrdered = [];
+
+        const countryField = fields.find(f => String(f).trim().toLowerCase() === 'country name') || fields[0];
+
+        for (const row of parsed.data) {
+          const rawCountry = row[countryField];
+          const canonical = mapToCanonicalCountry(rawCountry);
+          if (!canonical) continue;
+
+          if (!popWithoutValuesByCountry[canonical]) {
+            const aligned = popWithoutYears.map(y => parseNumberLoose(row[String(y)]));
+            popWithoutValuesByCountry[canonical] = aligned;
+            popWithoutCountriesOrdered.push(canonical);
           }
-        });
+        }
+
+        popWithoutCountriesOrdered = SAPP_CANONICAL.filter(c => popWithoutValuesByCountry[c]);
+        el.textContent = `Showing ${popWithoutCountriesOrdered.length} SAPP members`;
+      } catch (e) {
+        const msg = e && e.message ? e.message : String(e);
+        el.textContent = `Error loading Population Without Access.csv: ${msg}`;
       }
     }
 
-    function setTimeframe(days, button) {
-      document.querySelectorAll('.currency-btn-group button').forEach(b => b.classList.remove('active'));
-      if (button) button.classList.add('active');
-      renderChart(days);
+    // ------------------------
+    // Create charts (full range)
+    // ------------------------
+    function createZarChart() {
+      if (!zarLabelsFull.length) return;
+      const ctx = document.getElementById('zarChart');
+      zarChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: zarLabelsFull,
+          datasets: [{
+            label: 'USD/ZAR',
+            data: zarValuesFull,
+            borderColor: '#007A4D',
+            backgroundColor: 'rgba(0, 122, 77, 0.1)',
+            pointBackgroundColor: '#007A4D',
+            pointBorderColor: '#007A4D',
+            ...commonLineStyle()
+          }]
+        },
+        options: commonChartOptions('ZAR per 1 USD')
+      });
+    }
+
+    function createGdpChart() {
+      if (!gdpLabelsFull.length) return;
+      const ctx = document.getElementById('gdpChart');
+      gdpChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: gdpLabelsFull,
+          datasets: [{
+            label: 'GDP (current US$)',
+            data: gdpValuesFull,
+            borderColor: '#002395',
+            backgroundColor: 'rgba(0, 35, 149, 0.1)',
+            pointBackgroundColor: '#002395',
+            pointBorderColor: '#002395',
+            ...commonLineStyle()
+          }]
+        },
+        options: commonChartOptions('GDP in current US$')
+      });
+    }
+
+    function createInflationChart() {
+      if (!inflationLabelsFull.length) return;
+      const ctx = document.getElementById('inflationChart');
+      inflationChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: inflationLabelsFull,
+          datasets: [{
+            label: 'Inflation Rate (%)',
+            data: inflationValuesFull,
+            borderColor: '#FFCD00',
+            backgroundColor: 'rgba(255, 205, 0, 0.1)',
+            pointBackgroundColor: '#FFCD00',
+            pointBorderColor: '#FFCD00',
+            ...commonLineStyle()
+          }]
+        },
+        options: commonChartOptions('Inflation Rate (%)')
+      });
+    }
+
+    function createAccessChart() {
+      const ctx = document.getElementById('accessChart');
+      if (!ctx || !fullAccessLabels.length) return;
+
+      const datasets = accessCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (accessValuesByCountry[country] || []),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          ...commonLineStyle(),
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointBackgroundColor: color,
+          pointBorderColor: color
+        };
+      });
+
+      accessChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: fullAccessLabels, datasets },
+        options: commonChartOptions('Access value')
+      });
+    }
+
+    function createPopAccessChart() {
+      const ctx = document.getElementById('popAccessChart');
+      if (!ctx || !fullPopAccessLabels.length) return;
+
+      const datasets = popAccessCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (popAccessValuesByCountry[country] || []),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          ...commonLineStyle(),
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointBackgroundColor: color,
+          pointBorderColor: color
+        };
+      });
+
+      popAccessChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: fullPopAccessLabels, datasets },
+        options: commonChartOptions('Population value')
+      });
+    }
+
+    function createPopWithoutChart() {
+      const ctx = document.getElementById('popWithoutChart');
+      if (!ctx || !fullPopWithoutLabels.length) return;
+
+      const datasets = popWithoutCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (popWithoutValuesByCountry[country] || []),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          ...commonLineStyle(),
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointBackgroundColor: color,
+          pointBorderColor: color
+        };
+      });
+
+      popWithoutChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: fullPopWithoutLabels, datasets },
+        options: commonChartOptions('Population value')
+      });
+    }
+
+    // ------------------------
+    // Update chart ranges (top charts use start/end)
+    // ------------------------
+    function updateZarRange(s,e) {
+      if (!zarChart) return;
+      zarChart.data.labels = zarLabelsFull.slice(s, e+1);
+      zarChart.data.datasets[0].data = zarValuesFull.slice(s, e+1);
+      zarChart.update();
+    }
+
+    function updateGdpRange(s,e) {
+      if (!gdpChart) return;
+      gdpChart.data.labels = gdpLabelsFull.slice(s, e+1);
+      gdpChart.data.datasets[0].data = gdpValuesFull.slice(s, e+1);
+      gdpChart.update();
+    }
+
+    function updateInflationRange(s,e) {
+      if (!inflationChart) return;
+      inflationChart.data.labels = inflationLabelsFull.slice(s, e+1);
+      inflationChart.data.datasets[0].data = inflationValuesFull.slice(s, e+1);
+      inflationChart.update();
+    }
+
+    // Bottom charts: we still update using start/end indices, but control comes from single window slider.
+    function updateAccessRange(s,e) {
+      if (!accessChart) return;
+      accessChart.data.labels = fullAccessLabels.slice(s, e+1);
+      accessChart.data.datasets = accessCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (accessValuesByCountry[country] || []).slice(s, e+1),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          borderWidth: 3,
+          tension: 0.2,
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointHitRadius: 12,
+          pointBackgroundColor: color,
+          pointBorderColor: color,
+          spanGaps: true
+        };
+      });
+      accessChart.update();
+    }
+
+    function updatePopAccessRange(s,e) {
+      if (!popAccessChart) return;
+      popAccessChart.data.labels = fullPopAccessLabels.slice(s, e+1);
+      popAccessChart.data.datasets = popAccessCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (popAccessValuesByCountry[country] || []).slice(s, e+1),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          borderWidth: 3,
+          tension: 0.2,
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointHitRadius: 12,
+          pointBackgroundColor: color,
+          pointBorderColor: color,
+          spanGaps: true
+        };
+      });
+      popAccessChart.update();
+    }
+
+    function updatePopWithoutRange(s,e) {
+      if (!popWithoutChart) return;
+      popWithoutChart.data.labels = fullPopWithoutLabels.slice(s, e+1);
+      popWithoutChart.data.datasets = popWithoutCountriesOrdered.map((country, i) => {
+        const color = chartColors[i % chartColors.length];
+        return {
+          label: country,
+          data: (popWithoutValuesByCountry[country] || []).slice(s, e+1),
+          borderColor: color,
+          backgroundColor: 'rgba(0,0,0,0)',
+          borderWidth: 3,
+          tension: 0.2,
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          pointHitRadius: 12,
+          pointBackgroundColor: color,
+          pointBorderColor: color,
+          spanGaps: true
+        };
+      });
+      popWithoutChart.update();
+    }
+
+    // ------------------------
+    // Bottom single connected window slider logic
+    // ------------------------
+    function initSappWindowSlider(cfg) {
+      const { sliderId, startLabelId, endLabelId, getFullLen, getWindowSize, onInputStart } = cfg;
+      const slider = document.getElementById(sliderId);
+      if (!slider) return;
+
+      slider.min = 0;
+      slider.step = 1;
+
+      slider.addEventListener('input', () => {
+        const startIdx = parseInt(slider.value, 10);
+        onInputStart(startIdx);
+      });
+
+      // Initial labels are set by the window update methods after window sizes are set.
+      slider.value = "0";
+      updateSappLabels({
+        startLabelId,
+        endLabelId,
+        fullLabelsProvider: () => {
+          // This function is only used by the update* wrappers, so we can ignore here.
+          return [];
+        },
+        startIdx: 0,
+        endIdx: 0
+      });
+    }
+
+    function updateSappLabels({ startLabelId, endLabelId, fullLabels, startIdx, endIdx }) {
+      const sEl = document.getElementById(startLabelId);
+      const eEl = document.getElementById(endLabelId);
+      if (sEl) sEl.textContent = fullLabels[startIdx] ?? '';
+      if (eEl) eEl.textContent = fullLabels[endIdx] ?? '';
+    }
+
+    function updateAccessWindowFromStart(startIdx) {
+      const fullLen = fullAccessLabels.length;
+      if (!fullLen) return;
+      const windowSize = clamp(accessWindowSize === 9999 ? fullLen : accessWindowSize, 1, fullLen);
+      const maxStart = Math.max(0, fullLen - windowSize);
+      const s = clamp(startIdx, 0, maxStart);
+      const e = s + windowSize - 1;
+
+      updateSappLabels({
+        startLabelId: 'accessStartLabel',
+        endLabelId: 'accessEndLabel',
+        fullLabels: fullAccessLabels,
+        startIdx: s,
+        endIdx: e
+      });
+
+      const slider = document.getElementById('accessWindowRange');
+      if (slider) {
+        slider.max = String(maxStart);
+        slider.value = String(s);
+      }
+
+      updateAccessRange(s, e);
+    }
+
+    function updatePopAccessWindowFromStart(startIdx) {
+      const fullLen = fullPopAccessLabels.length;
+      if (!fullLen) return;
+      const windowSize = clamp(popAccessWindowSize === 9999 ? fullLen : popAccessWindowSize, 1, fullLen);
+      const maxStart = Math.max(0, fullLen - windowSize);
+      const s = clamp(startIdx, 0, maxStart);
+      const e = s + windowSize - 1;
+
+      updateSappLabels({
+        startLabelId: 'popAccessStartLabel',
+        endLabelId: 'popAccessEndLabel',
+        fullLabels: fullPopAccessLabels,
+        startIdx: s,
+        endIdx: e
+      });
+
+      const slider = document.getElementById('popAccessWindowRange');
+      if (slider) {
+        slider.max = String(maxStart);
+        slider.value = String(s);
+      }
+
+      updatePopAccessRange(s, e);
+    }
+
+    function updatePopWithoutWindowFromStart(startIdx) {
+      const fullLen = fullPopWithoutLabels.length;
+      if (!fullLen) return;
+      const windowSize = clamp(popWithoutWindowSize === 9999 ? fullLen : popWithoutWindowSize, 1, fullLen);
+      const maxStart = Math.max(0, fullLen - windowSize);
+      const s = clamp(startIdx, 0, maxStart);
+      const e = s + windowSize - 1;
+
+      updateSappLabels({
+        startLabelId: 'popWithoutStartLabel',
+        endLabelId: 'popWithoutEndLabel',
+        fullLabels: fullPopWithoutLabels,
+        startIdx: s,
+        endIdx: e
+      });
+
+      const slider = document.getElementById('popWithoutWindowRange');
+      if (slider) {
+        slider.max = String(maxStart);
+        slider.value = String(s);
+      }
+
+      updatePopWithoutRange(s, e);
+    }
+
+    // ------------------------
+    // Top chart timeframe buttons
+    // ------------------------
+    function setTimeframeZar(days, button) {
+      setButtonActive('.currency-btn-group', button);
+      const fullLen = zarLabelsFull.length;
+      if (!fullLen) return;
+      const max = fullLen - 1;
+      const startIdx = days === 9999 ? 0 : Math.max(0, fullLen - days);
+
+      const startEl = document.getElementById('zarStartRange');
+      const endEl = document.getElementById('zarEndRange');
+      startEl.value = String(startIdx);
+      endEl.value = String(max);
+      startEl.dispatchEvent(new Event('input'));
+      endEl.dispatchEvent(new Event('input'));
     }
 
     function setGdpTimeframe(years, button) {
-      document.querySelectorAll('.gdp-btn-group button').forEach(b => b.classList.remove('active'));
-      if (button) button.classList.add('active');
-      renderGdpChart(years);
+      setButtonActive('.gdp-btn-group', button);
+      const fullLen = gdpLabelsFull.length;
+      if (!fullLen) return;
+      const max = fullLen - 1;
+      const startIdx = years === 9999 ? 0 : Math.max(0, fullLen - years);
+
+      document.getElementById('gdpStartRange').value = String(startIdx);
+      document.getElementById('gdpEndRange').value = String(max);
+      document.getElementById('gdpStartRange').dispatchEvent(new Event('input'));
+      document.getElementById('gdpEndRange').dispatchEvent(new Event('input'));
     }
 
-    function renderChart(days) {
-      let filtered = rateHistory;
-      if (days < 9999) {
-        filtered = rateHistory.slice(-days);
-      }
+    function setInflationTimeframe(years, button) {
+      setButtonActive('.inflation-btn-group', button);
+      const fullLen = inflationLabelsFull.length;
+      if (!fullLen) return;
+      const max = fullLen - 1;
+      const startIdx = years === 9999 ? 0 : Math.max(0, fullLen - years);
 
-      if (zarChart) {
-        zarChart.data.labels = filtered.map(h => h.time);
-        zarChart.data.datasets[0].data = filtered.map(h => h.rate);
-        zarChart.update();
-      } else {
-        zarChart = new Chart(document.getElementById('zarChart'), {
-          type: 'line',
-          data: {
-            labels: filtered.map(h => h.time),
-            datasets: [{
-              label: 'USD/ZAR',
-              data: filtered.map(h => h.rate),
-              borderColor: '#007A4D',
-              backgroundColor: 'rgba(0, 122, 77, 0.1)',
-              borderWidth: 3,
-              tension: 0.2,
-              pointRadius: 1.5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-              y: {
-                title: { display: true, text: 'ZAR per 1 USD' }
-              }
-            }
-          }
-        });
-      }
+      document.getElementById('inflationStartRange').value = String(startIdx);
+      document.getElementById('inflationEndRange').value = String(max);
+      document.getElementById('inflationStartRange').dispatchEvent(new Event('input'));
+      document.getElementById('inflationEndRange').dispatchEvent(new Event('input'));
     }
 
-    function renderGdpChart(years) {
-      let filtered = gdpHistory;
-      if (years < 9999) {
-        filtered = gdpHistory.slice(-years);
-      }
+    // ------------------------
+    // Bottom chart timeframe buttons (connected single slider)
+    // ------------------------
+    function setAccessTimeframe(years, button) {
+      setButtonActive('.access-btn-group', button);
+      const fullLen = fullAccessLabels.length;
+      if (!fullLen) return;
 
-      if (gdpChart) {
-        gdpChart.data.labels = filtered.map(h => h.time);
-        gdpChart.data.datasets[0].data = filtered.map(h => h.gdp);
-        gdpChart.update();
-      } else {
-        gdpChart = new Chart(document.getElementById('gdpChart'), {
-          type: 'line',
-          data: {
-            labels: filtered.map(h => h.time),
-            datasets: [{
-              label: 'GDP (current US$)',
-              data: filtered.map(h => h.gdp),
-              borderColor: '#002395',
-              backgroundColor: 'rgba(0, 35, 149, 0.1)',
-              borderWidth: 3,
-              tension: 0.2,
-              pointRadius: 1.5
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: context => `$${context.raw.toLocaleString(undefined, {maximumFractionDigits: 0})}`
-                }
-              }
-            },
-            scales: {
-              y: {
-                title: { display: true, text: 'GDP in current US$' },
-                ticks: {
-                  callback: value => `$${Number(value).toLocaleString()}`
-                }
-              }
-            }
-          }
-        });
-      }
+      accessWindowSize = years === 9999 ? fullLen : years;
+      const maxStart = Math.max(0, fullLen - accessWindowSize);
+      updateAccessWindowFromStart(maxStart);
     }
 
-    function setTimeframe(days, button) {
-      document.querySelectorAll('.currency-btn-group button').forEach(b => b.classList.remove('active'));
-      if (button) button.classList.add('active');
-      renderChart(days);
+    function setPopAccessTimeframe(years, button) {
+      setButtonActive('.pop-access-btn-group', button);
+      const fullLen = fullPopAccessLabels.length;
+      if (!fullLen) return;
+
+      popAccessWindowSize = years === 9999 ? fullLen : years;
+      const maxStart = Math.max(0, fullLen - popAccessWindowSize);
+      updatePopAccessWindowFromStart(maxStart);
+    }
+
+    function setPopWithoutTimeframe(years, button) {
+      setButtonActive('.pop-without-btn-group', button);
+      const fullLen = fullPopWithoutLabels.length;
+      if (!fullLen) return;
+
+      popWithoutWindowSize = years === 9999 ? fullLen : years;
+      const maxStart = Math.max(0, fullLen - popWithoutWindowSize);
+      updatePopWithoutWindowFromStart(maxStart);
     }
 
     window.onload = loadCSVData;
