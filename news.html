@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +20,6 @@
     <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-3">
       <div>
         <h1 class="display-5 fw-bold text-sa-green">📰 Africa News Brief</h1>
-        <p class="lead mb-0">A dense scan view of Africa energy, politics and economy stories, including X search signals and a large sample of headlines.</p>
       </div>
       <div class="d-flex align-items-center gap-3">
         <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
@@ -45,6 +44,12 @@
             <div class="mb-3">
               <label class="form-label small">Keywords</label>
               <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="ramaphosa, eskom, mining, load shedding" onkeydown="if(event.key==='Enter') loadNews()">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label small">Apify token</label>
+              <input id="apify-token" type="password" class="form-control form-control-sm" placeholder="Paste Apify API token here">
+              <div class="form-text small">Required only for the Semafor Apify source. Leave empty to use direct scraping.</div>
             </div>
 
             <div class="row align-items-end">
@@ -79,12 +84,13 @@
       { name: "eNCA", url: "https://www.enca.com/rss", categories: ["South Africa", "Africa Politics"], credibility: 3, bias: "general" },
       { name: "The Citizen", url: "https://citizen.co.za/feed/", categories: ["South Africa", "Africa Politics", "Africa Economy"], credibility: 3, bias: "general" },
       { name: "France 24", url: "https://www.france24.com/en/rss", categories: ["Global", "Africa", "Africa Politics"], credibility: 4, bias: "international" },
-      { name: "X Search", url: "https://twitrss.me/twitter_search_to_rss/?term=%28africa%20OR%20South%20Africa%29%20%28energy%20OR%20gas%20OR%20LNG%20OR%20oil%20OR%20policy%20OR%20power%20OR%20economy%20OR%20eskom%29", categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], credibility: 3, bias: "social" }
+      { name: "X Search", url: "https://twitrss.me/twitter_search_to_rss/?term=%28africa%20OR%20South%20Africa%29%20%28energy%20OR%20gas%20OR%20LNG%20OR%20oil%20OR%20policy%20OR%20power%20OR%20economy%20OR%20eskom%29", categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], credibility: 3, bias: "social" },
+      { name: "Semafor", type: "semafor", url: "https://www.semafor.com/vertical/africa", actor: "parseforge~semafor-articles-scraper", section: "africa", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 4, bias: "news" }
     ];
 
     const categoryOptions = ["All", "Africa", "Africa Energy", "Africa Politics", "Africa Economy", "South Africa", "Global"];
     let selectedCategory = "Africa";
-    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English", "Business Day", "Engineering News", "X Search"];
+    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English", "Business Day", "Engineering News", "X Search", "Semafor"];
 
     function formatDate(dateString) {
       if (!dateString) return "";
@@ -119,6 +125,36 @@
       return 'Global';
     }
 
+    function normalizeSemaforTitle(title) {
+      if (!title) return title;
+      let cleaned = title.trim();
+      cleaned = cleaned.replace(/^\s*[0-9]+[\.\)\-:\s]*/, '');
+      cleaned = cleaned.replace(/\s+/g, ' ');
+      return cleaned;
+    }
+
+    function getSourceDisplayName(sourceName) {
+      if (!sourceName) return sourceName;
+      if (sourceName.toLowerCase().includes('semafor')) return 'Semafor';
+      return sourceName;
+    }
+
+    function truncateTitleForLine(title, metaText) {
+      if (!title) return title;
+      const raw = title.trim().replace(/\s+/g, ' ');
+      const maxTotal = 130;
+      const reserved = Math.min(metaText.length + 3, 60);
+      const allowed = Math.max(30, maxTotal - reserved);
+      if (raw.length <= allowed) return raw;
+      const words = raw.split(' ');
+      let shortened = '';
+      for (const word of words) {
+        if ((shortened + (shortened ? ' ' : '') + word).length > allowed) break;
+        shortened += (shortened ? ' ' : '') + word;
+      }
+      return shortened || raw.slice(0, allowed);
+    }
+
     function getSourceTag(sourceName) {
       const source = availableSources.find(src => src.name === sourceName);
       if (!source) return '';
@@ -134,6 +170,10 @@
       return selectedCategory === cat ? 'btn-success' : 'btn-outline-secondary';
     }
 
+    function sanitizeId(value) {
+      return value.replace(/[^a-zA-Z0-9_-]/g, '-');
+    }
+
     function renderCategoryPills() {
       const container = document.getElementById('category-pills');
       container.innerHTML = categoryOptions.map(cat => `
@@ -147,10 +187,11 @@
       availableSources.forEach(src => {
         if (selectedCategory !== 'All' && !src.categories.includes(selectedCategory)) return;
         const checked = selectedSources.includes(src.name) ? 'checked' : '';
+        const safeId = sanitizeId(src.name);
         html += `
           <div class="form-check form-check-inline me-2 mb-2">
-            <input class="form-check-input" type="checkbox" id="src-${src.name}" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
-            <label class="form-check-label small" for="src-${src.name}">${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
+            <input class="form-check-input" type="checkbox" id="src-${safeId}" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
+            <label class="form-check-label small" for="src-${safeId}">${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
           </div>`;
       });
       if (!html) html = '<div class="text-muted small">No sources available for this category.</div>';
@@ -174,10 +215,89 @@
     function buildSummary(items) {
       const links = items.map(item => {
         const date = formatDate(item.pubDate);
-        return `<a href="${item.link}" target="_blank" class="summary-link">${item.title} <span class="summary-meta">| ${item.source} | ${date}</span></a>`;
+        const displaySource = getSourceDisplayName(item.source);
+        const metaText = `| ${displaySource} | ${date}`;
+        const titleText = truncateTitleForLine(item.title, metaText);
+        return `<a href="${item.link}" target="_blank" class="summary-link"><span class="summary-title">${titleText}</span><span class="summary-meta">${metaText}</span></a>`;
       }).join('');
 
       return `<div class="summary-links">${links}</div>`;
+    }
+
+    async function fetchSemaforArticles(source, perSourceFetchCount) {
+      const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(source.url)}`;
+      const response = await fetch(proxy);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const html = await response.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const anchors = Array.from(doc.querySelectorAll('a[href*="/article/"]'));
+      const items = [];
+      const seen = new Set();
+
+      anchors.forEach(anchor => {
+        const href = anchor.getAttribute('href');
+        if (!href) return;
+        const normalizedHref = href.startsWith('http') ? href : `https://www.semafor.com${href}`;
+        if (seen.has(normalizedHref)) return;
+        seen.add(normalizedHref);
+
+        let title = anchor.textContent || '';
+        title = title.trim();
+        if (!title) {
+          const heading = anchor.querySelector('h1, h2, h3, h4');
+          title = heading ? heading.textContent.trim() : '';
+        }
+        title = normalizeSemaforTitle(title);
+        if (!title) return;
+
+        let description = '';
+        const summary = anchor.querySelector('p');
+        if (summary) description = summary.textContent.trim();
+
+        let pubDate = '';
+        const timeEl = anchor.querySelector('time') || anchor.closest('article')?.querySelector('time');
+        if (timeEl) pubDate = timeEl.getAttribute('datetime') || timeEl.textContent.trim();
+        if (!pubDate) pubDate = new Date().toISOString();
+
+        items.push({
+          title,
+          link: normalizedHref,
+          pubDate,
+          description,
+          source: source.name,
+          category: categorizeStory({ title, description })
+        });
+      });
+
+      return items.slice(0, perSourceFetchCount);
+    }
+
+    async function fetchSemaforArticlesFromApify(source, keywordText, perSourceFetchCount, apifyToken) {
+      if (!apifyToken) throw new Error('Apify token is required to load Semafor articles.');
+      const input = { maxItems: perSourceFetchCount, query: keywordText || undefined };
+      const endpoint = `https://api.apify.com/v2/acts/${source.actor}/run-sync-get-dataset-items?token=${encodeURIComponent(apifyToken)}`;
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input)
+      });
+      const json = await response.json();
+      if (!response.ok) throw new Error((json && json.error && json.error.message) || `Apify error ${response.status}`);
+      
+      let data = Array.isArray(json) ? json : 
+                (Array.isArray(json.items) ? json.items : 
+                (json.data && Array.isArray(json.data.items) ? json.data.items : 
+                (Array.isArray(json.result) ? json.result : [])));
+
+      data = data.slice(0, perSourceFetchCount);
+      return data.map(raw => ({
+        title: normalizeSemaforTitle(raw.title || raw.headline || raw.name || 'Untitled Semafor article'),
+        link: raw.url || raw.link || raw.articleUrl || raw.pageUrl || raw.article_url || raw.permalink || '#',
+        pubDate: raw.publishedAt || raw.publishedDate || raw.date || raw.published_time || raw.scrapedAt || new Date().toISOString(),
+        description: raw.summary || raw.excerpt || raw.description || raw.content || raw.text || '',
+        source: source.name,
+        category: raw.category || raw.section || categorizeStory(raw)
+      }));
     }
 
     async function loadNews() {
@@ -186,49 +306,68 @@
       summaryEl.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success"></div><div class="mt-3">Loading top Africa headlines…</div></div>';
 
       try {
-        const keywordText = document.getElementById('keyword-input').value.toLowerCase();
-        const keywords = keywordText.split(/[\s,]+/).map(k => k.trim()).filter(Boolean);
-        const storyCount = Math.max(parseInt(document.getElementById('story-count').value, 10) || 75, 75);
+        const keywordText = document.getElementById('keyword-input').value.trim();
+        const rawStoryCount = parseInt(document.getElementById('story-count').value, 10);
+        const storyCount = Number.isInteger(rawStoryCount) && rawStoryCount >= 75 ? rawStoryCount : 75;
+        const perSourceFetchCount = 500;
+        const apifyToken = document.getElementById('apify-token').value.trim();
 
         let allItems = [];
+        let totalFetched = 0;
+        let fetchBySource = {};
+        let errorsBySource = {};
+
         for (const source of availableSources) {
           if (!selectedSources.includes(source.name)) continue;
+
           try {
-            const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
-            const response = await fetch(proxy);
-            const data = await response.json();
-            if (data && data.items) {
-              data.items.forEach(item => {
-                item.source = source.name;
-                item.category = categorizeStory(item);
-                allItems.push(item);
-              });
+            let data;
+            if (source.type === 'semafor') {
+              try {
+                data = await fetchSemaforArticles(source, perSourceFetchCount);
+              } catch (fetchError) {
+                console.warn(`[${source.name}] Direct scrape failed, trying Apify`, fetchError);
+                if (source.actor && apifyToken) {
+                  data = await fetchSemaforArticlesFromApify(source, keywordText, perSourceFetchCount, apifyToken);
+                } else {
+                  throw fetchError;
+                }
+              }
+            } else {
+              const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+              const response = await fetch(proxy);
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              const json = await response.json();
+              data = json.items ? json.items.slice(0, perSourceFetchCount) : [];
             }
+
+            data.forEach(item => {
+              item.source = source.name;
+              item.category = item.category || categorizeStory(item);
+              allItems.push(item);
+            });
+
+            const count = Array.isArray(data) ? data.length : 0;
+            totalFetched += count;
+            fetchBySource[source.name] = count;
+
           } catch (error) {
-            console.warn('Failed source', source.name, error);
+            console.error(`[${source.name}] Error:`, error.message);
+            errorsBySource[source.name] = error.message;
+            fetchBySource[source.name] = 0;
           }
         }
 
         if (allItems.length === 0) {
-          summaryEl.innerHTML = '<div class="text-center py-5">No stories loaded yet. Try a different source selection or refresh.</div>';
+          summaryEl.innerHTML = `<div class="alert alert-warning">No stories could be loaded.</div>`;
           return;
         }
 
+        // Keyword filtering
+        const keywords = keywordText.toLowerCase().split(/[\s,]+/).map(k => k.trim()).filter(Boolean);
         if (keywords.length > 0) {
           allItems = allItems.filter(item => {
-            const text = [
-              item.title,
-              item.description,
-              item.contentSnippet,
-              item.content,
-              item.summary,
-              item.fullText,
-              item['content:encoded'],
-              item['dc:creator']
-            ]
-              .filter(Boolean)
-              .join(' ')
-              .toLowerCase();
+            const text = [item.title, item.description, item.contentSnippet].filter(Boolean).join(' ').toLowerCase();
             return keywords.some(kw => text.includes(kw));
           });
         }
@@ -237,11 +376,19 @@
         allItems.sort((a, b) => b.importanceScore - a.importanceScore);
 
         const topItems = allItems.slice(0, storyCount);
-        summaryEl.innerHTML = buildSummary(topItems);
+
+        summaryEl.innerHTML = `
+          <div class="mb-3 text-muted small">
+            <strong>Loaded:</strong> ${totalFetched} stories • Showing ${topItems.length} top stories<br>
+            ${Object.entries(errorsBySource).length ? `<strong class="text-danger">Errors: ${Object.keys(errorsBySource).join(', ')}</strong>` : ''}
+          </div>
+          ${buildSummary(topItems)}
+        `;
         lastUpdatedEl.textContent = `Updated ${new Date().toLocaleTimeString('en-ZA')}`;
+
       } catch (error) {
         console.error(error);
-        summaryEl.innerHTML = '<div class="text-center py-5 text-danger">Unable to refresh news. Please try again.</div>';
+        summaryEl.innerHTML = '<div class="text-center py-5 text-danger">Failed to load news. Please try again.</div>';
       }
     }
 
@@ -253,25 +400,34 @@
   </script>
 
   <style>
-    .list-group-item-action:hover { background: rgba(13,110,253,0.04); }
-    .text-truncate { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
     .summary-link {
-      display: block;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
       font-size: 0.88rem;
-      line-height: 1.1;
-      margin-bottom: 0.2rem;
+      line-height: 1.2;
+      margin-bottom: 0.15rem;
       text-decoration: none;
       color: #0d6efd;
       overflow: hidden;
       white-space: nowrap;
-      text-overflow: ellipsis;
     }
     .summary-link:hover {
       text-decoration: underline;
     }
+    .summary-title {
+      display: inline-block;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .summary-meta {
+      flex-shrink: 0;
       color: #6c757d;
       font-size: 0.78rem;
+      margin-left: 0.5rem;
+      white-space: nowrap;
     }
     #summary-content {
       max-height: 70vh;
