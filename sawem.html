@@ -12,6 +12,9 @@
 
   <style>
     .status-badge { font-weight: 700; }
+    .sortable-header { cursor: pointer; user-select: none; }
+    .sortable-header:hover { background-color: #f1f3f5; }
+    .sort-icon { font-size: 0.75rem; margin-left: 4px; opacity: 0.6; }
   </style>
 </head>
 <body>
@@ -24,7 +27,7 @@
 
   <main class="container py-4">
     <header class="mb-4">
-      <h1 class="display-6 fw-bold text-sa-green mb-2">SAWEM — Fleet viewer (owner + status + marginal cost proxy)</h1>
+      <h1 class="display-6 fw-bold text-sa-green mb-2">SAWEM</h1>
       <p class="text-muted mb-0">
         Full plant fleet table from <code>data/Plants.xlsx</code>.
         Source for technical fields (where available): <a href="https://www.eskom.co.za/eskom-divisions/gx/coal-fired-power-stations/" target="_blank" rel="noreferrer">Eskom coal-fired power stations</a>.
@@ -36,35 +39,37 @@
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
           <div>
             <h2 class="h5 fw-bold text-sa-green mb-1">Plant table (full)</h2>
-            <div class="text-muted small">Operating/Retired is derived from Nominal Capacity: 0 → Retired; otherwise → Operating.</div>
+            <div class="text-muted small">Operating/Retired is derived from Nominal Capacity: 0 → Retired; otherwise → Operating. Use the filter to select a plant for the calculator below.</div>
           </div>
 
-          <div class="d-flex gap-2 flex-wrap">
-            <div class="input-group input-group-sm" style="min-width: 240px;">
-              <span class="input-group-text">Filter</span>
-              <input id="plantSearch" type="text" class="form-control" placeholder="Search plant name...">
-            </div>
-
-            <div class="input-group input-group-sm" style="min-width: 240px;">
-              <span class="input-group-text">Calculator plant</span>
-              <select id="calculatorPlantSelect" class="form-select"></select>
-            </div>
+          <!-- Only the search filter remains -->
+          <div class="input-group input-group-sm" style="min-width: 280px;">
+            <span class="input-group-text">Filter plants</span>
+            <input id="plantSearch" type="text" class="form-control" placeholder="Search plant name...">
           </div>
         </div>
 
         <div class="table-responsive">
-          <table class="table table-sm align-middle mb-0" style="min-width: 1180px;">
+          <table class="table table-sm align-middle mb-0" style="min-width: 1180px;" id="plantTable">
             <thead>
               <tr class="bg-light">
                 <th scope="col" class="text-muted">Plant</th>
                 <th scope="col" class="text-muted">Location</th>
-                <th scope="col" class="text-muted">Years commissioned</th>
+                <th scope="col" class="text-muted sortable-header" onclick="sortTable('years', true)">
+                  Years commissioned <span class="sort-icon">↕</span>
+                </th>
                 <th scope="col" class="text-muted">Fuel Type</th>
                 <th scope="col" class="text-muted">Owner</th>
                 <th scope="col" class="text-muted">Status</th>
-                <th scope="col" class="text-muted text-end">Units</th>
-                <th scope="col" class="text-muted text-end">Nominal MW</th>
-                <th scope="col" class="text-muted text-end">Installed MW</th>
+                <th scope="col" class="text-muted text-end sortable-header" onclick="sortTable('units', true)">
+                  Units <span class="sort-icon">↕</span>
+                </th>
+                <th scope="col" class="text-muted text-end sortable-header" onclick="sortTable('nominalMw', true)">
+                  Nominal MW <span class="sort-icon">↕</span>
+                </th>
+                <th scope="col" class="text-muted text-end sortable-header" onclick="sortTable('installedMw', true)">
+                  Installed MW <span class="sort-icon">↕</span>
+                </th>
               </tr>
             </thead>
             <tbody id="plantTableBody"></tbody>
@@ -80,6 +85,7 @@
           </div>
         </div>
 
+        <!-- Graphs (unchanged) -->
         <div class="row g-3 mt-2">
           <div class="col-12 col-lg-6">
             <div class="p-3 rounded-3 bg-light border">
@@ -97,6 +103,7 @@
       </div>
     </section>
 
+    <!-- FULL Marginal Cost Calculator Section (unchanged except for the sync button text) -->
     <section class="card border-0 shadow-sm">
       <div class="card-body p-3 p-md-4">
         <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
@@ -104,7 +111,7 @@
             <h2 class="h5 fw-bold text-sa-green mb-1">Marginal cost calculator (fuel + efficiency proxy)</h2>
             <div class="text-muted small">Uses η (Efficiency) to convert electricity into thermal input, then estimates fuel cost from $/ton and assumed USD/ZAR.</div>
           </div>
-          <div class="text-muted small">Outputs switchable between USD and ZAR.</div>
+          <div class="text-muted small">Outputs switchable between USD and ZAR. The filter above controls which plant is used.</div>
         </div>
 
         <div class="row g-3">
@@ -117,18 +124,15 @@
                   <label class="form-label small text-muted">Efficiency η (0–1)</label>
                   <input id="mcEfficiency" type="number" class="form-control" step="0.01" min="0" max="1" placeholder="e.g., 0.35">
                 </div>
-
                 <div class="col-6">
                   <label class="form-label small text-muted">LHV (MJ/kg)</label>
                   <input id="mcLhv" type="number" class="form-control" step="0.1" min="0" value="20">
                 </div>
-
                 <div class="col-6">
                   <label class="form-label small text-muted">Fuel price ($ / ton)</label>
                   <input id="mcFuelPriceUsdPerTon" type="number" class="form-control" step="1" min="0" value="60">
                   <div class="form-text">Fuel price is assumed in USD/ton; converted to ZAR using USD/ZAR below.</div>
                 </div>
-
                 <div class="col-6">
                   <label class="form-label small text-muted">Assumed USD/ZAR</label>
                   <input id="mcUsdZar" type="number" class="form-control" step="0.01" min="0" value="18">
@@ -144,7 +148,6 @@
                         <option value="ZAR">ZAR</option>
                       </select>
                     </div>
-
                     <div class="input-group input-group-sm" style="min-width: 260px;">
                       <span class="input-group-text">Reference output (MWh)</span>
                       <input id="mcRefMwh" type="number" class="form-control" step="10" min="1" value="1000">
@@ -171,18 +174,16 @@
                   <label class="form-label small text-muted">Quick actions</label>
                   <div class="d-flex gap-2 flex-wrap mt-1">
                     <button class="btn btn-success" type="button" onclick="computeMarginalCost()">Compute</button>
-                    <button class="btn btn-outline-success" type="button" onclick="syncEfficiencyFromSelectedPlant()">Sync η + LHV from plant</button>
+                    <button class="btn btn-outline-success" type="button" onclick="syncFromFirstFilteredPlant()">Sync η + LHV from filtered plant</button>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
           <div class="col-12 col-lg-5">
             <div class="p-3 rounded-3 bg-light border h-100">
               <h3 class="h6 fw-bold mb-3">Outputs</h3>
-
               <div class="row g-3">
                 <div class="col-12">
                   <div class="text-muted small">Thermal energy per MWh</div>
@@ -206,14 +207,12 @@
                   <div class="fw-bold" id="outCostForRef">—</div>
                 </div>
               </div>
-
               <div class="alert alert-secondary py-2 mt-3 mb-0">
                 Note: This is a planning-level marginal cost proxy.
                 Real dispatch costs depend on heat-rate curve, auxiliaries, fuel handling, and availability.
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -225,21 +224,15 @@
       const n = Number(v);
       return Number.isFinite(n) ? n : null;
     };
-
     const $ = (id) => document.getElementById(id);
 
-    const PLANTS = []; // loaded from Plants.xlsx
+    let PLANTS = [];
+    let currentSort = { key: null, direction: 'desc' };
 
     function fmtMaybe(v, digits = 2) {
       if (v === null || v === undefined) return "—";
       if (!Number.isFinite(v)) return "—";
       return v.toLocaleString(undefined, { maximumFractionDigits: digits });
-    }
-
-    function fmtPct(v) {
-      if (v === null || v === undefined) return "—";
-      if (!Number.isFinite(v)) return "—";
-      return `${(v * 100).toFixed(2)}%`;
     }
 
     function statusBadge(status) {
@@ -261,24 +254,58 @@
       const location = row["Location"];
       const years = row["Years comissioned, first to last unit"];
 
-      // Operating/Retired rule:
-      // If nominal capacity is 0 => Retired, else Operating.
       const status = (nominalMw !== null && nominalMw === 0) ? "Retired" : "Operating";
 
       return {
         name: row["Name"] ?? "—",
-        owner,
-        status,
-        fuelType,
-        location: location,
-        years: years,
-        units,
-        nominalMw,
-        installedMw,
-        eta,
-        lhv,
-        underConstruction
+        owner, status, fuelType, location, years,
+        units, nominalMw, installedMw, eta, lhv, underConstruction
       };
+    }
+
+    // ==================== Sorting (unchanged) ====================
+    function getSortValue(plant, key) {
+      if (key === 'years') {
+        if (!plant.years) return 0;
+        const match = String(plant.years).match(/\d{4}/);
+        return match ? parseInt(match[0]) : 0;
+      }
+      return plant[key] ?? 0;
+    }
+
+    function sortTable(key, isNumeric = true) {
+      if (currentSort.key === key) {
+        currentSort.direction = currentSort.direction === 'desc' ? 'asc' : 'desc';
+      } else {
+        currentSort.key = key;
+        currentSort.direction = 'desc';
+      }
+      renderPlantsTable();
+      updateSortIcons();
+    }
+
+    function updateSortIcons() {
+      document.querySelectorAll('#plantTable .sortable-header .sort-icon').forEach(icon => {
+        icon.textContent = '↕';
+        icon.style.opacity = '0.5';
+      });
+      if (!currentSort.key) return;
+
+      let headerText = '';
+      if (currentSort.key === 'units') headerText = 'Units';
+      else if (currentSort.key === 'nominalMw') headerText = 'Nominal MW';
+      else if (currentSort.key === 'installedMw') headerText = 'Installed MW';
+      else if (currentSort.key === 'years') headerText = 'Years commissioned';
+
+      document.querySelectorAll('#plantTable th').forEach(th => {
+        if (th.textContent.includes(headerText)) {
+          const icon = th.querySelector('.sort-icon');
+          if (icon) {
+            icon.textContent = currentSort.direction === 'desc' ? '↓' : '↑';
+            icon.style.opacity = '1';
+          }
+        }
+      });
     }
 
     function renderPlantsTable() {
@@ -286,7 +313,18 @@
       const tbody = $("plantTableBody");
       tbody.innerHTML = "";
 
-      const filtered = PLANTS.filter(p => !q ? true : (p.name || "").toLowerCase().includes(q));
+      let filtered = PLANTS;
+      if (q) {
+        filtered = PLANTS.filter(p => (p.name || "").toLowerCase().includes(q));
+      }
+
+      if (currentSort.key) {
+        filtered.sort((a, b) => {
+          const valA = getSortValue(a, currentSort.key);
+          const valB = getSortValue(b, currentSort.key);
+          return currentSort.direction === 'desc' ? valB - valA : valA - valB;
+        });
+      }
 
       filtered.forEach(p => {
         const tr = document.createElement("tr");
@@ -308,68 +346,47 @@
     function computeTotalNominalMw() {
       const total = PLANTS
         .map(p => p.nominalMw)
-        .filter(v => v !== null && v !== undefined && Number.isFinite(v))
+        .filter(v => v !== null && Number.isFinite(v))
         .reduce((acc, v) => acc + v, 0);
-
       $("outTotalNominalMw").textContent = Number.isFinite(total) ? total.toLocaleString() : "—";
-    }
-
-    function renderCalculatorSelect() {
-      const sel = $("calculatorPlantSelect");
-      sel.innerHTML = "";
-      PLANTS.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p.name;
-        opt.textContent = p.name;
-        sel.appendChild(opt);
-      });
-    }
-
-    function getSelectedPlant() {
-      const name = $("calculatorPlantSelect").value;
-      return PLANTS.find(p => p.name === name) || null;
-    }
-
-    function syncEfficiencyFromSelectedPlant() {
-      const plant = getSelectedPlant();
-      if (!plant) return;
-
-      if (plant.eta !== null) $("mcEfficiency").value = plant.eta;
-      if (plant.lhv !== null) $("mcLhv").value = plant.lhv;
-
-      computeMarginalCost();
     }
 
     function renderOwnerCharts() {
       const ownerTotals = new Map();
-
       for (const p of PLANTS) {
-        if (p.nominalMw === null || p.nominalMw === undefined) continue;
-        const v = p.nominalMw;
-        if (!Number.isFinite(v)) continue;
+        if (p.nominalMw === null || !Number.isFinite(p.nominalMw)) continue;
         const owner = p.owner || "Unknown";
-        ownerTotals.set(owner, (ownerTotals.get(owner) || 0) + v);
+        ownerTotals.set(owner, (ownerTotals.get(owner) || 0) + p.nominalMw);
       }
-
-      const owners = Array.from(ownerTotals.keys()).sort((a, b) => (ownerTotals.get(b) - ownerTotals.get(a)));
+      const owners = Array.from(ownerTotals.keys()).sort((a, b) => ownerTotals.get(b) - ownerTotals.get(a));
       const values = owners.map(o => ownerTotals.get(o));
 
-      const pieData = [{
-        labels: owners,
-        values,
-        type: 'pie',
-        textinfo: 'label+percent'
-      }];
+      Plotly.newPlot('ownerPie', [{
+        labels: owners, values, type: 'pie', textinfo: 'label+percent'
+      }], { margin: { l: 10, r: 10, t: 10, b: 10 }, showlegend: false }, { responsive: true });
 
-      Plotly.newPlot('ownerPie', pieData, { margin: { l: 10, r: 10, t: 10, b: 10 }, showlegend: false }, { responsive: true });
-
-      const barData = [{ x: owners, y: values, type: 'bar' }];
-      Plotly.newPlot('ownerBar', barData, { margin: { l: 50, r: 10, t: 10, b: 80 }, yaxis: { title: 'Nominal MW' }, xaxis: { tickangle: -30 }, showlegend: false }, { responsive: true });
+      Plotly.newPlot('ownerBar', [{
+        x: owners, y: values, type: 'bar'
+      }], { margin: { l: 50, r: 10, t: 10, b: 80 }, yaxis: { title: 'Nominal MW' }, xaxis: { tickangle: -30 }, showlegend: false }, { responsive: true });
     }
 
-    function readNumValue(id) {
-      return NUM($(id).value);
+    // ==================== NEW: Sync calculator from filter ====================
+    function syncFromFirstFilteredPlant() {
+      const q = ($("plantSearch").value || "").trim().toLowerCase();
+      let filtered = PLANTS;
+      if (q) {
+        filtered = PLANTS.filter(p => (p.name || "").toLowerCase().includes(q));
+      }
+      if (filtered.length === 0) return;
+
+      const plant = filtered[0];
+      if (plant.eta !== null) $("mcEfficiency").value = plant.eta;
+      if (plant.lhv !== null) $("mcLhv").value = plant.lhv;
+      computeMarginalCost();
     }
+
+    // ==================== Marginal Cost Calculator (unchanged logic) ====================
+    function readNumValue(id) { return NUM($(id).value); }
 
     function computeMarginalCost() {
       const eta = readNumValue("mcEfficiency");
@@ -380,22 +397,17 @@
       const varOpexPerMwh = readNumValue("mcVarOpexPerMwh") || 0;
       const refMwh = readNumValue("mcRefMwh") || 1000;
 
-      if (eta === null || eta <= 0) return;
-      if (lhv === null || lhv <= 0) return;
-      if (fuelUsdPerTon === null || fuelUsdPerTon < 0) return;
+      if (eta === null || eta <= 0 || lhv === null || lhv <= 0 || fuelUsdPerTon === null || fuelUsdPerTon < 0) return;
 
       const thermalMjPerMwh = 3600 / eta;
       const fuelKgPerMwh = thermalMjPerMwh / lhv;
-
-      const fuelCostUsdPerMwh = (fuelKgPerMwh / 1000) * fuelUsdPerTon;
+      let fuelCostPerMwh = (fuelKgPerMwh / 1000) * fuelUsdPerTon;
 
       let currencySymbol = "$";
-      let fuelCostPerMwh = fuelCostUsdPerMwh;
-
       if (outputCurrency === "ZAR") {
         currencySymbol = "R";
         if (usdZar === null || !Number.isFinite(usdZar)) return;
-        fuelCostPerMwh = fuelCostUsdPerMwh * usdZar;
+        fuelCostPerMwh *= usdZar;
       }
 
       const marginalCostPerMwh = fuelCostPerMwh + varOpexPerMwh;
@@ -409,8 +421,8 @@
       $("outCostForRef").textContent = `${currencySymbol}${fmtMaybe(totalCostRef, 0)} for ${fmtMaybe(refMwh, 0)} MWh`;
     }
 
+    // ==================== Initialization ====================
     window.onload = async () => {
-      // Load Plants.xlsx into the browser
       const resp = await fetch('data/Plants.xlsx');
       const arrBuf = await resp.arrayBuffer();
       const wb = XLSX.read(arrBuf, { type: 'array' });
@@ -421,39 +433,35 @@
 
       for (const row of rows) {
         const p = normalizePlantsRow(row);
-        // Only keep rows that look like real plants
         if (p && p.name && p.name !== "—") PLANTS.push(p);
       }
 
       renderPlantsTable();
-      renderCalculatorSelect();
       computeTotalNominalMw();
       renderOwnerCharts();
 
-      $("plantSearch").addEventListener("input", renderPlantsTable);
-
-      $("calculatorPlantSelect").addEventListener("change", () => {
-        const plant = getSelectedPlant();
-        if (plant && plant.eta !== null) $("mcEfficiency").value = plant.eta;
-        if (plant && plant.lhv !== null) $("mcLhv").value = plant.lhv;
-        computeMarginalCost();
+      // Search filter now also syncs the calculator
+      $("plantSearch").addEventListener("input", () => {
+        renderPlantsTable();
+        syncFromFirstFilteredPlant();
       });
 
-      // live compute on input changes
-      [
-        "mcEfficiency","mcLhv","mcFuelPriceUsdPerTon","mcUsdZar","mcOutputCurrency",
-        "mcVarOpexPerMwh","mcRefMwh"
-      ].forEach(id => {
+      // Live compute listeners
+      ["mcEfficiency","mcLhv","mcFuelPriceUsdPerTon","mcUsdZar","mcOutputCurrency",
+       "mcVarOpexPerMwh","mcRefMwh"].forEach(id => {
         $(id).addEventListener("input", computeMarginalCost);
         $(id).addEventListener("change", computeMarginalCost);
       });
 
-      // Initial sync
-      syncEfficiencyFromSelectedPlant();
+      // Initial sync on load (uses first plant)
+      setTimeout(() => {
+        syncFromFirstFilteredPlant();
+      }, 300);
     };
 
+    window.sortTable = sortTable;
     window.computeMarginalCost = computeMarginalCost;
-    window.syncEfficiencyFromSelectedPlant = syncEfficiencyFromSelectedPlant;
+    window.syncFromFirstFilteredPlant = syncFromFirstFilteredPlant;
   </script>
 </body>
 </html>

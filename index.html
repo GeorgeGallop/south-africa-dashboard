@@ -32,13 +32,33 @@
             <div class="collapse mt-2" id="powerSub">
               <div class="list-group ms-3">
                 <a href="power.html" class="list-group-item list-group-item-action small">→ Overview</a>
-                <a href="eskom-history.html" class="list-group-item list-group-item-action small">→ Eskom History</a>
-                <a href="marketanalysis.html" class="list-group-item list-group-item-action small">→ Market Analysis</a>
-                <a href="IRP2025.html" class="list-group-item list-group-item-action small">→ IRP2025</a>
-                <a href="TDP2025.html" class="list-group-item list-group-item-action small">→ TDP2025</a>
 
-                <a href="sawem.html" class="list-group-item list-group-item-action small">→ SAWEM (Eskom Coal Fleet)</a>
+                <!-- Eskom Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small sidebar-eskom-toggle d-flex justify-content-between align-items-center text-decoration-none"
+                   data-bs-toggle="collapse" data-bs-target="#eskomSub">
+                  
+                  <!-- Eskom Logo -->
+                  <span class="d-flex align-items-center">
+                    <img src="images/power/Eskom logo.png" 
+                         alt="Eskom Logo" 
+                         style="height: 22px; margin-right: 8px; vertical-align: middle;">
+                    <span>Eskom</span>
+                  </span>
+                  
+                  <span class="badge bg-secondary">▼</span>
+                </a>
 
+                <div class="collapse mt-2" id="eskomSub">
+                  <div class="list-group ms-3">
+                    <a href="eskom-history.html" class="list-group-item list-group-item-action small">→ History</a>
+                    <a href="eskom-tariffs.html" class="list-group-item list-group-item-action small">→ Tariffs</a>
+                    <a href="IRP2025.html" class="list-group-item list-group-item-action small">→ IRP2025</a>
+                    <a href="TDP2025.html" class="list-group-item list-group-item-action small">→ TDP2025</a>
+                  </div>
+                </div>
+
+                <a href="sawem.html" class="list-group-item list-group-item-action small">→ SAWEM</a>
                 <a href="power-pools.html" class="list-group-item list-group-item-action small">→ Power Pools</a>
               </div>
             </div>
@@ -176,7 +196,7 @@
             </div>
           </div>
 
-          <!-- ==================== NEW THESIS SECTION ==================== -->
+          <!-- Thesis Section -->
           <div class="list-group-item list-group-item-action">
             <a href="#" class="d-flex justify-content-between align-items-center text-decoration-none"
                data-bs-toggle="collapse" data-bs-target="#thesisSub">
@@ -186,10 +206,7 @@
             
             <div class="collapse mt-2" id="thesisSub">
               <div class="list-group ms-3">
-                <!-- Add your actual thesis sub-pages here -->
                 <a href="thesis.html" class="list-group-item list-group-item-action small">→ Overview</a>
-                <!-- <a href="thesis-part1.html" class="list-group-item list-group-item-action small">→ Part 1</a> -->
-                <!-- Add more as needed -->
               </div>
             </div>
           </div>

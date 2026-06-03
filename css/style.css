@@ -54,3 +54,19 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
 }
+
+/* Eskom parent toggle: keep it white so the arrow alone indicates it can expand */
+.sidebar-eskom-toggle {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  transform: none !important;
+}
+
+.sidebar-eskom-toggle:hover,
+.sidebar-eskom-toggle:active,
+.sidebar-eskom-toggle:focus,
+.sidebar-eskom-toggle[aria-expanded="true"] {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  transform: none !important;
+}
