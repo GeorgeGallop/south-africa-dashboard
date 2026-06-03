@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prerequisites • Hidden Markov Models</title>
+  <title>Prerequisites • SA Power Market Economic Evolution via OPF</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
@@ -13,6 +13,7 @@
       border-radius: 6px;
       font-family: monospace;
     }
+    .sa-green { color: #007A4D; }
   </style>
 </head>
 <body>
@@ -24,75 +25,88 @@
   </nav>
 
   <div class="container mt-5">
-    <h1 class="display-4 fw-bold text-sa-green">Prerequisites for HMMs</h1>
-    <h5 class="text-muted">What you need to know before diving into Hidden Markov Models</h5>
+    <h1 class="display-4 fw-bold text-sa-green">Prerequisites for Economic Evolutionary Analysis</h1>
+    <h5 class="text-muted">Understanding OPF Buildouts and Scenarios in the South African Wholesale Electricity Market (SAWEM)</h5>
 
     <div class="row mt-4">
       <div class="col-lg-8">
 
-        <h5>Why Prerequisites Matter</h5>
-        <p>Hidden Markov Models combine probability, sequences, and dynamic systems. A solid grasp of the topics below will make HMMs much easier to understand.</p>
+        <h5>Why These Prerequisites Matter</h5>
+        <p>Analyzing the economic evolutionary trajectory of South Africa’s power system requires combining power systems engineering, economic dispatch, and scenario-based modeling. A solid grasp of the topics below will help you interpret OPF (Optimal Power Flow) results across different SAWEM futures.</p>
 
-        <h5>1. Basic Probability Concepts</h5>
-        <p>Probability is the foundation of HMMs. You should be comfortable with:</p>
+        <h5>1. Fundamentals of Power Systems Economics</h5>
+        <p>The electricity market is driven by the interaction of supply costs, demand, and infrastructure constraints.</p>
         
         <ul>
-          <li><strong>Conditional Probability</strong>: The probability of event A happening given that B has already occurred.<br>
-              <span class="math">P(A|B) = P(A and B) / P(B)</span></li>
-          <li><strong>Joint Probability</strong>: Probability that two or more events happen together.</li>
-          <li><strong>Marginal Probability</strong>: The probability of an event regardless of other variables (obtained by summing or integrating over other variables).</li>
-          <li><strong>Chain Rule</strong>: Decomposing joint probabilities: <span class="math">P(A,B,C) = P(A) × P(B|A) × P(C|A,B)</span></li>
+          <li><strong>Economic Dispatch</strong>: Minimizing total generation cost while meeting demand and respecting transmission limits.</li>
+          <li><strong>Merit Order Curve</strong>: Ranking generators by marginal cost (from lowest to highest).</li>
+          <li><strong>Locational Marginal Pricing (LMP)</strong>: Price at each node reflecting energy, congestion, and losses.</li>
+          <li><strong>Levelized Cost of Electricity (LCOE)</strong>: Long-term cost metric for comparing technologies.</li>
         </ul>
 
-        <h5>2. Bayes' Theorem</h5>
-        <p>One of the most important tools in probabilistic modeling. It lets you update beliefs with new evidence.</p>
-        <p class="math">P(A|B) = [P(B|A) × P(A)] / P(B)</p>
-        <p>In HMMs, we constantly use Bayes' theorem to infer hidden states from observations.</p>
-
-        <h5>3. Markov Property (The Markov Assumption)</h5>
-        <p>This is the core idea behind Markov Chains and HMMs.</p>
-        <p><strong>Definition:</strong> The future state depends only on the current state, not on the sequence of past states.</p>
-        <p class="math">P(S_{t+1} | S_t, S_{t-1}, ..., S_1) = P(S_{t+1} | S_t)</p>
-        <p>This "memoryless" property greatly simplifies computation in sequential models.</p>
-
-        <h5>4. Markov Chains</h5>
-        <p>A Markov Chain is a sequence of states where each state transition follows the Markov property.</p>
-        <p>Key elements:</p>
+        <h5>2. Optimal Power Flow (OPF)</h5>
+        <p>OPF is the core optimization tool used to model efficient power system operation and buildout.</p>
+        <p class="math">Minimize: Σ C<sub>i</sub>(P<sub>i</sub>)<br>
+        Subject to: Power balance, line flow limits, generator limits, voltage constraints</p>
+        <p>Variants include:</p>
         <ul>
-          <li>States (e.g., Sunny, Rainy)</li>
-          <li>Transition probabilities (probability of moving from one state to another)</li>
-          <li>Initial state probabilities</li>
-        </ul>
-        <p>Hidden Markov Models are an extension of Markov Chains where the states are not directly observable.</p>
-
-        <h5>5. Sequences and Time Series</h5>
-        <p>HMMs are designed for data that has order and evolves over time or steps.</p>
-        <p>Examples include:</p>
-        <ul>
-          <li>Speech (sequence of sounds)</li>
-          <li>Text (sequence of words)</li>
-          <li>Stock prices or weather over days</li>
-          <li>DNA sequences in bioinformatics</li>
+          <li>DC-OPF (linearized, faster)</li>
+          <li>AC-OPF (non-linear, more accurate)</li>
+          <li>Security-Constrained OPF (N-1 reliability)</li>
+          <li>Multi-period / Stochastic OPF (for planning across time and uncertainty)</li>
         </ul>
 
-        <h5>6. Basic Linear Algebra (Helpful but not mandatory at first)</h5>
-        <p>Understanding matrices helps when working with:</p>
+        <h5>3. Scenario Planning &amp; Evolutionary Pathways</h5>
+        <p>Future power system trajectories are explored through carefully designed scenarios.</p>
+        <p>Key dimensions for SAWEM scenarios:</p>
         <ul>
-          <li>Transition matrices</li>
-          <li>Emission matrices</li>
-          <li>Matrix multiplication for efficient calculations</li>
+          <li><strong>Renewables Buildout</strong>: Pace of wind, solar PV, and battery storage addition</li>
+          <li><strong>Coal &amp; Gas Retirement</strong>: Timing of Eskom fleet decommissioning</li>
+          <li><strong>Demand Growth</strong>: Electrification of transport, industry, and hydrogen production</li>
+          <li><strong>Transmission Expansion</strong>: New corridors to unlock renewable-rich regions (Northern Cape, Eastern Cape)</li>
+          <li><strong>Carbon Pricing / Policy</strong>: Impact of carbon tax and Just Energy Transition Investment Plan (JET IP)</li>
+        </ul>
+
+        <h5>4. Market Design Concepts in SAWEM</h5>
+        <p>South Africa is transitioning toward a competitive wholesale market.</p>
+        <ul>
+          <li>Day-Ahead and Real-Time markets</li>
+          <li>Ancillary services procurement</li>
+          <li>Capacity mechanisms and strategic reserves</li>
+          <li>Bilateral contracting vs. market clearing</li>
+        </ul>
+
+        <h5>5. Economic Metrics for Trajectory Evaluation</h5>
+        <p>When comparing OPF buildout scenarios, track these indicators:</p>
+        <ul>
+          <li>Total System Cost (CAPEX + OPEX)</li>
+          <li>Cost of Unserved Energy (Value of Lost Load)</li>
+          <li>CO₂ emissions trajectory</li>
+          <li>System adequacy (Loss of Load Expectation - LOLE)</li>
+          <li>Average wholesale price and price volatility</li>
+          <li>Regional economic impacts (job creation in RE zones vs. coal regions)</li>
+        </ul>
+
+        <h5>6. Basic Optimization &amp; Modeling Literacy</h5>
+        <p>Helpful for interpreting results:</p>
+        <ul>
+          <li>Linear Programming (LP) and Mixed-Integer Linear Programming (MILP)</li>
+          <li>Understanding shadow prices / dual variables</li>
+          <li>Handling uncertainty (robust optimization, stochastic programming)</li>
         </ul>
 
         <hr>
 
         <h5 class="mt-5">Recommended Quick Review Resources</h5>
         <ul>
-          <li>Khan Academy: Probability and Statistics (especially conditional probability and Bayes)</li>
-          <li>StatQuest YouTube: Markov Chains video</li>
-          <li>3Blue1Brown: Essence of Probability series</li>
+          <li>IRENA &amp; CSIR reports on South African power system modeling</li>
+          <li>Eskom Transmission Development Plan (TDP)</li>
+          <li>National Energy Regulator of South Africa (NERSA) documents</li>
+          <li>"Power System Economics" by Steven Stoft</li>
+          <li>PyPSA or MATPOWER tutorials for hands-on OPF modeling</li>
         </ul>
 
-        <p class="mt-4 text-muted">Once you're comfortable with these concepts, you're ready to learn the core components of Hidden Markov Models (states, transitions, emissions, etc.).</p>
+        <p class="mt-4 text-muted">Once you're comfortable with these concepts, you're ready to analyze detailed OPF buildout results and evaluate long-term economic evolutionary trajectories for the South African power market under different SAWEM scenarios.</p>
 
       </div>
     </div>
