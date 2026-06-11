@@ -209,6 +209,79 @@
 
   </div>
 
+    <div class="container-fluid mt-4 px-0" id="commodity-prices">
+    <h2 class="display-6 fw-bold text-sa-green mt-4 mb-2">⛏️ Mining Commodity Prices</h2>
+    <p class="text-muted mb-3 small">Annual average prices (nominal USD) for South Africa's major mining commodities.</p>
+
+    <div class="row g-2">
+      <!-- Gold -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🏅 Gold ($/oz)</h6></div>
+          <div class="card-body p-1"><canvas id="goldChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Platinum -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">💎 Platinum ($/oz)</h6></div>
+          <div class="card-body p-1"><canvas id="platinumChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Rhodium -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🔴 Rhodium ($/oz)</h6></div>
+          <div class="card-body p-1"><canvas id="rhodiumChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Coal -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">⚫ Coal SA ($/tonne)</h6></div>
+          <div class="card-body p-1"><canvas id="coalChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Iron Ore -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🪨 Iron Ore ($/dmtu)</h6></div>
+          <div class="card-body p-1"><canvas id="ironOreChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Manganese -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🔋 Manganese ($/dmtu)</h6></div>
+          <div class="card-body p-1"><canvas id="manganeseChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Ferrochrome -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🟢 Ferrochrome ($/lb)</h6></div>
+          <div class="card-body p-1"><canvas id="ferrochromeChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Vanadium -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">⚡ Vanadium ($/lb)</h6></div>
+          <div class="card-body p-1"><canvas id="vanadiumChart" height="80"></canvas></div>
+        </div>
+      </div>
+      <!-- Diamonds -->
+      <div class="col-lg-4 col-xl-3 col-xxl-2">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">💎 Diamond Index</h6></div>
+          <div class="card-body p-1"><canvas id="diamondChart" height="80"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
   <style>
     .chart-range-controls input[type="range"] { min-width: 120px; }
   </style>
@@ -1102,7 +1175,69 @@
       updatePopWithoutWindowFromStart(maxStart);
     }
 
-    window.onload = loadCSVData;
+    // ================================================================
+    // MINING COMMODITY PRICE CHARTS
+    // ================================================================
+    const COMMODITY_FILES = [
+      { id: 'goldChart',       file: 'data/gold_prices.csv',       label: 'Gold ($/oz)',               color: '#FFCD00',  valueCol: 'Gold_USD_per_Oz' },
+      { id: 'platinumChart',   file: 'data/platinum_prices.csv',   label: 'Platinum ($/oz)',           color: '#6c757d',  valueCol: 'Platinum_USD_per_Oz' },
+      { id: 'rhodiumChart',    file: 'data/rhodium_prices.csv',    label: 'Rhodium ($/oz)',            color: '#dc3545',  valueCol: 'Rhodium_USD_per_Oz' },
+      { id: 'coalChart',       file: 'data/coal_prices.csv',       label: 'Coal SA ($/tonne)',         color: '#343a40',  valueCol: 'Coal_SA_USD_per_Tonne' },
+      { id: 'ironOreChart',    file: 'data/iron_ore_prices.csv',   label: 'Iron Ore ($/dmtu)',         color: '#fd7e14',  valueCol: 'IronOre_USD_per_DMTU' },
+      { id: 'manganeseChart',  file: 'data/manganese_prices.csv',  label: 'Mn ($/dmtu)',               color: '#20c997',  valueCol: 'Manganese_USD_per_DMTU' },
+      { id: 'ferrochromeChart',file: 'data/ferrochrome_prices.csv',label: 'FeCr ($/lb)',               color: '#28a745',  valueCol: 'Ferrochrome_USD_per_lb' },
+      { id: 'vanadiumChart',   file: 'data/vanadium_prices.csv',   label: 'V ($/lb)',                  color: '#6610f2',  valueCol: 'Vanadium_USD_per_lb' },
+      { id: 'diamondChart',    file: 'data/diamond_prices.csv',    label: 'Diamond Index (2000=100)',  color: '#17a2b8',  valueCol: 'Diamond_Price_Index' },
+    ];
+
+    async function loadCommodityPrices() {
+      for (const c of COMMODITY_FILES) {
+        try {
+          const resp = await fetch(c.file);
+          const text = await resp.text();
+          const parsed = Papa.parse(text, { header: true, dynamicTyping: true, skipEmptyLines: true });
+          const years = parsed.data.map(r => String(r.Year));
+          const values = parsed.data.map(r => r[c.valueCol]);
+          const canvas = document.getElementById(c.id);
+          if (!canvas) continue;
+          new Chart(canvas, {
+            type: 'line',
+            data: {
+              labels: years,
+              datasets: [{
+                label: c.label,
+                data: values,
+                borderColor: c.color,
+                backgroundColor: c.color + '22',
+                pointBackgroundColor: c.color,
+                pointBorderColor: c.color,
+                borderWidth: 2,
+                pointRadius: 2,
+                pointHoverRadius: 6,
+                tension: 0.2,
+                spanGaps: true
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: { legend: { display: false }, tooltip: { enabled: true } },
+              scales: {
+                x: { ticks: { maxTicksLimit: 8, font: { size: 9 } } },
+                y: { ticks: { font: { size: 9 } } }
+              }
+            }
+          });
+        } catch (e) {
+          console.error(`Failed to load ${c.file}:`, e);
+        }
+      }
+    }
+
+    window.onload = function() {
+      loadCSVData();
+      loadCommodityPrices();
+    };
   </script>
 </body>
 </html>
