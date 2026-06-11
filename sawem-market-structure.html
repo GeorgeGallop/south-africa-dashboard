@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAWEM Market Structure • Eskom Market Viewer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    .doc-card {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      transition: box-shadow 0.2s ease-in-out;
+    }
+    .doc-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    }
+    .doc-card .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .doc-icon {
+      font-size: 2.5rem;
+    }
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+    .section-divider-thin {
+      height: 2px;
+      background: #e9ecef;
+      border-radius: 2px;
+      margin: 2rem 0;
+    }
+    .era-badge {
+      background: #007A4D;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      margin-left: 0.5rem;
+    }
+    .story-callout {
+      border-left: 5px solid #007A4D;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .story-callout p:last-child {
+      margin-bottom: 0;
+    }
+    .step-card {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: white;
+      position: relative;
+    }
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #007A4D;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: #FFCD00;
+      text-align: center;
+      line-height: 1;
+    }
+    .img-frame {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f8f9fa;
+    }
+    .img-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- Header -->
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-sa-green mb-2">SAWEM • Market Structure</h1>
+      <p class="text-muted mb-0">
+        The South African Wholesale Electricity Market (SAWEM) is the competitive market platform for
+        the buying and selling of electricity. This page tells the story of how SA moved from a vertically
+        integrated Eskom monopoly to a competitive multi-market model — and the documents that define it.
+      </p>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- THE STORY: How SAWEM was born                                  -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <h2 class="h4 fw-bold text-sa-green mb-3">🧭 The Story: From Eskom Monopoly to Competitive Market</h2>
+
+      <div class="story-callout mb-4">
+        <p class="mb-2">
+          <strong>For decades, Eskom was a vertically integrated monopoly</strong> — it generated,
+          transmitted, and distributed virtually all of South Africa's electricity. The Electricity
+          Regulation Act of 2006 began the process of reform, but the real pivot came with the
+          <strong>Electricity Regulation Amendment Act 38 of 2024</strong>, which established the
+          legal basis for a competitive wholesale electricity market.
+        </p>
+        <p class="mb-0">
+          The journey from monopoly to market happened in phases. Here's how it works:
+        </p>
+      </div>
+
+      <!-- Step-by-step flow -->
+      <div class="row g-4">
+        <!-- Step 1 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">1</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">The Monopoly Era</h3>
+              <p class="text-muted small mb-0">
+                Eskom Generation owned and operated the vast majority of South Africa's power plants.
+                Eskom Transmission moved the power, and Eskom Distribution delivered it. There was
+                one price (regulated by NERSA), no competition, and no market. Generation investment
+                decisions were made centrally, not by market signals.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">2</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">Deregulation & the REIPPP Programme</h3>
+              <p class="text-muted small mb-0">
+                The government launched the Renewable Energy Independent Power Producer Procurement
+                Programme (REIPPP) — competitive auctions for wind and solar IPPs. Winning bidders
+                signed long-term Power Purchase Agreements (PPAs) with a state entity, locking in
+                fixed prices for 20+ years. The problem: these PPAs existed <em>outside</em> any market
+                mechanism. There was no way to dispatch them economically or integrate them with
+                Eskom's coal fleet. At the same time, the Schedule II amendment to the ERA allowed
+                private generation (bilateral contracts) without a licence, further fragmenting the
+                landscape.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">3</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">Unbundling Eskom & Creating the NTCSA</h3>
+              <p class="text-muted small mb-0">
+                Eskom was split into three separate entities: <strong>Eskom Generation</strong>,
+                <strong>Eskom Transmission</strong> (which became the NTCSA — National Transmission
+                Company of South Africa), and <strong>Eskom Distribution</strong>. The NTCSA took on
+                the roles of Transmission System Operator (TSO) and <strong>Market Operator</strong>,
+                becoming the independent platform for the wholesale market. Its board was appointed,
+                and NERSA granted it licences for transmission, import, export, and trading.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">4</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">The Central Purchasing Agency (CPA)</h3>
+              <p class="text-muted small mb-0">
+                The CPA was created as a special-purpose vehicle <em>inside</em> the NTCSA to bridge the
+                old world and the new. Its job is to:
+              </p>
+              <ul class="text-muted small mb-0 mt-1">
+                <li><strong>Vesting contracts</strong> — sign PPAs with each Eskom power station, paying
+                    a fixed availability/capacity payment (covering capital, O&M, and fuel costs) plus
+                    an energy hedge that gradually transitions from a fixed price to the market price over
+                    5&nbsp;years. This controls Eskom Generation's market power while keeping plants viable.</li>
+                <li><strong>Legacy contracts</strong> — become the financial counterparty to all existing
+                    IPP PPAs (from REIPPP rounds), honouring their fixed-price terms.</li>
+                <li><strong>Trading into the DAM</strong> — take all the energy from these PPAs and
+                    trade it into the Day-Ahead Market (DAM), effectively acting as a giant Balance
+                    Responsible Party (BRP) for the contracted fleet.</li>
+                <li><strong>Sales agreements</strong> — conclude agreements with distributors (municipalities,
+                    Eskom Distribution) to supply their customers.</li>
+                <li><strong>Ancillary services</strong> — procure the reserves, frequency control, black start,
+                    and other services the System Operator needs.</li>
+              </ul>
+              <p class="text-muted small mt-1 mb-0">
+                The CPA's financial exposure is driven by the DAM price — higher market prices reduce
+                its shortfall, lower prices increase it. The difference is recovered through a
+                <strong>legacy charge</strong> (approved by NERSA) on all transmission-connected consumers.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">5</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">The Day-Ahead Market (DAM) & Co-optimisation</h3>
+              <p class="text-muted small mb-0">
+                The DAM is the heart of SAWEM. Every day, generators submit <strong>complex orders</strong>
+                (unit-based bids with start-up times, ramp rates, minimum generation, and incremental
+                cost curves) for each hour of the following day. Consumers/retailers submit demand
+                forecasts. The Market Operator runs a <strong>co-optimisation algorithm</strong> that solves
+                for both the energy balance (supply = demand) and the System Operator's reserve requirements
+                <em>simultaneously</em> — a key feature that distinguishes SAWEM from European markets.
+              </p>
+              <p class="text-muted small mt-1 mb-0">
+                Generators are dispatched in ascending offer-price order (merit order). The most
+                expensive unit needed to meet demand sets the <strong>System Marginal Price (SMP)</strong>,
+                paid to all dispatched generators. Network constraints are applied after the unconstrained
+                schedule, with <strong>lost opportunity payments</strong> compensating generators whose
+                output is reduced by congestion. Reserve providers are paid the SMP for reserves, plus
+                their cost of lost opportunity from the energy market.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="col-12">
+          <div class="step-card d-flex gap-3 align-items-start">
+            <div class="step-number">6</div>
+            <div>
+              <h3 class="h6 fw-bold mb-1">The Multi-Market Model in Operation</h3>
+              <p class="text-muted small mb-0">
+                The full SAWEM market model has several layers running in parallel:
+              </p>
+              <ul class="text-muted small mb-0 mt-1">
+                <li><strong>Day-Ahead Market (DAM)</strong> — where most energy is traded, run 24h ahead</li>
+                <li><strong>Intraday Market</strong> — auctions every 4 hours for corrections to the DAM schedule</li>
+                <li><strong>Reserve Market (co-optimised)</strong> — regulating up/down, instantaneous, and ten-minute reserves</li>
+                <li><strong>Balancing Mechanism</strong> — real-time dispatch to handle deviations from schedule;
+                    BRPs pay/sell imbalances at the balancing price, which includes a penalty factor to incentivise accuracy</li>
+                <li><strong>Capacity Remuneration Mechanism (CRM)</strong> — long-term capacity payments to ensure
+                    generation adequacy (via the CPA's vesting contracts and availability payments)</li>
+                <li><strong>Bilateral contracts (physical & financial)</strong> — participants can trade
+                    directly outside the organised markets, with declarations to the Market Operator before
+                    gate closure</li>
+              </ul>
+              <p class="text-muted small mt-1 mb-0">
+                The <strong>Market Code</strong> (Rev 2.3, Feb 2026) governs every detail: bidding formats,
+                scheduling algorithms, settlement calculations, credit cover requirements, dispute resolution,
+                and the Market Governance Committee (MGC) that maintains the code. <strong>Market Conduct Rules</strong>
+                set the behavioural standards — prohibiting manipulation, abuse of dominance, and insider
+                trading — enforced by NERSA.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- The diagram row -->
+      <div class="row g-3 mt-3">
+        <div class="col-12 col-lg-4">
+          <div class="img-frame">
+            <img src="images/power/Market%20Participant%20Structure%20in%20SAWEM.png"
+                 alt="Market Participant Structure in SAWEM"
+                 class="img-fluid">
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="img-frame">
+            <img src="images/power/Regulatory%20Environment%20of%20SAWEM.png"
+                 alt="Regulatory Environment of SAWEM"
+                 class="img-fluid">
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="img-frame">
+            <img src="images/power/SAWEM%20Market%20Structure.png"
+                 alt="SAWEM Market Structure"
+                 class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- THE DOCUMENTS                                                 -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <h2 class="h4 fw-bold text-sa-green mb-1">📄 The Documents That Define the Market</h2>
+      <p class="text-muted mb-4">
+        Each document below is a building block of the SAWEM framework. Click to open the PDF or
+        visit the official source.
+      </p>
+
+      <div class="row g-4">
+        <!-- ERA Act 2024 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">⚖️</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">Electricity Regulation Amendment Act 38 of 2024</h3>
+                  <span class="era-badge">Act</span>
+                  <span class="badge bg-secondary ms-1">Assented 20 Aug 2024</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                The enabling legislation for the competitive wholesale market. Establishes the NTCSA
+                as the independent Transmission System & Market Operator (TSMO), provides for the
+                Wholesale Market Code, licensing reform, and the transition to a liberalised
+                electricity sector. Amends the Electricity Regulation Act of 2006.
+              </p>
+              <div class="mt-auto">
+                <a href="https://www.gov.za/documents/acts/electricity-regulation-amendment-act-38-2024-english-isizulu-20-aug-2024"
+                   target="_blank" rel="noreferrer"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  🔗 View on gov.za
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ERAA 2024 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📘</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">ERAA 2024 — Full Act Text</h3>
+                  <span class="era-badge">PDF</span>
+                  <span class="badge bg-secondary ms-1">Full legal text</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                The complete legal text of the Electricity Regulation Amendment Act. Covers the
+                establishment of the TSO SA (NTCSA), the Wholesale Market Code, licensing of the
+                market operator, and transitional provisions for Eskom's transmission unbundling.
+              </p>
+              <div class="mt-auto">
+                <a href="data/ERAA 2024.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAWEM Specification -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📘</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">SAWEM Market Specification</h3>
+                  <span class="era-badge">PDF</span>
+                  <span class="badge bg-secondary ms-1">April 2024</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                The high-level design document for the South African multi-market model. Explains
+                the ESI structure, market concepts (DAM, intraday, reserves, balancing), the CPA
+                and its vesting/legacy contracts, CfDs, and Capacity Remuneration Mechanisms. Written
+                by the NTCSA Market Operator with support from GIZ, Bredesen Consulting, and Nord Pool Consulting.
+              </p>
+              <div class="mt-auto">
+                <a href="data/SAWEM Specification.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAWEM Market Code -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📋</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">SAWEM Market Code</h3>
+                  <span class="era-badge">Code</span>
+                  <span class="badge bg-secondary ms-1">Rev 2.3 — Feb 2026</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                The core operational rulebook for SAWEM. 126 pages covering: market participant admission
+                & BRP registration, the Day-Ahead Market (bidding, complex orders, co-optimisation
+                algorithm, constrained schedules, lost opportunity payments), the Intra-Day Market,
+                Real-Time Dispatch, the Balancing Mechanism (balancing stacks, imbalance prices,
+                penalty factors), Settlement (billing, credit cover, trust accounts, dispute resolution),
+                and Market Governance (MGC, Modifications Subcommittee, Market Surveillance Unit).
+              </p>
+              <div class="mt-auto">
+                <a href="data/SAWEM Market Code.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAWEM BRP -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📋</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">SAWEM BRP</h3>
+                  <span class="era-badge">Code</span>
+                  <span class="badge bg-secondary ms-1">Balance Responsible Party</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                Defines the role, obligations, and qualifying criteria for Balance Responsible Parties.
+                BRPs are the entities financially accountable for any imbalance between their scheduled
+                and actual energy volumes. Covers: admission as BRP, balancing agreements, imbalance
+                settlement, credit cover requirements, and the Balancing Group concept (aggregating
+                multiple Trading Units for net settlement).
+              </p>
+              <div class="mt-auto">
+                <a href="data/SAWEM BRP.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAWEM CPA -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📋</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">SAWEM CPA</h3>
+                  <span class="era-badge">Code</span>
+                  <span class="badge bg-secondary ms-1">Central Purchasing Agency</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                Defines the Control & Pricing Areas of the SAWEM market and the role of the CPA
+                as the market's intermediary entity. The CPA manages vesting contracts with Eskom
+                Generation, is counterparty to legacy IPP PPAs, trades all contracted energy into
+                the DAM, and procures ancillary services on behalf of the System Operator.
+              </p>
+              <div class="mt-auto">
+                <a href="data/SAWEM CPA.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SAWEM Market Conduct Rules -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="doc-icon">📋</span>
+                <div>
+                  <h3 class="h6 fw-bold mb-1">SAWEM Market Conduct Rules</h3>
+                  <span class="era-badge">Rules</span>
+                  <span class="badge bg-secondary ms-1">Conduct & Compliance</span>
+                </div>
+              </div>
+              <p class="text-muted small flex-grow-1">
+                Establishes the code of conduct for all SAWEM market participants. Prohibits market
+                manipulation, insider trading, and abuse of dominance. Defines the Market Surveillance
+                Unit's monitoring and enforcement powers, reporting obligations, penalties for
+                non-compliance, and NERSA's role as the ultimate regulatory authority.
+              </p>
+              <div class="mt-auto">
+                <a href="data/SAWEM Market Conduct Rules.pdf"
+                   target="_blank"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  📄 Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- QUICK REFERENCE                                               -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-bold text-sa-green mb-3">🔍 Quick Reference — How It All Fits Together</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Document</th>
+                  <th>Purpose</th>
+                  <th>Key Content</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ERA Amendment Act 38/2024</strong></td>
+                  <td>Enabling legislation</td>
+                  <td>Establishes NTCSA/TSMO, market code, licensing reform, unbundling provisions</td>
+                </tr>
+                <tr>
+                  <td><strong>ERAA 2024 (PDF)</strong></td>
+                  <td>Full Act text</td>
+                  <td>Complete legal wording of the Amendment Act</td>
+                </tr>
+                <tr>
+                  <td><strong>SAWEM Specification</strong></td>
+                  <td>Market design blueprint</td>
+                  <td>Multi-market model, CPA functions, CfDs, CRM, DAM co-optimisation</td>
+                </tr>
+                <tr>
+                  <td><strong>SAWEM Market Code</strong></td>
+                  <td>Operational rulebook</td>
+                  <td>Bidding, scheduling, dispatch, settlement, credit cover, governance (126 pages)</td>
+                </tr>
+                <tr>
+                  <td><strong>SAWEM BRP</strong></td>
+                  <td>Balance responsibility rules</td>
+                  <td>BRP admission, balancing agreements, imbalance settlement, Balancing Groups</td>
+                </tr>
+                <tr>
+                  <td><strong>SAWEM CPA</strong></td>
+                  <td>Central Purchasing Agency rules</td>
+                  <td>Vesting contracts, legacy PPAs, DAM trading, ancillary service procurement</td>
+                </tr>
+                <tr>
+                  <td><strong>Market Conduct Rules</strong></td>
+                  <td>Participant conduct</td>
+                  <td>Market manipulation prohibition, surveillance, penalties, NERSA enforcement</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // No interactive logic needed — this is a document reference and education page.
+  </script>
+</body>
+</html>
