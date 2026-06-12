@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Framework • SAWEM ABM Feature Engineering</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .agent-card { border-left: 5px solid #007A4D; }
+    .agent-card.power { border-left-color: #007A4D; }
+    .agent-card.economy { border-left-color: #002395; }
+    .agent-card.overlap { border-left-color: #FFCD00; }
+    .timescale-badge { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 12px; }
+    .ts-hourly { background: #e3f2fd; color: #1565c0; }
+    .ts-daily { background: #fff3e0; color: #e65100; }
+    .ts-weekly { background: #f3e5f5; color: #7b1fa2; }
+    .ts-quarterly { background: #e8f5e9; color: #2e7d32; }
+    .ts-annual { background: #fbe9e7; color: #bf360c; }
+    table.vars { font-size: 0.82rem; }
+    table.vars th { background: #f8f9fa; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <h1 class="display-4 fw-bold text-sa-green">&#129302; Agent Framework — Full Feature Engineering</h1>
+    <p class="lead text-muted mb-2">
+      Every agent in the SAWEM ABM with its fully broken-out state space, action space, policy function, outcome variables, and metadata.
+    </p>
+    <p class="text-muted mb-4">
+      The model is a <strong>two-timescale architecture</strong>: the Power Market ABM runs at <strong>hourly</strong> resolution (OPF
+      clearing every hour, agents learning on daily/ weekly reward signals), while the <strong>Macro Economy ABM</strong> runs at
+      <strong>6-month to annual</strong> resolution (capital investment, household adoption, industrial growth, Eskom corporate
+      restructuring). The macro states define demand scenarios that shape the hourly market outcomes, which in turn aggregate
+      into economic indicators that feed back into macro decisions.
+    </p>
+
+    <div class="alert alert-info small">
+      <strong>&#9200; Timescale Key:</strong>
+      <span class="badge ts-hourly ms-2">Hourly</span>
+      <span class="badge ts-daily">Daily</span>
+      <span class="badge ts-weekly">Weekly</span>
+      <span class="badge ts-quarterly">6-month / Quarterly</span>
+      <span class="badge ts-annual">Annual</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- POWER MARKET AGENTS                                           -->
+    <!-- ============================================================ -->
+    <h2 class="h3 fw-bold mt-5">&#9889;&#65039; Power Market Agents <span class="badge ts-hourly align-middle ms-2">Hourly OPF cycle</span></h2>
+    <p class="text-muted">Bid into the Day-Ahead Market, settled at SMP, learn from hourly/ daily profit signals.</p>
+
+    <!-- 1. Eskom Coal Stations -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#128293; Eskom Coal — Each Station Agent</span>
+        <span><span class="badge ts-daily">Daily bid</span> <span class="badge ts-quarterly">Quarterly maintenance</span> <span class="badge ts-annual">Annual retirement decision</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th style="width:15%;">Dimension</th><th style="width:40%;">Variables</th><th style="width:45%;">Description / Feature Engineering</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State S<sub>t</sub></strong></td><td>
+              cap_g, heat_rate_g, v_g (age), FOR_g, fuel_cost_g, coal_stock_g, SO2_allow_g, water_g, SMP_forecast_24h, reserve_req_t, vest_hedge_pct_g, profit_history_g, forced_outage_duration_g
+            </td><td>
+              cap_g = # online MW today; heat_rate_g = GJ/MWh (increases with age by ~0.5% per year past design life);
+              FOR_g = forced outage rate (fleet avg ~15%, station-specific by SHF & UCLF data);
+              vest_hedge_pct_g = the portion of output still under CPA vesting contract (100% yr1, 80% yr2, ..., 0% yr5);
+              coal_stock_g = days of coal at station (critical: low stock = forced derating, especially in rain season);
+              profit_history_g = trailing 12-month profit (used for retirement decision)
+            </td></tr>
+            <tr><td><strong>Action A<sub>t</sub></strong></td><td>
+              bid_curve_g (P<sub>1..K</sub>, C<sub>1..K</sub>), avail_decl_g (MW), maintenance_week_g, retire_flag_g
+            </td><td>
+              bid_curve: K steps (typically 3–5), where step 1 bid at SRMC (fuel &#215; heat_rate + variable O&M), step K at VOLL for capacity withheld.
+              avail_decl: intentional derating (MW made available to market) vs. true available capacity — strategic withholding if market power = profitable and legal.
+              maintenance: scheduled offline weeks (must be declared to SO, affects available MW).
+              retire_flag: once PV(future profit | status quo) < PV(shutdown cost + salvage), agent permanently exits
+            </td></tr>
+            <tr><td><strong>Policy &#960;</strong></td><td>
+              &#960;(bid | state) = marginal cost + congestion-zone markup &#215; market power factor + strategic reserve markup
+            </td><td>
+              Market power factor caps by hedge pct: low hedge = incentive to bid high (exposed to SMP), high hedge = neutral bidding.
+              Stations with low heat rate (e.g. Medupi, Kusile) run base-load, bid low. Older stations (Hendrina, Grootvlei) bid higher, cycle more.
+              Policy learned via DDPG actor-critic over continuous bid curve parameters.
+            </td></tr>
+            <tr><td><strong>Outcome O<sub>t</sub></strong></td><td>
+              p_g,t (MWh), SMP_t (R/MWh), station_profit_g,t, emissions_g,t (CO2), startup_cycles_g, avail_factor_g, profit_12m_g
+            </td><td>
+              station_profit = (SMP &#215; p) + vest_hedge_settlement + capacity_payment &#8722; fuel_cost &#8722; O&M &#8722; startup_cost &#8722; fixed_cost.
+              Capacity payment from CPA vesting contract (R/kW/month) decoupled from energy, keeps financially stressed stations alive.
+              emissions = p &#215; heat_rate &#215; coal_emission_factor.
+              startup_cycles tracked: frequent starts degrade heat rate and increase maintenance cost.
+            </td></tr>
+            <tr><td><strong>Metadata</strong></td><td>
+              name, plant_type (subcritical/supercritical/Circo), comm_year+design_life, heat_rate_initial, derating_schedule, min_up_time, min_down_time, ramp_rate, SO2_limit, water_type (dry/wet)
+            </td><td>
+              Each station has static metadata loaded from Eskom fleet data. Design life = 50yr for subcritical, 60yr for supercritical.
+              Many stations past design life (e.g. Hendrina commissioned 1970, design life 2020) operate under life-extension maintenance.
+              Derating schedule projected from EAF trends: EAF ~60% currently, trending toward 50% as fleet ages unless new maintenance period.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2. Coal IPP -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127987;&#65039;&#8205;&#128293; Coal IPP (Legacy PPA)</span>
+        <span><span class="badge ts-daily">Daily must-offer</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>ppa_price_fixed, ppa_end_year, heat_rate, forced_outage_rate, capacity_mw</td><td>PPA price is fixed, so no strategic bidding — must-offer at zero or negative to ensure dispatch (then receive PPA price contractually)</td></tr>
+            <tr><td><strong>Action</strong></td><td>availability (must offer all available MW at zero bid), retirement when PPA expires</td><td>Once PPA expires, agent transitions to market-exposed generator and can bid strategically</td></tr>
+            <tr><td><strong>Policy</strong></td><td>N/A during PPA — price-taker, must-run</td><td>After PPA expiry: becomes market-exposed and learns to bid</td></tr>
+            <tr><td><strong>Outcome</strong></td><td>dispatch = available (must-take), revenue = ppa_price &#215; dispatch, no SMP exposure</td><td>PPA counterparty risk at CPA — if CPA defaults, IPP agent would need new contract</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. Gas CCGT / OCGT -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#128293; Gas Fleet — CCGT / OCGT / Gas Engine</span>
+        <span><span class="badge ts-daily">Daily bid</span> <span class="badge ts-quarterly">Quarterly LNG/fuel contracting</span> <span class="badge ts-annual">CCGT investment</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>gas_price (R/GJ), heat_rate, start_cost, min_gen, ramp_rate, LNG_terminal_congestion, gas_contract_remaining, carbon_tax &#964;_t</td><td>
+              Gas price is the key variable — linked to international LNG (JKM/Brent) + transmission to SA + domestic gas from Mozambique.
+              CCGT heat rate ~6.5–7.5 GJ/MWh (efficient mid-merit), OCGT ~9–11 GJ/MWh (peaking).
+              Start cost significant for CCGT (~R200k/start), less for OCGT.
+              Carbon tax &#964;_t adds R/kWh to bid cost for gas (lower than coal per MWh).
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>bid_curve (price-quantity steps), invest_ccgt (MW), invest_ocgt (MW), LNG_contract (Bcf/year)</td><td>
+              Bid = SRMC = gas_price &#215; heat_rate + carbon_tax + variable O&M + start_cost_amortised/expected_runtime.
+              CCGT bids lower than OCGT — CCGT is mid-merit, OCGT is peaking.
+              Investment decision: build CCGT if expected NPV > 0 given SMP forecast and gas price outlook.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: price-taking at SRMC for CCGT; strategic peaking markup for OCGT during scarcity; investment based on long-run SMP distribution</td><td>
+              CCGT is the key <strong>mid-merit price setter</strong> that displaces aging coal — this is the core hypothesis driver.
+              As coal retires, CCGT heat rate ~7 GJ/MWh at gas price ~R140/GJ = ~R980/MWh, vs old coal at heat rate ~14 at coal price ~R250/GJ = ~R3500/MWh.
+              The gas stack entering should lower average SMP significantly.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>dispatch (sets SMP many hours), profit = (SMP &#8722; SRMC) &#215; p &#8722; start_costs, CF (capacity factor) %, emission_co2 (half of coal per MWh)</td><td>
+              CCGT CF expected ~30–60% depending on coal retirement rate and renewables.
+              OCGT CF ~5–15% (peaking only).
+              Each MWh of gas displacing coal reduces CO&#8322; by ~0.7–1.0 t/MWh.
+            </td></tr>
+            <tr><td><strong>Metadata</strong></td><td>ccgt_efficiency (HHV/LHV), ocgt_efficiency, min_up_time (CCGT 4h, OCGT 0h), ramp_rate (CCGT 5%/min, OCGT 10%/min), gas_transport_tariff, LNG_tolling_fee</td><td>
+              Gas supply chain modelled: upstream (Mozambique PPA, LNG import at Coega/Saldanha) + transmission (Rochedale pipeline, LNG trucking) + distribution.
+              LNG &rarr; pipeline network: 10 Bcf/year terminal at Coega is a structural constraint — if gas demand exceeds import capacity, price spikes and OCGT fuel switches to diesel.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. Renewables -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#9728;&#65039;&#127788; Wind & Solar IPPs — Must-Offer Renewables</span>
+        <span><span class="badge ts-hourly">Hourly weather-driven output</span> <span class="badge ts-annual">Annual CfD auction / capacity investment</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>wind_profile_h (hourly capacity factor), solar_irradiance_h, cfd_strike_price, ppa_remaining_years, curtailment_history_h, battery_cobbled_flag</td><td>
+              Wind/solar CF from ERA5 reanalysis data at each project location.
+              CfD strike fixed for 20-year PPA — IPP receives strike &#215; MWh regardless of SMP.
+              If SMP < 0 and plant must-curtail, IPP loses CfD revenue (negative SMP is a constraint).
+              Battery co-location possible: hybrid bid.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>must-offer at zero (or &#8722;R5/MWh for must-take); curtailment decision; invest_mw (annual capacity auction)</td><td>
+              Cannot strategically bid — offer price is zero/marginal.
+              Curtail if SMP < &#8722;C where C = cost to stay synchronised (aux load + wear).
+              New-build: participate in REIPPP or bilateral CfD auction each year.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: accept zero SMP for must-take; curtail when SMP < curt_threshold; invest if CfD strike > LCOE + financing risk premium</td><td>
+              Investment policy: LCOE vs CfD strike vs merchant SMP (post-PPA period).
+              As penetration rises, wind/solar cannibalise their own revenue — the "merit-order effect" reduces SMP during high-renewable hours.
+              This is a critical hypothesis output: more RE &rarr; lower average SMP &rarr; higher volatility &rarr; survival pressure on coal & gas.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>dispatch = CF &#215; capacity (before curtailment), revenue = CfD_settlement + SMP &#215; dispatch (for unhedged portion), curtailment_MWh, capacity_factor_actual</td><td>
+              CfD settlement: works as a &#64257;nancial hedge — IPP receives CfD_strike &#215; MWh, pays back SMP &#215; MWh.
+              Effective revenue per MWh = CfD_strike + max(0, SMP &#8722; CfD_strike) for hedged portion.
+            </td></tr>
+            <tr><td><strong>Metadata</strong></td><td>location, technology (on/offshore wind, tracking/fixed PV), capacity_mw, lcoe (R/MWh), resource_cf_p50/p90, curtailment_threshold, ppa_type (CfD / fixed)</td><td>
+              Each project is an agent instance with real-world project data (REIPPP rounds 1–7).
+              Future projects: capacity and LCOE decline curve per year based on IRP2025 trajectory.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 5. Battery Storage -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#128268; Battery Storage (BESS)</span>
+        <span><span class="badge ts-hourly">Hourly charge/discharge</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>soc (%), capacity_mwh, power_mw, rt_efficiency (%), degradation_cycles_remaining, smp_forecast_24h, reserve_prices</td><td>
+              SoC managed bycharge/discharge decisions. Degradation: ~0.02% per cycle, need replacement after ~6000 cycles.
+              RT efficiency ~85–92% (lithium-ion). 4-hour duration typical (e.g., 100MW/400MWh).
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>charge_mw (negative dispatch), discharge_mw, reserve_provision_mw (regulating + spinning)</td><td>
+              Arbitrage: charge when SMP low, discharge when SMP high.
+              Co-optimised with reserves: battery provides fast regulation (response <1s) at reserve price plus capacity payment.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: arbitrage + reserve stacking. Charge at bottom 25% of SMP distribution, discharge at top 25%. Always reserve some capacity for regulation product (higher margin).</td><td>
+              Revenue stack: energy arbitrage (bulk of revenue in early years) + regulation (growing as more RE needs balancing) + capacity payments.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>charge/discharge schedule, profit = &#931;(discharge_price &#215; discharge) &#8722; &#931;(charge_price &#215; charge) + reserve_revenue &#8722; degradation_cost, cycles_used</td><td>
+              Degradation cost = (CAPEX / total_cycles) per cycle — this limits how aggressively battery cycles.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6. CPA -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127974; Central Purchasing Agency (CPA)</span>
+        <span><span class="badge ts-daily">Daily DAM trading</span> <span class="badge ts-annual">Annual legacy charge reset</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>legacy_account_balance (R), vesting_contracts[station][hedge_pct, avail_payment, cap_payment, strike_price], legacy_ipp_ppas[project][price,volume], smp_forecast_annual, total_load (MWh)</td><td>
+              Legacy account: accumulates surplus/deficit from vesting + legacy IPP trading.
+              Vesting contract to Eskom Gen: pays availability (R/year) + capacity (R/kW/month) + energy hedge.
+              Energy hedge = hedge_pct &#215; strike + (1&#8722;hedge_pct) &#215; SMP. hedge_pct declines 100% &rarr; 0% over 5 years.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>trade_vesting_portfolio_into_dam (submit generation schedule for all Eskom stations and legacy IPPs), set_sales_agreement_price (NERSA-approved), procure_ancillary_services, apply_legacy_charge (R/MWh)</td><td>
+              CPA registers as BRP for ~70% of system generation in yr1.
+              Trades all vesting/legacy energy into DAM as price-taker (must-offer).
+              Legacy charge = (Legacy Account deficit) / (total load MWh) — recovered from consumers.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: balance legacy account — if deficit grows, increase legacy charge; if surplus, decrease. CPA does not strategically bid — it must run all contracted energy.</td><td>
+              CPA is not a profit maximiser — it is a pass-through mechanism.
+              Its only "policy" is legacy charge smoothing (avoid volatility for consumers).
+              Market power mitigation: the vesting hedge ensures Eskom Gen cannot exercise full market power during transition.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>legacy_charge_actual (R/MWh), cpa_financial_position (R), transition_effectiveness (market_power_mitigation %)</td><td>
+              Low SMP &rarr; CPA deficit &rarr; higher legacy charge &rarr; consumers pay.
+              High SMP &rarr; CPA surplus &rarr; negative legacy charge (consumers receive credit).
+              Market power mitigation: compare SMP in model with vs without vesting hedge.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. NTCSA / SO -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127961;&#65039; NTCSA — Transmission System & Market Operator</span>
+        <span><span class="badge ts-hourly">Hourly SCUC/SCED</span> <span class="badge ts-annual">Annual line expansion</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>line_flows_f_&#8467;, congestion_map, lmps, reserve_margin_actual, n_minus_1_satisfied, voLL, load_forecast_hourly</td><td>
+              Full network topology (nodes, lines, transformers, HVDC).
+              Lines have capacity limits — congestion creates LMP differentials.
+              VOLL = Value of Lost Load, set by NERSA ~R50–100/kWh.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>run_scuc_sced (clearing algorithm), set_reserve_requirement R_t, invest_line L_&#8467;_new (MW), out_of_merit_dispatch (for reliability)</td><td>
+              SCUC/SCED solves the MILP: min total bid cost + VOLL &#215; unserved.
+              Reserve requirement: 3% of peak load for regulating, 5% for contingency (adjustable).
+              Line investment: new corridors (e.g., Cape Corridor to unlock Northern Cape RE; Nkangala–Gauteng reinforcement).
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: min &#931;(energy_cost + reserve_cost + VOLL) subject to N-1 reliability</td><td>
+              Line investment: based on congestion rent threshold — if annual congestion rent on a constraint exceeds line CAPEX &#215; CRF, expand.
+              No strategic behaviour — SO is a neutral platform (potential future improvement: strategic SO that actively manages congestion to influence LMP outcomes).
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>SMP_t (hourly), LMPs (nodal), congestion_rents_&#8467;, reserve_prices, voll_settled (MWh lost), curtailment_MWh</td><td>
+              The OPF engine produces all pricing and dispatch outcomes for every hour.
+              Congestion rents = (LMP_i &#8722; LMP_j) &#215; flow_ij — accrues to NTCSA as congestion revenue.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 8. NERSA -->
+    <div class="card mb-4 agent-card power">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#9878;&#65039; NERSA — Regulator</span>
+        <span><span class="badge ts-quarterly">Quarterly policy review</span> <span class="badge ts-annual">Annual price cap / carbon tax reset</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>avg_SMP_12m, smp_volatility, herfindahl_index (market concentration), emissions_trajectory (MtCO&#8322;), reserve_margin (%), affordability_index, compliance_report</td><td>
+              Monitors market outcomes to determine if intervention needed.
+              HHI — if Eskom Gen market share >40% threshold despite hedge, NERSA may impose additional market conduct rules.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>set_carbon_tax_&#964;_t (R/tCO&#8322;), set_price_cap (VOLL), approve_legacy_charge, issue_conduct_penalties, set_renewable_target (TWh/year)</td><td>
+              Policy levers: carbon tax modelled on current SA trajectory (R20–R500/tCO&#8322; by 2030–2050).
+              Price cap (VOLL): typically R50–100/kWh — soft cap beyond which market intervention triggers.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: max social welfare W = &#931; producer_surplus + consumer_surplus + tax_revenue &#8722; emission_damage &#8722; unserved_cost, subject to affordability and political constraints</td><td>
+              Political constraint: tariffs cannot rise faster than CPI + 2% without causing political backlash — modelled as soft penalty in objective.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>policy_parameters (&#964;, VCLL, legacy_charge), market_conduct_cases (count), social_welfare_metric</td><td>
+              NERSA's outcomes affect all other agents' state variables (carbon tax in generator cost, price cap in bidding, etc.)
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 9. Load Agents -->
+    <div class="card mb-4 agent-card overlap">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#128200; Load Agents — BRPs (Municipalities, Industrial, Commercial, Residential Aggregators)</span>
+        <span><span class="badge ts-daily">Daily DAM bidding</span> <span class="badge ts-quarterly">PPA sign/hedging</span></span>
+      </div>
+      <div class="card-body">
+        <p class="small text-muted mb-2"><em>These agents operate at the <strong>overlap</strong> of the Power Market ABM (hourly/daily load bidding) and the Macro Economy ABM (annual load growth from economic activity).</em></p>
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>D_profile_h (hourly load shape by season), NMD_kVA, voltage_level, transmission_zone (&#300;km), tariff_type (Megaflex/HomeFlex/etc.), rm_arrears, embedded_gen_kW, cpa_contract_price, smp_volatility_12m</td><td>
+              Municipal distributors: aggregate customer load, buy from CPA at regulated price (~R1.20–1.60/kWh) vs DAM at floating SMP + side payments, can sign direct PPAs.
+              Industrial: load shape often flat (24/7 operations) with price-sensitive curtailment capability (e.g., smelters can shed 50MW within 4h notice).
+              Residential: fixed retail tariff, cannot bid directly — aggregated by distributor/retailer.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>submit_demand_bid_D_t_bid (price-sensitive), sign_ppa (MW, price, term), invest_embedded_gen, choose_cpa_vs_dam_supply, demand_response_declare</td><td>
+              Price-sensitive demand bid: e.g. industrial bids D&#8320; at SMP&#8320; (base load), D&#8321; at SMP&#8321; (curtailable portion).
+              Switching from CPA to DAM supply: requires becoming a licensed BRP, posting credit cover, building metering infrastructure.
+              Embedded generation investment: industrial rooftop solar, small wind, Landfill Gas.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: minimise &#931; energy_costs + hedging_costs + risk_penalty, subject to minimum supply reliability (cannot curtail critical load)</td><td>
+              Municipal policy: minimise total purchase cost — if CPA price > SMP + NTCSA charges + risk premium, switch to DAM self-supply.
+              Industrial policy: if self-gen LCOE < retail tariff, invest — this is the embedded gen adoption decision.
+              Risk penalty: volatility of DAM price adds a premium for unhedged load.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>load_cost (R/MWh average), smp_exposure (MWh unhedged), load_curtailment_MWh, embedded_gen_MWh, ppa_portfolio</td><td>
+              These outcomes feed directly into Macro Economy ABM as the cost of electricity for households and firms.
+              Load shape outcomes (adjusted for demand response and embedded gen) feed back to the next OPF cycle.
+            </td></tr>
+            <tr><td><strong>Metadata</strong></td><td>customer_count (MM), annual_load_TWh, peak_demand_MW, sector, province, urban_rural, income_group, tariff_category, self_gen_capacity_MW</td><td>
+              Municipal: ~160 distributors, largest are City Power (Joburg), City of Cape Town, eThekwini (Durban) — together ~70% of all municipal load.
+              Industrial: aggregated by sector — mining (15% of SA total), manufacturing (10%), smelting (5%).
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MACRO ECONOMY AGENTS                                          -->
+    <!-- ============================================================ -->
+    <h2 class="h3 fw-bold mt-5">&#127758; Macro Economy Agents <span class="badge ts-annual align-middle ms-2">Annual / 6-month cycle</span></h2>
+    <p class="text-muted">These agents determine the demand growth trajectory, technology adoption rates, and structural economic changes that define the OPF demand scenarios.</p>
+
+    <!-- 10. Households -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127968; Households (Residential Sector) — Aggregated by Income Decile × Province × Urban/Rural</span>
+        <span><span class="badge ts-annual">Annual adoption decisions</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>income_decile, hh_size, annual_consumption_kWh, tariff_class, avg_elec_price (R/kWh), rooftop_solar_kW, ev_ownership_flag, appliance_index, province, urban_rural</td><td>
+              ~17M households, aggregated into ~200 archetypes: 5 income quintiles &#215; 9 provinces &#215; 2 urban/rural = 90 baseline cells, each split by electrified vs non-electrified.
+              Appliance index: fridge, stove, geyser (electric/solar/gas), AC, pool pump — these drive the load shape.
+              Rooftop solar adoption: % of households with PV (currently ~5% of electrified households in high-income quintile, growing rapidly).
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>adopt_solar_pv_kW, adopt_ev (count), choose_tariff (HomeFlex TOU vs Homepower inclining-block), participate_DSM (geyser control, load limiting), efficiency_retrofit</td><td>
+              Solar PV: decision based on payback period = (system_CAPEX &#8722; subsidy) / (annual_saving_on_elec_bill). Adoption rate modelled via logistic diffusion with income saturation.
+              EV adoption: based on TCO vs ICE — purchase price + electricity / km vs petrol / km + maintenance. Charging assumed dumb/home unless smart tariff incentivises night.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: minimise total energy cost + technology CAPEX over appliance life; factors: income, payback threshold (3yr for solar, 5yr for EV), social influence (S-curve), policy incentives (rebate on solar, EV registration discount)</td><td>
+              Adoption thresholds vary by income: top quintile: payback < 4yr = adopt; bottom quintile: may not adopt even if payback < 2yr due to capital constraint.
+              This creates a realistic diffusion curve — solar adoption accelerates then plateaus as rooftop space saturates.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>aggregate_residential_demand_TWh (by hour/season), rooftop_solar_penetration_%, ev_fleet (1,000s), demand_shaped_profile (net of embedded gen), average_bill_as_%_income</td><td>
+              The demand shape is critical: rooftop solar reduces mid-day net demand (duck curve), EVs add evening peak if dumb-charged.
+              Bill as % of income: welfare metric for affordability — if >10% for low-income households, political pressure for subsidy/ tariff reform.
+            </td></tr>
+            <tr><td><strong>Metadata</strong></td><td>population_growth_&#916;%/yr, urbanisation_&#916;%/yr, GDP_per_capita_&#916;%, gini_coefficient, electrification_rate (% of hhs), LPG_paraffin_use_% (energy poverty indicator)</td><td>
+              Demographic trends drive baseline load growth: population growth + urbanisation + new connections.
+              GDP per capita growth drives appliance penetration and disposable income for solar/EV adoption.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 11. Commercial -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127970;&#65039; Commercial Sector (Retail, Office, Hospitality, Education)</span>
+        <span><span class="badge ts-annual">Annual floor area growth & efficiency</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>floor_area_m2_growth_&#916;%, electricity_intensity_kWh_per_m2, hvac_type, %_lit_by_LED, office_retail_hospitality_split, sector_GDP_growth_&#916;%</td><td>
+              Commercial load ~10% of SA total. Growth driven by services sector GDP, formal retail/office space expansion.
+              Electricity intensity varies: office (150 kWh/m&#178;/yr), retail (250), hospitality (350), education (80).
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>efficiency_investment (LED, HVAC upgrade, building management), rooftop_solar_adoption (commercial scale)</td><td>
+              Commercial solar: more cost-effective than residential (scale, daytime consumption match). Payback ~3–5yr.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: minimum total energy cost, IRR threshold ~12% for efficiency investments</td><td>Efficiency investment: LED payback < 2yr, HVAC 3–5yr, solar 4–6yr.</td></tr>
+            <tr><td><strong>Outcome</strong></td><td>commercial_demand_TWh, peak_contribution, solar_penetration_%</td><td>Commercial solar self-consumption reduces load during business hours — complements residential duck curve.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 12. Industrial -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127981; Industrial Sector (Mining, Manufacturing, Smelting, Agri-processing)</span>
+        <span><span class="badge ts-annual">Annual production/ investment</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>sector (mining/manufacturing/smelting/agri), global_commodity_price_index, production_volume_t, electricity_intensity_kWh_per_unit, self_gen_MW (coal/gas/solar), mp_voltage_level, dsr_capability_MW</td><td>
+              Mining: ~15% of SA electricity. Gold/ deep-level (high ventilation load), PGMs, coal, diamonds.
+              Smelting: energy-intensive (ferrochrome ~3.5 MWh/t, aluminium ~15 MWh/t). Highly price-sensitive — a 10% rise in SMP = big profit hit.
+              DSR: demand-side response — smelters can curtail ~20% within hours, mining ventilation can shed ~5%.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>production_volume_&#916;% (load growth), self_gen_investment (MW, tech), dsr_participation (MW committed to SO), ppa_signing (direct line with RE IPP), load_shape_changes (shift production to off-peak)</td><td>
+              Self-gen: mining/ industrial has been rapidly adopting solar (&#126;500MW embedded in 2024) and gas (for baseload replacement).
+              If SMP > self_gen_LCOE + wheeling_charge + wheeling_losses, invest in own generation.
+              DSR participation earns capacity payment from SO (similar to reserve market).
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: minimise total cost = SMP &#215; grid_MWh + self_gen_LCOE &#215; self_MWh + DSR_cost; investment if self_gen_NPV > 0 over 10yr horizon</td><td>
+              Commodity price boom = higher willingness to pay for electricity (production valuable enough to buy at higher SMP).
+              Commodity bust = load may shrink, investment postponed.
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>industrial_demand_TWh, self_gen_MWh (reduces grid load), dsr_availability_MW (system flexibility resource), load_curtailment_MWh (price response)</td><td>
+              Industrial load is typically flat and baseload-ish, but with embedded solar it becomes increasingly mid-day dipped.
+              DSR provides ~500MW of flexible capacity — valuable for system balancing.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 13. Transport -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#128663; Transport Sector (EV Fleet, Rail, Public Transport)</span>
+        <span><span class="badge ts-annual">Annual fleet growth</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>ev_fleet_%_of_new_sales,  ev_bus_fleet, ev_truck_fleet, rail_electrification_%, charging_infrastructure_score, petrol_diesel_price</td><td>
+              Transport electrification is the biggest potential load growth driver: if SA shifts to 30% EV by 2035, that's ~10TWh additional demand (~3% of total).
+              Rail: coal line (Eskom coal transport) already electrified; passenger rail (PRASA, Gautrain) is electric; freight (Transnet) is ~50% diesel, could electrify.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>ev_adoption_rate (% of new sales), charging_infrastructure_investment, smart_charging_program (load shifting to off-peak)</td><td>
+              Smart charging: if incentives exist (TOU tariff with low night rate, V2G payments), charging shifts to 10pm–6am = valley filling.
+              Dumb charging: peak coincident with early evening = huge peak amplification.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: household/ fleet operator min TCO; national target (EV White Paper: 100% EV new sales by 2040) modelled as a shadow policy constraint</td><td>If EV TCO < ICE TCO + carbon saving value, adoption accelerates. At R17/l petrol vs R1.50/kWh at night, EV payback < 5yr for high mileage users.</td></tr>
+            <tr><td><strong>Outcome</strong></td><td>ev_load_TWh, charging_profile (hourly), smart_shift_MWh, peak_amplification_MW</td><td>Load shape impact: smart charging scenario = ~500MW extra at night, dumb charging = ~2000MW extra at 18h–20h peak (disastrous).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 14. Agriculture -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127807; Agriculture (Irrigation, Processing, Cold Storage)</span>
+        <span><span class="badge ts-seasonal">Seasonal irrigation</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>irrigated_hectares, crop_type, irrigation_efficiency, cold_storage_MWh</td><td>Irrigation is concentrated in summer (Nov–Mar), mostly in Western Cape and Free State. A major shift: pivot irrigation uses ~20–40 kW per pivot.</td></tr>
+            <tr><td><strong>Action</strong></td><td>shift irrigation to off-peak, invest in solar irrigation (diesel replacement), invest in cold storage efficiency</td><td>Solar irrigation is rapidly growing: diesel pump &#8594; solar pump (payback ~3yr in high-sun areas). This reduces daytime grid load.</td></tr>
+            <tr><td><strong>Outcome</strong></td><td>irrigation_load_shape (seasonal), solar_irrigation_displacement</td><td>Agriculture is relatively small (~3% of electricity) but regionally significant in WC and FS.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 15. Eskom Corporate -->
+    <div class="card mb-4 agent-card overlap">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127974; Eskom Holdings (Corporate Entity — The Structural Bridge)</span>
+        <span><span class="badge ts-annual">Annual financial / structural decisions</span></span>
+      </div>
+      <div class="card-body">
+        <p class="small text-muted mb-2"><em>Eskom is both a <strong>Power Market Agent</strong> (generation fleet — see above) and an <strong>Economy Agent</strong> (corporate debt, employment, coal procurement, tariff negotiations). This card captures the corporate layer.</em></p>
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>debt_total (R ~450bn), debt_to_ebitda, tariff_revenue (R/yr), ipp_ppa_cost (R/yr), coal_cost_bill (R/yr), employee_headcount, fleet_eaf_%, CAIDI, SAIDI, availability_factor (coal), muni_arrears (R), equity_provided_by_treasury (R/yr)</td><td>
+              Eskom's balance sheet is a structural constraint on the economy — large tariff increases needed for debt service create affordability crisis.
+              Coal cost: Eskom spends ~R50bn/yr on coal — renegotiation with coal miners (often related parties) affects station viability.
+              Municipal arrears: ~R60bn owed to Eskom by municipalities — this is a financial strain that affects Eskom's cash flow.
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>apply_for_tariff_increase_&#916;% (to NERSA), negotiate_coal_contracts (price &#215; volume), implement_restructuring (headcount change, unbundling timeline), request_bailout (from Treasury), manage_muni_arrears (cutoff vs restructuring)</td><td>
+              Tariff increase: Eskom applies for MYPD (multi-year price determination) — NERSA often grants less than requested.
+              Restructuring: unbundling into Gen, Transmission (NTCSA), Distribution — modelled as a structural regime change event (Transmission becomes NTCSA, no longer part of Eskom balance sheet).
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: maintain solvency — tariff_revenue + treasury_support &#8805; operating_costs + ipp_costs + coal_costs + debt_service + capex</td><td>
+              If solvency fails: Eskom enters debt restructuring / bailout event — modelled as a shock to the economy (govt spending diverted to Eskom).
+              Coal procurement policy: mines owned by or linked to Eskom (via historical contracts) must be renegotiated or closed — affects coal town employment (e.g., Mpumalanga communities).
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>tariff_path (R/kWh actual), eskom_financial_status (solvent / distressed / bailout), coal_spend (R/yr), employee_count, muni_arrears_&#916;%, unbundling_milestone (Gen/Tx/Dx separated)</td><td>
+              The tariff path affects ALL load agents' electricity costs — this is the macro-level feedback loop.
+              Coal spend + employment affects Mpumalanga economy — if coal contracts end and stations retire, ~50,000 direct coal mining jobs affected, plus power station employment (~50,000).
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 16. Government / Treasury -->
+    <div class="card mb-4 agent-card economy">
+      <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        <span>&#127987;&#65039;&#8205;&#127477;&#127465; Government — Treasury, DMRE, DFFE, DPE</span>
+        <span><span class="badge ts-annual">Annual budget / policy cycle</span></span>
+      </div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered vars mb-0">
+          <thead><tr><th>Dimension</th><th>Variables</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>State</strong></td><td>fiscal_deficit, gdp_growth_&#916;%, unemployment_%, eskom_bailout_so_far (R), carbon_tax_revenue (R/yr), REIPPP_winners_announced, IRP_timeline</td><td>
+              Government fiscal capacity constrains bailout size and subsidy programmes (e.g., solar rebate for households).
+            </td></tr>
+            <tr><td><strong>Action</strong></td><td>set_eskom_equity_injection (R/yr), approve_new_REIPPP_rounds, set_JET_P_implementation, set_carbon_tax_path (long-term), provide_solar_ev_subsidies</td><td>
+              JET P (Just Energy Transition Partnership): us$ 8.5bn pledged by intl. partners for SA's energy transition.
+              Implementation speed is a key scenario variable — slow = coal continues, fast = gas + renewables accelerate.
+            </td></tr>
+            <tr><td><strong>Policy</strong></td><td>&#960;: max social welfare subject to fiscal constraint (eskom bailout + subsidies MUST fit within budget)</td><td>
+              Fiscal constraint: modelled as a maximum annual energy-sector transfer from treasury (e.g., 1% of GDP).
+            </td></tr>
+            <tr><td><strong>Outcome</strong></td><td>policy_scenario (baseline / JET Fast / Coal Slow), fiscal_transfers (R/yr to Eskom + REIPPP + subsidies)</td><td>
+              The scenario definition is a key model input — determines the boundary conditions for all other agents.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TIMESCALE INTEGRATION                                         -->
+    <!-- ============================================================ -->
+    <div class="card mb-5 border-0" style="background: #f8f9fa;">
+      <div class="card-body">
+        <h4 class="fw-bold">&#128259; Two-Timescale Integration: How the Layers Connect</h4>
+        <p class="small mb-2">
+          The macro economy agents run at <strong>annual resolution</strong> and produce the demand growth scenario:
+        </p>
+        <div class="math mb-3 small">
+          Macro_State<sub>t+1</sub> = f(Macro_State<sub>t</sub>, Eskom_Corp_State<sub>t</sub>, Policy_State<sub>t</sub>, Hourly_OPF_Outcomes<sub>t&#8722;12m..t</sub>)
+        </div>
+        <p class="small mb-2">Specifically, the macro-to-power-market mapping is:</p>
+        <div class="row g-2 small mb-3">
+          <div class="col-12 col-md-4">
+            <div class="p-2 border rounded bg-white">
+              <strong>Macro &#8594; Hourly Load Shape</strong><br>
+              <span class="text-muted">GDP_&#916;% + population_&#916;% + electrification_&#916;% + sector_shifts + weather &#8594; annual TWh<br>
+              Annual TWh + smart_meter_profiles + TOU_coefficients &#8594; 8760 hourly load vector D<sub>h</sub></span>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="p-2 border rounded bg-white">
+              <strong>Hourly OPF &#8594; Annual Economic Indicators</strong><br>
+              <span class="text-muted">&#931;(SMP<sub>h</sub> &#215; D<sub>h</sub>) / &#931;D<sub>h</sub> = avg_wholesale_price (R/MWh)<br>
+              avg_wholesale_price &#215; retail_adders &#8594; household_bill_%_income<br>
+              industrial_consumer_surplus = willingness_to_pay &#8722; SMP &#215; industrial_demand</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="p-2 border rounded bg-white">
+              <strong>Agent Learning Feedback Loop</strong><br>
+              <span class="text-muted">Macro agents observe avg_SMP_12m, volatility, affordability_metrics &#8594; update state<br>
+              Households: if bill_%_income > threshold &#8594; adopt solar / reduce consumption / protest<br>
+              Industrial: if SMP > commodity_price &#215; margin &#8594; curtail production / invest in self-gen<br>
+              Eskom Corp: if debt_service > revenue &#8594; apply for tariff increase / bailout</span>
+            </div>
+          </div>
+        </div>
+        <p class="small mb-0">
+          The power market ABM runs <strong>hourly</strong> for 365 days within each macro year, then aggregates outcomes to inform the
+          macro agents' next annual state update. This means a 20-year simulation involves: 20 &#215; (365 &#215; 24 = 8,760) = <strong>175,200 OPF solves</strong>,
+          each with agent learning updates at daily/weekly frequency. The MADDPG multi-agent learning adjusts generator bidding policies
+          on the first-of-month reset so agents adapt to changing fuel prices, carbon tax, and competitor behaviour over the simulation.
+        </p>
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted text-center mt-4">Agent feature engineering for SAWEM ABM dual-timescale evolutionary analysis &#8212; Power Market (hourly) + Macro Economy (annual).</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
