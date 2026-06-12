@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Performance • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math { background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 6px; font-family: monospace; }
+    .sa-green { color: #007A4D; }
+    .metric-card { transition: transform 0.2s; }
+    .metric-card:hover { transform: translateY(-4px); }
+    .warning { color: #ffc107; }
+    .loading { opacity: 0.6; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="display-4 fw-bold text-sa-green">⚡ Performance & Repository Health</h1>
+      <button onclick="loadRepoStats()" class="btn btn-outline-success btn-sm">
+        🔄 Refresh Data
+      </button>
+    </div>
+    <p class="lead text-muted mb-4">
+      Live metrics from the GitHub repository. Data refreshes automatically on page load and via the button.
+    </p>
+
+    <!-- Summary Metrics -->
+    <div class="row mb-5" id="metrics-row">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Architecture Diagram -->
+    <div class="card border-2 mb-5" style="border-color: #007A4D;">
+      <div class="card-header fw-bold" style="background: #007A4D; color: white;">
+        🧭 High-Level Repository Structure & Data Flow
+      </div>
+      <div class="card-body" style="background: #fafafa; font-family: monospace; white-space: pre-wrap; font-size: 0.95rem;">
+        index.html (entry)
+          ├── Sidebar (collapsible sections)
+          │     ├── Power → (eskom-*, sawem-*, ...)
+          │     ├── Mining → (pgms, coal, ...)
+          │     ├── Thesis → (overview, methods, agents)
+          │     └── Performance (this page)
+          ├── Static Assets
+          │     ├── css/style.css
+          │     ├── images/
+          │     └── data/ (future JSON)
+          └── Pages (dynamic count via GitHub API)
+                ├── Static + Bootstrap
+                └── Future: Hybrid dynamic backend
+      </div>
+    </div>
+
+    <!-- Code Quality & Bottlenecks -->
+    <div class="card border-2 mb-4" style="border-color: #FFCD00;">
+      <div class="card-header fw-bold" style="background: #FFCD00; color: #000;">Codebase Issues & Performance Bottlenecks</div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr><th>Area</th><th>Issue</th><th>Severity</th><th>Fix Priority</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Image Paths</td><td>Hard-coded relative paths</td><td>Medium</td><td>High</td></tr>
+            <tr><td>JS Collapses</td><td>Multiple toggles without robust error handling</td><td>Low</td><td>Medium</td></tr>
+            <tr><td>Page Bloat</td><td>Duplicated navbar/Bootstrap code</td><td>Medium</td><td>High</td></tr>
+            <tr><td>News Integration</td><td>Static or broken feeds</td><td>High</td><td>High</td></tr>
+            <tr><td>Lighthouse</td><td>Large images, no lazy loading on some pages</td><td>Medium</td><td>Medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Improvement Roadmap -->
+    <div class="card border-2 mb-4" style="border-color: #002395;">
+      <div class="card-header fw-bold" style="background: #002395; color: white;">Roadmap & Backend Vision</div>
+      <div class="card-body">
+        <ol>
+          <li><strong>Short-term</strong>: Fix image paths, add <code>loading="lazy"</code>, minify CSS/JS.</li>
+          <li><strong>Medium-term</strong>: Use 11ty/Hugo or partials for shared header/footer.</li>
+          <li><strong>Long-term</strong>: Hybrid (GitHub Pages + Python/Flask backend or GitHub Actions for data JSON).</li>
+          <li><strong>Targets</strong>: &lt;1.5s load, 100 Lighthouse, PWA support.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const OWNER = 'georgegallop';
+    const REPO = 'south-africa-dashboard';
+
+    async function loadRepoStats() {
+      const row = document.getElementById('metrics-row');
+      row.innerHTML = `<div class="col-12 text-center loading"><p>Fetching live data from GitHub...</p></div>`;
+
+      try {
+        // 1. Repo metadata (size, updated, etc.)
+        const repoRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}`);
+        const repo = await repoRes.json();
+
+        const sizeMB = (repo.size / 1024).toFixed(1);
+
+        // 2. Get tree to count HTML files
+        const treeRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/git/trees/main?recursive=1`);
+        const treeData = await treeRes.json();
+
+        let htmlCount = 0;
+        if (treeData.tree) {
+          htmlCount = treeData.tree.filter(item => item.path.endsWith('.html')).length;
+        }
+
+        // Render metrics
+        row.innerHTML = `
+          <div class="col-md-3">
+            <div class="card metric-card border-2 h-100" style="border-color: #007A4D;">
+              <div class="card-body text-center">
+                <h5 class="text-muted">HTML Pages</h5>
+                <h2 class="fw-bold text-sa-green">${htmlCount}</h2>
+                <small class="text-muted">Live count from repo</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card metric-card border-2 h-100" style="border-color: #FFCD00;">
+              <div class="card-body text-center">
+                <h5 class="text-muted">Repo Size</h5>
+                <h2 class="fw-bold">${sizeMB} MB</h2>
+                <small class="text-muted">GitHub tracked size</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card metric-card border-2 h-100" style="border-color: #002395;">
+              <div class="card-body text-center">
+                <h5 class="text-muted">Last Updated</h5>
+                <h2 class="fw-bold text-success">${new Date(repo.updated_at).toLocaleDateString()}</h2>
+                <small class="text-muted">GitHub metadata</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card metric-card border-2 h-100 bg-warning-subtle">
+              <div class="card-body text-center">
+                <h5 class="text-muted">Total Files</h5>
+                <h2 class="fw-bold text-warning">${treeData.tree ? treeData.tree.length : 'N/A'}</h2>
+                <small class="text-muted">Including images, CSS, etc.</small>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        row.innerHTML = `<div class="col-12 alert alert-warning">Could not fetch live data. Showing cached estimates.</div>`;
+        // Fallback static metrics here if you want
+      }
+    }
+
+    // Auto-load on page open
+    window.onload = loadRepoStats;
+  </script>
+</body>
+</html>
