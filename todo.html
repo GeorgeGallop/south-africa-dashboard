@@ -6,12 +6,137 @@
   <title>To-Do • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Brutalist tool panel */
+    .todo-tool-panel {
+      border-left: 3px solid #222;
+      min-height: 100%;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-bottom: 2px solid #e9ecef;
+      transition: background 0.15s;
+    }
+    .todo-item:hover {
+      background: #fff3cd;
+    }
+    .todo-item .todo-text {
+      flex: 1;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .todo-item .todo-text[contenteditable="true"] {
+      background: #fff;
+      outline: 3px solid #007A4D;
+      outline-offset: 2px;
+    }
+    .delete-btn {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #222;
+      background: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: 0.1s;
+    }
+    .delete-btn:hover {
+      background: #dc3545;
+      color: #fff;
+      border-color: #dc3545;
+    }
+    .add-input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .add-input-group input {
+      flex: 1;
+      border: 3px solid #222;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 0;
+    }
+    .add-input-group input:focus {
+      outline: none;
+      border-color: #007A4D;
+    }
+    .add-btn {
+      border: 3px solid #222;
+      background: #007A4D;
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 20px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: 0.1s;
+      white-space: nowrap;
+    }
+    .add-btn:hover {
+      background: #005c3a;
+    }
+    .add-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+    .clear-all-btn {
+      border: 2px solid #222;
+      background: #fff;
+      padding: 6px 14px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.1s;
+      border-radius: 0;
+    }
+    .clear-all-btn:hover {
+      background: #dc3545;
+      color: #fff;
+      border-color: #dc3545;
+    }
+    .bulk-add-area {
+      border: 3px dashed #222;
+      padding: 10px;
+      font-size: 13px;
+      background: #fff;
+      resize: vertical;
+      min-height: 60px;
+      width: 100%;
+      border-radius: 0;
+    }
+    .bulk-add-area:focus {
+      outline: none;
+      border-style: solid;
+      border-color: #007A4D;
+    }
+    .status-msg {
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 22px;
+    }
+    .strike {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+  </style>
 </head>
 
 <body class="bg-light">
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
       <div class="d-flex gap-2">
         <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
         <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
@@ -30,39 +155,319 @@
       </div>
     </section>
 
-    <section class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <h2 class="h4 text-sa-green mb-3">To-Do List</h2>
-        <ul class="mb-0">
-          <li class="mb-2">SAWEM</li>
-          <li class="mb-2">SAWEM Gride Code</li>
-          <li class="mb-2">SAREM</li>
-          <li class="mb-2">JET</li>
-          <li class="mb-2">Eskom 10k data</li>
-          <li class="mb-2">Lesotho highlands water project</li>
-          <li class="mb-2">Eskom REIPPs</li>
-          <li class="mb-2">API for data from Eskom or SAWEM</li>
-          <li class="mb-2">Domestic Indsutry Master Plans</li>
-          <li class="mb-2">Crime overview</li>
-          <li class="mb-2">National Energy Crisis Committee</li>
-          <li class="mb-2">South Africa Mineral resource wealth and the markets for it and the locations</li>
-          <li class="mb-2">Geography of country</li>
-          <li class="mb-2">Weather</li>
-          <li class="mb-2">Angola-Namibia Interconnector</li>
-          <li class="mb-2">Baynes HPP Transmission Lines</li>
-          <li class="mb-2">Malawi - Zambia Interconnector</li>
-          <li class="mb-2">Mozambique - Tanzania Interconnector</li>
-          <li class="mb-2">Luapula River HPP And Transmission Lines</li>
-          <li class="mb-2">Waste to Energy Potential in SAPP</li>
-          <li class="mb-2">The Black Homelands Citizenship Act of 1970</li>
-          <li class="mb-2">Eskom Tariff analysis</li>
-          <li class="mb-2">Add gov.za as a source for news in the news tab and add energy sources</li>
-          <li class="mb-2">Add a reports area for all of the relevant eskom reports like Generation Connection Capacity Assessment</li>       
-          <li class="mb-2">Add a section about wars. Cecil Rhodes, Nadie rothschild, the boer wars, and the creation of SA. Deebers consolidated. Cecil was the leader of the cape colony until blank</li>\       
-                    
-        </ul>
+    <!-- SPLIT LAYOUT: left = list, right = tool panel -->
+    <div class="row g-0 border border-3 border-dark shadow-sm bg-white">
+      <!-- LEFT: To-Do List -->
+      <div class="col-md-7 p-3 p-md-4">
+        <h2 class="h4 text-sa-green mb-3 d-flex align-items-center justify-content-between">
+          <span>📋 To-Do List</span>
+          <span id="item-count" class="badge bg-dark fs-6">0</span>
+        </h2>
+        <div id="todo-list-container">
+          <ul id="todo-list" class="list-unstyled mb-0"></ul>
+        </div>
+        <div class="mt-3 d-flex gap-2 align-items-center">
+          <button class="clear-all-btn" onclick="clearAll()">🗑 Clear All</button>
+          <button class="clear-all-btn" onclick="resetDefaults()">↺ Reset</button>
+          <span id="status-msg" class="status-msg text-muted"></span>
+        </div>
       </div>
-    </section>
+
+      <!-- RIGHT: Tool Panel -->
+      <div class="col-md-5 p-3 p-md-4 todo-tool-panel">
+        <h2 class="h4 fw-bold mb-3">🛠 Manage Items</h2>
+
+        <!-- ADD SINGLE ITEM -->
+        <div class="mb-3">
+          <label class="fw-semibold mb-1" for="new-item-input">Add one item</label>
+          <div class="add-input-group">
+            <input type="text" id="new-item-input" placeholder="e.g. New topic..." autocomplete="off">
+            <button class="add-btn" onclick="addItem()">+ Add</button>
+          </div>
+        </div>
+
+        <!-- ADD / DELETE CONTROLS -->
+        <div class="mb-3">
+          <label class="fw-semibold mb-1">Or paste multiple items (one per line)</label>
+          <textarea id="bulk-input" class="bulk-add-area" placeholder="Item 1&#10;Item 2&#10;Item 3"></textarea>
+          <div class="d-flex gap-2 mt-2">
+            <button class="add-btn" onclick="addBulk()">+ Add All</button>
+            <button class="clear-all-btn" onclick="document.getElementById('bulk-input').value=''">Clear</button>
+          </div>
+        </div>
+
+        <!-- DELETE CHECKBOX MODE -->
+        <div class="border border-3 border-dark p-3">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="fw-bold">✂ Delete items</span>
+            <div class="d-flex gap-2">
+              <button id="toggle-delete-mode" class="clear-all-btn" onclick="toggleDeleteMode()">☐ Select</button>
+              <button id="delete-selected-btn" class="clear-all-btn" onclick="deleteSelected()" disabled style="opacity:0.4">✕ Delete</button>
+            </div>
+          </div>
+          <p class="text-muted small mb-0">Click "Select" to show checkboxes, then check items to remove.</p>
+        </div>
+      </div>
+    </div>
   </main>
+
+  <script>
+    // ===== STORAGE KEY =====
+    const STORAGE_KEY = 'sa_dashboard_todo';
+
+    // ===== DEFAULT ITEMS =====
+    const DEFAULT_ITEMS = [
+      'SAWEM',
+      'SAWEM Gride Code',
+      'SAREM',
+      'JET',
+      'Eskom 10k data',
+      'Lesotho highlands water project',
+      'Eskom REIPPs',
+      'API for data from Eskom or SAWEM',
+      'Domestic Indsutry Master Plans',
+      'Crime overview',
+      'National Energy Crisis Committee',
+      'South Africa Mineral resource wealth and the markets for it and the locations',
+      'Geography of country',
+      'Weather',
+      'Angola-Namibia Interconnector',
+      'Baynes HPP Transmission Lines',
+      'Malawi - Zambia Interconnector',
+      'Mozambique - Tanzania Interconnector',
+      'Luapula River HPP And Transmission Lines',
+      'Waste to Energy Potential in SAPP',
+      'The Black Homelands Citizenship Act of 1970',
+      'Eskom Tariff analysis',
+      'Add gov.za as a source for news in the news tab and add energy sources',
+      'Add a reports area for all of the relevant eskom reports like Generation Connection Capacity Assessment',
+      'Add a section about wars. Cecil Rhodes, Nadie rothschild, the boer wars, and the creation of SA. Deebers consolidated. Cecil was the leader of the cape colony until blank'
+    ];
+
+    // ===== STATE =====
+    let items = [];
+    let deleteMode = false;
+    let checkedForDelete = new Set();
+
+    // ===== INIT =====
+    function init() {
+      loadItems();
+      render();
+    }
+
+    // ===== LOAD / SAVE =====
+    function loadItems() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length) {
+            items = parsed;
+            return;
+          }
+        }
+      } catch (_) {}
+      items = [...DEFAULT_ITEMS];
+      saveItems();
+    }
+
+    function saveItems() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    // ===== RENDER =====
+    function render() {
+      const list = document.getElementById('todo-list');
+      const count = document.getElementById('item-count');
+      list.innerHTML = '';
+      checkedForDelete.clear();
+      updateDeleteButton();
+
+      items.forEach((text, idx) => {
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+
+        // checkbox (visible only in delete mode)
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.className = 'form-check-input me-1 delete-checkbox';
+        cb.style.display = deleteMode ? 'inline-block' : 'none';
+        cb.dataset.index = idx;
+        cb.addEventListener('change', () => {
+          if (cb.checked) checkedForDelete.add(idx);
+          else checkedForDelete.delete(idx);
+          updateDeleteButton();
+        });
+
+        // text (double-click to inline edit)
+        const span = document.createElement('span');
+        span.className = 'todo-text';
+        span.textContent = text;
+        span.title = 'Double-click to edit';
+        span.addEventListener('dblclick', () => {
+          if (deleteMode) return;
+          span.contentEditable = 'true';
+          span.focus();
+          // select all text
+          const range = document.createRange();
+          range.selectNodeContents(span);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        });
+        span.addEventListener('blur', () => {
+          if (!span.contentEditable === 'true') return;
+          span.contentEditable = 'false';
+          const val = span.textContent.trim();
+          if (val && val !== text) {
+            items[idx] = val;
+            saveItems();
+            setStatus('✏️ Item edited');
+          } else if (!val) {
+            span.textContent = text;
+          }
+        });
+        span.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            span.blur();
+          }
+          if (e.key === 'Escape') {
+            span.textContent = text;
+            span.contentEditable = 'false';
+          }
+        });
+
+        // delete button (always visible)
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.innerHTML = '✕';
+        delBtn.title = 'Delete this item';
+        delBtn.addEventListener('click', () => {
+          items.splice(idx, 1);
+          saveItems();
+          render();
+          setStatus('🗑 Item deleted');
+        });
+
+        li.appendChild(cb);
+        li.appendChild(span);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+
+      count.textContent = items.length;
+    }
+
+    // ===== ADD SINGLE =====
+    function addItem() {
+      const input = document.getElementById('new-item-input');
+      const val = input.value.trim();
+      if (!val) {
+        setStatus('⚠️ Enter some text first', true);
+        return;
+      }
+      items.push(val);
+      saveItems();
+      render();
+      input.value = '';
+      input.focus();
+      setStatus(`✅ "${val}" added`);
+    }
+
+    // ===== ADD BULK =====
+    function addBulk() {
+      const area = document.getElementById('bulk-input');
+      const lines = area.value.split('\n').map(s => s.trim()).filter(Boolean);
+      if (!lines.length) {
+        setStatus('⚠️ Paste some items first', true);
+        return;
+      }
+      items.push(...lines);
+      saveItems();
+      render();
+      area.value = '';
+      setStatus(`✅ ${lines.length} item(s) added`);
+    }
+
+    // ===== ENTER KEY =====
+    document.addEventListener('DOMContentLoaded', () => {
+      init();
+      document.getElementById('new-item-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addItem();
+        }
+      });
+    });
+
+    // ===== DELETE MODE =====
+    function toggleDeleteMode() {
+      deleteMode = !deleteMode;
+      const btn = document.getElementById('toggle-delete-mode');
+      btn.textContent = deleteMode ? '☑ Done' : '☐ Select';
+      if (!deleteMode) {
+        checkedForDelete.clear();
+        updateDeleteButton();
+      }
+      render();
+    }
+
+    function deleteSelected() {
+      const indices = [...checkedForDelete].sort((a, b) => b - a);
+      if (!indices.length) return;
+      indices.forEach(i => items.splice(i, 1));
+      checkedForDelete.clear();
+      saveItems();
+      render();
+      updateDeleteButton();
+      setStatus(`🗑 ${indices.length} item(s) deleted`);
+      if (items.length === 0 && deleteMode) toggleDeleteMode();
+    }
+
+    function updateDeleteButton() {
+      const btn = document.getElementById('delete-selected-btn');
+      const count = checkedForDelete.size;
+      btn.disabled = count === 0;
+      btn.style.opacity = count === 0 ? '0.4' : '1';
+    }
+
+    // ===== CLEAR ALL =====
+    function clearAll() {
+      if (items.length === 0) return;
+      if (!confirm('Delete ALL items?')) return;
+      items = [];
+      saveItems();
+      render();
+      setStatus('🗑 All items cleared');
+    }
+
+    // ===== RESET =====
+    function resetDefaults() {
+      if (!confirm('Reset to default items?')) return;
+      items = [...DEFAULT_ITEMS];
+      saveItems();
+      render();
+      setStatus('↺ Reset to defaults');
+    }
+
+    // ===== STATUS =====
+    function setStatus(msg, isWarning) {
+      const el = document.getElementById('status-msg');
+      el.textContent = msg;
+      el.style.color = isWarning ? '#dc3545' : '#007A4D';
+      clearTimeout(el._timeout);
+      el._timeout = setTimeout(() => {
+        el.textContent = '';
+      }, 3000);
+    }
+
+    // Keyboard shortcut: Escape to exit delete mode
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && deleteMode) {
+        toggleDeleteMode();
+      }
+    });
+  </script>
 </body>
 </html>
