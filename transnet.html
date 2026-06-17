@@ -14,6 +14,14 @@
     .sa-gold { color: #FFCD00; }
     .card-hover:hover { transform: translateY(-5px); transition: all 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
   </style>
+  <style>
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 4px; background: #007A4D; }
+    .timeline-dot { position: absolute; left: 8px; width: 15px; height: 15px; background: #FFCD00; border: 3px solid #002395; border-radius: 50%; }
+    .sa-green { color: #007A4D; }
+    .sa-gold { color: #FFCD00; }
+    .card-hover:hover { transform: translateY(-5px); transition: all 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
@@ -41,6 +49,9 @@
           <strong>Revenue (FY2024/25 approx.):</strong> ~R78-80 billion<br>
           <strong>Employees:</strong> ~45,000-50,000<br>
           <strong>Network:</strong> ~20,000+ km rail, 8 major ports, 3,000 km pipelines
+          <strong>Revenue (FY2024/25 approx.):</strong> ~R78-80 billion<br>
+          <strong>Employees:</strong> ~45,000-50,000<br>
+          <strong>Network:</strong> ~20,000+ km rail, 8 major ports, 3,000 km pipelines
         </div>
       </div>
       <div class="col-md-5">
@@ -50,6 +61,7 @@
 
     <div class="row">
       <div class="col-lg-12">
+      <div class="col-lg-12">
 
         <h5>What is Transnet?</h5>
         <p>Transnet is South Africa's largest freight logistics company and a fully state-owned enterprise (SOC). It dominates the movement of bulk commodities — especially minerals critical to exports — via rail, operates the country's major commercial ports as landlord and terminal operator, and manages petroleum and gas pipelines. Transnet is foundational to South Africa's mining-dependent economy, but chronic underperformance has become a major drag on GDP growth, investment, and job creation.</p>
@@ -57,6 +69,7 @@
         <h5 class="mt-5">Transnet's Main Operating Divisions</h5>
         <div class="row g-4 mt-4">
           <div class="col-md-6">
+            <div class="card h-100 card-hover">
             <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet Freight Rail (TFR)</h5>
@@ -66,6 +79,7 @@
           </div>
           <div class="col-md-6">
             <div class="card h-100 card-hover">
+            <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet National Ports Authority (TNPA)</h5>
                 <p>Owns and manages infrastructure at South Africa's 8 major ports (Durban, Cape Town, Richards Bay, Saldanha, etc.) — harbours, channels, berths. Acts as the "landlord."</p>
@@ -74,32 +88,40 @@
           </div>
           <div class="col-md-6">
             <div class="card h-100 card-hover">
+            <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet Port Terminals (TPT)</h5>
+                <p>Operates terminals inside ports: containers, bulk, automotive. Handles cargo loading/unloading. Major bottlenecks here have caused shipping delays and demurrage costs for exporters.</p>
                 <p>Operates terminals inside ports: containers, bulk, automotive. Handles cargo loading/unloading. Major bottlenecks here have caused shipping delays and demurrage costs for exporters.</p>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="card h-100 card-hover">
+            <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet Pipelines</h5>
+                <p>~3,000 km network transporting crude oil, refined products, and gas. Critical for energy supply security.</p>
                 <p>~3,000 km network transporting crude oil, refined products, and gas. Critical for energy supply security.</p>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="card h-100 card-hover">
+            <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet Engineering</h5>
+                <p>Engineering, manufacturing, maintenance, and refurbishment of locomotives, wagons, and port equipment.</p>
                 <p>Engineering, manufacturing, maintenance, and refurbishment of locomotives, wagons, and port equipment.</p>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="card h-100 card-hover">
+            <div class="card h-100 card-hover">
               <div class="card-body">
                 <h5>Transnet Property</h5>
+                <p>Manages vast real estate and land holdings across the country.</p>
                 <p>Manages vast real estate and land holdings across the country.</p>
               </div>
             </div>
@@ -173,6 +195,8 @@
       </div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
