@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" width="600" height="250">
+  <!-- Background -->
+  <rect width="600" height="250" fill="#f0f0f0"/>
+  <!-- Title -->
+  <text x="300" y="40" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="24" fill="#007A4D">MINERALS & METALS PROCESSING</text>
+  <!-- From mine -->
+  <rect x="20" y="70" width="140" height="60" rx="8" fill="#8B7355"/>
+  <text x="90" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">⛏️ Mine / Ore</text>
+  <!-- Arrow 1 -->
+  <line x1="160" y1="100" x2="210" y2="100" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="210,93 225,100 210,107" fill="#007A4D"/>
+  <!-- Concentration -->
+  <rect x="225" y="70" width="140" height="60" rx="8" fill="#002395"/>
+  <text x="295" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Concentration</text>
+  <!-- Arrow 2 -->
+  <line x1="365" y1="100" x2="415" y2="100" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="415,93 430,100 415,107" fill="#007A4D"/>
+  <!-- Smelting -->
+  <rect x="430" y="70" width="150" height="60" rx="8" fill="#CC3333"/>
+  <text x="505" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Smelting</text>
+  <!-- Minerals list below -->
+  <text x="300" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#555">PGMs · Gold · Copper · Iron Ore · Manganese · Chrome · Vanadium</text>
+  <!-- Output arrow -->
+  <line x1="505" y1="130" x2="505" y2="180" stroke="#CC3333" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="498,180 505,195 512,180" fill="#CC3333"/>
+  <text x="505" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#333" font-weight="bold">→ Alloys, Steel, Refined Metals</text>
+</svg>
