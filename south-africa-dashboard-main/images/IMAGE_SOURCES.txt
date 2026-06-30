@@ -1,0 +1,94 @@
+COAL INDUSTRY IMAGE REFERENCES & SOURCES
+==========================================
+
+Recommended images to enhance coal.html narrative:
+
+1. MEDUPI POWER STATION (Limpopo)
+   - Type: Coal-fired power plant under construction
+   - Relevance: Represents post-2007 capacity expansion with cost overruns
+   - Licensed Source: Wikimedia Commons
+   - Search: "Medupi Power Station" on commons.wikimedia.org
+   - Context for caption: "Medupi Power Station (4,764 MW) under construction. Originally scheduled for 2015, delayed to 2023 due to corruption and construction cost overruns."
+
+2. KUSILE POWER STATION (Mpumalanga)
+   - Type: Coal-fired power plant under construction/operational
+   - Relevance: Major Eskom expansion project, still facing delays as of 2025
+   - Licensed Source: Wikimedia Commons
+   - Search: "Kusile Power Station" on commons.wikimedia.org
+   - Context: "Kusile Power Station (4,800 MW) represents the second phase of post-2007 generation expansion, facing similar challenges to Medupi."
+
+3. WITBANK/HIGHVELD COAL MINING OPERATIONS
+   - Type: Open-pit coal mining in Mpumalanga
+   - Relevance: Primary coal extraction region; visual representation of mining scale
+   - Licensed Source: Wikimedia Commons or South African Mining Archives
+   - Search: "Coal mining South Africa" or "Witbank Colliery"
+   - Context: "Coal mining operations in the Witbank coalfield have employed tens of thousands of workers since the 1880s."
+
+4. ESKOM TRANSMISSION INFRASTRUCTURE
+   - Type: High-voltage transmission lines/pylons
+   - Relevance: Represents 400 kV nationwide network established 1981
+   - Licensed Source: Wikimedia Commons
+   - Search: "Eskom transmission" or "Electricity pylon South Africa"
+   - Context: "Eskom's nationwide high-voltage transmission network distributes coal-generated power across South Africa."
+
+5. LOAD SHEDDING / BLACKOUT IMAGERY
+   - Type: Dark cityscape or neighborhood without electricity
+   - Relevance: Illustrates 2019-2024 rolling blackout crisis impact
+   - Licensed Source: Free stock photo sites (Unsplash, Pixabay, Pexels)
+   - Search: "City blackout," "Power outage," "Darkness cityscape"
+   - Context: "Rolling blackouts (load shedding) reached Stage 6 in 2023-2024, impacting South African economy and daily life."
+
+6. COAL SEAM FIRES
+   - Type: Environmental damage from burning coal seams
+   - Relevance: Illustrates ongoing environmental cost (burning since 1953)
+   - Licensed Source: May require specific permission from mining companies or government
+   - Search: "Coal seam fire Transvaal Delagoa Bay" 
+   - Context: "Coal seam fires at Transvaal and Delagoa Bay Collieries, burning since 1953, represent uncontrolled environmental damage."
+
+7. SOLAR/RENEWABLE ENERGY INSTALLATIONS
+   - Type: Solar panels, wind turbines
+   - Relevance: Illustrates energy transition efforts post-COP26
+   - Licensed Source: Wikimedia Commons or renewable energy company photos
+   - Search: "Solar panels South Africa" or "Wind farm South Africa"
+   - Context: "South Africa's COP26 commitment includes deployment of 6,000 MW solar PV and 14,400 MW wind capacity by 2030."
+
+HOW TO INTEGRATE IMAGES INTO coal.html
+========================================
+
+Within relevant historical sections, add images like this:
+
+Example 1 - Within the "Rapid Expansion" section:
+<img src="/images/medupi_power_station.jpg" class="img-fluid my-3 rounded" 
+     alt="Medupi Power Station construction site">
+<p class="text-muted small">
+  <em>Medupi Power Station under construction (2007-2023). The 4,764 MW coal plant became 
+  a symbol of South Africa's infrastructure challenges, with billions in corruption and delays.</em>
+</p>
+
+Example 2 - Within the "Coal's Economic Dominance" section:
+<img src="/images/witbank_coal_mine.jpg" class="img-fluid my-3 rounded" 
+     alt="Witbank coal mining operations in Mpumalanga">
+<p class="text-muted small">
+  <em>Coal mining operations in Mpumalanga's Witbank coalfield, the primary source of 
+  South Africa's 255+ million tonnes annual production.</em>
+</p>
+
+Example 3 - Within the "Load Shedding Crisis" section:
+<img src="/images/blackout_cityscape.jpg" class="img-fluid my-3 rounded" 
+     alt="City during load shedding blackout">
+<p class="text-muted small">
+  <em>Rolling blackouts (Stage 6) became routine during 2023-2024, with power cuts lasting 
+  up to 12 hours daily and contributing an estimated 2% loss to South Africa's GDP.</em>
+</p>
+
+OBTAINING IMAGES
+================
+
+Public Domain/Creative Commons Sources:
+- Wikimedia Commons: commons.wikimedia.org (search for South Africa, Eskom, coal)
+- Free Stock Photos: Unsplash, Pixabay, Pexels (for blackout/energy transition concepts)
+- Government Sources: DMRE (Department of Mineral Resources), Statistics SA
+- News Archives: Reuters, AP Photo, BBC have licensed coal/Eskom images
+
+Usage: Ensure proper attribution in HTML comments or captions. Most Wikimedia images 
+can be freely used with attribution to the photographer/source.
