@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eskom Tariffs • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .tariff-card { transition: transform 0.2s; }
+    .tariff-card:hover { transform: translateY(-5px); }
+    table th { background-color: #f8f9fa; }
+    .currency-toggle { font-size: 0.95rem; }
+    .usd-input { max-width: 120px; }
+    .highlight { background-color: #e7f3ff; }
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-4 fw-bold sa-green text-center">Eskom Tariffs (2025/26)</h1>
+    <p class="lead text-center mb-4">
+      Comprehensive overview of Eskom's electricity tariff structure — with detailed Megaflex costs,
+      a USD/ZAR cost estimator, and editable data via CSV.
+    </p>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- OVERVIEW                                                      -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Overview</h5>
+        <p>
+          Electricity tariffs in South Africa are made up of multiple components: network (distribution/transmission) charges,
+          energy charges (kWh), and regulatory/market-related line items. Tariff frameworks are set by the
+          <strong>National Energy Regulator of South Africa (NERSA)</strong>.
+        </p>
+        <p class="mb-0">
+          Eskom's main tariff categories are <strong>Megaflex</strong> (large urban >1 MVA),
+          <strong>Miniflex</strong> (medium urban <1 MVA), <strong>HomeFlex</strong> (residential),
+          and <strong>BusinessFlex</strong> (commercial). This page focuses on <strong>Megaflex</strong>
+          — the most granular tariff with full Time-of-Use and seasonally-varying rates.
+        </p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- TARIFF CATEGORIES (TABS)                                     -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">Tariff Categories — Which "Bucket" Applies</h5>
+
+        <ul class="nav nav-tabs" id="tariffTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="megaflex-tab" data-bs-toggle="tab" data-bs-target="#megaflex" type="button" role="tab">Megaflex</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="miniflex-tab" data-bs-toggle="tab" data-bs-target="#miniflex" type="button" role="tab">Miniflex</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="homeflex-tab" data-bs-toggle="tab" data-bs-target="#homeflex" type="button" role="tab">HomeFlex</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business" type="button" role="tab">BusinessFlex</button>
+          </li>
+        </ul>
+
+        <div class="tab-content mt-3" id="tariffTabsContent">
+          <div class="tab-pane fade show active" id="megaflex" role="tabpanel">
+            <p><strong>Megaflex</strong> — Large urban customers with Notified Maximum Demand (NMD) > 1 MVA. Fully unbundled TOU with seasonal differentiation. This is the most detailed cost structure, shown in full below.</p>
+          </div>
+          <div class="tab-pane fade" id="miniflex" role="tabpanel">
+            <p><strong>Miniflex</strong> — Medium urban customers (NMD < 1 MVA). Simplified TOU. Cost data can be structured similarly to Megaflex when available.</p>
+          </div>
+          <div class="tab-pane fade" id="homeflex" role="tabpanel">
+            <p><strong>HomeFlex</strong> — Residential customers (Homelight 10A, 20A, 60A, Homepower). Typically inclining-block or TOU options.</p>
+          </div>
+          <div class="tab-pane fade" id="business" role="tabpanel">
+            <p><strong>BusinessFlex</strong> — Commercial customers. Includes TOU and demand charges. Data pending.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- MEGAFLEX DETAILED COSTS                                      -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+          <h5 class="mb-0">📊 Megaflex — Full Cost Structure (2025/26)</h5>
+          <div class="text-muted small">Data from <code>data/eskom_megaflex_rates_2025_26.csv</code></div>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+          <p class="small text-muted mb-0">Rates effective 2025/26 for Non-Local Authority customers. All values VAT inclusive. Use the toggle to convert between ZAR and USD.</p>
+
+          <div class="currency-toggle d-flex flex-wrap align-items-center gap-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="currencyToggle" onchange="toggleCurrency()">
+              <label class="form-check-label fw-bold" for="currencyToggle">Show in USD</label>
+            </div>
+            <div class="input-group input-group-sm" style="max-width: 160px;">
+              <span class="input-group-text">1 USD =</span>
+              <input type="number" id="exchangeRate" class="form-control" value="17" step="0.1" onchange="renderAllTables()">
+              <span class="input-group-text">ZAR</span>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" onclick="setUnit('kWh')" id="btnKwh">kWh</button>
+              <button class="btn btn-outline-secondary" onclick="setUnit('MWh')" id="btnMwh">MWh</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Megaflex visual summary image -->
+        <div class="text-center mb-4">
+          <img src="images/power/Megaflex_Tariff_Structure.svg" alt="Megaflex Tariff Structure" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #dee2e6;">
+        </div>
+
+        <!-- Active Energy Charges -->
+        <h6 class="mt-4 mb-2 fw-bold">1. Active Energy Charges — TOU by Season & Voltage</h6>
+        <div class="table-responsive">
+          <table id="energyTable" class="table table-striped table-hover small">
+            <thead class="table-dark">
+              <tr>
+                <th>Transmission Zone</th>
+                <th>Voltage</th>
+                <th>Peak (High)</th>
+                <th>Std (High)</th>
+                <th>Off-Pk (High)</th>
+                <th>Peak (Low)</th>
+                <th>Std (Low)</th>
+                <th>Off-Pk (Low)</th>
+              </tr>
+            </thead>
+            <tbody id="energyTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Fixed & Capacity Charges -->
+        <h6 class="mt-4 mb-2 fw-bold">2. Fixed & Capacity Charges</h6>
+        <div class="table-responsive">
+          <table id="fixedTable" class="table table-striped small">
+            <thead class="table-dark">
+              <tr><th>Charge Type</th><th>Rate</th></tr>
+            </thead>
+            <tbody id="fixedTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Other Charges -->
+        <h6 class="mt-4 mb-2 fw-bold">3. Other Charges</h6>
+        <div class="table-responsive">
+          <table id="otherTable" class="table table-striped small">
+            <thead class="table-dark">
+              <tr><th>Charge</th><th>Rate</th></tr>
+            </thead>
+            <tbody id="otherTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- COST ESTIMATOR                                                -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <h5 class="mb-3">🧮 Cost Estimator — Estimate Your Monthly Megaflex Bill</h5>
+        <p class="small text-muted mb-3">Enter your expected consumption, NMD, voltage level, and transmission zone. Results update live.</p>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-2">
+            <label class="form-label small">Consumption</label>
+            <input type="number" id="estConsumption" class="form-control form-control-sm" value="100000" step="1000">
+          </div>
+          <div class="col-6 col-lg-2">
+            <label class="form-label small">Unit</label>
+            <select class="form-select form-select-sm" id="estUnit">
+              <option value="kWh" selected>kWh</option>
+              <option value="MWh">MWh</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2">
+            <label class="form-label small">NMD (kVA)</label>
+            <input type="number" id="estNmd" class="form-control form-control-sm" value="5000" step="100">
+          </div>
+          <div class="col-6 col-lg-2">
+            <label class="form-label small">Voltage</label>
+            <select class="form-select form-select-sm" id="estVoltage">
+              <option value="<500V"><500V</option>
+              <option value=">=500V" selected>≥500V</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2">
+            <label class="form-label small">Transmission Zone</label>
+            <select class="form-select form-select-sm" id="estZone">
+              <option value="<300km"><300km</option>
+              <option value=">=300km">≥300km</option>
+            </select>
+          </div>
+          <div class="col-6 col-lg-2 d-flex align-items-end">
+            <button class="btn btn-success btn-sm w-100" onclick="estimateBill()">Calculate</button>
+          </div>
+        </div>
+
+        <div class="row g-3" id="estimatorResults" style="display: none;">
+          <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+              <div class="text-muted small">Energy Charge</div>
+              <div class="fw-bold fs-5 sa-green" id="estEnergyCharge">—</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+              <div class="text-muted small">Capacity Charge</div>
+              <div class="fw-bold fs-5 sa-green" id="estCapacityCharge">—</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+              <div class="text-muted small">Fixed Charges</div>
+              <div class="fw-bold fs-5 sa-green" id="estFixedCharges">—</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm text-center p-3 bg-success bg-opacity-10">
+              <div class="text-muted small">Total Monthly</div>
+              <div class="fw-bold fs-5 text-success" id="estTotal">—</div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="alert alert-info small mb-0" id="estBreakdown"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- WHAT DRIVES TARIFFS                                          -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>What Drives Tariff Increases?</h5>
+        <ul>
+          <li><strong>Recovering system reliability:</strong> maintenance, spares, and fleet recovery costs.</li>
+          <li><strong>Capital investment:</strong> new generation, grid reinforcement, and network resilience.</li>
+          <li><strong>Fuel and operational costs:</strong> volatility in key cost inputs and efficiency performance.</li>
+          <li><strong>Exchange rates and inflation:</strong> costs linked to imported equipment/services.</li>
+          <li><strong>Debt and financing constraints:</strong> pressure on cost recovery and affordability.</li>
+          <li><strong>Policy and social objectives:</strong> balancing cost-reflective tariffs with affordability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TARIFF HISTORY BOOKS                                         -->
+    <!-- ============================================================ -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <h5 class="mb-2 fw-bold">📚 Eskom Tariff History — All Available Books (1996–2026)</h5>
+        <p class="text-muted small mb-3">
+          A complete index of Eskom's annual tariff booklets hosted on the official Eskom website.
+          Each booklet contains the full schedule of tariffs (Megaflex, Miniflex, HomeFlex, BusinessFlex)
+          for that financial year, including TOU rates, demand charges, and regulatory levies.
+        </p>
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead class="table-dark sticky-top">
+              <tr>
+                <th style="width: 50px;">#</th>
+                <th style="width: 140px;">Year</th>
+                <th>Booklet Name</th>
+                <th style="width: 80px;">Periods</th>
+                <th style="width: 100px;">Pages</th>
+                <th style="width: 140px;">Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><strong>2025/26</strong></td><td>Tariff Booklet 2025/2026</td><td>Full year</td><td>1,083 KB</td><td><a href="data/tariffs/2025-26.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>2</td><td><strong>2024/25</strong></td><td>Eskom Digital Tariff Booklet 2024</td><td>Full year</td><td>1,031 KB</td><td><a href="data/tariffs/2024-25.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>3</td><td><strong>2023/24</strong></td><td>Eskom Tariff Booklet Interactive</td><td>Full year</td><td>2,770 KB</td><td><a href="data/tariffs/2023-24.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>4</td><td><strong>2022/23</strong></td><td>Eskom Tariff Booklet 2022 Final</td><td>Full year</td><td>2,181 KB</td><td><a href="data/tariffs/2022-23.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>5</td><td><strong>2021/22</strong></td><td>Tariff Booklet Final</td><td>Full year</td><td>9,591 KB</td><td><a href="data/tariffs/2021-22.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>6</td><td><strong>2020/21</strong></td><td>Tariff Booklet 2020–21</td><td>Full year</td><td>7,142 KB</td><td><a href="data/tariffs/2020-21.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>7</td><td><strong>2019/20</strong></td><td>Tariff Booklet 2019–20</td><td>Full year</td><td>9,848 KB</td><td><a href="data/tariffs/2019-20.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>8</td><td><strong>2018/19</strong></td><td>Tariff Booklet 2018–19</td><td>Full year</td><td>5,505 KB</td><td><a href="data/tariffs/2018-19.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>9</td><td><strong>2017/18</strong></td><td>Tariff Booklet 2017–18</td><td>Full year</td><td>4,225 KB</td><td><a href="data/tariffs/2017-18.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>10</td><td><strong>2016/17</strong></td><td>Tariff Booklet Proof 1</td><td>Full year</td><td>2,533 KB</td><td><a href="data/tariffs/2016-17.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>11</td><td><strong>2015/16</strong></td><td>Tariff Booklet 2015–16</td><td>Full year</td><td>1,124 KB</td><td><a href="data/tariffs/2015-16.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>12</td><td><strong>2014/15</strong></td><td>Tariff Booklet 2014–15</td><td>Full year</td><td>1,178 KB</td><td><a href="data/tariffs/2014-15.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>13</td><td><strong>2013/14</strong></td><td>Tariff Booklet 2013–14</td><td>Full year</td><td>3,363 KB</td><td><a href="data/tariffs/2013-14.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>14</td><td><strong>2012/13</strong></td><td>Tariff Booklet 2012–13</td><td>Full year</td><td>4,352 KB</td><td><a href="data/tariffs/2012-13.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>15</td><td><strong>2011/12</strong></td><td>Tariff Booklet 2011–12</td><td>Full year</td><td>1,791 KB</td><td><a href="data/tariffs/2011-12.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>16</td><td><strong>2010/11</strong></td><td>Tariff Booklet 2010–11</td><td>Full year</td><td>907 KB</td><td><a href="data/tariffs/2010-11.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>17</td><td><strong>2009/10</strong></td><td>Tariff Booklet 2009–10</td><td>Full year</td><td>1,022 KB</td><td><a href="data/tariffs/2009-10.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>18</td><td><strong>2008/9</strong></td><td>Tariff Booklet 2008–09</td><td>2 periods</td><td>500 KB + 1,718 KB</td><td><a href="data/tariffs/2008-09_Apr-Jun.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Apr–Jun</a> <a href="data/tariffs/2008-09_Jul-Jun.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Jul–Jun</a></td></tr>
+              <tr><td>19</td><td><strong>2007/8</strong></td><td>Tariff Booklet 2007–08</td><td>Full year</td><td>7,107 KB</td><td><a href="data/tariffs/2007-08.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>20</td><td><strong>2006/7</strong></td><td>Tariff Booklet 2006–07</td><td>Full year</td><td>1,234 KB</td><td><a href="data/tariffs/2006-07.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>21</td><td><strong>2005/6</strong></td><td>Tariff Booklet 2005–06</td><td>Full year</td><td>578 KB</td><td><a href="data/tariffs/2005-06.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>22</td><td><strong>2004</strong></td><td>Tariff Booklet 2004</td><td>Calendar year</td><td>3,550 KB</td><td><a href="data/tariffs/2004.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>23</td><td><strong>2003</strong></td><td>Tariff Booklet 2003</td><td>Calendar year</td><td>3,062 KB</td><td><a href="data/tariffs/2003.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>24</td><td><strong>2002</strong></td><td>Tariff Booklet 2002</td><td>2 periods</td><td>3,907 KB + 3,616 KB</td><td><a href="data/tariffs/2002_Jan-Jun.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Jan–Jun</a> <a href="data/tariffs/2002_Jul-Dec.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Jul–Dec</a></td></tr>
+              <tr><td>25</td><td><strong>2001</strong></td><td>Tariff Booklet 2001</td><td>Calendar year</td><td>4,214 KB</td><td><a href="data/tariffs/2001.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>26</td><td><strong>2000</strong></td><td>Tariff Booklet 2000</td><td>Calendar year</td><td>3,302 KB</td><td><a href="data/tariffs/2000.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>27</td><td><strong>1999</strong></td><td>Tariff Booklet 1999</td><td>Calendar year</td><td>5,537 KB</td><td><a href="data/tariffs/1999.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>28</td><td><strong>1998</strong></td><td>Tariff Booklet 1998</td><td>Calendar year</td><td>4,227 KB</td><td><a href="data/tariffs/1998.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>29</td><td><strong>1997</strong></td><td>Tariff Booklet 1997</td><td>Calendar year</td><td>2,837 KB</td><td><a href="data/tariffs/1997.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 PDF</a></td></tr>
+              <tr><td>30</td><td><strong>1996</strong></td><td>Tariff Book & Tariff Card</td><td>2 documents</td><td>7,728 KB + 1,921 KB</td><td><a href="data/tariffs/1996_Book.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Book</a> <a href="data/tariffs/1996_Card.pdf" target="_blank" class="btn btn-sm btn-outline-dark">📄 Card</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0">
+          All 33 PDFs downloaded from <a href="https://www.eskom.co.za/distribution/tariffs-and-charges/5189-2/" target="_blank" rel="noreferrer">Eskom Tariff History page</a>
+          and saved locally to <code>data/tariffs/</code>. Covers 30 years from 1996 to 2025/26.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ============================================================
+    // DATA LOADED FROM CSV
+    // ============================================================
+    let CSV_DATA = [];
+    let isUSD = false;
+    let displayUnit = 'kWh'; // 'kWh' or 'MWh'
+    let exchangeRate = 17;
+
+    async function loadCSV() {
+      const resp = await fetch('data/eskom_megaflex_rates_2025_26.csv');
+      const text = await resp.text();
+      const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+      const headers = lines[0].split(',').map(h => h.trim());
+      CSV_DATA = lines.slice(1).map(line => {
+        const vals = [];
+        let cur = '', q = false;
+        for (const ch of line) {
+          if (ch === '"') { q = !q; continue; }
+          if (ch === ',' && !q) { vals.push(cur.trim()); cur = ''; continue; }
+          cur += ch;
+        }
+        vals.push(cur.trim());
+        const obj = {};
+        headers.forEach((h, i) => { obj[h] = vals[i] || null; });
+        return obj;
+      });
+    }
+
+    function getRate(category, subCategory, zone, voltage, period, season) {
+      for (const r of CSV_DATA) {
+        if (r.Category !== category) continue;
+        if (r.SubCategory !== subCategory) continue;
+        if (r.TransmissionZone !== 'All' && r.TransmissionZone !== zone) continue;
+        if (r.VoltageLevel !== 'All' && r.VoltageLevel !== voltage) continue;
+        if (r.Period !== 'All' && r.Period !== period) continue;
+        if (r.Season !== 'All' && r.Season !== season) continue;
+        return parseFloat(r.Value);
+      }
+      return null;
+    }
+
+    // ============================================================
+    // RENDER TABLES
+    // ============================================================
+    function fmt(v, u) {
+      if (v === null || v === undefined) return '—';
+      const unit = u || '';
+      const rate = isUSD ? (v / exchangeRate) : v;
+      const sym = isUSD ? '$' : 'R';
+      if (unit === 'c/kWh' || unit === 'c/kVArh') {
+        // Convert cents to display in R or USD
+        const perUnit = displayUnit === 'MWh' ? (v * 10) : (v / 100); // c/kWh -> R/MWh = *10, R/kWh = /100
+        const converted = isUSD ? (perUnit / exchangeRate) : perUnit;
+        const label = isUSD ? '$' : '';
+        return `${sym}${converted.toFixed(4)} /${displayUnit}`;
+      }
+      if (unit === 'R/kVA/month' || unit === 'R/day' || unit === 'R/event' || unit === 'R/month') {
+        const converted = isUSD ? (rate).toFixed(2) : v.toFixed(2);
+        return `${sym}${converted}`;
+      }
+      if (unit === 'times normal demand charge') {
+        return `${v}x`;
+      }
+      if (unit === '%') {
+        return `${v}%`;
+      }
+      return `${sym}${v.toFixed(2)}`;
+    }
+
+    function renderAllTables() {
+      exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || 17;
+      renderEnergyTable();
+      renderFixedTable();
+      renderOtherTable();
+    }
+
+    function renderEnergyTable() {
+      const tbody = document.getElementById('energyTableBody');
+      const zones = ['<300km', '>=300km'];
+      const voltages = ['<500V', '>=500V'];
+      const periods = ['Peak', 'Standard', 'Off-Peak'];
+      const seasons = ['High Summer', 'Low Summer'];
+
+      tbody.innerHTML = '';
+      for (const zone of zones) {
+        for (const voltage of voltages) {
+          const tr = document.createElement('tr');
+          let cells = `<td>${zone}</td><td>${voltage}</td>`;
+          for (const season of seasons) {
+            for (const period of periods) {
+              const val = getRate('ActiveEnergy', 'Energy Charge', zone, voltage, period, season);
+              cells += `<td class="text-end">${val !== null ? fmt(val, 'c/kWh') : '—'}</td>`;
+            }
+          }
+          tr.innerHTML = cells;
+          tbody.appendChild(tr);
+        }
+      }
+    }
+
+    function renderFixedTable() {
+      const tbody = document.getElementById('fixedTableBody');
+      tbody.innerHTML = '';
+      for (const r of CSV_DATA) {
+        if (r.Category !== 'FixedCharge') continue;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.SubCategory}</td><td class="text-end">${fmt(parseFloat(r.Value), r.Unit)}</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function renderOtherTable() {
+      const tbody = document.getElementById('otherTableBody');
+      const others = CSV_DATA.filter(r => r.Category === 'Other');
+      tbody.innerHTML = others.map(r =>
+        `<tr><td>${r.SubCategory}</td><td class="text-end">${fmt(parseFloat(r.Value), r.Unit)}</td></tr>`
+      ).join('');
+    }
+
+    // ============================================================
+    // CURRENCY & UNIT TOGGLES
+    // ============================================================
+    function toggleCurrency() {
+      isUSD = document.getElementById('currencyToggle').checked;
+      renderAllTables();
+    }
+
+    function setUnit(unit) {
+      displayUnit = unit;
+      document.getElementById('btnKwh').classList.toggle('active', unit === 'kWh');
+      document.getElementById('btnMwh').classList.toggle('active', unit === 'MWh');
+      // Re-render energy table with new unit
+      renderEnergyTable();
+    }
+
+    // ============================================================
+    // COST ESTIMATOR
+    // ============================================================
+    function estimateBill() {
+      const consumption = parseFloat(document.getElementById('estConsumption').value) || 0;
+      const estUnit = document.getElementById('estUnit').value;
+      const nmd = parseFloat(document.getElementById('estNmd').value) || 0;
+      const voltage = document.getElementById('estVoltage').value;
+      const zone = document.getElementById('estZone').value;
+      const rate = parseFloat(document.getElementById('exchangeRate').value) || 17;
+
+      // Convert consumption to kWh if in MWh
+      const kwh = estUnit === 'MWh' ? consumption * 1000 : consumption;
+
+      // Energy: weighted average across Peak/Std/OffPk for High Summer, <500V, zone
+      // Use a typical 30% Peak, 50% Standard, 20% Off-Peak split
+      const pk = getRate('ActiveEnergy', 'Energy Charge', zone, voltage, 'Peak', 'High Summer') || 0;
+      const std = getRate('ActiveEnergy', 'Energy Charge', zone, voltage, 'Standard', 'High Summer') || 0;
+      const off = getRate('ActiveEnergy', 'Energy Charge', zone, voltage, 'Off-Peak', 'High Summer') || 0;
+      const avgRateCents = pk * 0.30 + std * 0.50 + off * 0.20;
+      const energyChargeZar = kwh * avgRateCents / 100;
+
+      // Capacity charge
+      const genCapZar = nmd * 9.40; // R/kVA/month
+      const tuosZar = nmd * 48.10;
+      const duosZar = nmd * 12.50;
+
+      // Fixed charges
+      const legacyZar = kwh * 22.78 / 100;
+      const dsmZar = kwh * 0.75 / 100;
+      const asfZar = kwh * 0.36 / 100;
+      const nnZar = kwh * 2.45 / 100;
+      const emcZar = kwh * 0.15 / 100;
+      const envZar = kwh * 3.50 / 100;
+      const serviceZar = 198.52 * 30; // ~30 days
+
+      // Totals
+      const fixedTotal = legacyZar + dsmZar + asfZar + nnZar + emcZar + envZar + serviceZar;
+      const capacityTotal = genCapZar + tuosZar + duosZar;
+      const grandTotal = energyChargeZar + fixedTotal + capacityTotal;
+
+      // Format output
+      const sym = isUSD ? '$' : 'R';
+      const divisor = isUSD ? rate : 1;
+
+      document.getElementById('estEnergyCharge').textContent = `${sym}${(energyChargeZar / divisor).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+      document.getElementById('estCapacityCharge').textContent = `${sym}${(capacityTotal / divisor).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+      document.getElementById('estFixedCharges').textContent = `${sym}${(fixedTotal / divisor).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+      document.getElementById('estTotal').textContent = `${sym}${(grandTotal / divisor).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+
+      document.getElementById('estBreakdown').innerHTML = `
+        <strong>Breakdown:</strong> Energy (${kwh.toLocaleString()} kWh × avg ${avgRateCents.toFixed(2)} c/kWh) = ${sym}${(energyChargeZar/divisor).toLocaleString(undefined, {maximumFractionDigits:0})} |
+        Capacity (${nmd.toLocaleString()} kVA × gen/tuos/duos) = ${sym}${(capacityTotal/divisor).toLocaleString(undefined, {maximumFractionDigits:0})} |
+        Fixed (legacy, DSM, service, etc.) = ${sym}${(fixedTotal/divisor).toLocaleString(undefined, {maximumFractionDigits:0})}
+      `;
+
+      document.getElementById('estimatorResults').style.display = '';
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadCSV();
+      renderAllTables();
+      setUnit('kWh');
+    });
+  </script>
+</body>
+</html>

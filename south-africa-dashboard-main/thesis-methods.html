@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methods • SAWEM ABM-MDP-OPF Framework</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    .sa-green { color: #007A4D; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold text-sa-green">&#128218; Methods &#8212; The Mathematical Core</h1>
+    <p class="lead text-muted mb-4">
+      This page condenses the full mathematical formulations for the three pillars of the SAWEM
+      evolutionary analysis framework. The system works as a closed loop:
+      <strong>Agent-Based Model &rarr; Demand Scenario &rarr; OPF &rarr; Prices &rarr; Agent Learning (MDP) &rarr; next cycle</strong>.
+    </p>
+
+    <!-- OPF -->
+    <div class="card border-2 mb-4" style="border-color: #007A4D;">
+      <div class="card-header fw-bold" style="background: #007A4D; color: white;">1. Optimal Power Flow (OPF) &#8212; Security-Constrained Economic Dispatch</div>
+      <div class="card-body" style="background: #fafafa;">
+        <p class="mb-2"><strong>Objective &#8212; Minimise total system bid cost</strong></p>
+        <div class="math mb-3">
+          min &nbsp; &#931;<sub>t &#8712; T</sub> &#931;<sub>g &#8712; G</sub> [ C<sub>g</sub>&#183;p<sub>g,t</sub> + SU<sub>g</sub>&#183;u<sub>g,t</sub> + NL<sub>g</sub>&#183;v<sub>g,t</sub> ]
+        </div>
+        <p class="mb-2"><strong>Subject to:</strong></p>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light"><tr><th style="width:140px;">Constraint</th><th>Equation</th><th>Dual / Interpretation</th></tr></thead>
+          <tbody>
+            <tr><td>Power balance</td><td class="math">&#931;<sub>g</sub> p<sub>g,t</sub> + &#931;<sub>r</sub> p<sub>r,t</sub> = D<sub>t</sub> + &#931;<sub>&#8467;</sub> f<sub>&#8467;,t</sub></td><td>&#955;<sub>t</sub> = SMP (System Marginal Price)</td></tr>
+            <tr><td>Reserve requirement</td><td class="math">&#931;<sub>g</sub> r<sub>g,t</sub> &#8805; R<sub>t</sub></td><td>&#956;<sub>t</sub> = reserve scarcity price</td></tr>
+            <tr><td>Unit output limits</td><td class="math">v<sub>g,t</sub>&#183;P<sub>g</sub><sup>min</sup> &#8804; p<sub>g,t</sub> &#8804; v<sub>g,t</sub>&#183;P<sub>g</sub><sup>max</sup></td><td>Kuhn-Tucker multipliers on capacity</td></tr>
+            <tr><td>Ramp constraints</td><td class="math">p<sub>g,t</sub> &#8722; p<sub>g,t&#8722;1</sub> &#8804; RU<sub>g</sub> &nbsp; ; &nbsp; p<sub>g,t&#8722;1</sub> &#8722; p<sub>g,t</sub> &#8804; RD<sub>g</sub></td><td>inter-temporal coupling</td></tr>
+            <tr><td>Min up / min down</td><td class="math">(v<sub>g,t&#8722;1</sub>&#8722;v<sub>g,t</sub>)&#183;(TU<sub>g,t</sub> &#8722; UT<sub>g</sub>) &#8805; 0 &nbsp; ; &nbsp; (v<sub>g,t</sub>&#8722;v<sub>g,t&#8722;1</sub>)&#183;(TD<sub>g,t</sub> &#8722; DT<sub>g</sub>) &#8805; 0</td><td>unit commitment logic</td></tr>
+            <tr><td>DC line flow</td><td class="math">f<sub>&#8467;,t</sub> = (&#952;<sub>n,t</sub> &#8722; &#952;<sub>m,t</sub>)/X<sub>&#8467;</sub> &nbsp; ; &nbsp; |f<sub>&#8467;,t</sub>| &#8804; F<sub>&#8467;</sub><sup>max</sup></td><td>&#950;<sub>&#8467;,t</sub><sup>+</sup>, &#950;<sub>&#8467;,t</sub><sup>&#8722;</sup> = congestion rents</td></tr>
+            <tr><td>Reserve-energy coupling</td><td class="math">p<sub>g,t</sub> + r<sub>g,t</sub> &#8804; v<sub>g,t</sub>&#183;P<sub>g</sub><sup>max</sup></td><td>co-optimisation link</td></tr>
+            <tr><td>Lost opportunity payment</td><td class="math">LOP<sub>g,t</sub> = (&#955;<sub>t</sub> &#8722; C<sub>g</sub>)&#183;(p<sub>g,t</sub><sup>unc</sup> &#8722; p<sub>g,t</sub><sup>con</sup>)</td><td>compensation for constraint curtailment</td></tr>
+          </tbody>
+        </table>
+        <p class="small mb-0 text-muted">
+          <strong>Where:</strong> T = hours, G = generator set, C<sub>g</sub> = bid price, p<sub>g,t</sub> = dispatch,
+          SU<sub>g</sub> = start-up cost, NL<sub>g</sub> = no-load cost, v<sub>g,t</sub> &#8712; {0,1} = commitment,
+          u<sub>g,t</sub> &#8712; {0,1} = start-up indicator, D<sub>t</sub> = demand, f<sub>&#8467;,t</sub> = line flow,
+          &#952; = voltage angle, X<sub>&#8467;</sub> = line reactance, r<sub>g,t</sub> = reserve provision,
+          R<sub>t</sub> = reserve requirement. The optimisation is solved as a MILP using branch-and-cut.
+          The SMP &#955;<sub>t</sub> is the Lagrange multiplier on the power balance &#8212; this is the <strong>market-clearing price</strong>
+          paid to all dispatched generators (pay-as-clear) and charged to all load. The dual variables on
+          congestion constraints (&#950;) produce <strong>locational marginal prices</strong> that differ by node
+          when constraints bind.
+        </p>
+      </div>
+    </div>
+
+    <!-- ABM -->
+    <div class="card border-2 mb-4" style="border-color: #FFCD00;">
+      <div class="card-header fw-bold" style="background: #FFCD00; color: #000;">2. Agent-Based Model (ABM) &#8212; SAWEM Market Participants</div>
+      <div class="card-body" style="background: #fafafa;">
+        <p class="mb-2"><strong>Agent population</strong></p>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light"><tr><th>Agent Type</th><th>Count</th><th>Action Space</th><th>State Variables</th><th>Objective</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Generators</strong></td><td>n &#8811; 1</td><td>bid C<sub>g,t</sub>, avail A<sub>g,t</sub>, invest I<sub>g,t</sub></td><td>capacity, fuel cost, age, share</td><td>max PV(profit = SMP&#183;p &#8722; C(p))</td></tr>
+            <tr><td><strong>Load / BRPs</strong></td><td>m &#8811; 1</td><td>D<sub>t</sub><sup>bid</sup>, PPA, hedging</td><td>demand profile, budget, risk</td><td>min cost of supply</td></tr>
+            <tr><td><strong>CPA</strong></td><td>1</td><td>vesting settlement, DAM trading</td><td>Legacy account, SMP forecast</td><td>min legacy charge</td></tr>
+            <tr><td><strong>NTCSA</strong></td><td>1</td><td>line expansion, reserve R<sub>t</sub></td><td>topology, congestion, reliability</td><td>min system cost + VOLL</td></tr>
+            <tr><td><strong>NERSA</strong></td><td>1</td><td>price caps, carbon tax, fines</td><td>emissions, affordability, security</td><td>max social welfare</td></tr>
+            <tr><td><strong>IPP Investors</strong></td><td>k &#8811; 1</td><td>entry timing, MW, tech, CfD strike</td><td>LCOE, PPA terms, resource</td><td>max NPV = &#931; (strike &#8722; SMP) &#183; MWh</td></tr>
+          </tbody>
+        </table>
+        <p class="mb-2 mt-3"><strong>ABM loop (per time-step):</strong></p>
+        <ol class="small">
+          <li><strong>State:</strong> agents observe S<sub>t</sub> = {SMP history, demand forecast, reserve margin, fuel prices, policy, congestion}</li>
+          <li><strong>Action:</strong> each agent chooses a<sub>i,t</sub> via policy &#960;<sub>i</sub>(a|S<sub>t</sub>)</li>
+          <li><strong>Aggregation:</strong> bids {C<sub>g,t</sub>}, {D<sub>t</sub><sup>bid</sup>} collected by Market Operator</li>
+          <li><strong>OPF:</strong> SCUC/SCED runs &#8594; dispatch p<sub>g,t</sub>, SMP &#955;<sub>t</sub>, congestion &#950;, reserve prices</li>
+          <li><strong>Settlement:</strong> generator profit = &#955;&#183;p &#8722; C(p) &#8722; SU &#8722; NL; load pays &#955;&#183;D</li>
+          <li><strong>Learning:</strong> policies updated via MDP reward r<sub>i,t</sub></li>
+          <li><strong>Evolution:</strong> demand growth, retirements, new entry, policy changes</li>
+          <li><strong>t &#8594; t+1</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- MDP -->
+    <div class="card border-2 mb-4" style="border-color: #002395;">
+      <div class="card-header fw-bold" style="background: #002395; color: white;">3. Markov Decision Processes (MDP) &#8212; Agent Learning over Time</div>
+      <div class="card-body" style="background: #fafafa;">
+        <p class="mb-2"><strong>Formal MDP: &#10216;S<sub>i</sub>, A<sub>i</sub>, P<sub>i</sub>, R<sub>i</sub>, &#947;&#10217;</strong></p>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light"><tr><th>Component</th><th>Market Instantiation</th></tr></thead>
+          <tbody>
+            <tr><td>S<sub>t</sub></td><td>{&#955;<sub>t&#8722;&#964;..t</sub>, D<sub>t</sub>, reserve margin, fuel prices, carbon tax, congestion, competitor capacities}</td></tr>
+            <tr><td>A<sub>i</sub></td><td>generator: bid C &#8712; &#8477;<sup>+</sup>; load: D<sup>bid</sup> &#8712; &#8477;<sup>+</sup>; IPP: invest MW &#8712; &#8484;<sup>+</sup></td></tr>
+            <tr><td>P(s&#8242;|s,a)</td><td>driven by OPF outcome, competitor reactions, stochastic demand, outages</td></tr>
+            <tr><td>R(s,a)</td><td>generator: &#955;&#183;p &#8722; C(p) &#8722; SU &#8722; NL; load: &#8722;&#955;&#183;D; IPP: &#931;(strike&#8722;&#955;)&#183;MWh &#8722; CAPEX</td></tr>
+            <tr><td>&#947;</td><td>~0.95&#8211;0.99 (WACC 8&#8211;12% real)</td></tr>
+          </tbody>
+        </table>
+        <p class="mb-2 mt-3"><strong>Objective:</strong></p>
+        <div class="math mb-3">&#960;<sup>*</sup> = argmax &#120055;[ &#931; &#947;<sup>&#964;</sup> R(S<sub>t+&#964;</sub>, a<sub>t+&#964;</sub>) ]</div>
+        <p class="mb-2"><strong>Q-learning update:</strong></p>
+        <div class="math mb-3">Q(S,a) &#8592; Q(S,a) + &#945;[R + &#947; max<sub>a&#8242;</sub> Q(S&#8242;,a&#8242;) &#8722; Q(S,a)]</div>
+        <p class="small">For continuous actions: DDPG/PPO actor-critic.</p>
+        <p class="mb-2 mt-3"><strong>Multi-agent (MADDPG) gradient:</strong></p>
+        <div class="math">&#8711;<sub>&#966;<sub>i</sub></sub> J = &#120055;[ &#8711;<sub>&#966;<sub>i</sub></sub> &#960;<sub>i</sub>(a<sub>i</sub>|S) &#183; &#8711;<sub>a<sub>i</sub></sub> Q<sub>i</sub>(S, a<sub>1..N</sub>) |<sub>a<sub>i</sub>=&#960;<sub>i</sub>(S)</sub> ]</div>
+      </div>
+    </div>
+
+    <!-- Integration -->
+    <div class="card border-0 mb-4" style="background: #f8f9fa;">
+      <div class="card-body">
+        <h5 class="fw-bold">&#128260; Closed-Loop Framework</h5>
+        <div class="row small">
+          <div class="col-6 col-md-3"><div class="p-2 border rounded text-center bg-white mb-2"><strong>&#127963; Macro ABM</strong><br><span class="text-muted">Sectoral GDP, electrification</span></div><div class="text-center fw-bold">&darr;</div></div>
+          <div class="col-6 col-md-3"><div class="p-2 border rounded text-center bg-white mb-2"><strong>&#128200; Demand</strong><br><span class="text-muted">D<sub>t</sub> = f(GDP, pop, efficiency)</span></div><div class="text-center fw-bold">&darr;</div></div>
+          <div class="col-6 col-md-3"><div class="p-2 border rounded text-center bg-white mb-2"><strong>&#9889; SAWEM ABM</strong><br><span class="text-muted">Generator / load / CPA bids</span></div><div class="text-center fw-bold">&darr;</div></div>
+          <div class="col-6 col-md-3"><div class="p-2 border rounded text-center bg-white mb-2"><strong>&#129518; OPF</strong><br><span class="text-muted">&#955;, p, f, &#950;, r</span></div><div class="text-center fw-bold">&rarr; reward &#8594; MDP<br>&larr; state &#8592;</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stochastic Dynamical Systems • SAWEM ABM-MDP-OPF Foundation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .sa-gold  { color: #FFCD00; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-basics    { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-foundation { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-core      { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-advanced   { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-framework  { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .equation-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+    }
+    .glossary-term { font-weight: 600; color: #007A4D; }
+    .nav-pills .nav-link { color: #495057; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+    .nav-pills .nav-link.active { background: #007A4D; color: white; }
+    .bass-quote {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-navigation sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#big-picture">&#127917; The Big Picture</a>
+          <a class="nav-link" href="#probability">&#9632; Probability Basics</a>
+          <a class="nav-link" href="#random-vars">&#9632; Random Variables</a>
+          <a class="nav-link" href="#stochastic-processes">&#9632; Stochastic Processes</a>
+          <a class="nav-link" href="#sdes">&#9632; SDEs & Calculus</a>
+          <a class="nav-link" href="#fokker-planck">&#9632; Fokker-Planck</a>
+          <a class="nav-link" href="#nonlinear">&#9632; Nonlinear Dynamics</a>
+          <a class="nav-link" href="#framework">&#9632; Back to SAWEM</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold text-sa-green">&#127936; Stochastic Dynamical Systems</h1>
+        <p class="lead text-muted mb-4">
+          The mathematical bedrock of the SAWEM ABM-MDP-OPF framework &mdash; from the flip of a coin
+          to the noise-driven evolution of a power market.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- THE BIG PICTURE                                            -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="big-picture">
+          <div class="card-header level-basics">
+            &#127917; The Big Picture &mdash; What This Is and Why It Matters
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Layman's Introduction</h5>
+              <p class="mb-2">
+                Imagine you're trying to predict where a leaf will land after falling into a river. You
+                know the flow of the river (the <strong>deterministic dynamics</strong>). But the leaf
+                also gets jostled by random eddies, bumps into other leaves, and catches the wind
+                (<strong>stochastic noise</strong>). You cannot predict its exact path &mdash; but you
+                <em>can</em> describe the <strong>probability</strong> of where it might be a minute
+                from now.
+              </p>
+
+              <p class="mb-0">
+                A <strong>stochastic dynamical system</strong> is exactly this: a system whose evolution
+                is governed partly by known rules and partly by randomness. You can never say &ldquo;the
+                system will be at X at time T&rdquo; &mdash; instead you say &ldquo;there is a 73%
+                probability it will be near X.&rdquo; This is not a weakness of the model; it is a
+                <strong>faithful representation of reality</strong>. The price of electricity next hour
+                depends on known costs and dispatch rules <em>and</em> on random outages, wind gusts,
+                demand spikes, and strategic guesses by competitors.
+              </p>
+            </div>
+
+            <p>
+              This page climbs the ladder of abstraction from the simplest probability concepts up
+              through the full machinery of stochastic differential equations, Fokker-Planck theory,
+              and noise-driven nonlinear dynamics. Every piece of math here is used somewhere in the
+              SAWEM framework &mdash; whether it is the random forced outage of a coal station, the
+              Wiener process underlying an agent's Q-learning exploration, or the Fokker-Planck
+              equation that governs the evolution of the SMP distribution over time.
+            </p>
+
+            <div class="bass-quote">
+              <strong>&#128218; From <em>Stochastic Processes</em> by Richard F. Bass (Cambridge, 2011):</strong><br>
+              &ldquo;Probability theory is about assigning numbers to events in a consistent way,
+              and stochastic processes are about families of random variables indexed by time.
+              The key idea is that we can model uncertainty not as a single number but as a
+              <em>distribution</em> that evolves.&rdquo;
+            </div>
+
+            <h6 class="fw-bold mt-3">Roadmap of This Page</h6>
+            <div class="row g-2 small">
+              <div class="col-md-3"><div class="p-2 border rounded bg-white text-center">&#9632; Probability Basics<br><span class="text-muted">Measure, events, axioms</span></div></div>
+              <div class="col-md-3"><div class="p-2 border rounded bg-white text-center">&#9632; Random Variables<br><span class="text-muted">PDF, CDF, moments, CLT</span></div></div>
+              <div class="col-md-3"><div class="p-2 border rounded bg-white text-center">&#9632; Stochastic Processes<br><span class="text-muted">Wiener, OU, white noise</span></div></div>
+              <div class="col-md-3"><div class="p-2 border rounded bg-white text-center">&#9632; SDEs & Calculus<br><span class="text-muted">Ito, Stratonovich, Euler-Maruyama</span></div></div>
+              <div class="col-md-3 mt-2"><div class="p-2 border rounded bg-white text-center">&#9632; Fokker-Planck<br><span class="text-muted">Density evolution, stationary solutions</span></div></div>
+              <div class="col-md-3 mt-2"><div class="p-2 border rounded bg-white text-center">&#9632; Nonlinear Dynamics<br><span class="text-muted">Bifurcations, noise-induced states</span></div></div>
+              <div class="col-md-3 mt-2"><div class="p-2 border rounded bg-white text-center">&#9632; &#8680; SAWEM<br><span class="text-muted">Back to the power market</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PROBABILITY BASICS                                         -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="probability">
+          <div class="card-header level-basics">
+            &#9632; Part 1 &mdash; Probability: The Language of Uncertainty
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; What Is Probability, Really?</h5>
+              <p class="mb-0">
+                When you say &ldquo;there's a 30% chance of rain tomorrow,&rdquo; you are making a
+                statement about a <strong>probability space</strong>. You have a set of possible
+                <strong>outcomes</strong> (rain, no rain), a collection of <strong>events</strong>
+                (any combination of outcomes you care about), and a <strong>probability measure</strong>
+                that assigns numbers between 0 and 1 to each event. The rules are simple: the probability
+                of the whole space is 1, probabilities are never negative, and the probability of
+                disjoint events add. That's it &mdash; that's the entire axiomatic foundation of
+                probability theory (Kolmogorov, 1933).
+              </p>
+            </div>
+
+            <h5 class="fw-bold">1.1 The Probability Space (&#937;, &#8464;, P)</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light"><tr><th>Symbol</th><th>Name</th><th>Meaning</th><th>SAWEM Example</th></tr></thead>
+              <tbody>
+                <tr><td>&#937;</td><td>Sample space</td><td>The set of all possible outcomes</td><td>{every possible combination of generator outages, wind speeds, demand levels, bid prices}</td></tr>
+                <tr><td>&#8464;</td><td>&#963;-algebra</td><td>The collection of events we can assign probabilities to</td><td>{&ldquo;SMP > R2000/MWh&rdquo;, &ldquo;at least 2 coal stations forced out&rdquo;, &ldquo;wind < 5 m/s&rdquo;}</td></tr>
+                <tr><td>P</td><td>Probability measure</td><td>A function P : &#8464; &#8594; [0,1] satisfying P(&#937;)=1, additivity for disjoint events</td><td>P(SMP > 2000 | coal price = R250/GJ) = 0.12</td></tr>
+              </tbody>
+            </table>
+            <p class="small">
+              <strong>Key axioms (Kolmogorov, 1933):</strong> (i) P(A) &ge; 0 for all A &#8712; &#8464;.
+              (ii) P(&#937;) = 1. (iii) If A<sub>1</sub>, A<sub>2</sub>, ... are pairwise disjoint
+              (mutually exclusive), then P(&#8740; A<sub>i</sub>) = &#931; P(A<sub>i</sub>).
+            </p>
+
+            <h5 class="fw-bold mt-4">1.2 Conditional Probability & Bayes' Rule</h5>
+            <p class="small">
+              The probability of event A <em>given</em> that event B occurred is:
+            </p>
+            <div class="math mb-3">
+              P(A | B) = P(A &#8745; B) / P(B) &nbsp; provided P(B) > 0
+            </div>
+            <p class="small">
+              <strong>Bayes' Theorem</strong> lets us update probabilities when we see evidence:
+            </p>
+            <div class="math mb-3">
+              P(A | B) = P(B | A) &middot; P(A) / P(B)
+            </div>
+            <p class="small">
+              <em>SAWEM use:</em> A generator agent updates its belief about the probability that
+              competitors are withholding capacity (A) given that it observes a high SMP (B).
+              This is the core of Bayesian learning in the MDP.
+            </p>
+
+            <h5 class="fw-bold mt-4">1.3 Expectation & Variance</h5>
+            <p class="small">
+              The <strong>expected value</strong> (mean) of a random variable X is the probability-weighted
+              average of its possible values:
+            </p>
+            <div class="math mb-3">
+              &#120055;[X] = &#931; x<sub>i</sub> &middot; P(X = x<sub>i</sub>) &nbsp; (discrete)<br>
+              &#120055;[X] = &#8747; x &middot; f(x) dx &nbsp; (continuous, where f(x) is the PDF)
+            </div>
+            <p class="small">
+              Expectation is <strong>linear</strong>: &#120055;[aX + bY] = a&#120055;[X] + b&#120055;[Y].
+              This is crucial &mdash; the expected profit of a portfolio of generators is the sum of
+              their expected individual profits, even if they are correlated.
+            </p>
+            <p class="small">
+              The <strong>variance</strong> measures spread:
+            </p>
+            <div class="math mb-3">
+              Var(X) = &#120055;[(X &minus; &#120055;[X])<sup>2</sup>] = &#120055;[X<sup>2</sup>] &minus; (&#120055;[X])<sup>2</sup>
+            </div>
+            <p class="small">
+              Standard deviation: &#963; = &radic;Var(X). In SAWEM, the <strong>volatility of SMP</strong>
+              is precisely the standard deviation of hourly SMP over a year &mdash; a critical input
+              to investment decisions.
+            </p>
+
+            <h5 class="fw-bold mt-4">1.4 Joint, Marginal & Conditional Distributions</h5>
+            <p class="small">
+              When we have <em>two</em> random variables X and Y (e.g., SMP and wind output), their
+              <strong>joint distribution</strong> f(x,y) describes the probability of both taking
+              specific values. The <strong>marginal</strong> of X is:
+            </p>
+            <div class="math mb-3">
+              f<sub>X</sub>(x) = &#8747; f(x,y) dy &nbsp; (integrate out y)
+            </div>
+            <p class="small">
+              Two variables are <strong>independent</strong> iff f(x,y) = f<sub>X</sub>(x) &middot; f<sub>Y</sub>(y).
+              Their <strong>covariance</strong> measures linear dependence:
+            </p>
+            <div class="math mb-3">
+              Cov(X,Y) = &#120055;[(X &minus; &#120055;[X])(Y &minus; &#120055;[Y])]
+            </div>
+            <p class="small">
+              <em>SAWEM use:</em> wind and solar output are negatively correlated with SMP (the
+              merit-order effect). Covariance between renewable output and price is the key risk
+              metric for CfD valuation.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RANDOM VARIABLES & DISTRIBUTIONS                           -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="random-vars">
+          <div class="card-header level-foundation">
+            &#9632; Part 2 &mdash; Random Variables & The Distributions That Matter
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; Why Distributions Are Like Fingerprints</h5>
+              <p class="mb-0">
+                Every random phenomenon has a characteristic shape &mdash; its <strong>distribution</strong>.
+                The number of customers entering a store in an hour has a Poisson distribution. Human
+                height is (approximately) Gaussian. Wind speeds follow a Weibull distribution. Once
+                you know the distribution, you know everything probabilistic about that phenomenon.
+                The math that follows is just the machinery for describing, combining, and transforming
+                these shapes.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">2.1 Cumulative Distribution Function (CDF)</h5>
+            <div class="math mb-3">
+              F<sub>X</sub>(x) = P(X &le; x)
+            </div>
+            <p class="small">
+              The CDF is a non-decreasing function from 0 to 1. It always exists for any random variable.
+              From it we derive the <strong>probability density function</strong> (PDF) for continuous
+              variables:
+            </p>
+            <div class="math mb-3">
+              f<sub>X</sub>(x) = dF<sub>X</sub>(x)/dx &nbsp; &rArr; &nbsp;
+              P(a < X &le; b) = &#8747;<sub>a</sub><sup>b</sup> f<sub>X</sub>(x) dx
+            </div>
+
+            <h5 class="fw-bold mt-4">2.2 The Key Distributions at a Glance</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Distribution</th><th>PDF f(x)</th><th>Mean</th><th>Variance</th><th>SAWEM Where?</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Gaussian (Normal)</strong><br>N(&mu;, &sigma;<sup>2</sup>)</td>
+                  <td class="math" style="font-size:0.8rem;">(1/&sigma;&radic;(2&pi;)) exp(&minus;(x&minus;&mu;)<sup>2</sup>/2&sigma;<sup>2</sup>)</td>
+                  <td>&mu;</td>
+                  <td>&sigma;<sup>2</sup></td>
+                  <td>Measurement noise, demand forecast error, Q-function exploration noise (Ornstein-Uhlenbeck)</td>
+                </tr>
+                <tr>
+                  <td><strong>Uniform</strong><br>U(a,b)</td>
+                  <td class="math" style="font-size:0.8rem;">1/(b&minus;a) for a &le; x &le; b</td>
+                  <td>(a+b)/2</td>
+                  <td>(b&minus;a)<sup>2</sup>/12</td>
+                  <td>Initial bid price randomization, Monte Carlo sampling</td>
+                </tr>
+                <tr>
+                  <td><strong>Bernoulli</strong><br>Bern(p)</td>
+                  <td class="math" style="font-size:0.8rem;">p for x=1, 1&minus;p for x=0</td>
+                  <td>p</td>
+                  <td>p(1&minus;p)</td>
+                  <td>Forced outage event per generator per hour</td>
+                </tr>
+                <tr>
+                  <td><strong>Binomial</strong><br>Bin(n,p)</td>
+                  <td class="math" style="font-size:0.8rem;">C(n,k) p<sup>k</sup>(1&minus;p)<sup>n&minus;k</sup></td>
+                  <td>np</td>
+                  <td>np(1&minus;p)</td>
+                  <td>Number of simultaneous forced outages across the fleet</td>
+                </tr>
+                <tr>
+                  <td><strong>Poisson</strong><br>Pois(&lambda;)</td>
+                  <td class="math" style="font-size:0.8rem;">e<sup>&minus;&lambda;</sup>&lambda;<sup>x</sup>/x!</td>
+                  <td>&lambda;</td>
+                  <td>&lambda;</td>
+                  <td>Arrival of new IPP projects in a year, number of load spikes above threshold</td>
+                </tr>
+                <tr>
+                  <td><strong>Exponential</strong><br>Exp(&lambda;)</td>
+                  <td class="math" style="font-size:0.8rem;">&lambda;e<sup>&minus;&lambda;x</sup>, x &ge; 0</td>
+                  <td>1/&lambda;</td>
+                  <td>1/&lambda;<sup>2</sup></td>
+                  <td>Time between forced outages, duration of an outage (memoryless property critical here)</td>
+                </tr>
+                <tr>
+                  <td><strong>Weibull</strong><br>Weib(k, &lambda;)</td>
+                  <td class="math" style="font-size:0.8rem;">(k/&lambda;)(x/&lambda;)<sup>k&minus;1</sup>e<sup>&minus;(x/&lambda;)<sup>k</sup></sup></td>
+                  <td>&lambda;&#915;(1+1/k)</td>
+                  <td>&lambda;<sup>2</sup>[&#915;(1+2/k)&minus;&#915;(1+1/k)<sup>2</sup>]</td>
+                  <td>Wind speed distribution (k~2 gives Rayleigh) &rarr; wind power output</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">2.3 The Central Limit Theorem (CLT)</h5>
+            <p class="small">
+              Perhaps the most important theorem in all of probability. It says: the <strong>sum</strong>
+              (or average) of many independent, identically distributed random variables is approximately
+              <strong>normally distributed</strong>, regardless of the original distribution.
+            </p>
+            <div class="math mb-3">
+              If X<sub>1</sub>,...,X<sub>n</sub> are i.i.d. with mean &mu; and variance &sigma;<sup>2</sup>, then<br>
+              (&#175;X &minus; &mu;) / (&sigma;/&radic;n) &nbsp; &rarr; &nbsp; N(0,1) &nbsp; as n &rarr; &infin;
+            </div>
+            <p class="small">
+              <em>Why this matters for SAWEM:</em> hourly SMP aggregated over a year is the sum of
+              8,760 correlated random variables. While the CLT technically requires independence,
+              there are versions for weakly dependent processes. So annual average SMP is approximately
+              normal &mdash; which is why we can use standard deviation as a risk metric.
+            </p>
+
+            <h5 class="fw-bold mt-4">2.4 Moment Generating Functions & Characteristic Functions</h5>
+            <p class="small">
+              These are &ldquo;generators&rdquo; of all moments of a distribution. The
+              <strong>moment generating function</strong> (MGF):
+            </p>
+            <div class="math mb-3">
+              M<sub>X</sub>(t) = &#120055;[e<sup>tX</sup>]
+            </div>
+            <p class="small">
+              The k-th derivative of M<sub>X</sub>(t) evaluated at t=0 gives the k-th moment:
+              M<sup>(k)</sup><sub>X</sub>(0) = &#120055;[X<sup>k</sup>].
+              The <strong>characteristic function</strong> &phi;<sub>X</sub>(t) = &#120055;[e<sup>itX</sup>]
+              always exists and uniquely determines the distribution. This is the tool used to prove
+              the CLT and to derive the distribution of sums of random variables in the OPF output analysis.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- STOCHASTIC PROCESSES                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="stochastic-processes">
+          <div class="card-header level-core">
+            &#9632; Part 3 &mdash; Stochastic Processes: Randomness Over Time
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; From Snapshots to Movies</h5>
+              <p class="mb-0">
+                A random variable is a snapshot &mdash; one random number. A <strong>stochastic
+                process</strong> is a movie &mdash; a whole family of random variables {X<sub>t</sub>},
+                one for each time t. The price of electricity at 3pm tomorrow is a random variable.
+                <em>The entire trajectory of prices for the next 365 days</em> is a stochastic process.
+                This is what our model actually generates: a random path through the space of possible
+                market outcomes.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">3.1 Definition</h5>
+            <p class="small">
+              A <strong>stochastic process</strong> is a collection of random variables
+              {X<sub>t</sub> : t &#8712; T} defined on a common probability space (&#937;, &#8464;, P).
+              The index set T is usually time (discrete: T = {0,1,2,...}; continuous: T = [0,&infin;)).
+            </p>
+            <p class="small">
+              Each fixed outcome &#969; &#8712; &#937; gives a <strong>trajectory</strong> or
+              <strong>realization</strong> t &#8594; X<sub>t</sub>(&#969;). The collection of
+              all possible trajectories is the <strong>ensemble</strong>.
+            </p>
+
+            <h5 class="fw-bold mt-4">3.2 Key Properties</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Property</th><th>Definition</th><th>SAWEM Relevance</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Stationarity</strong></td>
+                  <td>Joint distribution of (X<sub>t1</sub>,...,X<sub>tn</sub>) same as
+                      (X<sub>t1+&#964;</sub>,...,X<sub>tn+&#964;</sub>) for all &#964;</td>
+                  <td>Hourly SMP is <em>not</em> stationary (has diurnal and seasonal patterns).
+                      But <em>de-seasonalized</em> SMP innovations may be weakly stationary
+                      &mdash; required for many time-series forecasting models.</td>
+                </tr>
+                <tr>
+                  <td><strong>Markov property</strong></td>
+                  <td>P(X<sub>t+1</sub> | X<sub>t</sub>, X<sub>t&minus;1</sub>, ...) =
+                      P(X<sub>t+1</sub> | X<sub>t</sub>)</td>
+                  <td>The <strong>central assumption</strong> of the MDP framework &mdash; the
+                      future SMP depends on the past only through the current state. This is both
+                      a simplification and a modeling choice we validate empirically.</td>
+                </tr>
+                <tr>
+                  <td><strong>Martingale</strong></td>
+                  <td>&#120055;[X<sub>t+1</sub> | X<sub>t</sub>, ...] = X<sub>t</sub></td>
+                  <td>Under risk-neutral pricing, the discounted SMP is a martingale. Used for
+                      derivatives pricing on electricity (swaps, options, CfDs).</td>
+                </tr>
+                <tr>
+                  <td><strong>Ergodicity</strong></td>
+                  <td>Time averages converge to ensemble averages as T &rarr; &infin;</td>
+                  <td>Critical for interpreting a single simulation run: over 20 years, the
+                      time-average SMP should converge to the ensemble-average SMP. If not,
+                      we need many ensemble runs.</td>
+                </tr>
+                <tr>
+                  <td><strong>Autocorrelation</strong></td>
+                  <td>&rho;(k) = Cov(X<sub>t</sub>, X<sub>t+k</sub>) / Var(X<sub>t</sub>)</td>
+                  <td>SMP at hour t is correlated with SMP at hour t+1 (persistence from unit
+                      commitment, ramping constraints). Autocorrelation decays over hours to days.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">3.3 The Wiener Process (Brownian Motion) &mdash; The Atom of Stochastic Calculus</h5>
+            <p class="small">
+              Also called <strong>standard Brownian motion</strong>, denoted W<sub>t</sub> or B<sub>t</sub>.
+              This is the fundamental building block of all continuous-time stochastic calculus &mdash;
+              the equivalent of the sine function in trigonometry or the exponential in calculus.
+            </p>
+            <p class="small"><strong>Properties that define W<sub>t</sub>:</strong></p>
+            <ol class="small">
+              <li>W<sub>0</sub> = 0 almost surely.</li>
+              <li>W<sub>t</sub> has <strong>independent increments</strong>:
+                  for 0 &le; t<sub>1</sub> < t<sub>2</sub> < ...,
+                  the increments W<sub>t2</sub> &minus; W<sub>t1</sub>,
+                  W<sub>t3</sub> &minus; W<sub>t2</sub>, ... are independent.</li>
+              <li>W<sub>t</sub> has <strong>Gaussian increments</strong>:
+                  W<sub>t</sub> &minus; W<sub>s</sub> ~ N(0, t&minus;s).</li>
+              <li>W<sub>t</sub> has <strong>continuous paths</strong> (almost surely).</li>
+            </ol>
+            <p class="small">
+              <strong>Critical fact:</strong> W<sub>t</sub> is <em>nowhere differentiable</em>.
+              Its derivative dW<sub>t</sub>/dt does not exist in the ordinary sense. This is why
+              we need <em>stochastic calculus</em> instead of ordinary calculus.
+            </p>
+            <div class="bass-quote">
+              <strong>&#128218; Bass on the Wiener process:</strong><br>
+              &ldquo;Brownian motion is the fundamental continuous-time martingale. Every
+              continuous martingale can be represented as a time-changed Brownian motion.
+              If you understand Brownian motion, you understand the heart of stochastic
+              processes.&rdquo;
+            </div>
+
+            <h5 class="fw-bold mt-4">3.4 Gaussian White Noise</h5>
+            <p class="small">
+              Formally, <strong>white noise</strong> &#958;(t) is the (generalized) derivative of the
+              Wiener process: &#958;(t) = dW<sub>t</sub>/dt. Since W<sub>t</sub> is not differentiable,
+              &#958;(t) exists only as a <strong>generalized function</strong> (distribution). Its
+              autocorrelation is the Dirac delta:
+            </p>
+            <div class="math mb-3">
+              &#120055;[&#958;(t)&#958;(s)] = &delta;(t &minus; s)
+            </div>
+            <p class="small">
+              Physically: white noise has <strong>infinite power</strong> spread uniformly across
+              all frequencies (analogy: white light has all frequencies). In practice we approximate
+              it with noise whose correlation time is much shorter than the system's dynamics.
+            </p>
+
+            <h5 class="fw-bold mt-4">3.5 Ornstein-Uhlenbeck (OU) Process &mdash; &ldquo;Colored&rdquo; Noise</h5>
+            <p class="small">
+              The OU process is the only stationary, Gaussian, Markovian diffusion process. It adds
+              a mean-reverting drift to white noise:
+            </p>
+            <div class="math mb-3">
+              dY<sub>t</sub> = &minus;&theta;(Y<sub>t</sub> &minus; &mu;) dt + &sigma; dW<sub>t</sub>
+            </div>
+            <p class="small">
+              <strong>Parameters:</strong> &theta; = mean-reversion rate (1/&tau;, the correlation time),
+              &mu; = long-term mean, &sigma; = volatility.
+            </p>
+            <p class="small">
+              <strong>Autocorrelation:</strong>
+              &#120055;[ (Y<sub>t</sub> &minus; &mu;)(Y<sub>s</sub> &minus; &mu;) ] =
+              (&sigma;<sup>2</sup>/2&theta;) e<sup>&minus;&theta;|t&minus;s|</sup>.
+            </p>
+            <p class="small">
+              <strong>Stationary distribution:</strong> Y<sub>&infin;</sub> ~ N(&mu;, &sigma;<sup>2</sup>/2&theta;).
+            </p>
+            <p class="small">
+              <em>SAWEM use:</em> OU processes model mean-reverting fuel prices (coal, gas),
+              temperature (load driver), and the exploration noise in DDPG actor-critic
+              reinforcement learning (the OU process is the standard choice for continuous
+              action exploration in RL because it produces temporally correlated exploration).
+            </p>
+
+            <h5 class="fw-bold mt-4">3.6 Poisson Process & Jumps</h5>
+            <p class="small">
+              While the Wiener process has continuous paths, many real systems experience
+              <strong>jumps</strong> &mdash; discrete events at random times. The
+              <strong>Poisson process</strong> N<sub>t</sub> counts the number of events up to
+              time t, with:
+            </p>
+            <ul class="small">
+              <li>N<sub>0</sub> = 0</li>
+              <li>Independent increments</li>
+              <li>N<sub>t</sub> &minus; N<sub>s</sub> ~ Pois(&lambda;(t&minus;s))</li>
+            </ul>
+            <p class="small">
+              <em>SAWEM use:</em> generator forced outages are modeled as Poisson events
+              (each unit fails with intensity &#955; = 1/MTBF). The <strong>compound Poisson
+              process</strong> adds random jump sizes &mdash; used for load spikes (demand
+              jumps up by X MW when a large industrial customer starts a new process) and
+              for fuel price jumps (geopolitical shock to gas price).
+            </p>
+
+            <h5 class="fw-bold mt-4">3.7 The Power Spectrum & Wiener-Khintchine Theorem</h5>
+            <p class="small">
+              For a stationary process X<sub>t</sub>, the <strong>power spectral density</strong>
+              S<sub>X</sub>(f) tells us how much variance is at each frequency f. It is the
+              Fourier transform of the autocorrelation function:
+            </p>
+            <div class="math mb-3">
+              S<sub>X</sub>(f) = &#8747;<sub>&minus;&infin;</sub><sup>&infin;</sup>
+              R<sub>X</sub>(&#964;) e<sup>&minus;i2&pi;f&#964;</sup> d&#964;
+            </div>
+            <p class="small">
+              <em>SAWEM use:</em> SMP has known spectral peaks at 24h (diurnal), 12h, 168h (weekly),
+              8760h (seasonal). The spectrum of residual demand (after renewables) tells us what
+              balancing requirements the system operator must meet. A &ldquo;red&rdquo; spectrum
+              (more power at low frequencies) means longer-duration storage is needed.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- STOCHASTIC DIFFERENTIAL EQUATIONS                          -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sdes">
+          <div class="card-header level-core">
+            &#9632; Part 4 &mdash; Stochastic Differential Equations: Adding Noise to Dynamics
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; When the Path Itself Is Random</h5>
+              <p class="mb-0">
+                An ordinary differential equation (ODE) like dX/dt = a(X) tells you exactly how
+                X changes at every instant. A <strong>stochastic differential equation</strong>
+                (SDE) adds a random kick at every instant: dX = a(X) dt + b(X) dW<sub>t</sub>.
+                The dW<sub>t</sub> term is an increment of the Wiener process &mdash; a Gaussian
+                random number with variance dt. The result is not a single trajectory but a
+                <strong>probability distribution</strong> of possible trajectories. This is the
+                mathematical language of our ABM: each agent's state evolves according to an
+                SDE (or its discrete-time analogue, the Markov decision process).
+              </p>
+            </div>
+
+            <h5 class="fw-bold">4.1 The General SDE</h5>
+            <div class="math mb-3">
+              dX<sub>t</sub> = a(X<sub>t</sub>, t) dt + b(X<sub>t</sub>, t) dW<sub>t</sub>
+            </div>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light"><tr><th>Term</th><th>Name</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td>a(X<sub>t</sub>, t)</td><td><strong>Drift</strong></td><td>Deterministic part &mdash; the &ldquo;flow&rdquo; of the river</td></tr>
+                <tr><td>b(X<sub>t</sub>, t)</td><td><strong>Diffusion</strong></td><td>Noise amplitude &mdash; how strongly randomness pushes the system</td></tr>
+                <tr><td>dW<sub>t</sub></td><td><strong>Wiener increment</strong></td><td>&#120055;[dW<sub>t</sub>] = 0, Var(dW<sub>t</sub>) = dt</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">4.2 Types of Noise Coupling</h5>
+            <div class="row g-2 small">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Additive noise:</strong> b(X<sub>t</sub>, t) = constant
+                  <div class="math mt-2" style="font-size:0.85rem;">dX = a(X)dt + &sigma; dW<sub>t</sub></div>
+                  <span class="text-muted">Noise strength independent of state. Easier matematicaly.
+                  In SAWEM: fuel price shocks are additive to generator cost.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Multiplicative noise:</strong> b depends on X
+                  <div class="math mt-2" style="font-size:0.85rem;">dX = a(X)dt + X&middot;&sigma; dW<sub>t</sub></div>
+                  <span class="text-muted">Noise strength proportional to state. Critical for financial
+                  models (geometric Brownian motion for coal prices).</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Parametric noise:</strong> noise affects a parameter
+                  <div class="math mt-2" style="font-size:0.85rem;">&mu; &rarr; &mu; + &sigma; dW<sub>t</sub></div>
+                  <span class="text-muted">Used for demand growth rate uncertainty, carbon tax
+                  trajectory uncertainty in scenario generation.</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">4.3 Ito vs. Stratonovich Calculus &mdash; The Deepest Subtlety</h5>
+            <p class="small">
+              When b depends on X (multiplicative noise), the SDE is ambiguous: how do we interpret
+              the product b(X<sub>t</sub>) dW<sub>t</sub>? The Wiener process is so irregular that
+              the ordinary Riemann-Stieltjes integral doesn't work. Two interpretations dominate:
+            </p>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <h6 class="fw-bold">&#9312; Ito interpretation</h6>
+                  <p>The integrand is evaluated at the <em>left endpoint</em> of each subinterval:
+                  b(X<sub>t</sub>) dW<sub>t</sub> means b(X<sub>t</sub>) &middot; (W<sub>t+dt</sub> &minus; W<sub>t</sub>).</p>
+                  <ul class="mb-0">
+                    <li>&#120055;[b(X<sub>t</sub>)dW<sub>t</sub>] = 0 (martingale property &mdash; very useful)</li>
+                    <li>Chain rule requires <strong>Ito's lemma</strong> (extra term &minus; &frac12;b<sup>2</sup>f'' )</li>
+                    <li>Standard in finance, standard in SDE numerical solvers (Euler-Maruyama is Ito)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <h6 class="fw-bold">&#9313; Stratonovich interpretation</h6>
+                  <p>The integrand is evaluated at the <em>midpoint</em>: b((X<sub>t</sub>+X<sub>t+dt</sub>)/2) dW<sub>t</sub>.</p>
+                  <ul class="mb-0">
+                    <li>Obey ordinary chain rule (like regular calculus!)</li>
+                    <li>Physically natural for systems where noise is continuous</li>
+                    <li>Appears in the limit of colored noise as correlation time &rarr; 0</li>
+                    <li>Can convert Ito &harr; Stratonovich: add/subtract &frac12;bb' dt</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="bass-quote mt-2">
+              <strong>&#128218; Bass on the Ito/Stratonovich choice:</strong><br>
+              &ldquo;The Ito integral has the martingale property, which makes it powerful for
+              financial modeling. The Stratonovich integral is more natural for physical systems.
+              Fortunately, any SDE written in one form can be rewritten in the other. The choice
+              is a modeling decision, not a mathematical truth.&rdquo;
+            </div>
+
+            <h5 class="fw-bold mt-4">4.4 Ito's Lemma &mdash; The Chain Rule of Stochastic Calculus</h5>
+            <p class="small">
+              If X<sub>t</sub> follows dX = a dt + b dW, and we define a new process Y<sub>t</sub> = f(X<sub>t</sub>, t),
+              then Ito's lemma tells us the SDE for Y:
+            </p>
+            <div class="math mb-3">
+              dY = [ &part;f/&part;t + a &middot; &part;f/&part;x + &frac12; b<sup>2</sup> &middot; &part;<sup>2</sup>f/&part;x<sup>2</sup> ] dt
+                   + b &middot; &part;f/&part;x dW
+            </div>
+            <p class="small">
+              The term &frac12; b<sup>2</sup> f'' is the <strong>Ito correction</strong> &mdash;
+              it arises because dW &sim; &radic;dt, so second-order terms in the Taylor expansion
+              contribute at order dt. This is why stochastic calculus differs from ordinary calculus.
+            </p>
+            <p class="small">
+              <strong>Example &mdash; Geometric Brownian Motion:</strong>
+              If dS = &mu;S dt + &sigma;S dW, then applying Ito's lemma to f(S) = log(S) gives:
+            </p>
+            <div class="math mb-3">
+              d(log S) = (&mu; &minus; &sigma;<sup>2</sup>/2) dt + &sigma; dW
+            </div>
+            <p class="small">
+              Hence S<sub>t</sub> = S<sub>0</sub> exp[(&mu; &minus; &sigma;<sup>2</sup>/2)t + &sigma;W<sub>t</sub>].
+              The &minus;&sigma;<sup>2</sup>/2 term is the <strong>volatility drag</strong> &mdash;
+              a higher volatility reduces the expected growth rate of the level, even though the
+              drift in the original SDE is &mu;. This is crucial for modeling commodity prices
+              (coal, gas) in the SAWEM model.
+            </p>
+
+            <h5 class="fw-bold mt-4">4.5 Numerical Integration of SDEs &mdash; Euler-Maruyama</h5>
+            <p class="small">
+              Most SDEs cannot be solved analytically. The standard numerical method is the
+              <strong>Euler-Maruyama</strong> scheme (the stochastic analogue of forward Euler):
+            </p>
+            <div class="math mb-3">
+              X<sub>t+&#916;t</sub> = X<sub>t</sub> + a(X<sub>t</sub>, t) &middot; &#916;t
+              + b(X<sub>t</sub>, t) &middot; &#916;W<sub>t</sub>
+              <br>
+              where &#916;W<sub>t</sub> ~ N(0, &#916;t) is drawn from a Gaussian random number generator
+            </div>
+            <p class="small">
+              <strong>Key insight:</strong> the noise term scales with &radic;&#916;t, not &#916;t.
+              This means halving the time step reduces the deterministic change by half but the
+              random change only by &radic;(&frac12;) &asymp; 0.707. This is why SDEs produce
+              jagged paths that don't smooth out with smaller steps.
+            </p>
+            <p class="small">
+              <strong>Higher-order methods:</strong> Milstein scheme (adds a second derivative term
+              from Ito's lemma), Runge-Kutta for SDEs. These matter when b'(x) is large (strong
+              multiplicative noise).
+            </p>
+
+            <h5 class="fw-bold mt-4">4.6 Common SDEs and Their Solutions</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>SDE</th><th>Name</th><th>Solution / Property</th><th>SAWEM Use</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="math" style="font-size:0.8rem;">dX = &mu; dt + &sigma; dW</td>
+                  <td><strong>Arithmetic Brownian motion</strong></td>
+                  <td>X<sub>t</sub> = X<sub>0</sub> + &mu;t + &sigma;W<sub>t</sub></td>
+                  <td>Short-term demand forecast error</td>
+                </tr>
+                <tr>
+                  <td class="math" style="font-size:0.8rem;">dS = &mu;S dt + &sigma;S dW</td>
+                  <td><strong>Geometric Brownian motion</strong></td>
+                  <td>S<sub>t</sub> = S<sub>0</sub> exp[(&mu;&minus;&sigma;<sup>2</sup>/2)t + &sigma;W<sub>t</sub>]</td>
+                  <td>Coal price, gas price, carbon tax trajectory</td>
+                </tr>
+                <tr>
+                  <td class="math" style="font-size:0.8rem;">dX = &theta;(&mu;&minus;X)dt + &sigma;dW</td>
+                  <td><strong>Ornstein-Uhlenbeck</strong></td>
+                  <td>Mean-reverting: stationary distribution N(&mu;, &sigma;<sup>2</sup>/2&theta;)</td>
+                  <td>Temperature (load driver), oil price spread, RL exploration noise</td>
+                </tr>
+                <tr>
+                  <td class="math" style="font-size:0.8rem;">dX = &kappa;(&theta;&minus;X)dt + &sigma;&radic;X dW</td>
+                  <td><strong>Cox-Ingersoll-Ross (CIR)</strong></td>
+                  <td>Non-negative, mean-reverting. If 2&kappa;&theta; > &sigma;<sup>2</sup>, stays positive</td>
+                  <td>Interest rates (discount factor), wind speed squared</td>
+                </tr>
+                <tr>
+                  <td class="math" style="font-size:0.8rem;">dX = &mu;X dt + &sigma;X<sup>&alpha;</sup> dW</td>
+                  <td><strong>Constant Elasticity of Variance</strong></td>
+                  <td>Volatility depends on level; &alpha;=1 is GBM, &alpha;=0.5 captures leverage effect</td>
+                  <td>SMP volatility clustering (high price = high volatility)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- FOKKER-PLANCK EQUATION                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="fokker-planck">
+          <div class="card-header level-advanced">
+            &#9632; Part 5 &mdash; The Fokker-Planck Equation: From Trajectories to Densities
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; From Individual Paths to the River's Current</h5>
+              <p class="mb-0">
+                Instead of tracking one random leaf (one trajectory), imagine dye released into the
+                river. The dye spreads and its concentration at each point evolves according to a
+                deterministic equation &mdash; the <strong>Fokker-Planck equation</strong>. It
+                tells you how the probability density of the system evolves in time. The individual
+                trajectories are random, but <em>the density evolves deterministically</em>. This
+                is the bridge between the micro (SDEs, agent paths) and the macro (market statistics,
+                emergent phenomena).
+              </p>
+            </div>
+
+            <h5 class="fw-bold">5.1 Derivation from the SDE</h5>
+            <p class="small">
+              Given the SDE dX<sub>t</sub> = a(X<sub>t</sub>, t) dt + b(X<sub>t</sub>, t) dW<sub>t</sub>,
+              the probability density p(x,t) of X<sub>t</sub> satisfies:
+            </p>
+            <div class="math mb-3">
+              &part;p(x,t)/&part;t = &minus; &part;/&part;x [ a(x,t) p(x,t) ] +
+              &frac12; &part;<sup>2</sup>/&part;x<sup>2</sup> [ b<sup>2</sup>(x,t) p(x,t) ]
+            </div>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light"><tr><th>Term</th><th>Name</th><th>Effect on Density</th></tr></thead>
+              <tbody>
+                <tr><td>&minus;&part;(ap)/&part;x</td><td><strong>Drift term</strong></td><td>Translates the density in the direction of the drift velocity a(x). Like advection in fluid dynamics.</td></tr>
+                <tr><td>&frac12;&part;<sup>2</sup>(b<sup>2</sup>p)/&part;x<sup>2</sup></td><td><strong>Diffusion term</strong></td><td>Spreads the density out. Like heat diffusion.</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">5.2 Stationary Solution</h5>
+            <p class="small">
+              Setting &part;p/&part;t = 0 gives the stationary (long-run, steady-state) distribution:
+            </p>
+            <div class="math mb-3">
+              p<sub>s</sub>(x) = (C / b<sup>2</sup>(x)) exp[ &#8747; 2a(x') / b<sup>2</sup>(x') dx' ]
+            </div>
+            <p class="small">
+              where C is a normalizing constant. For the Ornstein-Uhlenbeck process (a = &minus;&theta;x,
+              b = &sigma;), this recovers the Gaussian:
+            </p>
+            <div class="math mb-3">
+              p<sub>s</sub>(x) = (&theta;/(&pi;&sigma;<sup>2</sup>))<sup>1/2</sup>
+              exp(&minus;&theta;x<sup>2</sup>/&sigma;<sup>2</sup>)
+            </div>
+            <p class="small">
+              <em>SAWEM use:</em> The stationary distribution of SMP under a given scenario tells us
+              the long-run average price, the probability of extreme prices (tail risk), and the
+              value-at-risk for investment decisions.
+            </p>
+
+            <h5 class="fw-bold mt-4">5.3 The Chapman-Kolmogorov Equation &mdash; The Fundamental Principle</h5>
+            <p class="small">
+              The Fokker-Planck equation is the differential form of the <strong>Chapman-Kolmogorov
+              equation</strong>, which is the most general consistency condition for Markov processes:
+            </p>
+            <div class="math mb-3">
+              p(x<sub>3</sub>, t<sub>3</sub> | x<sub>1</sub>, t<sub>1</sub>) =
+              &#8747; p(x<sub>3</sub>, t<sub>3</sub> | x<sub>2</sub>, t<sub>2</sub>)
+              &middot; p(x<sub>2</sub>, t<sub>2</sub> | x<sub>1</sub>, t<sub>1</sub>) dx<sub>2</sub>
+            </div>
+            <p class="small">
+              This says: to go from state 1 to state 3, you can go via any intermediate state 2,
+              and sum (integrate) over all possibilities. This is the <strong>Master equation</strong>
+              for jump processes, the <strong>Liouville equation</strong> for deterministic flows,
+              and the <strong>Fokker-Planck equation</strong> for diffusion processes &mdash; all
+              are special cases.
+            </p>
+
+            <h5 class="fw-bold mt-4">5.4 First-Passage Time &mdash; When Will Something Bad Happen?</h5>
+            <p class="small">
+              A critical question: how long does it take for a stochastic process to first reach a
+              threshold? This is the <strong>first-passage time problem</strong>.
+            </p>
+            <div class="math mb-3">
+              &#964; = inf{ t &ge; 0 : X<sub>t</sub> = x<sub>threshold</sub> | X<sub>0</sub> = x<sub>0</sub> }
+            </div>
+            <p class="small">
+              The mean first-passage time (MFPT) for a one-dimensional diffusion can be computed
+              from the Fokker-Planck equation:
+            </p>
+            <div class="math mb-3">
+              T(x<sub>0</sub>) = &#8747;<sub>x0</sub><sup>xT</sup> [ 2 / b<sup>2</sup>(y) &middot;
+              &#8747;<sub>&minus;&infin;</sub><sup>y</sup> p<sub>s</sub>(z)&minus;<sup>1</sup> dz ] dy
+            </div>
+            <p class="small">
+              <em>SAWEM use:</em> the time until SMP exceeds a threshold (e.g., R5000/MWh) is a
+              first-passage time. The time until a coal station's cumulative profit drops below
+              zero (triggering retirement) is another. The probability of an &ldquo;adequacy
+              crisis&rdquo; (unserved energy > threshold) is a first-passage problem in the
+              multi-dimensional state space of capacities and demands.
+            </p>
+
+            <h5 class="fw-bold mt-4">5.5 Multi-Dimensional Fokker-Planck</h5>
+            <p class="small">
+              In the SAWEM ABM, the state space is high-dimensional (thousands of agents). The
+              Fokker-Planck equation generalizes to:
+            </p>
+            <div class="math mb-3">
+              &part;p/&part;t = &minus; &#931;<sub>i</sub> &part;(a<sub>i</sub>p)/&part;x<sub>i</sub>
+              + &frac12; &#931;<sub>i,j</sub> &part;<sup>2</sup>(D<sub>ij</sub>p)/&part;x<sub>i</sub>&part;x<sub>j</sub>
+            </div>
+            <p class="small">
+              where D = bb<sup>T</sup> is the <strong>diffusion matrix</strong>. In practice, the
+              full multi-dimensional Fokker-Planck equation is computationally intractable for
+              high-dimensional systems &mdash; this is why we <em>simulate</em> trajectories
+              (the ABM approach) rather than solving the density evolution directly.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- NONLINEAR DYNAMICS & NOISE                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="nonlinear">
+          <div class="card-header level-advanced">
+            &#9632; Part 6 &mdash; Nonlinear Dynamics: When Noise Meets Bifurcations
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Elephant in the Room: Non-linearity</h5>
+              <p class="mb-0">
+                Linear systems are boring &mdash; they just grow, decay, or oscillate. The interesting
+                world is <strong>nonlinear</strong>: where the effect is not proportional to the cause,
+                where small changes can produce large responses, where systems can switch abruptly
+                between different behaviors (<strong>bifurcations</strong>). Add noise to a nonlinear
+                system and you get genuinely new phenomena that exist in neither the deterministic
+                nor the purely random world: noise-induced transitions, stochastic resonance, and
+                noise-stabilized states. This is the mathematical reality of a power market undergoing
+                a structural transition from coal to renewables.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">6.1 Deterministic Dynamical Systems Primer</h5>
+            <p class="small">
+              A deterministic dynamical system is described by an ODE:
+            </p>
+            <div class="math mb-3">
+              dx/dt = f(x; &mu;)
+            </div>
+            <p class="small">
+              where &mu; is a parameter. The <strong>fixed points</strong> satisfy f(x*) = 0.
+              Their <strong>stability</strong> is determined by the eigenvalue of the derivative
+              f'(x*): if f'(x*) < 0, the fixed point is stable (attractor); if > 0, unstable.
+            </p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light"><tr><th>Bifurcation Type</th><th>What Happens</th><th>Normal Form</th><th>SAWEM Analogue</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Saddle-node</strong></td>
+                  <td>Two fixed points (one stable, one unstable) appear/disappear</td>
+                  <td class="math">dx/dt = &mu; + x<sup>2</sup></td>
+                  <td>A generation technology becomes viable at a specific carbon tax threshold</td>
+                </tr>
+                <tr>
+                  <td><strong>Pitchfork (supercritical)</strong></td>
+                  <td>Stable fixed point becomes unstable; two new stable points appear</td>
+                  <td class="math">dx/dt = &mu;x &minus; x<sup>3</sup></td>
+                  <td>Market breaks symmetry: two equilibria &mdash; high-price (coal dominant) vs. low-price (RE dominant)</td>
+                </tr>
+                <tr>
+                  <td><strong>Hopf (supercritical)</strong></td>
+                  <td>Fixed point &rarr; limit cycle (oscillations)</td>
+                  <td class="math" style="font-size:0.8rem;">dr/dt = &mu;r &minus; r<sup>3</sup>, d&theta;/dt = &omega;</td>
+                  <td>Investment cycles: boom (overbuild) &rarr; bust (price collapse) &rarr; boom</td>
+                </tr>
+                <tr>
+                  <td><strong>Transcritical</strong></td>
+                  <td>Two fixed points exchange stability</td>
+                  <td class="math">dx/dt = &mu;x &minus; x<sup>2</sup></td>
+                  <td>Eskom Gen's market share crosses a threshold where it becomes dominant vs. fringe</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">6.2 Noise Can Induce New States &mdash; The Horsthemke-Lefever Insight</h5>
+            <p class="small">
+              In their landmark 1984 book <em>Noise-Induced Transitions</em>, Horsthemke and Lefever
+              showed that noise can create <strong>new stationary states that have no deterministic
+              counterpart</strong>. Consider a bistable system (two stable fixed points, one unstable):
+            </p>
+            <div class="math mb-3">
+              dx/dt = x(1 &minus; x<sup>2</sup>) + noise
+            </div>
+            <p class="small">
+              Without noise, the system sits in one of the two wells. With noise, it can <strong>transition</strong>
+              between wells (random switching). As noise increases, the stationary distribution
+              changes shape &mdash; at high noise, the two peaks merge into one. The <strong>number
+              of modes</strong> of the stationary distribution can change at a critical noise strength,
+              which is a <strong>noise-induced bifurcation</strong> (or &ldquo;phenomenological
+              bifurcation&rdquo;).
+            </p>
+            <p class="small">
+              <em>SAWEM meaning:</em> the power market has multiple &ldquo;attractors&rdquo;:
+              a coal-dominated equilibrium (high prices, high emissions), a gas-dominated equilibrium
+              (medium prices), and a renewables-dominated equilibrium (low prices, high volatility).
+              Policy (carbon tax, RE subsidies) shifts these attractors. Noise (outages, weather,
+              demand shocks) creates transitions between them. The JET P is a deliberate attempt
+              to push the system from the coal attractor to the RE attractor.
+            </p>
+
+            <h5 class="fw-bold mt-4">6.3 Stochastic Resonance & Coherence Resonance</h5>
+            <p class="small">
+              <strong>Stochastic resonance:</strong> a weak periodic signal (e.g., daily demand cycle)
+              is <em>amplified</em> by the right amount of noise. Too little noise, the signal doesn't
+              cross the threshold. Too much noise, the signal is buried. There is an optimal noise
+              level where the signal-to-noise ratio is maximized.
+            </p>
+            <div class="bass-quote">
+              <strong>&#128218; Bass on stochastic resonance:</strong><br>
+              &ldquo;The counterintuitive result that adding noise can improve signal detection
+              is one of the most beautiful discoveries in nonlinear dynamics. It has been observed
+              in neurons, climate systems, and even stock markets.&rdquo;
+            </div>
+            <p class="small">
+              <strong>Coherence resonance:</strong> even <em>without</em> a periodic signal, an
+              excitable system near a bifurcation can produce <em>self-organized</em> oscillations
+              at an optimal noise level. The noise kicks the system out of the stable state, it
+              takes a characteristic time to return, then gets kicked again &mdash; producing
+              a noisy oscillation with a well-defined timescale.
+            </p>
+            <p class="small">
+              <em>SAWEM connection:</em> the investment cycle in generation capacity is a noise-driven
+              oscillator. Random demand growth + random outages create price spikes, which trigger
+              investment, which depresses prices, which stops investment, which eventually leads to
+              scarcity &mdash; and the cycle repeats. The period of the cycle depends on construction
+              lead times and the volatility of demand and fuel prices.
+            </p>
+
+            <h5 class="fw-bold mt-4">6.4 Large Deviations & Rare Events</h5>
+            <p class="small">
+              In many stochastic systems, the most important events are the <strong>rarest</strong>:
+              a 1-in-100 year drought, a simultaneous triple outage, a financial crisis. The theory
+              of <strong>large deviations</strong> (Freidlin-Wentzell, 1984) gives the probability
+              of these rare events in terms of an <strong>action functional</strong>:
+            </p>
+            <div class="math mb-3">
+              P( trajectory &asymp; &phi; ) &asymp; exp( &minus; I[&phi;] / &epsilon;<sup>2</sup> )
+            </div>
+            <p class="small">
+              where I[&phi;] is the <strong>rate function</strong> (analogous to the action in
+              classical mechanics) and &epsilon; is the noise amplitude. The most likely path for
+              a rare event minimizes I[&phi;] &mdash; the <strong>instanton</strong> or
+              <strong>most probable escape path</strong>.
+            </p>
+            <p class="small">
+              <em>SAWEM use:</em> the probability of a &ldquo;blackout&rdquo; event (unserved
+              energy exceeding a threshold) can be estimated via large deviation theory rather
+              than brute-force Monte Carlo. The most likely sequence of events leading to a
+              blackout can be identified &mdash; informing system operators about which risks
+              to mitigate first.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CONNECTION TO THE FRAMEWORK                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="framework">
+          <div class="card-header level-framework">
+            &#9632; Part 7 &mdash; Back to SAWEM: Where All This Math Lives in the Model
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Map Is Not the Territory &mdash; But Here Is Your Map</h5>
+              <p class="mb-0">
+                You now have the mathematical vocabulary to read every equation in the
+                <a href="thesis-methods.html">Methods page</a> and understand every agent
+                policy in the <a href="thesis-agents.html">Agent Architecture page</a>.
+                Here is exactly where each concept lands in the SAWEM framework.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">7.1 From This Page to the ABM</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Stochastic Concept</th><th>Where It Appears in the ABM</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Probability space (&#937;, &#8464;, P)</td><td>The set of all possible SAWEM futures: outage patterns, weather sequences, demand realizations, bid outcomes</td></tr>
+                <tr><td>Conditional probability, Bayes</td><td>Agents update beliefs about competitor behavior given observed SMP (Bayesian Nash equilibrium learning)</td></tr>
+                <tr><td>Expectation &#120055;[X]</td><td>Expected profit = &#120055;[SMP &middot; p &minus; C(p)] for investment decisions</td></tr>
+                <tr><td>Variance, volatility</td><td>SMP volatility (std dev of hourly price) drives risk premium in CfD strike prices</td></tr>
+                <tr><td>Central Limit Theorem</td><td>Annual average SMP is approximately normal &rarr; we can use standard statistical tests for scenario comparison</td></tr>
+                <tr><td>Bernoulli / Binomial</td><td>Forced outage model: each unit fails with probability p each hour</td></tr>
+                <tr><td>Exponential / Poisson</td><td>Time between generator failures, IPP project arrival process</td></tr>
+                <tr><td>Weibull distribution</td><td>Wind speed &rarr; wind power output via power curve</td></tr>
+                <tr><td>Markov property</td><td>The fundamental assumption of the MDP: state captures all relevant history</td></tr>
+                <tr><td>Wiener process W<sub>t</sub></td><td>Underlying driver for all continuous-time stochastic processes in the model</td></tr>
+                <tr><td>Ornstein-Uhlenbeck</td><td>Coal price model, temperature model, DDPG exploration noise</td></tr>
+                <tr><td>Geometric Brownian motion</td><td>Gas price model, long-run demand growth with uncertainty</td></tr>
+                <tr><td>Ito's lemma</td><td>Deriving dynamics of derivative contracts (CFD valuation, swap pricing)</td></tr>
+                <tr><td>Euler-Maruyama</td><td>Numerical simulation of all SDEs in the model (fuel prices, demand, etc.)</td></tr>
+                <tr><td>Fokker-Planck equation</td><td>Stationary distribution of SMP under a fixed scenario; probability of &ldquo;price cap&rdquo; events</td></tr>
+                <tr><td>First-passage time</td><td>Time until coal station becomes unprofitable; time until reserve margin drops below safety threshold</td></tr>
+                <tr><td>Chapman-Kolmogorov</td><td>Theoretical foundation of the MDP state-transition probability P(s' | s, a)</td></tr>
+                <tr><td>Bifurcation theory</td><td>Phase transitions in the market structure: the &ldquo;tipping point&rdquo; where coal collapses</td></tr>
+                <tr><td>Noise-induced transitions</td><td>Market can switch between &ldquo;high-price&rdquo; and &ldquo;low-price&rdquo; regimes due to random shocks</td></tr>
+                <tr><td>Large deviations</td><td>Probability of extreme but rare events: simultaneous multi-unit failure, blackout scenarios</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">7.2 The SDEs That Drive the Model</h5>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Coal price:</strong>
+                  <div class="math mt-1" style="font-size:0.8rem;">dP<sub>coal</sub> = &theta;<sub>c</sub>(&mu;<sub>c</sub> &minus; P<sub>coal</sub>)dt + &sigma;<sub>c</sub> dW<sub>c</sub></div>
+                  <span class="text-muted">Mean-reverting (OU). Parameters from historic SA coal price data.</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Gas price:</strong>
+                  <div class="math mt-1" style="font-size:0.8rem;">dP<sub>gas</sub> = &mu;<sub>g</sub>P<sub>gas</sub> dt + &sigma;<sub>g</sub>P<sub>gas</sub> dW<sub>g</sub></div>
+                  <span class="text-muted">Geometric Brownian motion (non-negative, trend + uncertainty).</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Demand growth:</strong>
+                  <div class="math mt-1" style="font-size:0.8rem;">dD<sub>t</sub> = g D<sub>t</sub> dt + &sigma;<sub>D</sub> D<sub>t</sub> dW<sub>D</sub></div>
+                  <span class="text-muted">GBM with drift = GDP growth + electrification, volatility from economic cycles.</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Carbon tax:</strong>
+                  <div class="math mt-1" style="font-size:0.8rem;">d&tau; = &mu;<sub>&tau;</sub>(t) dt + &sigma;<sub>&tau;</sub> dW<sub>&tau;</sub></div>
+                  <span class="text-muted">Deterministic escalation + policy uncertainty noise. &mu;(t) follows IRP trajectory.</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">7.3 The Feedback Loop as a Stochastic Dynamical System</h5>
+            <p class="small">
+              The entire SAWEM ABM-MDP-OPF framework can be viewed as one giant stochastic dynamical
+              system. The &ldquo;state&rdquo; X<sub>t</sub> is the vector of all agent states plus
+              the environment (capacities, fuel stocks, financial positions, policies). The
+              &ldquo;evolution&rdquo; consists of:
+            </p>
+            <ol class="small">
+              <li><strong>Agents choose actions</strong> a<sub>i,t</sub> = &pi;<sub>i</sub>(O<sub>i</sub>(X<sub>t</sub>)) &mdash; a deterministic or stochastic mapping</li>
+              <li><strong>OPF solves</strong>: [&lambda;<sub>t</sub>, p<sub>g,t</sub>, f<sub>&#8467;,t</sub>] = OPF({a<sub>i,t</sub>}, D<sub>t</sub>) &mdash; a deterministic optimization</li>
+              <li><strong>Exogenous shocks hit</strong>: dW<sub>fuel</sub>, dW<sub>demand</sub>, dW<sub>wind</sub>, dN<sub>outages</sub> &mdash; stochastic increments</li>
+              <li><strong>State updates</strong>: X<sub>t+dt</sub> = F(X<sub>t</sub>, a<sub>t</sub>, OPF<sub>t</sub>, dW<sub>t</sub>, dN<sub>t</sub>)</li>
+            </ol>
+            <p class="small">
+              The resulting process X<sub>t</sub> is a <strong>piecewise-deterministic Markov
+              process</strong> (PDMP): deterministic flows (OPF, dispatch) punctuated by random
+              jumps (outages, investment decisions, policy changes). This class of process has
+              well-defined mathematical properties &mdash; the generator of its semigroup can
+              be written, its stationary distribution can in principle be characterized, and
+              the conditions for ergodicity can be checked.
+            </p>
+
+            <div class="card border-0 mt-4" style="background: #f0f4f8;">
+              <div class="card-body">
+                <div class="row g-2 small">
+                  <div class="col-4 text-center">
+                    <a href="thesis-abm.html" class="fw-bold text-decoration-none">&#8592; ABM page</a><br>
+                    <span class="text-muted">Agent populations, learning</span>
+                  </div>
+                  <div class="col-4 text-center">
+                    <a href="thesis-methods.html" class="fw-bold text-decoration-none">&#8592; Methods page</a><br>
+                    <span class="text-muted">OPF, MDP, full equations</span>
+                  </div>
+                  <div class="col-4 text-center">
+                    <a href="thesis-agents.html" class="fw-bold text-decoration-none">&#8592; Agent Architecture</a><br>
+                    <span class="text-muted">State/action/policy tables</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">7.4 Recommended Reading Path</h5>
+            <p class="small">
+              If this page was overwhelming (and it should be &mdash; this is a graduate-level
+              topic spread over several fields), here is a curated path:
+            </p>
+            <ol class="small">
+              <li><strong>Start with:</strong> Bass, <em>Stochastic Processes</em> (Cambridge, 2011) &mdash; Chapters 1&ndash;4 on probability foundations and discrete-time Markov chains. The book is concise and rigorous.</li>
+              <li><strong>Then:</strong> Gardiner, <em>Handbook of Stochastic Methods</em> (Springer, 4th ed., 2009) &mdash; Chapters 1&ndash;4 on the Fokker-Planck equation and SDEs. This is the physicist's practical reference.</li>
+              <li><strong>For the nonlinear dynamics:</strong> Strogatz, <em>Nonlinear Dynamics and Chaos</em> (Westview, 2nd ed., 2015) &mdash; Chapters 2&ndash;4 for bifurcations. The most readable textbook in all of applied math.</li>
+              <li><strong>For noise in nonlinear systems:</strong> Horsthemke & Lefever, <em>Noise-Induced Transitions</em> (Springer, 1984) &mdash; the classic reference, still unmatched.</li>
+              <li><strong>For the Scholarpedia article:</strong> Longtin (2010), <a href="http://www.scholarpedia.org/article/Stochastic_dynamical_systems" target="_blank">Stochastic dynamical systems</a> &mdash; a concise 15-page summary that covers the essential taxonomy.</li>
+              <li><strong>For reinforcement learning connections:</strong> Sutton & Barto, <em>Reinforcement Learning</em> (MIT Press, 2nd ed., 2018) &mdash; the connection between MDPs, Bellman equations, and Fokker-Planck is implicit but deep.</li>
+            </ol>
+          </div>
+        </div>
+
+        <hr>
+        <p class="text-muted text-center mt-4">
+          Stochastic Dynamical Systems &mdash; the mathematical language of uncertainty, evolution,
+          and emergence in the SAWEM ABM-MDP-OPF framework.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
