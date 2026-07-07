@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EMCAS • Electricity Market Complex Adaptive System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-what    { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-orig    { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-compare { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-take    { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .emcas-quote {
+      border-left: 4px solid #002395;
+      background: #e3f2fd;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold text-sa-green">&#127758; EMCAS</h1>
+    <h5 class="text-muted mb-4">Electricity Market Complex Adaptive System &mdash; The Pioneer ABM for Power Markets</h5>
+
+    <!-- ========================================================== -->
+    <!-- WHAT IS EMCAS                                               -->
+    <!-- ========================================================== -->
+    <div class="section-card card" id="what">
+      <div class="card-header level-what">
+        &#127917; What Is EMCAS?
+      </div>
+      <div class="card-body">
+        <div class="layman-box">
+          <h5>&#128172; The Short Answer</h5>
+          <p class="mb-2">
+            <strong>EMCAS</strong> stands for <strong>Electricity Market Complex Adaptive System</strong>.
+            It was developed by <strong>Argonne National Laboratory</strong> (USA) in the early 2000s
+            as the first major agent-based model specifically designed for electricity markets. It is
+            the model that every subsequent electricity-market ABM &mdash; including the one you are
+            building &mdash; owes a debt to.
+          </p>
+          <p class="mb-0">
+            EMCAS simulates an electricity market as a complex adaptive system using multiple agent
+            types (generators, consumers, transmission operators, regulators) that learn and adapt
+            across different timescales. It includes some representation of the physical system
+            (transmission constraints, economic dispatch), but its primary focus is on
+            <strong>market dynamics, strategic behaviour, and regulatory testing</strong> &mdash;
+            not on solving Optimal Power Flow with high fidelity.
+          </p>
+        </div>
+
+        <div class="emcas-quote">
+          <strong>&#128218; From Argonne National Laboratory, EMCAS documentation (2004):</strong><br>
+          &ldquo;EMCAS is an agent-based model that captures the restructuring of the electricity
+          sector as a transition from a traditional, vertically-integrated monopoly to a competitive
+          market. It models the strategic interactions of market participants as they adapt to market
+          conditions, learn from experience, and pursue their individual objectives.&rdquo;
+        </div>
+
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold sa-green">&#9989; What EMCAS Does Well</h6>
+              <ul class="small mb-0">
+                <li>Strategic bidding with learning (reinforcement learning, evolutionary algorithms)</li>
+                <li>Multiple agent types with heterogeneous objectives</li>
+                <li>Regulatory and policy experiments (price caps, emissions trading, renewables targets)</li>
+                <li>Investment decisions in new generation capacity over multi-year horizons</li>
+                <li>Transmission congestion and its effect on local market power</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold text-danger">&#10060; Where EMCAS Has Limitations</h6>
+              <ul class="small mb-0">
+                <li>Uses simplified DC-OPF, not full AC power flow &mdash; not suitable for voltage/reactive power analysis</li>
+                <li>Computationally heavy for large systems (hours per scenario)</li>
+                <li>Agent learning is rule-based (no deep RL like DDPG/MADDPG)</li>
+                <li>Developed in the 2000s &mdash; predates modern computing and ML</li>
+                <li>Not open-source; difficult to extend or modify</li>
+                <li>No macroeconomic feedback layer &mdash; demand is largely exogenous</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ORIGINS & HISTORY                                           -->
+    <!-- ========================================================== -->
+    <div class="section-card card" id="origins">
+      <div class="card-header level-orig">
+        &#128196; Origins & Historical Context
+      </div>
+      <div class="card-body">
+        <div class="layman-box">
+          <h5>&#128172; Why EMCAS Was Created</h5>
+          <p class="mb-0">
+            In the 1990s and early 2000s, electricity markets around the world were restructuring
+            &mdash; moving from vertically integrated monopolies to competitive wholesale markets
+            (England & Wales, PJM in the US, California, and eventually South Africa). The problem
+            was: <em>no one had a good way to predict how these markets would behave.</em> Traditional
+            power system models (production cost, OPF) assumed perfect competition. Economic
+            equilibrium models assumed perfect rationality. Both assumptions failed in real markets.
+            EMCAS was Argonne's answer: build an artificial market, populate it with learning agents,
+            and see what happens.
+          </p>
+        </div>
+
+        <h5 class="fw-bold mt-4">&#9201; Timeline</h5>
+        <div style="padding-left:1.5rem; border-left:3px solid #007A4D;">
+          <p class="small mb-2"><strong>2000&ndash;2002 &mdash; Conception:</strong> Argonne National Laboratory, funded by the US Department of Energy, begins developing EMCAS. The team (led by Guenter Conzelmann, Vladimir Koritarov, and others) draws on CAS theory from the Santa Fe Institute and the first wave of agent-based modelling in economics.</p>
+          <p class="small mb-2"><strong>2003&ndash;2005 &mdash; First applications:</strong> EMCAS is used to study market power in the PJM market (US Mid-Atlantic), the impact of emissions trading on generation investment in the Illinois power market, and the strategic behaviour of generators under different auction designs.</p>
+          <p class="small mb-2"><strong>2006&ndash;2010 &mdash; The reference model:</strong> EMCAS becomes the go-to ABM for electricity market research. Dozens of academic papers cite it. It is used for regulatory analysis by state utility commissions and for teaching at universities.</p>
+          <p class="small mb-2"><strong>2010&ndash;present &mdash; Legacy and evolution:</strong> EMCAS is no longer actively developed (Argonne moved to newer models). But its influence is everywhere: the idea of coupling learning agents with a market-clearing engine became the standard architecture for electricity market ABMs. Your hybrid (ABM + OPF) is a direct descendant of the EMCAS approach.</p>
+        </div>
+
+        <h5 class="fw-bold mt-4">&#128218; Key Publications</h5>
+        <ul class="small">
+          <li>Conzelmann, G., et al. (2005). &ldquo;Analysing the potential for market power in the PJM electricity market using an agent-based simulation tool.&rdquo; <em>Proceedings of the 2005 IEEE Power Engineering Society General Meeting.</em></li>
+          <li>Koritarov, V., et al. (2004). &ldquo;An agent-based approach to modeling electricity markets.&rdquo; <em>Argonne National Laboratory Technical Report.</em></li>
+          <li>North, M., et al. (2002). &ldquo;E-laboratories: Agent-based modeling of electricity markets.&rdquo; <em>Proceedings of the 2002 Winter Simulation Conference.</em></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- EMCAS vs OPF vs YOUR FRAMEWORK                              -->
+    <!-- ========================================================== -->
+    <div class="section-card card" id="comparison">
+      <div class="card-header level-compare">
+        &#9878;&#65039; EMCAS vs OPF vs Your Hybrid Framework
+      </div>
+      <div class="card-body">
+        <div class="layman-box">
+          <h5>&#128172; Do You Need to Do EMCAS?</h5>
+          <p class="mb-0">
+            <strong>No.</strong> You do not need to replicate EMCAS. EMCAS is a specific piece of
+            software developed by Argonne National Lab. Your framework &mdash; ABM (with deep RL)
+            + OPF + macroeconomic demand forecasting &mdash; is a <em>modern upgrade</em> of the
+            same idea. Think of EMCAS as the flip-phone and your framework as the smartphone:
+            they do the same thing, but the technology has moved on and you should use the modern
+            version. You should <em>reference</em> EMCAS in your literature review as the foundation.
+            You should not <em>replicate</em> it.
+          </p>
+        </div>
+
+        <h5 class="fw-bold mt-4">&#128260; Side-by-Side Comparison</h5>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light">
+            <tr><th style="width:20%;">Dimension</th><th style="width:27%;">EMCAS (2000s)</th><th style="width:27%;">Standalone OPF</th><th style="width:26%;">Your Hybrid Framework</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Purpose</strong></td>
+              <td>Simulate market dynamics, strategic behaviour, regulatory impact</td>
+              <td>Solve optimal dispatch respecting grid physics</td>
+              <td>Market dynamics + grid physics + economic evolution in a closed loop</td>
+            </tr>
+            <tr>
+              <td><strong>Agent learning</strong></td>
+              <td>Reinforcement learning (tabular Q-learning), evolutionary algorithms, rule-based heuristics</td>
+              <td>None</td>
+              <td>Deep RL (DDPG, MADDPG), Q-learning, Bayesian learning</td>
+            </tr>
+            <tr>
+              <td><strong>Grid physics</strong></td>
+              <td>Simplified DC-OPF, transport model, losses ignored or approximated</td>
+              <td>Full AC-OPF or DC-OPF with high fidelity, N-1 security, line limits, voltage constraints</td>
+              <td>DC-OPF or simplified AC-OPF embedded in the ABM loop, running every hour</td>
+            </tr>
+            <tr>
+              <td><strong>Economic model</strong></td>
+              <td>Exogenous demand growth; no macro feedback loop</td>
+              <td>Demand is a fixed input</td>
+              <td>ACE macro model produces demand, investment, and adoption endogenously; feedback from energy costs to economy</td>
+            </tr>
+            <tr>
+              <td><strong>Timescale</strong></td>
+              <td>Hourly dispatch + annual investment</td>
+              <td>Single time period or sequential hours</td>
+              <td>Hourly OPF + daily learning + annual macro (dual-timescale)</td>
+            </tr>
+            <tr>
+              <td><strong>Market design</strong></td>
+              <td>Pay-as-clear, pay-as-bid, various auction formats</td>
+              <td>Usually assumes perfect competition (bid at SRMC)</td>
+              <td>Pay-as-clear SMP with strategic bidding; can test alternative designs</td>
+            </tr>
+            <tr>
+              <td><strong>Software</strong></td>
+              <td>Proprietary (C++, Java); not accessible to modify</td>
+              <td>MATPOWER, PyPower, pandapower, PSS/E (open and commercial)</td>
+              <td>Python-based: PyPSA, pandapower, custom ABM with RLlib/Stable-Baselines</td>
+            </tr>
+            <tr>
+              <td><strong>Strengths</strong></td>
+              <td>First to combine learning agents with market clearing; set the standard</td>
+              <td>Physically accurate; used for reliability and operations</td>
+              <td>Combines best of both + macroeconomic realism; modern learning methods</td>
+            </tr>
+            <tr>
+              <td><strong>Weaknesses</strong></td>
+              <td>Outdated tech; no macro; no deep learning; hard to extend</td>
+              <td>No strategic behaviour; no learning; no macro feedback</td>
+              <td>Computationally demanding; calibration complexity</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 class="fw-bold mt-4">&#128260; The Relationship at a Glance</h5>
+        <div style="background:#f8f9fa; border-radius:8px; padding:1.5rem; text-align:center; margin:1rem 0;">
+          <div class="row g-2 small">
+            <div class="col-12 mb-2">
+              <span class="badge p-2" style="background:#1b5e20; font-size:0.9rem; width:100%;">&#127891; ACE &mdash; Macroeconomic Demand & Investment</span>
+              <div style="font-size:1.2rem; margin:4px 0;">&#8595;</div>
+            </div>
+            <div class="col-12 mb-2">
+              <span class="badge p-2" style="background:#880e4f; font-size:0.85rem; width:100%;">&#129302; Your SAWEM ABM &larr; This replaces the &ldquo;EMCAS layer&rdquo;</span>
+              <div style="font-size:0.8rem; margin:2px 0;"><em>Multi-agent strategic bidding + Deep RL (DDPG/MADDPG) + Daily learning</em></div>
+              <div style="font-size:1.2rem; margin:4px 0;">&#8595;</div>
+            </div>
+            <div class="col-12 mb-2">
+              <span class="badge p-2" style="background:#e65100; font-size:0.85rem; width:100%;">&#129518; OPF Engine &larr; This is the &ldquo;physics&rdquo; EMCAS simplified</span>
+              <div style="font-size:0.8rem; margin:2px 0;"><em>DC-OPF or simplified AC-OPF, hourly dispatch, congestion, LMPs</em></div>
+              <div style="font-size:1.2rem; margin:4px 0;">&#8595;</div>
+            </div>
+            <div class="col-12 mb-2">
+              <span class="badge p-2" style="background:#0d47a1; font-size:0.85rem; width:100%;">&#128202; Outcomes &rarr; Economic Feedback</span>
+              <div style="font-size:0.8rem; margin:2px 0;"><em>SMP, emissions, congestion rents, profits, affordability &rarr; back to ACE model</em></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success small mt-3">
+          <strong>&#128161; Key insight for your thesis:</strong> You are not building EMCAS. You are building
+          something <em>better</em> &mdash; a modern hybrid that adds deep RL, a macroeconomic ACE layer,
+          and a high-fidelity OPF engine to the core idea that EMCAS pioneered. Cite EMCAS as a foundation
+          in your literature review, then explain how your framework improves on it. This is exactly the
+          kind of &ldquo;standing on the shoulders of giants&rdquo; narrative that makes a strong thesis.
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- WHAT TO TAKE FROM EMCAS                                     -->
+    <!-- ========================================================== -->
+    <div class="section-card card" id="takeaways">
+      <div class="card-header level-take">
+        &#128221; What to Take from EMCAS for Your Thesis
+      </div>
+      <div class="card-body">
+        <div class="layman-box">
+          <h5>&#128172; Borrow the Architecture, Not the Code</h5>
+          <p class="mb-0">
+            EMCAS got a lot of things right in its design. Even though the technology has moved on,
+            its <strong>architectural patterns</strong> are worth studying and adapting. Here is what
+            EMCAS teaches you that you can use directly in your SAWEM model.
+          </p>
+        </div>
+
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 1. The ABM-OPF Loop</h6>
+              <p class="small mb-0">
+                EMCAS pioneered the idea that agents make strategic decisions (bids), those bids are
+                fed into a market-clearing engine (simplified OPF), the prices come back, and agents
+                learn from the outcomes. <strong>Your model does exactly this.</strong> The only difference
+                is that you use DDPG instead of tabular Q-learning and a proper DC-OPF instead of a
+                transport model. The architecture is the same. Cite this.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 2. Multiple Timescales</h6>
+              <p class="small mb-0">
+                EMCAS distinguished between short-term (hourly/daily bidding) and long-term (annual
+                investment) decisions &mdash; exactly the same dual-timescale architecture you use.
+                EMCAS called them the &ldquo;operational&rdquo; and &ldquo;expansion&rdquo; modules.
+                You call them the &ldquo;power market ABM&rdquo; and &ldquo;macro economy ABM.&rdquo;
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 3. Heterogeneous Agents Are Essential</h6>
+              <p class="small mb-0">
+                EMCAS proved that modelling generators with different costs, portfolios, and strategies
+                was not optional but essential for reproducing real market outcomes &mdash; including
+                market power, price spikes, and investment cycles. Your detailed agent feature engineering
+                (on the <a href="thesis-agents.html">Agent Architecture page</a>) continues this tradition.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 4. Learning Matters</h6>
+              <p class="small mb-0">
+                EMCAS showed that static optimization (bid at marginal cost) does not reproduce
+                real market behaviour &mdash; agents need to learn. Even simple RL (which EMCAS used)
+                produced much more realistic price distributions than equilibrium models. Your use
+                of deep RL (DDPG, MADDPG) is a natural evolution of this principle.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 5. Policy Experiments Are the Point</h6>
+              <p class="small mb-0">
+                EMCAS was designed for regulatory analysis &mdash; to ask &ldquo;what if&rdquo; questions
+                about market design, emissions trading, and renewable integration. Your SAWEM model
+                serves the same purpose. Every page of this thesis section builds toward that goal.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-white h-100">
+              <h6 class="fw-bold">&#9989; 6. Validation Against Real Markets</h6>
+              <p class="small mb-0">
+                EMCAS was validated by comparing its outputs to actual PJM market outcomes. Your model
+                should be validated against SAWEM historical data. The <a href="thesis-ace.html">ACE page</a>
+                lists the specific stylized facts your model should reproduce.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="fw-bold mt-4">&#128218; How to Reference EMCAS in Your Thesis</h5>
+        <p class="small">Here is a suggested structure for the literature review section citing EMCAS:</p>
+        <ol class="small">
+          <li><strong>Context:</strong> &ldquo;The first major ABM for electricity markets was EMCAS, developed at Argonne National Laboratory (Conzelmann et al., 2005; Koritarov et al., 2004). EMCAS established the foundational architecture of coupling autonomous learning agents with a market-clearing mechanism, and it was applied to study market power, emissions trading, and generation investment in US markets.&rdquo;</li>
+          <li><strong>Critique:</strong> &ldquo;However, EMCAS has several limitations that motivate our framework. Its agent learning is limited to tabular RL and evolutionary algorithms, which do not scale to continuous action spaces (such as real-valued bid curves). Its transmission model uses simplified DC power flow. It lacks a macroeconomic feedback layer &mdash; demand is exogenous rather than determined by household, firm, and government agents responding to energy costs. And its proprietary codebase limits extensibility.&rdquo;</li>
+          <li><strong>Your contribution:</strong> &ldquo;The SAWEM framework builds on the EMCAS tradition while addressing these limitations through three innovations: (1) deep reinforcement learning (DDPG/MADDPG) for continuous bid optimization, (2) a full DC-OPF engine providing nodal prices and congestion rents, and (3) an integrated ACE macroeconomic layer that endogenously generates demand, investment, and technology adoption from the micro-behaviour of heterogeneous household, firm, and government agents.&rdquo;</li>
+        </ol>
+
+        <h5 class="fw-bold mt-4">&#128218; Recommended Reading</h5>
+        <ul class="small">
+          <li>Conzelmann, G., Boyd, G., Koritarov, V., & Veselka, T. (2005). &ldquo;Multi-agent power market simulation using EMCAS.&rdquo; <em>IEEE Power Engineering Society General Meeting.</em> &mdash; the best overview of EMCAS capabilities.</li>
+          <li>Koritarov, V. (2004). &ldquo;Real-world market representation with agents: Modeling the electricity market as a complex adaptive system with an agent-based approach.&rdquo; <em>IEEE Power and Energy Magazine, 2(4), 39&ndash;46.</em> &mdash; readable introduction for power engineers.</li>
+          <li>North, M., Conzelmann, G., Koritarov, V., et al. (2002). &ldquo;E-laboratories: Agent-based modeling of electricity markets.&rdquo; <em>Proceedings of the 2002 Winter Simulation Conference.</em> &mdash; early paper describing the vision.</li>
+          <li>For a modern review positioning EMCAS alongside newer ABMs: Ringler, P., Keles, D., & Fichtner, W. (2016). &ldquo;Agent-based modelling and simulation of smart electricity grids and markets &mdash; A literature review.&rdquo; <em>Renewable and Sustainable Energy Reviews, 57, 205&ndash;215.</em></li>
+        </ul>
+
+        <div class="card border-0 mt-4" style="background: #f0f4f8;">
+          <div class="card-body">
+            <h5 class="fw-bold">&#128260; All Thesis Pages</h5>
+            <div class="row g-2 small text-center">
+              <div class="col">
+                <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+              </div>
+              <div class="col">
+                <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127760; CAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127891; ACE</a>
+              </div>
+              <div class="col">
+                <a href="thesis-emcas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#127758; EMCAS &larr;</a>
+              </div>
+              <div class="col">
+                <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+              </div>
+              <div class="col">
+                <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+              </div>
+              <div class="col">
+                <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+              </div>
+              <div class="col">
+                <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted text-center mt-4">
+      EMCAS &mdash; the pioneering agent-based model for electricity markets, and the foundation on which the SAWEM ABM-MDP-OPF framework builds.
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

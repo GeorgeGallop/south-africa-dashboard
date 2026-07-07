@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent-Based Computational Economics • SAWEM Framework</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-what    { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-how     { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-data    { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-sa      { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-bridge  { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .ace-quote {
+      border-left: 4px solid #002395;
+      background: #e3f2fd;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .metric-card {
+      transition: all 0.2s;
+      border-left: 4px solid #FFCD00;
+    }
+    .metric-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#what">&#127917; What Is ACE?</a>
+          <a class="nav-link" href="#evolution">&#9632; Growing Economies</a>
+          <a class="nav-link" href="#data">&#9632; What Data to Assess</a>
+          <a class="nav-link" href="#sa">&#9632; In South Africa</a>
+          <a class="nav-link" href="#bridge">&#9632; Feeding the OPF</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+
+        <h1 class="display-4 fw-bold text-sa-green">&#127891; Agent-Based Computational Economics</h1>
+        <p class="lead text-muted mb-4">
+          The science of growing economies from the bottom up &mdash; and how you will model
+          South Africa's economic evolution as it feeds into the electricity market.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- WHAT IS ACE                                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="what">
+          <div class="card-header level-what">
+            &#127917; What Is Agent-Based Computational Economics?
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Layman's Introduction</h5>
+              <p class="mb-2">
+                Traditional economics works like a photograph: it takes a snapshot of the economy
+                at a moment in time and assumes it is in equilibrium &mdash; supply equals demand,
+                everyone has optimised, nothing is changing. <strong>Agent-Based Computational
+                Economics (ACE)</strong> works like a movie: it starts with a cast of heterogeneous
+                agents (households, firms, banks, governments), each following plausible behavioural
+                rules, and then presses play. You watch the economy <em>grow and evolve</em> over
+                time &mdash; with booms, busts, innovations, inequalities, and structural changes
+                that <em>emerge</em> from the interactions, not from any equilibrium assumption.
+              </p>
+              <p class="mb-0 mt-2">
+                If CAS theory is the <em>physics</em> of complex systems, ACE is the <em>engineering</em>
+                &mdash; the practical methodology for building computational economies that evolve,
+                adapt, and produce realistic macro patterns from micro behaviours.
+              </p>
+            </div>
+
+            <p>
+              Agent-Based Computational Economics was formally defined by <strong>Leigh Tesfatsion</strong>
+              at Iowa State University in the 1990s. She describes it as &ldquo;the computational study
+              of economic processes modelled as dynamic systems of interacting agents.&rdquo; The
+              key word is <strong>processes</strong> &mdash; ACE focuses on how economies <em>evolve</em>
+              over time, not on finding a static equilibrium.
+            </p>
+
+            <div class="ace-quote">
+              <strong>&#128218; Leigh Tesfatsion, founder of ACE (2006):</strong><br>
+              &ldquo;The goal of ACE is to understand how <em>process</em> rather than <em>end state</em>
+              drives economic outcomes. Instead of assuming that agents are perfectly rational and that
+              the economy is in equilibrium, we start with agents who have bounded rationality, follow
+              simple rules, and learn from experience. We then study the <em>evolving</em> economy that
+              results from their interactions.&rdquo;
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; How ACE Differs from Traditional Economics</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th style="width:25%;">Dimension</th><th style="width:38%;">Traditional Economics</th><th style="width:37%;">ACE</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Core method</strong></td>
+                  <td>Solve for equilibrium: find prices where supply = demand. Algebra and calculus.</td>
+                  <td>Grow the economy from initial conditions: simulate interactions over time. Computation.</td>
+                </tr>
+                <tr>
+                  <td><strong>Agents</strong></td>
+                  <td>Representative agent (one &ldquo;typical&rdquo; consumer, one &ldquo;typical&rdquo; firm). Homogeneous.</td>
+                  <td>Heterogeneous population with realistic distributions of income, productivity, preferences.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rationality</strong></td>
+                  <td>Perfect rationality: agents have all information and compute the optimal action instantly.</td>
+                  <td>Bounded rationality: agents have limited information, use heuristics, learn from feedback.</td>
+                </tr>
+                <tr>
+                  <td><strong>Time</strong></td>
+                  <td>Comparative statics: compare before and after a shock; the path between them is ignored.</td>
+                  <td>Dynamics: the path is the whole point. Booms, busts, transitions, and phase changes unfold step by step.</td>
+                </tr>
+                <tr>
+                  <td><strong>Equilibrium</strong></td>
+                  <td>Assumed. The economy always tends toward a unique, stable equilibrium.</td>
+                  <td>Not assumed. May emerge, may not. Multiple equilibria, cycles, and chaos are possible outcomes.</td>
+                </tr>
+                <tr>
+                  <td><strong>Emergence</strong></td>
+                  <td>Ignored or treated as &ldquo;market failure.&rdquo;</td>
+                  <td>Central. Macro patterns like business cycles, inequality, and technological change emerge from micro interactions.</td>
+                </tr>
+                <tr>
+                  <td><strong>Validation</strong></td>
+                  <td>Match a few aggregate statistics (GDP, inflation, unemployment).</td>
+                  <td>Match distributions, moments, correlations, and stylized facts &mdash; not just averages.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128196; A Brief History of ACE</h5>
+            <div style="padding-left:1.5rem; border-left:3px solid #007A4D;">
+              <p class="small mb-2"><strong>1990s &mdash; The founding:</strong> Tesfatsion creates the first ACE research group at Iowa State. Early models focus on artificial stock markets (Santa Fe Institute) and trade networks. The key insight: even simple agents can produce realistic financial time series (volatility clustering, fat tails) that equilibrium models cannot.</p>
+              <p class="small mb-2"><strong>2000s &mdash; The maturity:</strong> ACE models tackle macroeconomics directly. The &ldquo;Krugman model&rdquo; of economic geography, Delli Gatti's models of financial fragility, and the &ldquo;EURACE&rdquo; project &mdash; the first large-scale agent-based macro model of the European economy with ~50 million agents.</p>
+              <p class="small mb-2"><strong>2008 &mdash; The wake-up call:</strong> The global financial crisis was not predicted by any mainstream equilibrium model. ACE models, which naturally produce crises as emergent outcomes, gained credibility. The Bank of England, the IMF, and the European Central Bank began investing in ACE models.</p>
+              <p class="small mb-0"><strong>2020s &mdash; The integration:</strong> ACE is now mainstream. &ldquo;Agency-based&rdquo; macro models (like the IMF's &ldquo;Agent-Based Integrated Assessment Model&rdquo;) are used alongside DSGE models. Your SAWEM project is part of this tradition &mdash; applying ACE methodology to the electricity market embedded in a real economy.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- HOW TO SHOW ECONOMIC EVOLUTION                              -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="evolution">
+          <div class="card-header level-how">
+            &#9632; How ACE Shows Economic Evolution Over Time
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The &ldquo;Generative&rdquo; Approach</h5>
+              <p class="mb-0">
+                The goal of ACE is not to <em>predict</em> the future. The goal is to <em>understand</em>
+                how the economy works by growing it from the ground up. The motto, from Joshua Epstein
+                at the Brookings Institution: <strong>&ldquo;If you didn't grow it, you didn't explain
+                it.&rdquo;</strong> This means: you define the agents, their rules, and their environment,
+                press play, and see what happens. If the simulated economy reproduces the patterns you
+                see in the real world (business cycles, income distributions, trade patterns), then
+                you have a candidate explanation for how those patterns arise.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">The Standard ACE Workflow</h5>
+            <div class="row g-2 small text-center">
+              <div class="col-md-3">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong style="font-size:1.4rem;">&#9312;</strong>
+                  <h6 class="fw-bold mt-1">Design Agents</h6>
+                  <span class="text-muted">Define types (households, firms, banks, govt), their attributes, decision rules, learning algorithms, and interaction topology.</span>
+                </div>
+                <div class="fw-bold" style="font-size:1.2rem;">&#8595;</div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong style="font-size:1.4rem;">&#9313;</strong>
+                  <h6 class="fw-bold mt-1">Set Initial Conditions</h6>
+                  <span class="text-muted">Calibrate agent populations to real-world data (income distributions, firm sizes, productivity, demographics). Initialize the environment (prices, institutions, infrastructure).</span>
+                </div>
+                <div class="fw-bold" style="font-size:1.2rem;">&#8595;</div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong style="font-size:1.4rem;">&#9314;</strong>
+                  <h6 class="fw-bold mt-1">Simulate Forward</h6>
+                  <span class="text-muted">Run the model period by period: agents interact, markets clear (or don't), learning updates, new agents enter, old agents exit. Collect all micro and macro data.</span>
+                </div>
+                <div class="fw-bold" style="font-size:1.2rem;">&#8595;</div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong style="font-size:1.4rem;">&#9315;</strong>
+                  <h6 class="fw-bold mt-1">Analyse Emergent Patterns</h6>
+                  <span class="text-muted">Compare simulated macro and micro patterns to real-world data. Do you see realistic business cycles, inequality, growth, structural change? If not, revise the agent rules.</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; The Key Types of Economic Evolution You Can Show</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">1. Structural Transformation</h6>
+                    <p class="small mb-0">How the sectoral composition of the economy changes over time &mdash; agriculture &rarr; industry &rarr; services. <em>In SAWEM context: the shift from an energy-intensive industrial economy (mining, smelting) to a services-and-knowledge economy changes the load shape, peak demand, and electricity intensity of GDP.</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> declining share of industrial electricity consumption as % of total, rising share of commercial and residential.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">2. Technological Diffusion</h6>
+                    <p class="small mb-0">How new technologies spread through the economy over time &mdash; the classic S-curve. <em>In SAWEM: rooftop solar adoption, EV adoption, industrial heat pump adoption, smart meter penetration. Each follows a logistic diffusion curve with different saturation levels and speeds.</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> S-curves of adoption, heterogeneity in adoption timing by income/sector/region, network effects (my neighbour has solar &rarr; I am more likely to adopt).</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">3. Inequality Dynamics</h6>
+                    <p class="small mb-0">How the distribution of income, wealth, and access evolves &mdash; and how it feeds back into economic activity. <em>In SAWEM: energy affordability is an inequality issue. Low-income households spend a larger share of income on electricity. If SMP rises, inequality worsens, which may trigger political responses (subsidies, tariff restructuring).</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> Gini coefficient over time, energy burden (electricity cost as % of income) by decile, fuel poverty indicators.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">4. Business Cycles & Crises</h6>
+                    <p class="small mb-0">Endogenous booms and busts that arise from the interaction of agents &mdash; not imposed as external shocks. <em>In SAWEM: investment cycles in generation capacity (boom when prices are high, bust when overcapacity depresses prices). Financial stress cycles at Eskom (debt-driven crises). Load-shedding cycles.</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> spectral analysis of GDP, SMP, and investment time series; duration and frequency of recessions/crises; power-law distribution of crisis sizes.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">5. Institutional Evolution</h6>
+                    <p class="small mb-0">How market rules, norms, and regulations emerge and change as the economy evolves. <em>In SAWEM: the transition from a vertically integrated monopoly (Eskom) to a competitive wholesale market (SAWEM) is itself an institutional evolution. Your model can simulate whether the market needs a capacity mechanism and what form it should take.</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> emergence of new trading practices, changes in market concentration, regulatory adaptation to new technologies.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card metric-card h-100">
+                  <div class="card-body">
+                    <h6 class="card-title fw-bold">6. Spatial & Regional Evolution</h6>
+                    <p class="small mb-0">How economic activity shifts across regions over time. <em>In SAWEM: the location of new renewable generation (Northern Cape wind, Eastern Cape solar) shifts economic activity away from coal-dependent Mpumalanga. This has profound implications for employment, migration, and infrastructure planning.</em></p>
+                    <div class="small mt-1 text-muted"><strong>Look for:</strong> regional GDP shares, employment shifts, migration patterns, congestion rent evolution across transmission corridors.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; The &ldquo;Generative&rdquo; Test &mdash; Epstein's Framework</h5>
+            <p class="small">
+              Joshua Epstein (1999, 2006) formalised the ACE approach with his <strong>generative
+              social science</strong> framework. The question is not &ldquo;Can the model fit the
+              data?&rdquo; but &ldquo;Can the model <em>generate</em> the data from plausible micro
+              rules?&rdquo; The test has four steps:
+            </p>
+            <ol class="small">
+              <li><strong>Identify a macro-empirical regularity</strong> you want to explain (e.g., the fat-tailed distribution of electricity price spikes, the S-curve of solar adoption, the 10-year investment cycle in generation capacity).</li>
+              <li><strong>Propose a micro-level mechanism</strong> that could generate it (e.g., profit-seeking agents with imperfect information, learning delays, and heterogeneous costs).</li>
+              <li><strong>Implement the mechanism in an ACE model</strong> and run it. Check if the macro regularity emerges.</li>
+              <li><strong>If it does not, revise the mechanism.</strong> If it does, you have a candidate explanation &mdash; the macro pattern is <em>generated</em> by the micro rules, not imposed.</li>
+            </ol>
+            <p class="small">
+              <strong>The generative test is the standard to which your SAWEM model should be held.</strong>
+              It is not enough to say &ldquo;the model produces SMP data.&rdquo; The question is: can
+              your model <em>generate</em> the real-world SMP distribution, price spike frequency,
+              and volatility clustering from plausible bidding rules and learning algorithms?
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- WHAT DATA TO ASSESS                                         -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="data">
+          <div class="card-header level-data">
+            &#9632; What Data to Assess &mdash; Observations of an Evolving Economy
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The ACE Data Framework</h5>
+              <p class="mb-0">
+                In an ACE model, you have a god's-eye view: you can record every variable for every
+                agent at every time step. The challenge is knowing <em>what to look at</em>. The
+                following framework organises the data into levels, from the micro (individual agents)
+                to the macro (system-level patterns) to the <strong>emergent</strong> (the patterns
+                that only appear when you study the whole system over time).
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; Level 1: Aggregate Macroeconomic Time Series</h5>
+            <p class="small">These are the standard macro indicators &mdash; what every economist looks at first. In your SAWEM ACE model, these are the outputs of the OPF + macro ABM loop.</p>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>GDP & Components:</strong>
+                  <ul class="mb-0">
+                    <li>Total output (real GDP) by sector</li>
+                    <li>Consumption, investment, government spending</li>
+                    <li>Trade balance (exports &minus; imports of electricity-intensive goods)</li>
+                    <li><em>Source in SA:</em> StatsSA GDP releases, SARB Quarterly Bulletin</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Energy Economics:</strong>
+                  <ul class="mb-0">
+                    <li>Average SMP (annual, quarterly, monthly)</li>
+                    <li>Total electricity consumption (TWh/yr)</li>
+                    <li>Electricity intensity of GDP (kWh/R)</li>
+                    <li>Energy cost as % of GDP</li>
+                    <li><em>Source in SA:</em> Eskom Annual Reports, DMP, StatsSA</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Labour & Demographics:</strong>
+                  <ul class="mb-0">
+                    <li>Employment by sector (coal mining, RE, manufacturing, services)</li>
+                    <li>Unemployment rate (official + expanded)</li>
+                    <li>Population growth, urbanisation rate</li>
+                    <li><em>Source in SA:</em> StatsSA Quarterly Labour Force Survey, Census</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Fiscal & Financial:</strong>
+                  <ul class="mb-0">
+                    <li>Government revenue & expenditure (including Eskom bailouts)</li>
+                    <li>Eskom debt, municipal arrears</li>
+                    <li>Carbon tax revenue</li>
+                    <li>Investment in generation capacity (R/yr by technology)</li>
+                    <li><em>Source in SA:</em> National Treasury Budget, Eskom Annual Report</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; Level 2: Distributional & Structural Data</h5>
+            <p class="small">This is where ACE diverges from traditional macro. The <em>distribution</em> matters as much as the average. These data reveal the &ldquo;texture&rdquo; of the economy that standard models miss.</p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>What to Measure</th><th>How to Measure It</th><th>Why It Matters for SAWEM</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Income distribution</td>
+                  <td>Gini coefficient, Palma ratio, income shares by decile, full distribution plotted as histogram</td>
+                  <td>Determines residential electricity affordability, solar adoption rates by income group, political pressure for tariff reform</td>
+                </tr>
+                <tr>
+                  <td>Wealth distribution</td>
+                  <td>Net worth distribution, asset ownership by type (housing, financial, business)</td>
+                  <td>Determines capacity to invest in rooftop solar, EVs, and battery storage without financing</td>
+                </tr>
+                <tr>
+                  <td>Firm size distribution</td>
+                  <td>Number of firms by employee count, revenue, electricity consumption. Power-law tail?</td>
+                  <td>Industrial load composition: few large firms (mining, smelting) vs many small firms (services). Affects demand response potential</td>
+                </tr>
+                <tr>
+                  <td>Regional disparities</td>
+                  <td>GDP per capita by province, employment by province, electricity access by province</td>
+                  <td>Gauteng (economic centre) vs Mpumalanga (coal) vs Northern Cape (RE) vs Eastern Cape (poor). Transmission needs, equity considerations</td>
+                </tr>
+                <tr>
+                  <td>Energy access & poverty</td>
+                  <td>% of households with electricity, energy burden (% of income spent on electricity), cooking fuel type</td>
+                  <td>Basic needs: ~3 million SA households still lack electricity. Energy burden >10% is considered fuel poverty</td>
+                </tr>
+                <tr>
+                  <td>Labour market structure</td>
+                  <td>Formal vs informal employment, skill distribution, unionisation rates, wage distribution</td>
+                  <td>Just Transition: coal worker retraining, new RE job creation, geographical mismatch of skills</td>
+                </tr>
+                <tr>
+                  <td>Sectoral composition</td>
+                  <td>Share of GDP and employment by sector, Herfindahl index of economic concentration</td>
+                  <td>Determines overall electricity intensity and demand growth trajectory</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128202; Level 3: Emergent & Relational Data</h5>
+            <p class="small">These are the patterns that only appear when you track the system over time and study the relationships between variables.</p>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Autocorrelation & Persistence:</strong>
+                  <ul class="mb-0">
+                    <li>How long does a shock to SMP persist? (autocorrelation function)</li>
+                    <li>Are high-price states &ldquo;sticky&rdquo;? (regime-switching tests)</li>
+                    <li>Is there long memory in demand growth? (Hurst exponent)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Cross-Correlations & Lags:</strong>
+                  <ul class="mb-0">
+                    <li>SMP &rarr; IPP investment: what is the lag? (2&ndash;4 years?)</li>
+                    <li>GDP &rarr; electricity demand: what is the elasticity? Is it stable or changing?</li>
+                    <li>Carbon tax &rarr; emissions: what is the response lag?</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Volatility Clustering:</strong>
+                  <ul class="mb-0">
+                    <li>Are large SMP changes followed by large SMP changes? (ARCH/GARCH effects)</li>
+                    <li>Does volatility increase as the energy transition progresses? (expected: yes, as renewables increase)</li>
+                    <li>Is there a relationship between price level and price volatility? (leverage effect)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Tail Behaviour & Extreme Events:</strong>
+                  <ul class="mb-0">
+                    <li>Are SMP spikes power-law distributed? Or exponential?</li>
+                    <li>What is the return period of a &ldquo;load-shedding event&rdquo; (unserved energy > threshold)?</li>
+                    <li>Are extreme events becoming more or less frequent over the transition?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; Level 4: Counterfactual & Policy Metrics</h5>
+            <p class="small">The ultimate purpose of the ACE model is to answer &ldquo;what if&rdquo; questions. These metrics compare different simulation runs:</p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Metric</th><th>What It Captures</th><th>Typical Counterfactuals</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Policy impact &#916;</td><td>Difference in outcome between baseline and policy scenario</td><td>Carbon tax of R500 vs R200; JET Fast vs JET Slow</td></tr>
+                <tr><td>Distributional incidence</td><td>Who gains and who loses from a policy? (winners & losers by income, region, sector)</td><td>Carbon tax: low-income vs high-income households; coal regions vs RE regions</td></tr>
+                <tr><td>Robustness to uncertainty</td><td>Does the policy work across many possible futures? (sensitivity analysis)</td><td>Gas price high vs low; demand growth fast vs slow; learning rate fast vs slow</td></tr>
+                <tr><td>Welfare metrics</td><td>Consumer surplus, producer surplus, government revenue, environmental damage</td><td>Total social welfare under different market designs</td></tr>
+                <tr><td>Stability & resilience</td><td>Does the system recover from shocks? How long does it take?</td><td>Shock: sudden coal retirement, LNG supply disruption, drought (hydro loss)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- IN SOUTH AFRICA                                             -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sa">
+          <div class="card-header level-sa">
+            &#9632; Applying ACE to the South African Economy
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; Why SA Is a Perfect ACE Case Study</h5>
+              <p class="mb-0">
+                South Africa is not a &ldquo;typical&rdquo; economy &mdash; and that is exactly
+                why ACE is the right tool. SA has extreme inequality, a dual economy (formal/informal),
+                a dominant state-owned electricity monopoly in transition, high unemployment, and
+                enormous structural change ahead (the Just Energy Transition). These features are
+                <em>precisely</em> what traditional equilibrium models handle poorly and what ACE
+                models handle naturally. You cannot assume a &ldquo;representative agent&rdquo; in SA
+                &mdash; the differences between a Soweto household, a Sandton executive, a Mpumalanga
+                coal miner, and a Northern Cape farmer are the <em>engine</em> of the system, not noise.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#127463;&#127466; South Africa's Key ACE-Relevant Features</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Feature</th><th>Data</th><th>How It Enters the ACE Model</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Extreme inequality</strong></td>
+                  <td>Gini = 0.63 (highest in the world). Top 10% earn 65% of income. 55% of population lives below poverty line.</td>
+                  <td>Income distribution determines residential electricity demand, solar adoption rates, and energy burden. Low-income households are price-sensitive but cannot easily invest in alternatives.</td>
+                </tr>
+                <tr>
+                  <td><strong>Dual economy</strong></td>
+                  <td>~35% unemployment (expanded). ~25% of workers in informal sector. Formal sector is capital-intensive (mining, finance); informal is labour-intensive (retail, services).</td>
+                  <td>Formal firms are connected to the grid and pay SMP + surcharges. Informal firms may have no connection or illegal connections. The formal/informal split affects load forecasting and demand response potential.</td>
+                </tr>
+                <tr>
+                  <td><strong>Eskom dominance & fragility</strong></td>
+                  <td>Eskom ~R450bn debt. EAF ~55% (2018&ndash;2024). Load shedding in every year since 2008. Unbundling into Gen, Tx, Dx underway.</td>
+                  <td>Eskom Corporate is a key agent with its own financial dynamics (debt service, tariff applications, bailout requests). Its health determines the tariff path, which affects all other agents.</td>
+                </tr>
+                <tr>
+                  <td><strong>Just Energy Transition</strong></td>
+                  <td>~90% of electricity from coal. JET P pledge of $8.5bn. ~120,000 direct jobs in coal value chain in Mpumalanga. RE IPP programme since 2011.</td>
+                  <td>The central scenario dimension: how fast does coal retire? Where do new jobs come from? What happens to coal communities? How does transmission expansion affect RE deployment?</td>
+                </tr>
+                <tr>
+                  <td><strong>Municipal crisis</strong></td>
+                  <td>~R60bn owed by municipalities to Eskom. Many municipalities are bankrupt. Load shedding and non-payment create a death spiral.</td>
+                  <td>Municipal agents have financial constraints that affect their ability to pay Eskom, invest in infrastructure, and manage load. Municipal failure feeds back into Eskom's finances.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rooftop solar boom</strong></td>
+                  <td>~4,000 MW of rooftop solar installed 2020&ndash;2025. Driven by load-shedding and falling PV costs. Mostly high-income households and commercial.</td>
+                  <td>Technology diffusion S-curve with income-dependent adoption rates. Reduces daytime grid demand (duck curve), erodes Eskom revenue, creates grid stability challenges.</td>
+                </tr>
+                <tr>
+                  <td><strong>Regional concentration</strong></td>
+                  <td>Gauteng ~35% of GDP. Mpumalanga ~50% of coal generation. Northern Cape ~80% of best solar resource. Eastern Cape & KZN have high unemployment and low electrification.</td>
+                  <td>Geography matters for transmission, employment impacts of transition, and political economy of energy policy.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128202; The Data Sources You Will Need for the SA ACE Model</h5>
+            <div class="row g-2 small">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>StatsSA</strong><br>
+                  <span class="text-muted">GDP (quarterly), CPI, employment (QLFS), household income & expenditure (IES/LCFS), population/census, energy accounts.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>SARB (South African Reserve Bank)</strong><br>
+                  <span class="text-muted">Quarterly Bulletin: GDP components, sectoral accounts, balance of payments, interest rates, exchange rates.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Eskom</strong><br>
+                  <span class="text-muted">Annual reports (financial), System Operator data (hourly demand, SMP, outages, generation mix), Transmission Development Plan (TDP).</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>NERSA</strong><br>
+                  <span class="text-muted">MYPD decisions (tariff approvals), IPP programme data, market conduct reports, SAWEM market analysis.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>National Treasury</strong><br>
+                  <span class="text-muted">Budget Review (fiscal projections, Eskom allocations), Medium-Term Budget Policy Statement, tax revenue data (including carbon tax).</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>DMRE (Dept of Mineral Resources & Energy)</strong><br>
+                  <span class="text-muted">IRP (Integrated Resource Plan), REIPPP bid data, fuel price data, gas master plan, energy balance.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>CSIR</strong><br>
+                  <span class="text-muted">Annual statistics on renewable generation, cost of unserved energy, power system studies, Just Transition modelling.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>World Bank / IMF</strong><br>
+                  <span class="text-muted">South Africa economic updates, inequality and poverty data, Doing Business indicators, energy sector reviews.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>IPP Office</strong><br>
+                  <span class="text-muted">REIPPP bid window results (prices, capacities, locations), signed PPAs, CfD strike prices, economic development commitments.</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128200; What Your ACE Model of SA Should Look For</h5>
+            <p class="small">
+              Here are the specific emergent patterns your ACE model should aim to reproduce and explain:
+            </p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Stylised Fact of the SA Economy</th><th>ACE Explanation It Should Generate</th><th>Validation Data</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Electricity demand is decoupled from GDP growth (electricity intensity declining)</td>
+                  <td>Structural change (services > industry) + efficiency gains + embedded generation (rooftop solar, industrial self-gen) reduce grid demand even as GDP grows</td>
+                  <td>Eskom historical demand data (2000&ndash;2025), StatsSA GDP by sector, embedded generation estimates from CSIR</td>
+                </tr>
+                <tr>
+                  <td>Solar adoption follows an S-curve with income thresholds</td>
+                  <td>High-income households adopt first (payback < 3yr), middle-income follow as costs fall, low-income constrained by capital access</td>
+                  <td>StatsSA household survey (solar ownership by income), Eskom/NERSA rooftop solar registration data</td>
+                </tr>
+                <tr>
+                  <td>Load shedding destroys GDP (estimated ~R500bn lost 2022&ndash;2024)</td>
+                  <td>Unserved energy reduces output across all sectors; effects are nonlinear &mdash; a 1% reduction in supply can cause a >1% reduction in GDP (multiplier effects)</td>
+                  <td>CSIR cost of load-shedding estimates, SARB GDP components during load shedding years</td>
+                </tr>
+                <tr>
+                  <td>The coal-to-RE transition creates winners and losers regionally</td>
+                  <td>Mpumalanga loses coal jobs and tax revenue; Northern Cape & Eastern Cape gain RE investment and jobs. Migration and retraining take time &mdash; the transition has a &ldquo;valley of death&rdquo;</td>
+                  <td>Energy & employment studies (CSIR, Trade & Industrial Policy Strategies), REIPPP economic development data, Mpumalanga GDP & employment by year</td>
+                </tr>
+                <tr>
+                  <td>Eskom's debt and municipal arrears create a &ldquo;utility death spiral&rdquo; risk</td>
+                  <td>As SMP rises, customers adopt self-generation &rarr; grid sales fall &rarr; Eskom must raise tariffs further &rarr; more customers leave. The ACE model shows whether this spiral is inevitable or can be managed</td>
+                  <td>Eskom annual financial statements, municipal payment data, NERSA tariff determinations</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BRIDGE TO THE WHOLE PROJECT                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="bridge">
+          <div class="card-header level-bridge">
+            &#9632; How ACE Feeds the OPF &mdash; The Complete Integration
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Big Picture of Your Thesis</h5>
+              <p class="mb-0">
+                ACE is not a separate model &mdash; it is the <strong>macroeconomic engine</strong>
+                that produces the demand scenarios, technology adoption trajectories, and policy
+                settings that feed into the power market ABM and OPF. Here is exactly how it fits
+                into the closed loop you are building.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128260; The Full Closed Loop</h5>
+            <div style="background:#f8f9fa; border-radius:8px; padding:1.5rem; text-align:center; margin:1rem 0;">
+              <div class="row g-2 small">
+                <div class="col-12 mb-1">
+                  <span class="badge p-2" style="background:#1b5e20; font-size:0.9rem; width:100%;">&#127891; ACE Macro Model</span>
+                  <div style="font-size:0.8rem; margin:2px 0;"><em>Produces: GDP growth, income distribution, sectoral composition, technology adoption rates, policy settings</em></div>
+                  <div style="font-size:1.4rem;">&#8595;</div>
+                </div>
+                <div class="col-12 mb-1">
+                  <span class="badge p-2" style="background:#0d47a1; font-size:0.85rem; width:100%;">&#128200; Demand Scenario Generator</span>
+                  <div style="font-size:0.8rem; margin:2px 0;"><em>Translates macro outputs into hourly load shapes by sector and region</em></div>
+                  <div style="font-size:1.4rem;">&#8595;</div>
+                </div>
+                <div class="col-12 mb-1">
+                  <span class="badge p-2" style="background:#e65100; font-size:0.85rem; width:100%;">&#9889; Power Market ABM + OPF</span>
+                  <div style="font-size:0.8rem; margin:2px 0;"><em>Generator/load/CRA/NERSA agents + OPF &rarr; SMP, dispatch, prices, emissions</em></div>
+                  <div style="font-size:1.4rem;">&#8595;</div>
+                </div>
+                <div class="col-12 mb-1">
+                  <span class="badge p-2" style="background:#880e4f; font-size:0.85rem; width:100%;">&#128202; Economic Impact Assessment</span>
+                  <div style="font-size:0.8rem; margin:2px 0;"><em>Compute: energy costs by sector, affordability, emissions, employment effects, fiscal impacts</em></div>
+                  <div style="font-size:1.4rem;">&#8593; &#8595;</div>
+                </div>
+                <div class="col-12">
+                  <span class="badge p-2" style="background:#4a148c; font-size:0.85rem; width:100%;">&#128260; Feedback to ACE Model</span>
+                  <div style="font-size:0.8rem; margin:2px 0;"><em>Updated energy costs affect household budgets, firm profits, government finances &rarr; next year's macro evolution</em></div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; The Intellectual Stack &mdash; How All Thesis Pages Connect</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Layer</th><th>Page</th><th>Role in the Model</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Theory</strong></td>
+                  <td><a href="thesis-cas.html">&#127760; Complex Adaptive Systems</a></td>
+                  <td>Why the economy and electricity market behave the way they do</td>
+                </tr>
+                <tr>
+                  <td><strong>Economic Model</strong></td>
+                  <td><a href="thesis-ace.html">&#127891; Agent-Based Computational Economics</a></td>
+                  <td><strong>You are here.</strong> How to model the evolving SA economy that produces the demand scenarios</td>
+                </tr>
+                <tr>
+                  <td><strong>Methodology</strong></td>
+                  <td><a href="thesis-abm.html">&#129302; Agent-Based Modeling</a></td>
+                  <td>The general ABM methodology applied to the power market agents</td>
+                </tr>
+                <tr>
+                  <td><strong>Mathematics</strong></td>
+                  <td><a href="thesis-stochastic.html">&#127936; Stochastic Dynamical Systems</a></td>
+                  <td>The SDEs, MDPs, and Fokker-Planck theory underlying agent learning and price dynamics</td>
+                </tr>
+                <tr>
+                  <td><strong>Engine</strong></td>
+                  <td><a href="thesis-methods.html">&#129518; Methods (OPF + MDP)</a></td>
+                  <td>The dispatch optimisation and RL algorithms that actually run the market</td>
+                </tr>
+                <tr>
+                  <td><strong>Implementation</strong></td>
+                  <td><a href="thesis-agents.html">&#129302; Agent Architecture</a></td>
+                  <td>The detailed state/action/policy tables for every agent type in the model</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128204; What to Research Next</h5>
+            <p class="small">
+              You mentioned you have ideas for this and want to research the framework. Here is a
+              reading path tailored to building an ACE model of the South African economy:
+            </p>
+            <ol class="small">
+              <li><strong>Start here &mdash; the ACE methodology:</strong> Leigh Tesfation, <em>Agent-Based Computational Economics: A Constructive Approach to Economic Theory</em> (Handbook of Computational Economics, Vol. 2, 2006). This is the foundational chapter &mdash; it explains exactly what you are doing.</li>
+              <li><strong>The generative approach:</strong> Joshua Epstein, <em>Generative Social Science: Studies in Agent-Based Computational Modeling</em> (Princeton, 2006). The &ldquo;if you didn't grow it, you didn't explain it&rdquo; philosophy in action.</li>
+              <li><strong>Macro ACE models:</strong> Delli Gatti et al., <em>Agent-Based Macroeconomic Modeling</em> (Cambridge, 2018). The state of the art in building whole-economy ACE models with financial sectors.</li>
+              <li><strong>Energy & the economy:</strong> The IMF's <em>Agent-Based Integrated Assessment Model</em> (2023) &mdash; an ACE model of climate, energy, and the economy. Directly relevant to what you are building.</li>
+              <li><strong>South African data:</strong> Download the StatsSA Income and Expenditure Survey (IES) and the Quarterly Labour Force Survey (QLFS) microdata. These are the most important datasets for calibrating your household agents.</li>
+              <li><strong>South African energy economics:</strong> CSIR energy research reports, Eskom's System Operator data, the IRP2025, and the National Treasury's Just Energy Transition Implementation Plan.</li>
+              <li><strong>Firm dynamics:</strong> The World Bank Enterprise Survey for South Africa gives you the firm size distribution, productivity, and electricity constraints that should calibrate your firm agents.</li>
+            </ol>
+
+            <div class="card border-0 mt-4" style="background: #f0f4f8;">
+              <div class="card-body">
+                <h5 class="fw-bold">&#128260; All Thesis Pages</h5>
+                <div class="row g-2 small text-center">
+                  <div class="col">
+                    <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127760; CAS</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#127891; ACE &larr;</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="small text-muted mt-4">
+              <strong>Recommended reading to go deeper into ACE:</strong> Leigh Tesfation's website
+              (www.aceweb.econ.iastate.edu) is the central repository for ACE resources, including
+              syllabi, software, and model libraries. <em>Handbook of Computational Economics, Vol.
+              2: Agent-Based Computational Economics</em> (Elsevier, 2006) edited by Tesfation and
+              Kenneth Judd. <em>Agent-Based Models in Economics: A Toolkit</em> (Cambridge, 2019)
+              by Domenico Delli Gatti et al. for practical implementation guidance. The Journal of
+              Economic Dynamics and Control regularly publishes ACE papers.
+            </p>
+          </div>
+        </div>
+
+        <hr>
+        <p class="text-muted text-center mt-4">
+          Agent-Based Computational Economics &mdash; the science of growing economies from the bottom up,
+          and the engine of economic evolution for the SAWEM ABM-MDP-OPF framework.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
