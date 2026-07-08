@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eskom Plants • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .plant-card { transition: all 0.2s; }
+    .plant-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.12) !important; }
+    .stat-label { font-size: 0.7rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05rem; }
+    .stat-value { font-size: 1.1rem; font-weight: 700; }
+    .badge-coal { background: #37474f; color: white; }
+    .badge-nuclear { background: #e65100; color: white; }
+    .badge-hydro { background: #1565c0; color: white; }
+    .badge-gas { background: #f57f17; color: white; }
+    .badge-re { background: #2e7d32; color: white; }
+    .heat-rate-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: #e0e0e0;
+      margin-top: 4px;
+    }
+    .heat-rate-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(to right, #007A4D, #c62828);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <h1 class="display-4 fw-bold text-sa-green">&#127759; Eskom Generation Plants</h1>
+    <p class="lead text-muted mb-4">Complete fleet overview with consistent technical specifications: capacity, efficiency, heat rate, and build year.</p>
+
+    <!-- Fleet Summary -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="stat-label">Total Installed Capacity</div>
+          <div class="stat-value text-sa-green">~45,500 MW</div>
+          <small class="text-muted">All technologies</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="stat-label">Coal-Fired Capacity</div>
+          <div class="stat-value" style="color:#37474f;">~39,000 MW</div>
+          <small class="text-muted">15 coal stations</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="stat-label">Average Coal Fleet Age</div>
+          <div class="stat-value" style="color:#e65100;">~42 years</div>
+          <small class="text-muted">Weighted by capacity</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="stat-label">Average Coal Efficiency</div>
+          <div class="stat-value" style="color:#1565c0;">~35.5%</div>
+          <small class="text-muted">Design efficiency (HHV)</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Plant Table -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header fw-bold" style="background: #37474f; color: white;">&#128202; Coal-Fired Plants &mdash; Full Specifications</div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered small mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Plant</th>
+                <th>Province</th>
+                <th>Units</th>
+                <th>Installed MW</th>
+                <th>Design Eff. (%)</th>
+                <th>Heat Rate (kJ/kWh)</th>
+                <th>Type / Class</th>
+                <th>Commissioned</th>
+                <th>Design Life</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Arnot</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>2,100 MW</td>
+                <td>35.6%</td>
+                <td>10,112</td>
+                <td>Subcritical</td>
+                <td>1971–1975</td>
+                <td>50 yr (2021–2025)</td>
+                <td>Operating (EAF ~45%)</td>
+              </tr>
+              <tr>
+                <td><strong>Camden</strong></td>
+                <td>Mpumalanga</td>
+                <td>8</td>
+                <td>1,600 MW</td>
+                <td>33.1%</td>
+                <td>10,876</td>
+                <td>Subcritical (RTS)</td>
+                <td>1967–1969</td>
+                <td>50 yr (2017–2019)</td>
+                <td>Operating (RTS 2005+)</td>
+              </tr>
+              <tr>
+                <td><strong>Duvha</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>3,600 MW</td>
+                <td>37.6%</td>
+                <td>9,574</td>
+                <td>Subcritical</td>
+                <td>1975–1984</td>
+                <td>50 yr (2025–2034)</td>
+                <td>Operating (EAF ~55%)</td>
+              </tr>
+              <tr>
+                <td><strong>Grootvlei</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>1,200 MW</td>
+                <td>32.9%</td>
+                <td>10,942</td>
+                <td>Subcritical (RTS)</td>
+                <td>1969–1977</td>
+                <td>50 yr (2019–2027)</td>
+                <td>Operating (RTS 2008+)</td>
+              </tr>
+              <tr>
+                <td><strong>Hendrina</strong></td>
+                <td>Mpumalanga</td>
+                <td>10</td>
+                <td>2,000 MW</td>
+                <td>34.2%</td>
+                <td>10,526</td>
+                <td>Subcritical</td>
+                <td>1970–1977</td>
+                <td>50 yr (2020–2027)</td>
+                <td>Operating (EAF ~40%)</td>
+              </tr>
+              <tr>
+                <td><strong>Kendal</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>4,116 MW</td>
+                <td>35.3%</td>
+                <td>10,198</td>
+                <td>Subcritical</td>
+                <td>1988–1993</td>
+                <td>50 yr (2038–2043)</td>
+                <td>Operating</td>
+              </tr>
+              <tr>
+                <td><strong>Komati</strong></td>
+                <td>Mpumalanga</td>
+                <td>9</td>
+                <td>1,125 MW</td>
+                <td>31.9%</td>
+                <td>11,285</td>
+                <td>Subcritical</td>
+                <td>1961–1966</td>
+                <td>50 yr (2011–2016)</td>
+                <td>Shut down (Oct 2022)</td>
+              </tr>
+              <tr>
+                <td><strong>Kriel</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>3,000 MW</td>
+                <td>35.0%</td>
+                <td>10,286</td>
+                <td>Subcritical</td>
+                <td>1976–1979</td>
+                <td>50 yr (2026–2029)</td>
+                <td>Operating</td>
+              </tr>
+              <tr>
+                <td><strong>Kusile</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>4,800 MW</td>
+                <td>38.5%</td>
+                <td>9,351</td>
+                <td>Supercritical</td>
+                <td>2017–2025*</td>
+                <td>60 yr (2077–2085)</td>
+                <td>Commissioning (Units 1–5 online)</td>
+              </tr>
+              <tr>
+                <td><strong>Lethabo</strong></td>
+                <td>Free State</td>
+                <td>6</td>
+                <td>3,708 MW</td>
+                <td>37.5%</td>
+                <td>9,600</td>
+                <td>Subcritical</td>
+                <td>1990–1996</td>
+                <td>50 yr (2040–2046)</td>
+                <td>Operating</td>
+              </tr>
+              <tr>
+                <td><strong>Majuba</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>4,110 MW</td>
+                <td>37.3%</td>
+                <td>9,651</td>
+                <td>Subcritical</td>
+                <td>1996–2001</td>
+                <td>50 yr (2046–2051)</td>
+                <td>Operating</td>
+              </tr>
+              <tr>
+                <td><strong>Matimba</strong></td>
+                <td>Limpopo</td>
+                <td>6</td>
+                <td>3,990 MW</td>
+                <td>36.7%</td>
+                <td>9,809</td>
+                <td>Subcritical</td>
+                <td>1988–1993</td>
+                <td>50 yr (2038–2043)</td>
+                <td>Operating</td>
+              </tr>
+              <tr>
+                <td><strong>Matla</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>3,600 MW</td>
+                <td>37.6%</td>
+                <td>9,574</td>
+                <td>Subcritical</td>
+                <td>1979–1983</td>
+                <td>50 yr (2029–2033)</td>
+                <td>Operating (EAF ~45%)</td>
+              </tr>
+              <tr>
+                <td><strong>Medupi</strong></td>
+                <td>Limpopo</td>
+                <td>6</td>
+                <td>4,800 MW</td>
+                <td>38.5%</td>
+                <td>9,351</td>
+                <td>Supercritical</td>
+                <td>2015–2021</td>
+                <td>60 yr (2075–2081)</td>
+                <td>Operating (late commissioning)</td>
+              </tr>
+              <tr>
+                <td><strong>Tutuka</strong></td>
+                <td>Mpumalanga</td>
+                <td>6</td>
+                <td>3,654 MW</td>
+                <td>38.0%</td>
+                <td>9,474</td>
+                <td>Subcritical</td>
+                <td>1985–1990</td>
+                <td>50 yr (2035–2040)</td>
+                <td>Operating (EAF ~45%)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-3 small text-muted">
+          <strong>Notes:</strong> Heat rate = 3600 / efficiency (kJ/kWh). Lower heat rate = more efficient. Design efficiency is gross thermal efficiency at full load (as-designed). Current actual efficiency is typically 2–10 percentage points lower due to age, poor coal quality, and maintenance backlog. RTS = Return to Service after mothballing. EAF = Energy Availability Factor (approximate 2024 average). *Kusile Unit 6 expected 2025–2026.
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Technologies Summary -->
+    <h2 class="h3 fw-bold text-sa-green mt-5">&#128268; Other Generation Technologies</h2>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-header fw-bold" style="background: #1565c0; color: white;">&#9889; Nuclear, Hydro, Gas, and Renewables</div>
+      <div class="card-body">
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light">
+            <tr><th>Plant</th><th>Type</th><th>Capacity (MW)</th><th>Commissioned</th><th>Efficiency / Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Koeberg</strong></td>
+              <td><span class="badge badge-nuclear">Nuclear (PWR)</span></td>
+              <td>1,860 (2&times;930)</td>
+              <td>1984–1985</td>
+              <td>~33% thermal efficiency. Life extension to 2044 approved for Unit 1. Steam generator replacements ongoing.</td>
+            </tr>
+            <tr>
+              <td><strong>Ingula</strong></td>
+              <td><span class="badge badge-hydro">Pumped Storage</span></td>
+              <td>1,332 (4&times;333)</td>
+              <td>2016–2017</td>
+              <td>~78% round-trip efficiency. Bedrogrivier–Braamhoek scheme, KZN/Free State border.</td>
+            </tr>
+            <tr>
+              <td><strong>Drakensberg</strong></td>
+              <td><span class="badge badge-hydro">Pumped Storage</span></td>
+              <td>1,000 (4&times;250)</td>
+              <td>1981–1983</td>
+              <td>~76% round-trip efficiency. Kilburn Dam–Driekloof, Free State.</td>
+            </tr>
+            <tr>
+              <td><strong>Palmiet</strong></td>
+              <td><span class="badge badge-hydro">Pumped Storage</span></td>
+              <td>400 (2&times;200)</td>
+              <td>1988</td>
+              <td>~75% round-trip efficiency. Western Cape.</td>
+            </tr>
+            <tr>
+              <td><strong>Ankerlig</strong></td>
+              <td><span class="badge badge-gas">OCGT (Diesel/Gas)</span></td>
+              <td>1,338</td>
+              <td>2007</td>
+              <td>~35% simple-cycle. Peaking plant, very high marginal cost (R3,000–5,000/MWh at current diesel prices).</td>
+            </tr>
+            <tr>
+              <td><strong>Gourikwa</strong></td>
+              <td><span class="badge badge-gas">OCGT (Diesel/Gas)</span></td>
+              <td>746</td>
+              <td>2007</td>
+              <td>~35% simple-cycle. Peaking plant, Western Cape.</td>
+            </tr>
+            <tr>
+              <td><strong>Acacia</strong></td>
+              <td><span class="badge badge-gas">Gas Turbine</span></td>
+              <td>171</td>
+              <td>1976</td>
+              <td>Liquid fuel. Western Cape (retired/emergency).</td>
+            </tr>
+            <tr>
+              <td><strong>Port Rex</strong></td>
+              <td><span class="badge badge-gas">Gas Turbine</span></td>
+              <td>171</td>
+              <td>1976</td>
+              <td>Liquid fuel. Eastern Cape (retired/emergency).</td>
+            </tr>
+            <tr>
+              <td><strong>Gariep</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>360</td>
+              <td>1971–1976</td>
+              <td>Run-of-river. Orange River, Free State.</td>
+            </tr>
+            <tr>
+              <td><strong>Vanderkloof</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>240</td>
+              <td>1977</td>
+              <td>Run-of-river. Orange River, Free State.</td>
+            </tr>
+            <tr>
+              <td><strong>Ncora</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>2.2</td>
+              <td>—</td>
+              <td>Small hydro, Eastern Cape.</td>
+            </tr>
+            <tr>
+              <td><strong>Collywobbles</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>42</td>
+              <td>—</td>
+              <td>Eastern Cape.</td>
+            </tr>
+            <tr>
+              <td><strong>First Falls</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>6</td>
+              <td>—</td>
+              <td>Small hydro.</td>
+            </tr>
+            <tr>
+              <td><strong>Second Falls</strong></td>
+              <td><span class="badge badge-hydro">Hydro</span></td>
+              <td>11</td>
+              <td>—</td>
+              <td>Small hydro.</td>
+            </tr>
+            <tr>
+              <td><strong>Sere</strong></td>
+              <td><span class="badge badge-re">Wind</span></td>
+              <td>105</td>
+              <td>2015</td>
+              <td>46 turbines, 2.3 MW each. Western Cape. CF ~30–35%.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Critical Technical Note -->
+    <div class="card shadow-sm mb-4" style="border-left: 5px solid #c62828;">
+      <div class="card-body">
+        <h5 class="fw-bold">&#9888;&#65039; Important: Design vs Actual Performance</h5>
+        <p class="small mb-0">The efficiency and heat rate figures above are <strong>design values at full load</strong> using design-grade coal. In reality, Eskom's coal fleet operates at significantly lower efficiency than design for several reasons:</p>
+        <ul class="small mt-2 mb-0">
+          <li><strong>Coal quality:</strong> Design grade coal has ~25–27 MJ/kg calorific value. Eskom now often receives coal with 18–22 MJ/kg due to depletion of high-quality reserves and inflated contracts for low-quality coal (particularly during state capture, 2013–2018). Lower calorific value = more coal burned per MWh = higher effective heat rate.</li>
+          <li><strong>Partial load operation:</strong> Due to cycling (frequent starts/stops from load shedding and renewable integration), units operate at partial load where efficiency is 3–8% lower than full load.</li>
+          <li><strong>Age-related degradation:</strong> Turbine blading wear, boiler tube fouling, and condenser degradation reduce efficiency by 0.2–0.5% per year past design life.</li>
+          <li><strong>Actual effective heat rate</strong> for Eskom's coal fleet in 2024 is estimated at <strong>~11,000–12,500 kJ/kWh</strong> on average (compared to ~9,600–10,400 design), meaning actual efficiency is roughly <strong>29–33%</strong> vs 35–38% design.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stations ranked by efficiency -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header fw-bold" style="background: #007A4D; color: white;">&#128200; Coal Fleet Ranked by Design Efficiency</div>
+      <div class="card-body">
+        <div class="row g-2 small">
+          <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center p-1">
+              <span>Kusile (supercritical)</span><span class="fw-bold">38.5%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:100%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Medupi (supercritical)</span><span class="fw-bold">38.5%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:100%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Tutuka</span><span class="fw-bold">38.0%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:96%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Duvha</span><span class="fw-bold">37.6%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:94%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Matla</span><span class="fw-bold">37.6%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:94%;"></div></div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center p-1">
+              <span>Lethabo</span><span class="fw-bold">37.5%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:94%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Majuba</span><span class="fw-bold">37.3%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:93%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Matimba</span><span class="fw-bold">36.7%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:91%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Arnot</span><span class="fw-bold">35.6%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:85%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Kendal</span><span class="fw-bold">35.3%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:84%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Kriel</span><span class="fw-bold">35.0%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:82%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Hendrina</span><span class="fw-bold">34.2%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:78%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Camden</span><span class="fw-bold">33.1%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:72%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Grootvlei</span><span class="fw-bold">32.9%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:70%;"></div></div>
+
+            <div class="d-flex justify-content-between align-items-center p-1 mt-2">
+              <span>Komati</span><span class="fw-bold">31.9%</span>
+            </div>
+            <div class="heat-rate-bar"><div class="heat-rate-fill" style="width:65%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="eskom-history.html" class="btn btn-outline-secondary">&larr; Back to Eskom History</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
