@@ -1,0 +1,216 @@
+{
+  "rates": {
+    "2025/26": {
+      "Peak_High": 684.59,
+      "Standard_High": 171.15,
+      "OffPeak_High": 114.09,
+      "Peak_Low": 284.12,
+      "Standard_Low": 159.74,
+      "OffPeak_Low": 114.09,
+      "Format": "modern"
+    },
+    "2024/25": {
+      "Peak_High": 611.94,
+      "Standard_High": 186.18,
+      "OffPeak_High": 101.66,
+      "Peak_Low": 200.38,
+      "Standard_Low": 138.26,
+      "OffPeak_Low": 88.15,
+      "Format": "modern"
+    },
+    "2023/24": {
+      "Peak_High": 542.79,
+      "Standard_High": 165.14,
+      "OffPeak_High": 90.17,
+      "Peak_Low": 177.74,
+      "Standard_Low": 122.64,
+      "OffPeak_Low": 78.19,
+      "Format": "modern"
+    },
+    "2022/23": {
+      "Peak_High": 457.47,
+      "Standard_High": 139.18,
+      "OffPeak_High": 76.0,
+      "Peak_Low": 149.8,
+      "Standard_Low": 103.36,
+      "OffPeak_Low": 65.9,
+      "Format": "modern"
+    },
+    "2021/22": {
+      "Peak_High": 417.36,
+      "Standard_High": 126.98,
+      "OffPeak_High": 69.34,
+      "Peak_Low": 136.67,
+      "Standard_Low": 94.3,
+      "OffPeak_Low": 60.12,
+      "Format": "modern"
+    },
+    "2020/21": {
+      "Peak_High": 362.73,
+      "Standard_High": 110.36,
+      "OffPeak_High": 60.26,
+      "Peak_Low": 118.78,
+      "Standard_Low": 81.96,
+      "OffPeak_Low": 52.25,
+      "Format": "modern"
+    },
+    "2019/20": {
+      "Peak_High": 333.51,
+      "Standard_High": 101.47,
+      "OffPeak_High": 55.41,
+      "Peak_Low": 109.21,
+      "Standard_Low": 75.36,
+      "OffPeak_Low": 48.04,
+      "Format": "modern"
+    },
+    "2018/19": {
+      "High_Season": 73.31,
+      "Low_Season": 56.85,
+      "Format": "urban_large"
+    },
+    "2017/18": {
+      "High_Season": 69.67,
+      "Low_Season": 54.02,
+      "Format": "urban_large"
+    },
+    "2016/17": {
+      "High_Season": 68.17,
+      "Low_Season": 52.86,
+      "Format": "urban_large"
+    },
+    "2015/16": {
+      "High_Season": 62.31,
+      "Low_Season": 48.32,
+      "Format": "urban_large"
+    },
+    "2014/15": {
+      "High_Season": 55.5,
+      "Low_Season": 43.1,
+      "Format": "classic"
+    },
+    "2013/14": {
+      "High_Season": 52.43,
+      "Low_Season": 40.72,
+      "Format": "classic"
+    },
+    "2012/13": {
+      "High_Season": 47.6,
+      "Low_Season": 36.96,
+      "Format": "classic"
+    },
+    "2011/12": {
+      "High_Season": 41.03,
+      "Low_Season": 31.86,
+      "Format": "classic"
+    },
+    "2010/11": {
+      "High_Season": 32.88,
+      "Low_Season": 25.53,
+      "Format": "classic"
+    },
+    "2009/10": {
+      "High_Season": 26.35,
+      "Low_Season": 20.46,
+      "Format": "classic"
+    },
+    "2008/09": {
+      "High_Season": 20.07,
+      "Low_Season": 15.58,
+      "Format": "classic"
+    },
+    "2007/08": {
+      "High_Season": 15.74,
+      "Low_Season": 12.22,
+      "Format": "classic"
+    },
+    "2006/07": {
+      "High_Season": 13.79,
+      "Low_Season": 10.71,
+      "Format": "classic"
+    },
+    "2005/06": {
+      "High_Season": 13.12,
+      "Low_Season": 10.19,
+      "Format": "classic"
+    },
+    "2004/05": {
+      "High_Season": 12.6,
+      "Low_Season": 9.79,
+      "Format": "classic"
+    },
+    "2003/04": {
+      "High_Season": 12.11,
+      "Low_Season": 9.4,
+      "Format": "classic"
+    },
+    "2002/03": {
+      "High_Season": 11.37,
+      "Low_Season": 8.83,
+      "Format": "classic"
+    },
+    "2001/02": {
+      "High_Season": 10.36,
+      "Low_Season": 8.05,
+      "Format": "classic"
+    },
+    "2000/01": {
+      "High_Season": 9.53,
+      "Low_Season": 7.4,
+      "Format": "classic"
+    },
+    "1999/00": {
+      "High_Season": 8.84,
+      "Low_Season": 6.86,
+      "Format": "classic"
+    },
+    "1998/99": {
+      "High_Season": 8.27,
+      "Low_Season": 6.43,
+      "Format": "classic"
+    },
+    "1997/98": {
+      "High_Season": 7.7,
+      "Low_Season": 5.98,
+      "Format": "classic"
+    },
+    "1996/97": {
+      "High_Season": 7.16,
+      "Low_Season": 5.56,
+      "Format": "classic"
+    }
+  },
+  "increases": {
+    "2025/26": 12.74,
+    "2024/25": 12.74,
+    "2023/24": 18.65,
+    "2022/23": 9.61,
+    "2021/22": 15.06,
+    "2020/21": 8.76,
+    "2019/20": 9.41,
+    "2018/19": 5.23,
+    "2017/18": 2.2,
+    "2016/17": 9.4,
+    "2015/16": 9.69,
+    "2014/15": 5.85,
+    "2013/14": 8.0,
+    "2012/13": 16.0,
+    "2011/12": 24.8,
+    "2010/11": 24.8,
+    "2009/10": 31.3,
+    "2008/09": 27.5,
+    "2007/08": 14.1,
+    "2006/07": 5.1,
+    "2005/06": 4.1,
+    "2004/05": 4.1,
+    "2003/04": 6.5,
+    "2002/03": 9.7,
+    "2001/02": 8.8,
+    "2000/01": 7.8,
+    "1999/00": 6.8,
+    "1998/99": 7.5,
+    "1997/98": 7.5,
+    "1996/97": 4.0
+  },
+  "description": "Eskom Megaflex tariff rates in c/kWh (VAT excl, <500V, <300km zone). Modern (2019+): TOU Peak/Standard/Off-Peak. Urban Large (2015-2019): Seasonal active energy charges. Classic (pre-2015): Effective rate including surcharges.",
+  "last_updated": "2026-07-08T15:34:52.436874"
+}

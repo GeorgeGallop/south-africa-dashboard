@@ -1,0 +1,58 @@
+{
+  "2025/26": {
+    "Peak_High": 691.43,
+    "Standard_High": 172.86,
+    "OffPeak_High": 115.23,
+    "Peak_Low": 286.96,
+    "Standard_Low": 161.34,
+    "OffPeak_Low": 115.23
+  },
+  "2024/25": {
+    "Peak_High": 616.92,
+    "Standard_High": 186.92,
+    "OffPeak_High": 101.49,
+    "Peak_Low": 201.26,
+    "Standard_Low": 138.57,
+    "OffPeak_Low": 87.91
+  },
+  "2023/24": {
+    "Peak_High": 547.21,
+    "Standard_High": 165.8,
+    "OffPeak_High": 90.02,
+    "Peak_Low": 178.52,
+    "Standard_Low": 122.91,
+    "OffPeak_Low": 77.98
+  },
+  "2022/23": {
+    "Peak_High": 461.2,
+    "Standard_High": 139.74,
+    "OffPeak_High": 75.87,
+    "Peak_Low": 150.46,
+    "Standard_Low": 103.59,
+    "OffPeak_Low": 65.72
+  },
+  "2021/22": {
+    "Peak_High": 104.46,
+    "Standard_High": 120.13,
+    "OffPeak_High": 81.01,
+    "Peak_Low": 93.16,
+    "Standard_Low": 316.88,
+    "OffPeak_Low": 364.41
+  },
+  "2018/19": {
+    "High_Season": 73.31,
+    "Low_Season": 56.85
+  },
+  "2017/18": {
+    "High_Season": 69.67,
+    "Low_Season": 54.02
+  },
+  "2016/17": {
+    "High_Season": 68.17,
+    "Low_Season": 52.86
+  },
+  "2015/16": {
+    "High_Season": 62.31,
+    "Low_Season": 48.32
+  }
+}
