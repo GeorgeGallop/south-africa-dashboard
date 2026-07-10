@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>uMkhonto weSizwe Party • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .mk-gold { color: #D4A017; }
+    .mk-green { color: #1B5E20; }
+    .mk-red { color: #B71C1C; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.fail { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .card-header.rise { background: #006341; color: white; border-bottom-color: #004d33; }
+    .card-header.era { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.corrupt { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.econ { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #D4A017;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #D4A017;
+    }
+    .quotation {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .stat-fail {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#introduction">&#127891; Introduction</a>
+          <a class="nav-link" href="#ideology">&#128218; Ideology</a>
+          <a class="nav-link" href="#leadership">&#128101; Leadership</a>
+          <a class="nav-link" href="#electoral">&#128202; 2024 Election Performance</a>
+          <a class="nav-link" href="#controversies">&#9888; Controversies</a>
+          <a class="nav-link" href="#relationship">&#129309; Relationship with ANC</a>
+          <a class="nav-link" href="#policies">&#128220; Key Policies</a>
+          <a class="nav-link" href="#sources">&#128218; Sources</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold mk-gold">&#127988; The uMkhonto weSizwe Party (MK)</h1>
+        <p class="lead text-muted mb-3">A populist, Zulu-nationalist breakaway party founded by former President Jacob Zuma in December 2023. The MK Party shocked South Africa's political establishment by winning 14.6% of the vote and 58 seats in the 2024 general election — overtaking the Economic Freedom Fighters (EFF) and briefly surpassing the DA as the official opposition.</p>
+
+        <!-- ========================================================== -->
+        <!-- INTRODUCTION                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="introduction">
+          <div class="card-header rise">&#127891; Introduction</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Jacob Zuma, Launch Rally, Soweto (December 2023):</strong><br>
+              &ldquo;We are taking back our country. The ANC has lost its way. The DA wants to sell the country to white monopoly capital. The EFF is a circus. uMkhonto weSizwe is the only party that will fight for the true liberation of black South Africans — economically, politically, and culturally.&rdquo;
+            </div>
+            <p>
+              The uMkhonto weSizwe Party (MK) was launched on 16 December 2023 — the anniversary of the founding of the ANC's armed wing, Umkhonto we Sizwe, in 1961. The party is named after the armed wing itself, a deliberate appropriation of ANC liberation heritage. Its founder and figurehead is Jacob Zuma, the former ANC President (2009–2018) whose presidency was defined by state capture, corruption allegations, and the hollowing out of state institutions. The MK Party draws its core support from Zuma's home province of KwaZulu-Natal, where Zulu nationalism and resentment against the ANC under Cyril Ramaphosa run deep. In the 2024 election, the MK Party won 45% of the vote in KwaZulu-Natal, devastating the ANC's once-dominant position in the province. <a href="https://www.elections.org.za" target="_blank">[IEC]</a>
+            </p>
+            <p class="small text-muted">
+              Despite its name, the MK Party has no organisational connection to the original Umkhonto we Sizwe, which was formally disbanded in 1993 and integrated into the South African National Defence Force (SANDF). The use of the name and imagery has been legally challenged by the ANC, which claims ownership of the liberation movement's intellectual property.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- IDEOLOGY                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="ideology">
+          <div class="card-header era">&#128218; Ideology & Political Orientation</div>
+          <div class="card-body">
+            <p>The MK Party's ideology is a fusion of several strands:</p>
+            <h5 class="fw-bold mt-3">Core Elements</h5>
+            <ul class="small">
+              <li><strong>Zulu Nationalism:</strong> The party's strongest base is among Zulu-speaking South Africans, particularly in KwaZulu-Natal. MK positions itself as the defender of Zulu identity, language, and tradition against what it portrays as a Westernised, ANC-led elite that has abandoned the liberation struggle. The party has embraced the Zulu monarchy and traditional leaders.</li>
+              <li><strong>Left-Wing Populism:</strong> MK advocates for economic nationalism: nationalisation of mines, banks, and land; free education and healthcare; and the expansion of social grants. Its economic programme is broadly similar to the EFF's but with a stronger cultural and ethnic framing.</li>
+              <li><strong>Anti-Constitutionalism:</strong> MK has explicitly called for the scrapping of the 1996 Constitution, which it describes as a "counter-revolutionary" document imposed by white capital. Zuma has argued that the Constitution protects the economic status quo and prevents the "radical economic transformation" South Africa needs. This position is profoundly controversial and has been condemned by constitutional scholars, civil society, and political rivals across the spectrum.</li>
+              <li><strong>Anti-Corruption as Weapon:</strong> MK portrays itself as fighting the "real corruption" of the Ramaphosa administration (Phala Phala, CR17 donations) while deflecting criticism of Zuma's own extensive corruption record. The party's approach is to accuse all opponents of worse crimes, creating a moral equivalence that shields its own leadership.</li>
+              <li><strong>Anti-Imperialism:</strong> The party adopts a strong anti-Western stance, supporting Russia's invasion of Ukraine, praising China's one-party state model, and calling for South Africa to leave the International Criminal Court (ICC) and strengthen ties with BRICS nations.</li>
+            </ul>
+
+            <div class="quotation mt-3">
+              <strong>&#128218; Jacob Zuma, MK Rally, Durban (March 2024):</strong><br>
+              &ldquo;They tell us we must respect the Constitution. But whose Constitution? It was written by the white man to protect white interests. We fought for liberation, and we will not stop until economic liberation is achieved. If the Constitution stands in our way, the Constitution must fall.&rdquo;
+            </div>
+
+            <h5 class="fw-bold mt-4">Criticisms</h5>
+            <ul class="small">
+              <li><strong>Authoritarian tendencies:</strong> The party's anti-constitutional stance and its reverence for Zuma — a man associated with the erosion of rule of law — raise concerns about its commitment to democratic institutions.</li>
+              <li><strong>Ethnic politics:</strong> Critics argue MK's Zulu nationalism is a dangerous retreat from the non-racialism of the Freedom Charter and threatens to ethnicise South African politics along the lines of the IFP-ANC conflict of the 1980s–1990s.</li>
+              <li><strong>Intellectual incoherence:</strong> The party combines far-left economic policy with cultural conservatism and authoritarianism, a combination that scholars describe as "populist" but which lacks a coherent philosophical foundation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LEADERSHIP                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="leadership">
+          <div class="card-header rise">&#128101; Leadership</div>
+          <div class="card-body">
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Jacob Zuma — Founder & Figurehead</h5>
+                    <p class="small text-muted">Born 12 April 1942. President of South Africa (2009–2018). Zuma is the central figure in the MK Party, though he is not formally the party president (due to constitutional restrictions on eligibility for anyone sentenced to more than 12 months in prison). Zuma was convicted of contempt of court in 2021 and sentenced to 15 months in prison (he served only 2 months before being released on medical parole). He faces a separate corruption trial relating to the 1999 arms deal. His role in state capture has been extensively documented by the Zondo Commission. Despite his legal troubles, Zuma commands fervent loyalty among MK supporters, who view him as a victim of political persecution. <a href="https://www.sahistory.org.za/people/jacob-zuma" target="_blank">[SA History]</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Duduzile Zuma — MP & Digital Strategist</h5>
+                    <p class="small text-muted">Daughter of Jacob Zuma, Duduzile Zuma served as an ANC MP from 2019–2024 before crossing the floor to the MK Party. She is the party's chief digital strategist and one of its most visible public faces. She has been a controversial figure: her social media activity has included sharing content deemed inflammatory and spreading disinformation. She is also closely associated with her father's political survival, managing his media appearances and public engagements. <a href="https://www.news24.com" target="_blank">[News24]</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">Other Key Figures</h5>
+            <ul class="small">
+              <li><strong>Dr. John Hlophe</strong> — Former Judge President of the Western Cape High Court (impeached for gross misconduct in 2024), Hlophe serves as MK's parliamentary leader. His appointment is itself controversial — Hlophe was found guilty of attempting to influence Constitutional Court justices in a case related to Zuma. He is the first judge in South African history to be removed from office for misconduct.</li>
+              <li><strong>Bheki Manzini</strong> — The party's secretary-general and chief strategist, a former ANC member and Zuma loyalist.</li>
+              <li><strong>Desmond Mthembu</strong> — MK's national organiser, responsible for building the party's grassroots structures in KwaZulu-Natal.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 2024 ELECTION PERFORMANCE                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="electoral">
+          <div class="card-header econ">&#128202; 2024 Election Performance</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Election analyst Dawie Scholtz, 2024:</strong><br>
+              &ldquo;The MK Party's performance is the most significant disruption of South African electoral politics since the end of apartheid. A party that did not exist six months before the election won nearly 15% of the vote and destroyed the ANC's majority. This is a realignment of South African politics — and it is driven by Zulu nationalism, discontent with the ANC, and the personal appeal of Jacob Zuma.&rdquo;
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered small">
+                <thead class="table-dark">
+                  <tr><th>Metric</th><th>Result</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>National vote share</td><td><strong>14.6%</strong></td><td>Third place nationally</td></tr>
+                  <tr><td>Seats in National Assembly</td><td><strong>58</strong></td><td>Out of 400</td></tr>
+                  <tr><td>Votes received</td><td><strong>2.3 million</strong></td><td>~2.3 million votes</td></tr>
+                  <tr><td>Provincial performance (KZN)</td><td><strong>45.1%</strong></td><td>Won KwaZulu-Natal province outright</td></tr>
+                  <tr><td>Provincial seats (KZN legislature)</td><td><strong>37</strong></td><td>Out of 80</td></tr>
+                  <tr><td>Other provinces</td><td>Less than 5%</td><td>Minimal presence outside KZN</td></tr>
+                  <tr><td>Demographic base</td><td>Overwhelmingly Zulu-speaking</td><td>~90%+ of vote from Zulu speakers</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small text-muted">Source: Independent Electoral Commission (IEC), <a href="https://www.elections.org.za" target="_blank">elections.org.za</a>.</p>
+
+            <h5 class="fw-bold mt-3">Impact</h5>
+            <ul class="small">
+              <li>The MK Party's 14.6% was instrumental in denying the ANC its parliamentary majority, triggering the formation of the Government of National Unity (GNU).</li>
+              <li>In KwaZulu-Natal, MK reduced the ANC from 54.6% (2019) to 17.6% (2024) — a staggering collapse. The IFP also suffered, dropping from 36.3% to 28.5%.</li>
+              <li>MK overtook the EFF (9.5%) and came within striking distance of the DA (21.8%), raising the possibility that the party could become the official opposition in the future.</li>
+              <li>The ANC's loss of KwaZulu-Natal — its second-largest provincial base after Gauteng — is a devastating blow to the party's national standing.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CONTROVERSIES                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="controversies">
+          <div class="card-header fail">&#9888; Controversies & Legal Challenges</div>
+          <div class="card-body">
+
+            <h5 class="fw-bold">1. Zuma's Candidacy — Constitutional Crisis</h5>
+            <p class="small">
+              The most immediate legal battle surrounding the MK Party concerned Jacob Zuma's eligibility to stand for Parliament. Section 47(1)(e) of the Constitution disqualifies anyone sentenced to more than 12 months in prison (without the option of a fine) from being an MP. Zuma was sentenced to 15 months for contempt of court in 2021. The Electoral Court initially ruled that Zuma was eligible to stand, sparking outrage. The Constitutional Court overturned this decision in May 2024, barring Zuma from serving as an MP. The MK Party argued this was a political conspiracy, but legal experts noted the ruling was a straightforward application of the constitutional text. <a href="https://www.concourt.org.za" target="_blank">[Constitutional Court]</a>
+            </p>
+
+            <h5 class="fw-bold mt-3">2. Constitutional Court Candidacy Challenge</h5>
+            <p class="small">
+              The Constitutional Court's May 2024 ruling not only barred Zuma from Parliament but also found that the MK Party had failed to register its candidates properly. The court ordered the IEC to remove MK's candidate list, threatening the party's participation in the election. The MK Party was forced to submit a corrected list under intense time pressure, causing chaos and confusion. Zuma publicly accused the judiciary of bias and claimed the court was acting on orders from the ANC and Ramaphosa. <a href="https://www.news24.com" target="_blank">[News24]</a>
+            </p>
+
+            <h5 class="fw-bold mt-3">3. Name and Logo Dispute with the ANC</h5>
+            <p class="small">
+              The ANC has taken legal action against the MK Party over the use of the name "uMkhonto weSizwe" and the party's logo, which features a crossed spear and shield — symbols the ANC claims are the intellectual property of the former liberation movement. The ANC argues that using the armed wing's name is misleading and dishonours the legacy of those who served in MK. The MK Party counters that it is honouring the tradition and that the ANC has no right to monopolise liberation history. The case is ongoing. <a href="https://www.dailymaverick.co.za" target="_blank">[Daily Maverick]</a>
+            </p>
+
+            <h5 class="fw-bold mt-3">4. Zuma's Corruption Trial</h5>
+            <p class="small">
+              Jacob Zuma faces a long-running corruption trial related to the 1999 Arms Deal. He is accused of receiving bribes from French arms company Thales in exchange for political protection of the deal. The trial has been delayed for over a decade through Zuma's legal manoeuvres. The MK Party contends the trial is politically motivated and efforts to prosecute Zuma are part of a "deep state" conspiracy. The trial resumed in 2024 and is ongoing. <a href="https://www.justice.gov.za" target="_blank">[NPA]</a>
+            </p>
+
+            <h5 class="fw-bold mt-3">5. Zondo Commission Findings</h5>
+            <p class="small">
+              The State Capture Commission (Zondo Commission) found that Jacob Zuma played a central role in facilitating the looting of state resources by the Gupta family. The commission recommended criminal prosecution of Zuma and several other ANC figures. The MK Party dismisses the Zondo Commission as a politically motivated exercise designed to remove Zuma from politics. This stance puts MK at odds with the overwhelming weight of evidence and the findings of a constitutionally mandated judicial commission. <a href="https://www.statecapture.org.za" target="_blank">[Zondo Commission]</a>
+            </p>
+
+            <div style="background:#fbe9e7; border:2px solid #c62828; border-radius:10px; padding:1.25rem; margin:1.5rem 0;">
+              <h5 class="fw-bold" style="color:#c62828;">&#9888; Summary of Legal Exposure</h5>
+              <p class="small mb-0">
+                The MK Party is founded on a contradiction: its leader and symbol, Jacob Zuma, is a man found by a judicial commission to have been central to state capture, convicted of contempt of court, facing a separate corruption trial, and barred by the Constitutional Court from serving in Parliament. The party's response is to delegitimise every institution that produced these findings — the courts, the Constitutional Court, the Zondo Commission, the NPA. This is not a party that challenges individual findings; it challenges the constitutional order itself. That is its appeal to its base and the source of its danger to South African democracy.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RELATIONSHIP WITH ANC                                        -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="relationship">
+          <div class="card-header era">&#129309; Relationship with the ANC</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Fikile Mbalula, ANC Secretary-General, 2024:</strong><br>
+              &ldquo;The MK Party is not a political party. It is a front for a convicted criminal to avoid accountability. Jacob Zuma is not a liberator — he is a man who betrayed the ANC and the people of South Africa. The party he has formed will fail because it is built on a lie.&rdquo;
+            </div>
+
+            <p>The relationship between the MK Party and the ANC is one of visceral hatred disguised as family feud. The two parties draw from the same liberation heritage, the same Zulu-speaking base, and the same historical figure (Zuma was ANC President for nine years). But the split is personal, political, and existential.</p>
+
+            <h5 class="fw-bold mt-3">Key Points of Tension</h5>
+            <ul class="small">
+              <li><strong>Zuma's expulsion from the ANC:</strong> Zuma was suspended from the ANC in January 2024 after announcing he would campaign for MK instead of the ANC. He has since been formally expelled. The ANC argues Zuma violated party discipline and is trying to destroy the organisation he once led.</li>
+              <li><strong>Electoral cannibalisation:</strong> MK's 14.6% came overwhelmingly from former ANC voters in KwaZulu-Natal. The ANC's loss of its majority is directly attributable to MK's emergence. The two parties are now locked in a bitter struggle for the Zulu-speaking vote, with the IFP as a third competitor.</li>
+              <li><strong>Legal confrontations:</strong> The ANC is pursuing the MK Party in court over the name and logo. MK accuses the ANC of using state institutions to crush political competition. The tone is mutually dismissive and confrontational.</li>
+              <li><strong>No coalition with the ANC:</strong> Despite both parties being in Parliament and the ANC needing partners to govern, the MK Party has refused to join the GNU, calling it a "coalition of traitors." The MK Party sits in opposition alongside the EFF.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-3">Could MK Reunite with the ANC?</h5>
+            <p class="small">Highly unlikely. The split is personal (Zuma vs Ramaphosa) and structural. MK exists because Zuma and his followers believe the ANC under Ramaphosa has abandoned the party's radical economic transformation agenda. A return would require Ramaphosa's removal and a wholesale shift in ANC policy — neither of which is plausible. Instead, the two parties seem destined to compete for the same voters, fragmenting the liberation movement vote and entrenching coalition politics as the new normal in South Africa.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- KEY POLICIES                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="policies">
+          <div class="card-header econ">&#128220; Key Policies & Proposals</div>
+          <div class="card-body">
+
+            <h5 class="fw-bold">&#128200; Economic Policy</h5>
+            <ul class="small">
+              <li><strong>Nationalisation of mines, banks, and strategic industries</strong> — MK argues that South Africa's mineral wealth must be owned by the state and used to fund development, healthcare, and education.</li>
+              <li><strong>Expropriation of land without compensation</strong> — the party supports constitutional change to allow for the wholesale redistribution of agricultural and urban land. It rejects the willing-buyer, willing-seller model.</li>
+              <li><strong>Free tertiary education and healthcare</strong> — abolish tuition fees at all public universities and colleges; establish a universal, state-run National Health Service (going beyond the ANC's NHI).</li>
+              <li><strong>Expansion of social grants</strong> — introduce a Basic Income Grant (BIG) for all unemployed adults, increase child support grants, and extend the Social Relief of Distress (SRD) grant permanently.</li>
+              <li><strong>State-led industrialisation</strong> — establish state-owned enterprises in key sectors: pharmaceuticals, fertilisers, steel, and renewable energy manufacturing.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-3">&#9878;&#65039; Governance & Constitution</h5>
+            <ul class="small">
+              <li><strong>Scrap the 1996 Constitution</strong> — replace it with a new constitution that enshrines "economic freedom" and limits the power of the judiciary to block transformation.</li>
+              <li><strong>Abolish the Constitutional Court</strong> — or drastically reduce its powers to strike down legislation.</li>
+              <li><strong>End "cadre deployment"</strong> — ironically, the same policy MK's founder championed during his presidency. The party now promises a merit-based civil service.</li>
+              <li><strong>Elect the President directly</strong> — replace the current system where Parliament elects the President with a directly elected executive presidency.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-3">&#127757; Foreign Policy</h5>
+            <ul class="small">
+              <li><strong>Leave the ICC</strong> — following the example of Burundi and the Philippines. MK argues the ICC is a tool of Western imperialism.</li>
+              <li><strong>Strengthen BRICS</strong> — deepen ties with China, Russia, Iran, and other anti-Western powers.</li>
+              <li><strong>Support Palestine</strong> — strong pro-Palestinian stance, closure of the Israeli embassy in Pretoria, full diplomatic support for the Boycott, Divestment and Sanctions (BDS) movement.</li>
+              <li><strong>Withdraw from the Rome Statute</strong> — to avoid obligations to arrest sitting leaders accused of war crimes.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-3">&#127891; Social & Cultural Policy</h5>
+            <ul class="small">
+              <li><strong>Protect Zulu monarchy and traditional leadership</strong> — strengthen the role of traditional councils and the Zulu king in governance, particularly in land administration.</li>
+              <li><strong>Promote indigenous languages</strong> — make isiZulu a compulsory language in all schools, elevate indigenous knowledge systems.</li>
+              <li><strong>Moral regeneration</strong> — promote "traditional African values" including respect for elders, community solidarity, and religious faith.</li>
+              <li><strong>Oppose LGBTQ+ "overreach"</strong> — while not as explicit as some African populist parties, MK has signalled discomfort with what it calls "Western gender ideology."</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SOURCES                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sources">
+          <div class="card-header" style="background:#002395;color:white;">&#128218; Sources & Further Reading</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Independent Electoral Commission (IEC)</strong> — 2024 election results. <a href="https://www.elections.org.za" target="_blank">elections.org.za</a></li>
+              <li><strong>Constitutional Court of South Africa</strong> — Judgment on Zuma's eligibility (May 2024). <a href="https://www.concourt.org.za" target="_blank">concourt.org.za</a></li>
+              <li><strong>Zondo Commission</strong> — State Capture Report, Parts 1–6. <a href="https://www.statecapture.org.za" target="_blank">statecapture.org.za</a></li>
+              <li><strong>South African History Online</strong> — Jacob Zuma biography. <a href="https://www.sahistory.org.za/people/jacob-zuma" target="_blank">sahistory.org.za</a></li>
+              <li><strong>Daily Maverick</strong> — Coverage of MK Party, election analysis, and legal challenges. <a href="https://www.dailymaverick.co.za" target="_blank">dailymaverick.co.za</a></li>
+              <li><strong>News24</strong> — MK Party reporting, Zuma trial updates, ANC-MK legal disputes. <a href="https://www.news24.com" target="_blank">news24.com</a></li>
+              <li><strong>South African Government</strong> — Constitution of the Republic of South Africa (1996). <a href="https://www.gov.za/documents/constitution" target="_blank">gov.za</a></li>
+              <li><strong>National Prosecuting Authority (NPA)</strong> — Zuma arms deal trial status. <a href="https://www.npa.gov.za" target="_blank">npa.gov.za</a></li>
+              <li><strong>StatsSA</strong> — Demographic and provincial data. <a href="https://www.statssa.gov.za" target="_blank">statssa.gov.za</a></li>
+              <li><strong>Transparency International</strong> — South Africa corruption ranking. <a href="https://www.transparency.org/en/cpi/2023" target="_blank">transparency.org</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="politics.html" class="btn btn-outline-secondary mb-4">&larr; Back to Politics</a>
+
+        <hr>
+        <p class="text-muted text-center">The uMkhonto weSizwe Party &mdash; a populist insurgency that has reshaped South African politics. Is it a genuine liberation revival or a vehicle for Zuma's legal survival? The answer will determine much of South Africa's political future.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

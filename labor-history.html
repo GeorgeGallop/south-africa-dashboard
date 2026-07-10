@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labour Market History • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="labor-market.html" class="btn btn-light btn-sm">👷 Labour Market</a>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-5 fw-bold text-sa-green">📈 Labour Market History</h1>
+    <p class="lead">How South Africa's labour market evolved from 1994 to today — population growth, employment, sectoral shifts, and the structural drivers of unemployment.</p>
+
+    <!-- Key stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">22M → 40M+</div>
+          <div class="text-muted small">Working-age population (1994 → 2024)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">9M → 16M</div>
+          <div class="text-muted small">Employed (1994 → 2024)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">33%</div>
+          <div class="text-muted small">Official unemployment rate (Q2 2024)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">42%+</div>
+          <div class="text-muted small">Expanded unemployment rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: The Core Arithmetic -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">🧮 The Core Arithmetic — Population vs Employment</h4>
+        <p>The single most important fact about South Africa's labour market is this: <strong>population has grown far faster than employment</strong> for 30 years.</p>
+        <div class="table-responsive mb-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th class="text-end">Working-age pop (millions)</th>
+                <th class="text-end">Employed (millions)</th>
+                <th class="text-end">Unemployed (millions)</th>
+                <th class="text-end">Official unemployment rate</th>
+                <th class="text-end">Labour force participation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1994</td><td class="text-end">~22</td><td class="text-end">~9.0</td><td class="text-end">~4.0</td><td class="text-end">~31%</td><td class="text-end">~60%</td></tr>
+              <tr><td>2000</td><td class="text-end">~26</td><td class="text-end">~11.5</td><td class="text-end">~4.5</td><td class="text-end">~26%</td><td class="text-end">~62%</td></tr>
+              <tr><td>2008</td><td class="text-end">~31</td><td class="text-end">~13.7</td><td class="text-end">~4.2</td><td class="text-end">~23%</td><td class="text-end">~58%</td></tr>
+              <tr><td>2014</td><td class="text-end">~35</td><td class="text-end">~15.1</td><td class="text-end">~5.1</td><td class="text-end">~25%</td><td class="text-end">~57%</td></tr>
+              <tr><td>2019</td><td class="text-end">~38</td><td class="text-end">~16.4</td><td class="text-end">~6.7</td><td class="text-end">~29%</td><td class="text-end">~61%</td></tr>
+              <tr><td>2020 (Covid)</td><td class="text-end">~39</td><td class="text-end">~14.1</td><td class="text-end">~7.2</td><td class="text-end">~34%</td><td class="text-end">~55%</td></tr>
+              <tr><td>2024</td><td class="text-end">~41</td><td class="text-end">~16.0</td><td class="text-end">~8.0</td><td class="text-end">~33%</td><td class="text-end">~59%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>The conclusion is stark:</strong> Employment grew by ~7 million between 1994 and 2024 — a significant absolute increase. But the working-age population grew by ~19 million in the same period. That means <strong>12 million more working-age people</strong> were not absorbed into employment. The unemployment pool swelled from ~4 million to ~8 million. This is not a story of "job losses" — it is a story of a <strong>growing jobs deficit</strong>. The economy created jobs, but not nearly enough relative to demographic growth.</p>
+        <p>The most damaging period was the combination of <strong>slow growth (2014-2019)</strong> followed by <strong>Covid-19 (2020)</strong>. Between 2014 and 2019, employment growth slowed to a crawl as GDP per capita stagnated. Then Covid destroyed ~2.3 million jobs, many of which never returned. While headline employment has recovered to near pre-Covid levels, the composition has shifted toward lower-quality informal and part-time work.</p>
+      </div>
+    </div>
+
+    <!-- Section 2: Which sectors lost jobs? -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">🏭 Sectoral Job Losses — Where the Damage Hit</h4>
+        <p>Some sectors experienced <strong>absolute employment declines</strong> — jobs were not just failing to grow, they were actively destroyed. These losses were concentrated in the sectors that historically defined the South African economy:</p>
+
+        <h6 class="fw-bold mt-3">⛏️ Mining</h6>
+        <p>Employment in mining fell from a peak of over <strong>800,000 in the 1980s</strong> to around <strong>450,000 today</strong>. Gold mining, once the anchor of the industry, shed the most — from over 500,000 gold miners in the 1980s to fewer than 100,000 today as deep-level gold became uneconomic. This is the single most important sectoral job loss in South African history, and it hit black male workers in rural areas (Eastern Cape, Free State, North West) hardest.</p>
+
+        <h6 class="fw-bold mt-3">🏭 Manufacturing</h6>
+        <p>Manufacturing employment peaked at ~1.8 million in the late 1980s and has declined to ~1.4 million today. The decline was driven by import competition (particularly from China after 2001), automation, and the inability of South African factories to compete globally. Textiles, clothing, footwear, and basic metal products were the hardest-hit sub-sectors. The clothing and textile industry alone lost over 100,000 jobs between 1995 and 2010.</p>
+
+        <h6 class="fw-bold mt-3">🌾 Agriculture</h6>
+        <p>Commercial farm employment fell from ~1.2 million in the 1980s to ~800,000 today. Mechanisation, the deregulation of marketing boards (post-1994), and changing land ownership patterns reduced the demand for farm labour. However, the decline has stabilised in recent years as export-oriented agriculture (fruit, wine, nuts) has grown and become more labour-intensive.</p>
+
+        <h6 class="fw-bold mt-3">🏛️ Public Sector & SOEs</h6>
+        <p>The post-1994 expansion of the public sector created millions of jobs in education, health, and social services. But the <strong>fiscal crisis from 2015 onwards</strong> has reversed some of this growth. SOEs like Eskom, Transnet, and SAPS have been shedding workers through restructuring, voluntary severance packages, and hiring freezes. This is a relatively new source of job loss that is likely to continue.</p>
+      </div>
+    </div>
+
+    <!-- Section 3: Structural Drivers -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">🔍 Structural Drivers — Why the Labour Market Is Broken</h4>
+        <ul>
+          <li><strong>Education & skills mismatch:</strong> South Africa's school system produces very weak outcomes. The country ranks near the bottom globally in reading, maths, and science. A large share of the unemployed are functionally illiterate and innumerate, making them unemployable in the formal sector. The result: high vacancy rates for skilled jobs exist alongside mass unemployment.</li>
+          <li><strong>Labour market regulation:</strong> The combination of a high minimum wage (R28/hour from 2025), stringent dismissal protections (Labour Relations Act), and powerful trade unions (particularly in manufacturing and mining) creates a formal sector with high costs and low flexibility. Many firms choose to automate or hire fewer, more productive workers rather than expand employment.</li>
+          <li><strong>Geographic mismatch:</strong> Most employment is in Gauteng and the Western Cape, while most unemployed people are in the Eastern Cape, Limpopo, and KwaZulu-Natal. Internal migration is costly and often unsuccessful. The townships are spatially disconnected from economic opportunity (legacy of apartheid planning).</li>
+          <li><strong>Wage levels vs productivity:</strong> South African wages, particularly for semi-skilled and unskilled workers, are high relative to productivity compared with competitor countries. This is often called the "high wage-low productivity trap." Firms respond by employing fewer workers and using more capital.</li>
+          <li><strong>Informal sector barriers:</strong> South Africa's informal sector is small (only ~15-18% of employment) compared with other developing countries (typically 50-70%). This is partly because of regulatory barriers, partly because the social grant system (child support grants, disability grants) reduces the pressure to take informal work, and partly because the townships lack the dense economic ecosystems that support informal business.</li>
+          <li><strong>The youth bulge:</strong> The 15-34 age group accounts for ~60% of the unemployed. These young people have grown up in the post-apartheid era, but they face the most difficult labour market conditions in the country's history. Many have never had a job. The longer someone stays unemployed, the harder it is to enter the labour market (scarring effect).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 4: Timeline -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">📅 Timeline of Critical Labour Market Events</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>1994-1996:</strong> Employment declines in mining accelerate as global gold prices collapse. Labour Relations Act introduces new dismissal protections.</li>
+          <li class="list-group-item"><strong>1997-2001:</strong> Clothing and textile imports surge after trade liberalisation. Manufacturing employment begins structural decline. The economy adds jobs in services (finance, retail, telecoms).</li>
+          <li class="list-group-item"><strong>2002-2008:</strong> Commodity boom drives strong employment growth in mining and construction. Employment total grows from ~11.5M to ~13.7M. Unemployment falls to ~23% — the lowest rate in the post-apartheid period.</li>
+          <li class="list-group-item"><strong>2009 (Global Financial Crisis):</strong> South Africa enters recession. ~1 million jobs lost. Employment does not recover to pre-crisis levels until 2013.</li>
+          <li class="list-group-item"><strong>2012-2015:</strong> Labour unrest (Marikana massacre, platinum strike of 2014 — the longest wage strike in South African history). Mining employment drops. GDP growth slows to sub-2%.</li>
+          <li class="list-group-item"><strong>2016-2019:</strong> "Lost years" for the labour market. GDP per capita stagnates; employment growth barely keeps pace with population growth. Unemployment rises from 25% to 29%.</li>
+          <li class="list-group-item"><strong>2020:</strong> Covid-19 lockdowns destroy ~2.3 million jobs in Q2 2020. The recovery is uneven — formal sector jobs return, but informal sector jobs do not recover fully. Expanded unemployment exceeds 44%.</li>
+          <li class="list-group-item"><strong>2021-2024:</strong> Employment recovers to ~16M (near pre-Covid level), but the population has continued growing. The unemployment rate stabilises at ~33%. Youth unemployment exceeds 60%. The "jobs deficit" — the gap between the number of people who need work and the number of jobs available — is larger than ever.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 5: The Big Conclusion -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">💡 The Verdict — Population Growth Has Done More Damage Than Job Loss</h4>
+        <p>The data is clear: <strong>population growth has been a far bigger factor in South Africa's unemployment crisis than job losses.</strong></p>
+        <p>Employment in 2024 (~16 million) is higher than it has ever been. But the working-age population has more than doubled since 1994. If the labour force participation rate (the share of working-age people who are employed or looking for work) had stayed at 1994 levels, there would be ~24 million people in the labour force in 2024. Instead, millions have simply left the labour force — they are "discouraged workers" who have given up looking.</p>
+        <p>That said, <strong>sectoral job losses in mining and manufacturing did profound damage</strong> because those sectors were the pathways into the formal economy for generations of workers — particularly black men in rural areas. When those jobs disappeared, they were not replaced with equivalent opportunities. The new jobs created since 2000 have been concentrated in services (finance, retail, government, hospitality), which require different skills and are concentrated in different locations. The result: a structural mismatch between the jobs that exist and the people who need them.</p>
+        <p>The bottom line: South Africa's unemployment crisis is <strong>demographic + structural</strong>. Demographic because the population has grown faster than the economy can create jobs. Structural because the education system, spatial geography, labour regulation, and industrial structure make it extremely difficult to close the gap. Neither problem has an easy solution. Without radical increases in economic growth (6-8% per year) and radical improvements in education outcomes, the jobs deficit will continue to grow for the foreseeable future.</p>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 mb-4">
+      <button class="btn btn-outline-secondary" onclick="history.back()">← Back</button>
+      <a href="labor-market.html" class="btn btn-outline-secondary">👷 Labour Market</a>
+    </div>
+  </div>
+</body>
+</html>

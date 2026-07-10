@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Marginal Price • SAWEM • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+    .section-divider-thin {
+      height: 2px;
+      background: #e9ecef;
+      border-radius: 2px;
+      margin: 2rem 0;
+    }
+    .formula-card {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+    .formula-card .math-label {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: #007A4D;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .callout-box {
+      border-left: 5px solid #007A4D;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .callout-box p:last-child { margin-bottom: 0; }
+    .def-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .def-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .def-item {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .def-item .term {
+      font-weight: 700;
+      color: #007A4D;
+      font-size: 0.9rem;
+    }
+    .def-item .desc {
+      font-size: 0.9rem;
+      color: #444;
+      margin-top: 0.3rem;
+      margin-bottom: 0;
+    }
+    .badge-math {
+      background: #002395;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+    }
+    .kkt-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .kkt-step .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #007A4D;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .kkt-step .content {
+      flex: 1;
+    }
+    .kkt-step .content p:last-child { margin-bottom: 0; }
+    .layer-card {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: white;
+      height: 100%;
+    }
+    .layer-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .layer-card ul {
+      font-size: 0.9rem;
+      color: #444;
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+    }
+    .layer-card ul li { margin-bottom: 0.3rem; }
+    .table-math td:first-child {
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- ============================================================ -->
+    <!-- HEADER                                                        -->
+    <!-- ============================================================ -->
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-sa-green mb-2">System Marginal Price (SMP)</h1>
+      <p class="text-muted mb-0">
+        The SMP is the cornerstone of pricing in the South African Wholesale Electricity Market (SAWEM).
+        This page provides an in-depth treatment&mdash;from the fundamental unconstrained merit-order
+        intuition, through the full constrained co-optimisation formulation, to the settlement
+        mechanics and the specific legal provisions of the Market Code.
+      </p>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- 1) WHAT IS SMP                                                -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">1) What Is the System Marginal Price?</h2>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Short definition</strong></p>
+                <p>
+                  The System Marginal Price (SMP) is the shadow price (Lagrange multiplier) of the
+                  energy-balance constraint in the market-clearing optimisation. It represents the
+                  marginal cost of serving one additional MWh of demand at the least-cost dispatch
+                  solution&mdash;economically, it is the offer price of the most expensive generator
+                  that must run to satisfy demand.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Why it matters</strong></p>
+                <p>
+                  All dispatched generators in the Day-Ahead Market are paid the <strong>same</strong>
+                  SMP for their energy output (<em>pay-as-clear</em>). This creates the incentive for
+                  every generator to bid at its true marginal cost&mdash;if it bids above marginal cost
+                  it risks not being dispatched; if it bids below marginal cost it risks being dispatched
+                  at a loss. The SMP is also the reference price for the Intraday Market, the Balancing
+                  Mechanism, reserve payments, and the CPA vesting-contract hedge.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <div class="row g-3 mt-1">
+            <div class="col-12 col-lg-4">
+              <div class="def-item">
+                <div class="term" title="System Marginal Price">SMP</div>
+                <p class="desc">System Marginal Price &mdash; the single price per Settlement Period for energy in the DAM.</p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="def-item">
+                <div class="term" title="Pay-as-Clear">Pay-as-Clear</div>
+                <p class="desc">All accepted generators receive the SMP, not their individual bid. This is the standard wholesale market model.</p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="def-item">
+                <div class="term" title="Settlement Period">Settlement Period</div>
+                <p class="desc">The time granularity for pricing (typically 1 hour in SAWEM Phase 1, moving to 30 minutes).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2) UNCONSTRAINED DISPATCH                                     -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">2) Unconstrained Dispatch &mdash; The Merit-Order Foundation</h2>
+
+          <p class="mb-3">
+            The simplest dispatch problem ignores all network and operational constraints except
+            the energy balance. Generators are stacked in ascending offer-price order (the
+            <strong>merit order</strong>), and the SMP is the offer price of the marginal unit:
+            the most expensive generator whose output is needed to meet demand. Every generator
+            with a lower bid is dispatched fully (or to its maximum) before the marginal unit is
+            called. Every generator with a higher bid is not dispatched.
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">Unconstrained optimisation problem</div>
+                <pre style="margin:0; white-space:pre-wrap;">min<sub>p<sub>i</sub></sub>  Σ<sub>i</sub>  C<sub>i</sub>(p<sub>i</sub>)
+
+subject to:
+  Σ<sub>i</sub> p<sub>i</sub> = D                        [energy balance]
+  p<sub>i,min</sub> ≤ p<sub>i</sub> ≤ p<sub>i,max</sub>          [generator limits]</pre>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">Lagrangian & first-order condition (KKT)</div>
+                <pre style="margin:0; white-space:pre-wrap;">ℒ = Σ<sub>i</sub> C<sub>i</sub>(p<sub>i</sub>) − λ·(Σ<sub>i</sub> p<sub>i</sub> − D)
+  + Σ<sub>i</sub> μ<sub>i,min</sub>·(p<sub>i,min</sub> − p<sub>i</sub>)
+  + Σ<sub>i</sub> μ<sub>i,max</sub>·(p<sub>i</sub> − p<sub>i,max</sub>)
+
+∂ℒ/∂p<sub>i</sub> = C'<sub>i</sub>(p<sub>i</sub>) − λ − μ<sub>i,min</sub> + μ<sub>i,max</sub> = 0
+
+At optimality for unconstrained marginal units (μ<sub>i</sub>=0):
+  C'<sub>i</sub>(p<sub>i</sub><sup>*</sup>) = λ   ∀ i marginal
+  ∴ λ = SMP</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">λ (lambda)</div>
+                <p class="desc">
+                  The Lagrange multiplier on the energy-balance constraint. At the unconstrained
+                  optimum, λ equals the marginal cost of the most expensive dispatched generator.
+                  This is <strong>the SMP in the unconstrained case</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">μ<sub>i,min</sub>, μ<sub>i,max</sub></div>
+                <p class="desc">
+                  Multipliers on generator-capacity limits. When a generator is at its minimum output,
+                  μ<sub>i,min</sub> ≥ 0; at its maximum, μ<sub>i,max</sub> ≥ 0. For generators
+                  between limits (marginal units), both are zero.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info border mt-3 mb-0">
+            <strong>Key insight:</strong> In the unconstrained case, all marginal generators
+            "see" the same marginal value λ. This is why unconstrained prices are uniform
+            across the system. The SMP is simply λ, and every dispatched generator receives it.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3) CONSTRAINED DISPATCH                                       -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">3) Constrained Dispatch &mdash; Adding Network and Operating Limits</h2>
+
+          <p class="mb-3">
+            In a real power system, the dispatch must also respect <strong>transmission network
+            limits</strong> (thermal ratings of lines and transformers, voltage stability limits,
+            interface transfer limits) and <strong>operational constraints</strong> (ramp rates,
+            minimum up/down times, reserve requirements, fuel limits). When these constraints bind,
+            the SMP is no longer a single uniform value driven purely by the merit order&mdash;it
+            now contains <strong>scarcity premiums</strong> from active constraints. However,
+            SAWEM&rsquo;s current market design clears the DAM with a <strong>single national
+            Pricing Area</strong>, meaning all generators and loads receive the same SMP even though
+            the underlying constrained dispatch may violate network limits. Congestion is instead
+            managed through <strong>lost opportunity payments</strong> and <strong>constrained-on
+            payments</strong> (see Section 5).
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">Full constrained optimisation (SCUC/SCED)</div>
+                <pre style="margin:0; white-space:pre-wrap;">min Σ<sub>t</sub> [ Σ<sub>i</sub> C<sub>i</sub>(p<sub>i,t</sub>)
+          + Σ<sub>j</sub> SU<sub>j</sub>·u<sub>j,t</sub>
+          + Σ<sub>j</sub> NL<sub>j</sub>·x<sub>j,t</sub> ]
+
+subject to (∀ t):
+  Σ<sub>i</sub> p<sub>i,t</sub> = D<sub>t</sub>                     [balance]
+  Σ<sub>i</sub> r<sub>i,t</sub><sup>k</sup> ≥ R<sub>t</sub><sup>k</sup>  ∀ k           [reserve req.]
+  f<sub>ℓ,t</sub>(p) ≤ F<sub>ℓ,max</sub>                    [line limits]
+  p<sub>i,min</sub>·x<sub>i,t</sub> ≤ p<sub>i,t</sub> ≤ p<sub>i,max</sub>·x<sub>i,t</sub>  [unit limits]
+  −RD<sub>i</sub> ≤ p<sub>i,t</sub>−p<sub>i,t-1</sub> ≤ RU<sub>i</sub>  [ramp rates]
+  x<sub>i,t</sub> ∈ {0,1}                               [commitment]
+  u<sub>i,t</sub> ≥ x<sub>i,t</sub>−x<sub>i,t-1</sub>               [start-up indicator]
+  Σ x<sub>i,τ</sub> ≥ ···                              [min up/down]</pre>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">SMP from constrained solution</div>
+                <pre style="margin:0; white-space:pre-wrap;">At the constrained optimum:
+
+SMP = λ*   (the multiplier on the energy-balance
+            constraint at hour t)
+
+Where λ* is the derivative of the total cost
+function with respect to an increment of demand,
+accounting for all binding constraints.
+
+In a single Pricing Area (uniform SMP), λ* is still
+a single scalar &mdash; but its value is influenced
+by network constraints because the optimisation
+must find a feasible dispatch under those limits.
+
+If multiple Pricing Areas or LMP were implemented,
+the price at each location n would be:
+
+  price<sub>n</sub> = λ + Σ<sub>ℓ</sub> SF<sub>ℓ,n</sub>·μ<sub>ℓ</sub>
+
+where μ<sub>ℓ</sub> is the multiplier on line ℓ
+and SF<sub>ℓ,n</sub> is the shift factor.</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <h3 class="h5 fw-bold mb-3 mt-4">3.1) Key Constraint Types in the SAWEM Optimisation</h3>
+
+          <div class="def-grid mb-3">
+            <div class="def-item">
+              <div class="term">Energy balance</div>
+              <p class="desc">Σ p<sub>i</sub> = D. The defining constraint. Its multiplier λ is the SMP.</p>
+            </div>
+            <div class="def-item">
+              <div class="term">Reserve requirements</div>
+              <p class="desc">Co-optimised with energy. Several reserve products (regulating up/down, 10-min spinning, 10-min non-spinning, 30-min supplemental). Each has a multiplier μ<sup>k</sup> indicating the marginal value of that reserve.</p>
+            </div>
+            <div class="def-item">
+              <div class="term">Unit-commitment constraints</div>
+              <p class="desc">Minimum generation, minimum up/down times, start-up costs, ramp rates. These create intertemporal coupling&mdash;the SMP in hour t depends on decisions made for hour t−1.</p>
+            </div>
+            <div class="def-item">
+              <div class="term">Network (line) constraints</div>
+              <p class="desc">f<sub>ℓ</sub>(p) ≤ F<sub>ℓ,max</sub>. In SAWEM Phase 1 these are not reflected in the SMP&mdash;instead, the unconstrained SMP is used and network violations are handled via constrained-on/off payments.</p>
+            </div>
+          </div>
+
+          <div class="alert alert-warning border mb-0">
+            <strong>SAWEM-specific:</strong> The Market Code mandates a two-step process: first solve the
+            <strong>Unconstrained Schedule</strong> (no network limits) to determine the SMP, then solve
+            the <strong>Constrained Schedule</strong> (with network limits) to identify which generators
+            must be curtailed or started to respect the network. This is a deliberate design choice&mdash;
+            it avoids locational price differences while still achieving a feasible physical dispatch.
+            The cost of this approach is that generators constrained off are compensated via
+            <strong>lost opportunity payments</strong> (Section 5), and generators constrained on
+            receive their bid price instead of the SMP.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4) KKT CONDITIONS IN DETAIL                                   -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">4) KKT Conditions &mdash; The Mathematical Anatomy of SMP</h2>
+
+          <p class="mb-3">
+            The Karush&ndash;Kuhn&ndash;Tucker (KKT) conditions provide the complete set of
+            necessary conditions for optimality in the constrained optimisation. Understanding
+            them reveals exactly <em>why</em> the SMP takes the value it does and <em>which</em>
+            constraints are driving price formation.
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-7">
+              <div class="formula-card">
+                <div class="math-label">General constrained problem (single period, for simplicity)</div>
+                <pre style="margin:0; white-space:pre-wrap;">min  f(p)  =  Σ<sub>i</sub> C<sub>i</sub>(p<sub>i</sub>)
+
+s.t.  h(p)  =  Σ<sub>i</sub> p<sub>i</sub> − D = 0          (equality: energy balance)
+      g<sub>k</sub>(p) ≤ 0   ∀ k                  (inequality: network + operating limits)</pre>
+              </div>
+            </div>
+            <div class="col-12 col-lg-5">
+              <div class="formula-card">
+                <div class="math-label">KKT conditions</div>
+                <pre style="margin:0; white-space:pre-wrap;">1. Stationarity:
+   ∇f(p*) + λ·∇h(p*) + Σ μ<sub>k</sub>·∇g<sub>k</sub>(p*) = 0
+
+2. Primal feasibility:
+   h(p*) = 0,  g<sub>k</sub>(p*) ≤ 0
+
+3. Dual feasibility:
+   μ<sub>k</sub> ≥ 0
+
+4. Complementary slackness:
+   μ<sub>k</sub>·g<sub>k</sub>(p*) = 0</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <h3 class="h5 fw-bold mb-3">4.1) What Each KKT Condition Means for SMP</h3>
+
+          <div class="kkt-step">
+            <div class="num">1</div>
+            <div class="content">
+              <p><strong>Stationarity and the SMP formula</strong></p>
+              <p class="text-muted">
+                Expanding the stationarity condition for each generator i:
+              </p>
+              <div class="formula-card mb-2" style="padding:0.75rem;">
+                <pre style="margin:0; white-space:pre-wrap;">C'<sub>i</sub>(p<sub>i</sub>*) − λ + Σ<sub>k</sub> μ<sub>k</sub>·∂g<sub>k</sub>/∂p<sub>i</sub> = 0</pre>
+              </div>
+              <p class="text-muted">
+                Rearranging gives the SMP for any generator that is marginal (between limits):
+              </p>
+              <div class="formula-card" style="padding:0.75rem;">
+                <pre style="margin:0; white-space:pre-wrap;">SMP = λ = C'<sub>i</sub>(p<sub>i</sub>*) + Σ<sub>k</sub> μ<sub>k</sub>·∂g<sub>k</sub>/∂p<sub>i</sub></pre>
+              </div>
+              <p class="text-muted small mt-2 mb-0">
+                If no network/operating constraints are active (μ<sub>k</sub> = 0 ∀ k), this reduces
+                to λ = C'<sub>i</sub>(p<sub>i</sub>*)&mdash;the unconstrained result. When constraints
+                bind (μ<sub>k</sub> > 0), the SMP includes a <strong>congestion premium</strong>
+                that reflects the marginal cost of respecting those constraints.
+              </p>
+            </div>
+          </div>
+
+          <div class="kkt-step">
+            <div class="num">2</div>
+            <div class="content">
+              <p><strong>Primal feasibility</strong></p>
+              <p class="text-muted mb-0">
+                The dispatch p* must actually balance supply and demand (h=0) and respect every
+                line limit, ramp rate, reserve requirement, and generator bound (g<sub>k</sub> ≤ 0).
+                The optimisation finds the <em>cheapest feasible</em> dispatch, not just the
+                cheapest merit-order dispatch.
+              </p>
+            </div>
+          </div>
+
+          <div class="kkt-step">
+            <div class="num">3</div>
+            <div class="content">
+              <p><strong>Dual feasibility</strong></p>
+              <p class="text-muted mb-0">
+                Shadow prices on &ldquo;≤&rdquo; constraints are non-negative. A positive μ<sub>k</sub>
+                means that <em>relaxing</em> constraint k by a small amount would reduce total cost.
+                This is the marginal value of increasing transfer capability, reserve requirement, or
+                any binding limit.
+              </p>
+            </div>
+          </div>
+
+          <div class="kkt-step">
+            <div class="num">4</div>
+            <div class="content">
+              <p><strong>Complementary slackness</strong></p>
+              <p class="text-muted mb-0">
+                μ<sub>k</sub>·g<sub>k</sub>(p*) = 0. If a constraint is not binding (g<sub>k</sub> < 0),
+                its multiplier μ<sub>k</sub> must be zero. If a multiplier is positive, the constraint
+                must be tight (g<sub>k</sub> = 0). This is what we mean when we say &ldquo;active
+                constraints have non-zero shadow prices.&rdquo;
+              </p>
+            </div>
+          </div>
+
+          <div class="alert alert-dark border mt-3 mb-0">
+            <strong>Bottom line from KKT:</strong> The SMP is not &ldquo;the highest accepted bid&rdquo;&mdash;
+            that is only true in the trivial unconstrained case. In the full constrained problem,
+            the SMP is the <strong>marginal cost of serving demand</strong> while respecting every
+            physical and operational limit. Its value is determined by the interaction of all
+            binding constraints, not by any single generator&rsquo;s bid.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5) CONSTRAINED-ON / CONSTRAINED-OFF                           -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">5) Lost Opportunity Payments & Constrained-On Payments</h2>
+
+          <p class="mb-3">
+            Because SAWEM uses a single national SMP but respects network constraints in the dispatch,
+            there will be generators that are <strong>constrained off</strong> (reduced below their
+            unconstrained dispatch to respect a line limit) and generators that are
+            <strong>constrained on</strong> (started or increased above their unconstrained dispatch
+            to support the network). These generators must be compensated to remain financially whole.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold text-sa-green mb-2">Constrained-off (constrained-down) payment</h3>
+                  <p class="text-muted small">
+                    A generator that was dispatched in the Unconstrained Schedule but is instructed
+                    to reduce output in the Constrained Schedule loses the profit it would have earned
+                    at the SMP.
+                  </p>
+                  <div class="formula-card" style="padding:0.75rem; font-size:0.85rem;">
+                    <div class="math-label">Lost opportunity payment</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Payment = (SMP − BidPrice) × Volume<sub>constrained-off</sub></pre>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    The generator is left indifferent between the constrained dispatch and the
+                    unconstrained outcome&mdash;it receives the SMP on its actual (reduced) output
+                    plus the lost opportunity payment making up the difference.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold text-sa-green mb-2">Constrained-on payment</h3>
+                  <p class="text-muted small">
+                    A generator that was <em>not</em> dispatched in the Unconstrained Schedule but is
+                    required to run in the Constrained Schedule would lose money if paid only the SMP
+                    (since its bid price is above the SMP).
+                  </p>
+                  <div class="formula-card" style="padding:0.75rem; font-size:0.85rem;">
+                    <div class="math-label">Constrained-on payment</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Payment = (BidPrice − SMP) × Volume<sub>constrained-on</sub></pre>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    Alternatively, the generator may be paid its <strong>bid price</strong> for the
+                    constrained-on volume. The generator is made whole for the loss incurred by running
+                    when the SMP is below its costs.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-secondary border mt-3 mb-0">
+            <strong>Who pays?</strong> The constrained-on/off payments are recovered through the
+            settlement system as <strong>uplift charges</strong> allocated to all BRPs pro rata
+            based on their net energy volume. These uplift charges are the &ldquo;cost of congestion&rdquo;
+            in a single-Pricing-Area market&mdash;in an LMP market, these costs would instead appear
+            as locational price differences.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6) CO-OPTIMISATION: ENERGY + RESERVES                         -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">6) Co-optimisation of Energy and Reserves</h2>
+
+          <p class="mb3">
+            A distinguishing feature of SAWEM is that the Day-Ahead Market clearing solves for both
+            energy and reserve schedules <strong>simultaneously</strong>. This is fundamentally
+            different from sequential markets (e.g., European-style where the energy market clears
+            first and reserves are procured separately). Co-optimisation produces the globally
+            least-cost solution.
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">Co-optimised objective</div>
+                <pre style="margin:0; white-space:pre-wrap;">min  Σ<sub>i</sub> [ C<sub>i</sub>(p<sub>i</sub>) + C<sub>i</sub><sup>res</sup>(r<sub>i</sub>) ]
+
+subject to:
+  Σ<sub>i</sub> p<sub>i</sub> = D              → λ (SMP)
+  Σ<sub>i</sub> r<sub>i</sub><sup>k</sup> ≥ R<sup>k</sup>     → μ<sup>k</sup> (reserve shadow price)
+  p<sub>i</sub> + r<sub>i</sub> ≤ p<sub>i,max</sub>   → γ<sub>i</sub> (capacity allocation)
+  p<sub>i</sub> − r<sub>i</sub> ≥ p<sub>i,min</sub>   → (minimum generation)</pre>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="formula-card">
+                <div class="math-label">First-order conditions</div>
+                <pre style="margin:0; white-space:pre-wrap;">For energy:
+  C'<sub>i</sub>(p<sub>i</sub>*) − λ − γ<sub>i</sub> = 0
+
+For reserves:
+  C'<sub>i</sub><sup>res</sup>(r<sub>i</sub>*) − μ<sup>k</sup> − γ<sub>i</sub> = 0
+
+At the optimum, for a unit providing both:
+  λ − μ<sup>k</sup> = C'<sub>i</sub>(p<sub>i</sub>*) − C'<sub>i</sub><sup>res</sup>(r<sub>i</sub>*)
+
+This is the &ldquo;opportunity cost&rdquo; of
+reserving capacity instead of selling energy.</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">γ<sub>i</sub> (capacity shadow price)</div>
+                <p class="desc">
+                  The multiplier on the constraint p<sub>i</sub> + r<sub>i</sub> ≤ p<sub>i,max</sub>.
+                  When a generator is at its capacity limit, γ<sub>i</sub> > 0, indicating that the
+                  capacity is scarce&mdash;increasing the unit&rsquo;s maximum output would reduce
+                  total cost.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">Reserve shadow price μ<sup>k</sup></div>
+                <p class="desc">
+                  The marginal cost of meeting an additional MW of reserve requirement k. When
+                  μ<sup>k</sup> is high, reserves are expensive and the system would benefit from
+                  more fast-ramping capacity. These values inform the System Operator&rsquo;s
+                  reserve adequacy assessment.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info border mt-3 mb-0">
+            <strong>Why co-optimisation matters for SMP:</strong> The SMP (λ) is determined jointly
+            with reserve prices (μ<sup>k</sup>) because the same generator capacity is shared between
+            energy and reserves. If reserve requirements are high, some cheap generators must hold
+            capacity back from the energy market, which pushes the SMP up (more expensive generators
+            must run to meet energy demand). This interaction is invisible in sequential markets.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7) SMP ACROSS MARKET LAYERS                                   -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">7) SMP Across Market Layers</h2>
+
+          <p class="mb-3">
+            The SMP is not confined to the Day-Ahead Market. It is the reference price that flows
+            through every layer of the SAWEM multi-market model, creating consistent price signals
+            across time horizons.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="layer-card">
+                <h3>Day-Ahead Market</h3>
+                <ul>
+                  <li>SMP determined from market clearing (SCUC/SCED)</li>
+                  <li>All energy settled at SMP (pay-as-clear)</li>
+                  <li>Constrained-on/off payments at bid price or SMP ± spread</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="layer-card">
+                <h3>Intraday Market</h3>
+                <ul>
+                  <li>Same SMP methodology as DAM</li>
+                  <li>Gate closure 1 hour before delivery</li>
+                  <li>Corrections/revisions to DAM schedules settled at intraday SMP</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="layer-card">
+                <h3>Balancing Mechanism</h3>
+                <ul>
+                  <li>Imbalance priced relative to DAM SMP</li>
+                  <li>System Buy Price (SBP) = SMP × penalty factor (≥1.1)</li>
+                  <li>System Sell Price (SSP) = SMP × penalty factor (≤0.9)</li>
+                  <li>Asymmetric to incentivise schedule accuracy</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="layer-card">
+                <h3>Reserve & CPA</h3>
+                <ul>
+                  <li>Reserve providers paid SMP for reserve MWh + lost opportunity cost</li>
+                  <li>CPA&rsquo;s energy revenue = SMP × vesting-contract volume</li>
+                  <li>CPA&rsquo;s hedge settlement (SMP − reference price) × volume</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8) SMP AND THE CPA                                            -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">8) SMP and the Central Purchasing Agency</h2>
+
+          <p class="mb-3">
+            The Central Purchasing Agency (CPA) is the single largest participant in the DAM. It
+            is the BRP for all Eskom Generation stations (via vesting contracts) and all legacy
+            IPP PPAs. The SMP therefore directly determines the CPA&rsquo;s financial position,
+            which in turn determines the <strong>legacy charge</strong> paid by consumers.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold text-sa-green mb-2">CPA energy revenue</h3>
+                  <div class="formula-card" style="padding:0.75rem; font-size:0.85rem;">
+                    <pre style="margin:0; white-space:pre-wrap;">Revenue<sub>CPA</sub> = Σ<sub>h</sub> SMP<sub>h</sub> × Volume<sub>CPA,h</sub></pre>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    The CPA sells all contracted energy into the DAM at the SMP. Higher SMP means
+                    higher CPA revenue and a lower legacy charge.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold text-sa-green mb-2">Eskom vesting-contract hedge</h3>
+                  <div class="formula-card" style="padding:0.75rem; font-size:0.85rem;">
+                    <pre style="margin:0; white-space:pre-wrap;">CPA pays Eskom Gen:
+  AvailabilityPayment + CapacityPayment
+  + HedgePayment
+
+HedgePayment = δ·(ReferencePrice − SMP) × Volume
+
+where δ = hedge ratio (100% → 0% over 5 years)</pre>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    When SMP rises above the reference price, the hedge payment to Eskom becomes
+                    negative (Eskom pays the CPA). This prevents Eskom Generation from profiting
+                    from high SMP caused by its own market power.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning border mt-3 mb-0">
+            <strong>Market power mitigation:</strong> The declining hedge is the core mechanism
+            preventing Eskom Generation&rsquo;s ~70% market share from translating into sustained
+            high SMP. In Year 1, Eskom is hedged at 100% of the reference price&mdash;it is
+            indifferent to the SMP. By Year 5, Eskom is fully exposed to the SMP, by which time
+            the market should have enough competing generation to discipline prices.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 9) MARKET CODE PROVISIONS                                     -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">9) Market Code Provisions &mdash; Sections Governing SMP</h2>
+
+          <p class="mb-3">
+            The SMP is defined and governed by the SAWEM Market Code (Rev 2.3, Feb 2026). Below are
+            the key sections, paraphrased for clarity. The full authority flows from the Electricity
+            Regulation Amendment Act 38 of 2024 through the Market Code to the Market Operator&rsquo;s
+            daily operations.
+          </p>
+
+          <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered align-middle">
+              <thead>
+                <tr class="bg-light">
+                  <th style="width:120px;">Section</th>
+                  <th>Provision</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge-math">§3.5</span></td>
+                  <td>
+                    <strong>Market clearing algorithm.</strong> The Market Operator must run a
+                    co-optimised SCUC/SCED that determines the Unconstrained Schedule and the
+                    Constrained Schedule. The algorithm must minimise total bid costs including
+                    start-up costs, no-load costs, and incremental energy costs, subject to the
+                    energy balance, reserve requirements, unit-commitment constraints, and network
+                    security constraints.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§3.6.1</span></td>
+                  <td>
+                    <strong>SMP determination.</strong> The Market Operator must determine the
+                    System Marginal Price for each Settlement Period as the Lagrange multiplier
+                    (&ldquo;shadow price&rdquo;) of the energy balance constraint in the market
+                    optimisation.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§3.6.2</span></td>
+                  <td>
+                    <strong>Pay-as-clear settlement.</strong> All Energy accepted in the Day-Ahead
+                    Market shall be settled at the SMP for the relevant Settlement Period.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§3.6.3</span></td>
+                  <td>
+                    <strong>Scarcity pricing.</strong> If no marginal unit can be identified (e.g.,
+                    system-wide scarcity where all available generation is dispatched and demand
+                    exceeds supply), the SMP is set to the Value of Lost Load (VOLL) as determined
+                    by NERSA.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§3.7</span></td>
+                  <td>
+                    <strong>Lost opportunity payments.</strong> A generator constrained off shall
+                    receive (SMP &minus; its bid price) &times; the volume constrained off. This
+                    ensures the generator is indifferent to the constraint.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§3.8</span></td>
+                  <td>
+                    <strong>Constrained-on payments.</strong> A generator constrained on shall
+                    receive its bid price for the constrained-on volume, or the SMP plus a
+                    make-whole payment, as specified in Schedule C.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">§5.5</span></td>
+                  <td>
+                    <strong>Balancing Mechanism prices.</strong> The System Buy Price (SBP) and
+                    System Sell Price (SSP) are derived from the SMP with penalty factors to
+                    incentivise schedule accuracy. SBP ≥ 1.1 &times; SMP; SSP ≤ 0.9 &times; SMP.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="badge-math">Sch. C</span></td>
+                  <td>
+                    <strong>Full mathematical formulation.</strong> Schedule C to the Market Code
+                    provides the complete mathematical formulation of the optimisation problem,
+                    including the objective function, all constraints, and the definition of the
+                    SMP as the dual variable of the energy balance constraint.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-dark border mb-0">
+            <strong>Legal force:</strong> The Market Code has the force of law under Section 14H
+            of the ERA Amendment Act. Any contravention of its SMP provisions is an offence
+            punishable by a fine or imprisonment not exceeding five years.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 10) SUMMARY: THE COMPLETE SMP PICTURE                         -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">10) The Complete SMP Picture &mdash; Summary</h2>
+
+          <div class="formula-card mb-3">
+            <div class="math-label">SMP in one formula (conceptual)</div>
+            <pre style="margin:0; white-space:pre-wrap;">SMP<sub>t</sub> = λ<sub>t</sub>
+
+where λ<sub>t</sub> solves:
+
+min Σ<sub>i</sub> [ C<sub>i</sub>(p<sub>i,t</sub>) + SU<sub>i</sub>·u<sub>i,t</sub> + NL<sub>i</sub>·x<sub>i,t</sub> ]
+
+s.t.  Σ<sub>i</sub> p<sub>i,t</sub> = D<sub>t</sub>                              → λ<sub>t</sub>
+      Σ<sub>i</sub> r<sub>i,t</sub><sup>k</sup> ≥ R<sub>t</sub><sup>k</sup>                          → μ<sub>t</sub><sup>k</sup>
+      p<sub>i,min</sub> ≤ p<sub>i,t</sub> ≤ p<sub>i,max</sub>                       → γ<sub>i,min</sub>, γ<sub>i,max</sub>
+      |p<sub>i,t</sub> − p<sub>i,t-1</sub>| ≤ RD<sub>i</sub>, RU<sub>i</sub>              → δ<sub>i,t</sub>
+      [unit commitment, min up/down, network limits]         → various μ</pre>
+          </div>
+
+          <div class="row g-3 mb-2">
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">Unconstrained</div>
+                <p class="desc">
+                  SMP = C'<sub>marginal</sub>. Only the merit order matters. All marginal units
+                  have the same cost at the optimal dispatch.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">Constrained (single Pricing Area)</div>
+                <p class="desc">
+                  SMP = λ<sup>*</sup>. The shadow price of the energy balance under all binding
+                  constraints. Congestion handled via uplift (constrained-on/off payments).
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">Co-optimised</div>
+                <p class="desc">
+                  SMP determined jointly with reserve shadow prices μ<sup>k</sup>. The capacity
+                  allocation between energy and reserves affects SMP.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="def-item">
+                <div class="term">Locational (LMP, future phase)</div>
+                <p class="desc">
+                  SMP<sub>n</sub> = λ + Σ SF<sub>ℓ,n</sub>·μ<sub>ℓ</sub>. Prices differ by
+                  location based on network congestion.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box mt-3">
+            <p class="mb-2"><strong>🔑 The two things to remember:</strong></p>
+            <ol class="mb-0">
+              <li>
+                <strong>SMP is always the shadow price of the energy balance.</strong> This is
+                true whether the optimisation is unconstrained, constrained, co-optimised, or
+                locational. Everything else (merit order, network constraints, reserve requirements)
+                affects the SMP through their effect on the feasible region and thus on λ.
+              </li>
+              <li>
+                <strong>Constraints add scarcity premiums.</strong> The gap between the SMP in an
+                unconstrained world and the SMP in the real constrained world is the marginal
+                cost of respecting the binding constraints. In a single-Pricing-Area market like
+                SAWEM Phase 1, these premiums appear in the SMP itself, and the cost of congestion
+                is recovered through uplift charges on all market participants.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 11) INTERACTIVE SMP CALCULATOR                                -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">11) Interactive SMP Demonstration &mdash; Unconstrained Merit Order</h2>
+
+          <p class="mb-3">
+            Use this calculator to see how the SMP emerges from the merit order under unconstrained
+            dispatch. Enter generator bids, and the calculator will stack them, find the marginal
+            unit, and display the SMP along with generator profits and market metrics.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-7">
+              <div class="p-3 rounded-3 bg-light border">
+                <h3 class="h6 fw-bold mb-3">Generator bids</h3>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0" id="genTable">
+                    <thead>
+                      <tr class="bg-light">
+                        <th>Unit</th>
+                        <th>Max MW</th>
+                        <th>Bid (R/MWh)</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="genTableBody">
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" value="Coal A" style="min-width:70px;"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-mw" value="500" min="0" step="10"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-bid" value="200" min="0" step="5"></td>
+                        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+                      </tr>
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" value="Coal B" style="min-width:70px;"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-mw" value="400" min="0" step="10"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-bid" value="350" min="0" step="5"></td>
+                        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+                      </tr>
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" value="Gas CCGT" style="min-width:70px;"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-mw" value="300" min="0" step="10"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-bid" value="600" min="0" step="5"></td>
+                        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+                      </tr>
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" value="OCGT" style="min-width:70px;"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-mw" value="200" min="0" step="10"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-bid" value="1200" min="0" step="5"></td>
+                        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+                      </tr>
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" value="Wind" style="min-width:70px;"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-mw" value="250" min="0" step="10"></td>
+                        <td><input type="number" class="form-control form-control-sm gen-bid" value="50" min="0" step="5"></td>
+                        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap mt-2">
+                  <button class="btn btn-success btn-sm" onclick="addGeneratorRow()">+ Add Generator</button>
+                  <button class="btn btn-outline-success btn-sm" onclick="resetToDefault()">Reset to Default</button>
+                </div>
+
+                <div class="row g-2 mt-3">
+                  <div class="col-8">
+                    <label class="form-label small text-muted">Demand (MW)</label>
+                    <input id="smpDemand" type="number" class="form-control" value="1000" min="0" step="50">
+                  </div>
+                  <div class="col-4 d-flex align-items-end">
+                    <button class="btn btn-success w-100" onclick="computeSmp()">Compute SMP</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-5">
+              <div class="p-3 rounded-3 bg-light border h-100">
+                <h3 class="h6 fw-bold mb-3">Results</h3>
+
+                <div class="mb-3">
+                  <div class="text-muted small">System Marginal Price (SMP)</div>
+                  <div class="fw-bold fs-3 text-sa-green" id="outSmp">—</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-muted small">Marginal unit</div>
+                  <div class="fw-bold" id="outMarginalUnit">—</div>
+                </div>
+
+                <hr>
+
+                <div class="row g-2 mb-3">
+                  <div class="col-6">
+                    <div class="text-muted small">Total dispatched</div>
+                    <div class="fw-bold" id="outTotalDispatched">— MW</div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted small">Total cost</div>
+                    <div class="fw-bold" id="outTotalCost">— R/h</div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted small">Demand met</div>
+                    <div class="fw-bold" id="outDemandMet">— MW</div>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted small">Available capacity</div>
+                    <div class="fw-bold" id="outAvailableCap">— MW</div>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="text-muted small mb-1">Dispatch breakdown</div>
+                <div id="outDispatchTable" class="small"></div>
+
+                <div class="alert alert-info py-2 mt-3 mb-0 small" role="alert">
+                  <strong>Formula applied:</strong> Stack generators by ascending bid. Dispatch
+                  in order until demand is met. SMP = bid of the last dispatched unit (the
+                  marginal unit). All dispatched generators receive the SMP.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function addGeneratorRow() {
+      const tbody = document.getElementById("genTableBody");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="text" class="form-control form-control-sm" value="Gen ${tbody.children.length + 1}" style="min-width:70px;"></td>
+        <td><input type="number" class="form-control form-control-sm gen-mw" value="200" min="0" step="10"></td>
+        <td><input type="number" class="form-control form-control-sm gen-bid" value="500" min="0" step="5"></td>
+        <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+      tr.querySelector(".remove-gen").addEventListener("click", () => tr.remove());
+    }
+
+    function resetToDefault() {
+      const tbody = document.getElementById("genTableBody");
+      tbody.innerHTML = `
+        <tr>
+          <td><input type="text" class="form-control form-control-sm" value="Wind" style="min-width:70px;"></td>
+          <td><input type="number" class="form-control form-control-sm gen-mw" value="250" min="0" step="10"></td>
+          <td><input type="number" class="form-control form-control-sm gen-bid" value="50" min="0" step="5"></td>
+          <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control form-control-sm" value="Coal A" style="min-width:70px;"></td>
+          <td><input type="number" class="form-control form-control-sm gen-mw" value="500" min="0" step="10"></td>
+          <td><input type="number" class="form-control form-control-sm gen-bid" value="200" min="0" step="5"></td>
+          <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control form-control-sm" value="Coal B" style="min-width:70px;"></td>
+          <td><input type="number" class="form-control form-control-sm gen-mw" value="400" min="0" step="10"></td>
+          <td><input type="number" class="form-control form-control-sm gen-bid" value="350" min="0" step="5"></td>
+          <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control form-control-sm" value="Gas CCGT" style="min-width:70px;"></td>
+          <td><input type="number" class="form-control form-control-sm gen-mw" value="300" min="0" step="10"></td>
+          <td><input type="number" class="form-control form-control-sm gen-bid" value="600" min="0" step="5"></td>
+          <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control form-control-sm" value="OCGT" style="min-width:70px;"></td>
+          <td><input type="number" class="form-control form-control-sm gen-mw" value="200" min="0" step="10"></td>
+          <td><input type="number" class="form-control form-control-sm gen-bid" value="1200" min="0" step="5"></td>
+          <td><button class="btn btn-outline-danger btn-sm remove-gen">✕</button></td>
+        </tr>
+      `;
+      tbody.querySelectorAll(".remove-gen").forEach(btn => {
+        btn.addEventListener("click", () => btn.closest("tr").remove());
+      });
+      $("smpDemand").value = 1000;
+      computeSmp();
+    }
+
+    function computeSmp() {
+      // Collect generator data
+      const rows = document.querySelectorAll("#genTableBody tr");
+      const gens = [];
+      rows.forEach(tr => {
+        const name = tr.querySelector("td:first-child input").value || "Unnamed";
+        const mw = parseFloat(tr.querySelector(".gen-mw").value) || 0;
+        const bid = parseFloat(tr.querySelector(".gen-bid").value) || 0;
+        gens.push({ name, mw, bid });
+      });
+
+      const demand = parseFloat($("smpDemand").value) || 0;
+
+      if (gens.length === 0 || demand <= 0) {
+        $("outSmp").textContent = "—";
+        $("outMarginalUnit").textContent = "—";
+        $("outTotalDispatched").textContent = "— MW";
+        $("outTotalCost").textContent = "— R/h";
+        $("outDemandMet").textContent = "— MW";
+        $("outAvailableCap").textContent = "— MW";
+        $("outDispatchTable").innerHTML = "—";
+        return;
+      }
+
+      // Sort by bid ascending (merit order)
+      gens.sort((a, b) => a.bid - b.bid);
+
+      let remaining = demand;
+      let smp = 0;
+      let marginalUnit = "None (insufficient capacity)";
+      let totalCost = 0;
+      let totalDispatched = 0;
+      const dispatchDetails = [];
+
+      for (const g of gens) {
+        if (remaining <= 0) break;
+        const dispatch = Math.min(g.mw, remaining);
+        const cost = dispatch * g.bid;
+        totalCost += cost;
+        totalDispatched += dispatch;
+        remaining -= dispatch;
+        smp = g.bid;
+        marginalUnit = g.name;
+        dispatchDetails.push({
+          name: g.name,
+          bid: g.bid,
+          mw: g.mw,
+          dispatch,
+          cost,
+          isMarginal: remaining <= 0 && dispatch > 0 && remaining >= -0.01,
+          profit: (smp - g.bid) * dispatch
+        });
+      }
+
+      // Mark the true marginal unit (last dispatched with bid = SMP)
+      dispatchDetails.forEach(d => {
+        d.isMarginal = (d.dispatch > 0 && d.bid === smp && d.dispatch > 0);
+      });
+
+      const totalAvailable = gens.reduce((acc, g) => acc + g.mw, 0);
+      const demandMet = totalDispatched;
+
+      $("outSmp").textContent = `R ${smp.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}/MWh`;
+      $("outMarginalUnit").textContent = marginalUnit;
+      $("outTotalDispatched").textContent = `${totalDispatched.toLocaleString()} MW`;
+      $("outTotalCost").textContent = `R ${totalCost.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0})}/h`;
+      $("outDemandMet").textContent = `${demand.toLocaleString()} MW`;
+      $("outAvailableCap").textContent = `${totalAvailable.toLocaleString()} MW`;
+
+      // Dispatch table
+      let tableHtml = `<table class="table table-sm mb-0 small"><thead><tr>
+        <th>Unit</th><th class="text-end">Bid (R/MWh)</th><th class="text-end">Max MW</th>
+        <th class="text-end">Dispatch MW</th><th class="text-end">Revenue R/h</th>
+      </tr></thead><tbody>`;
+
+      // Sort back to original order for display
+      dispatchDetails.forEach(d => {
+        const isMarg = d.isMarginal ? ' bg-warning bg-opacity-25 fw-bold' : '';
+        tableHtml += `<tr class="${isMarg}">
+          <td>${d.name}</td>
+          <td class="text-end">${d.bid.toLocaleString()}</td>
+          <td class="text-end">${d.mw.toLocaleString()}</td>
+          <td class="text-end">${d.dispatch.toLocaleString(undefined, {minimumFractionDigits:0})}</td>
+          <td class="text-end">${(smp * d.dispatch).toLocaleString(undefined, {minimumFractionDigits:0})}</td>
+        </tr>`;
+      });
+
+      tableHtml += `</tbody></table>`;
+      tableHtml += `<div class="text-muted small mt-1">Marginal unit highlighted. All dispatched units paid SMP = R ${smp}/MWh.</div>`;
+
+      $("outDispatchTable").innerHTML = tableHtml;
+    }
+
+    // Wire up remove buttons and default
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".remove-gen").forEach(btn => {
+        btn.addEventListener("click", () => btn.closest("tr").remove());
+      });
+      computeSmp();
+    });
+
+    window.addGeneratorRow = addGeneratorRow;
+    window.resetToDefault = resetToDefault;
+    window.computeSmp = computeSmp;
+  </script>
+</body>
+</html>

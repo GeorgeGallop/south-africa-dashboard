@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patriotic Alliance • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .pa-red { color: #c0392b; }
+    .pa-gold { color: #f39c12; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.fail { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .card-header.rise { background: #006341; color: white; border-bottom-color: #004d33; }
+    .card-header.era { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.corrupt { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.econ { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #c0392b;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #c0392b;
+    }
+    .quotation {
+      border-left: 4px solid #f39c12;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .stat-fail {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#introduction">&#127891; Introduction</a>
+          <a class="nav-link" href="#founding">&#128220; Founding (2013)</a>
+          <a class="nav-link" href="#ideology">&#128214; Ideology</a>
+          <a class="nav-link" href="#leadership">&#129488; Leadership</a>
+          <a class="nav-link" href="#performance">&#128200; Electoral Performance</a>
+          <a class="nav-link" href="#gnu2024">&#129309; 2024 GNU Role</a>
+          <a class="nav-link" href="#policies">&#128214; Key Policies</a>
+          <a class="nav-link" href="#sources">&#128218; Sources</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold" style="color:#c0392b;">&#127988; The Patriotic Alliance</h1>
+        <p class="lead text-muted mb-3">A new force in South African politics: from prison yards to cabinet — the rapid rise of the Patriotic Alliance.</p>
+
+        <!-- INTRODUCTION -->
+        <div class="section-card card" id="introduction">
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Gayton McKenzie, 2024:</strong><br>
+              &ldquo;The PA is not a party of politicians. We are a party of the people — the forgotten people, the marginalised, the coloured communities, the prison inmates, the poor. We speak for those who have been left behind by the ANC and the DA.&rdquo;
+            </div>
+            <p>
+              The Patriotic Alliance (PA) is one of South Africa's youngest and fastest-growing political parties. Founded in 2013 by former gangsters and ex-convicts Gayton McKenzie and Kenny Kunene, the PA has carved out a distinct niche in South African politics — combining populist rhetoric with a focus on prison reform, coloured community advocacy, and anti-establishment politics. In the 2024 general election, the PA surprised many by winning approximately 2% of the national vote and entering government as part of the Government of National Unity, with McKenzie appointed Minister of Sports, Arts and Culture.
+            </p>
+          </div>
+        </div>
+
+        <!-- FOUNDING -->
+        <div class="section-card card" id="founding">
+          <div class="card-header era">&#128220; Founding (2013) — From Prison to Politics</div>
+          <div class="card-body">
+            <div class="timeline-item">
+              <div class="timeline-year">2013 — PA Founded</div>
+              <p class="small mb-0">The Patriotic Alliance is founded by <strong>Gayton McKenzie</strong> and <strong>Kenny Kunene</strong>, two former prisoners who met while incarcerated. McKenzie served 17 years for armed robbery and bank robbery; Kunene served time for fraud. After their release, both became successful businessmen and writers — McKenzie authored a memoir and became a motivational speaker. The PA is launched with a populist, anti-establishment platform targeting marginalised coloured communities and ex-offenders. <a href="https://www.patrioticalliance.co.za" target="_blank">[PA Official]</a></p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2016 — First Electoral Contest</div>
+              <p class="small mb-0">The PA contests its first local government elections, winning a handful of seats in the Western Cape and Gauteng, particularly in coloured-majority areas. The party gains attention for its unconventional campaign style and McKenzie's charismatic, streetwise oratory. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- IDEOLOGY -->
+        <div class="section-card card" id="ideology">
+          <div class="card-header econ">&#128214; Ideology — Populism, Prison Reform & Community Advocacy</div>
+          <div class="card-body">
+            <p class="small">
+              The PA defies easy left-right categorisation. Its ideology blends:
+            </p>
+            <ul class="small">
+              <li><strong>Populism:</strong> The PA presents itself as the voice of the "forgotten" South Africans — coloured communities in the Cape, ex-offenders, and the urban poor. It uses direct, often confrontational language to criticise both the ANC (for corruption and incompetence) and the DA (for being elitist and disconnected from coloured voters).</li>
+              <li><strong>Prison Reform:</strong> The PA's flagship issue. McKenzie and Kunene draw on their own experiences to advocate for better prison conditions, rehabilitation programmes, and the removal of criminal records for non-violent offenders to improve employment prospects. The party calls for the prison system to be transformed from a punitive institution into a rehabilitative one. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Coloured Community Advocacy:</strong> The PA has positioned itself as the political champion of South Africa's coloured (mixed-race) population, particularly in the Western Cape and Northern Cape. It argues that coloured South Africans have been marginalised by both the ANC's race-based policies and the DA's perceived focus on white interests.</li>
+              <li><strong>Economic Nationalism:</strong> The PA supports localisation, protection for small businesses, and tougher immigration controls. McKenzie has been outspoken about illegal immigration, arguing that undocumented foreigners are taking jobs from South Africans.</li>
+              <li><strong>Tough on Crime:</strong> Despite its focus on prison reform, the PA supports the death penalty for the most serious crimes and advocates for harsher sentences for those who commit crimes against women and children.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- LEADERSHIP -->
+        <div class="section-card card" id="leadership">
+          <div class="card-header rise">&#129488; Leadership — Gayton McKenzie & Kenny Kunene</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h5 class="fw-bold">Gayton McKenzie — President</h5>
+                <p class="small">
+                  Born in 1974 in the Western Cape, McKenzie served 17 years in prison for armed robbery. While incarcerated, he earned a degree and wrote a memoir, <em>The Choice</em>, which became a bestseller. After his release, he became a successful businessman and motivational speaker. McKenzie is the PA's founding president and public face — a charismatic, polarising figure known for his blunt speaking style, sharp suits, and ability to connect with audiences at the grassroots level. In 2024, he was appointed <strong>Minister of Sports, Arts and Culture</strong> in the GNU.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h5 class="fw-bold">Kenny Kunene — Deputy President</h5>
+                <p class="small">
+                  Born in 1971, Kunene is a former fraud convict who turned his life around to become a successful businessman and restaurateur. He gained notoriety in 2010 for eating a R500 sushi platter at a birthday party — earning the nickname "Sushi King" — which he later said was a deliberate provocation to highlight the absurdity of conspicuous consumption in a poor country. Kunene serves as the PA's deputy president and campaign strategist, known for his sharp analysis and media savvy.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ELECTORAL PERFORMANCE -->
+        <div class="section-card card" id="performance">
+          <div class="card-header era">&#128200; Electoral Performance (2019–2024)</div>
+          <div class="card-body">
+            <div class="timeline-item">
+              <div class="timeline-year">2019 — National Debut: 0.4%</div>
+              <p class="small mb-0">The PA contests its first general election, winning <strong>0.4%</strong> of the national vote — approximately 26,000 votes. The party falls short of winning a seat in the National Assembly (the threshold is effectively ~0.5% for a first seat). However, the party establishes a foothold in the Western Cape provincial legislature, winning one seat. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2021 — Local Government Breakthrough</div>
+              <p class="small mb-0">The PA makes significant gains in the 2021 local elections, winning over 30 municipal council seats nationally, mainly in the Western Cape. The party becomes the third-largest party in several Western Cape municipalities and enters coalition agreements in multiple councils. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2024 — National Breakthrough: ~2%</div>
+              <p class="small mb-0">The PA wins an estimated <strong>2%</strong> of the national vote, securing approximately 330,000 votes and 9 seats in the National Assembly. The party's support is concentrated in the Western Cape (where it wins ~7% and becomes the official opposition in the provincial legislature), Northern Cape, and Gauteng. The result makes the PA one of the fastest-growing parties in South Africa. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+
+            <div class="row g-2 small mt-3">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">0.4%</div>
+                  <div>2019 National Vote</div>
+                  <small class="text-muted"><a href="https://www.elections.org.za" target="_blank">[IEC]</a></small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">~2%</div>
+                  <div>2024 National Vote</div>
+                  <small class="text-muted"><a href="https://www.elections.org.za" target="_blank">[IEC]</a></small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">9</div>
+                  <div>National Assembly Seats (2024)</div>
+                  <small class="text-muted"><a href="https://www.elections.org.za" target="_blank">[IEC]</a></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2024 GNU ROLE -->
+        <div class="section-card card" id="gnu2024">
+          <div class="card-header rise">&#129309; 2024 GNU Role — McKenzie Becomes Minister</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Gayton McKenzie, on being appointed Minister of Sports, Arts and Culture, 2024:</strong><br>
+              &ldquo;I stand here today as living proof that South Africa is a country of second chances. From a prison cell to the cabinet — this is the promise of our democracy. I will never forget where I come from, and I will never abandon the people who made this possible.&rdquo;
+            </div>
+            <p class="small">
+              Following the ANC's loss of its majority in the 2024 election, the Patriotic Alliance joined the Government of National Unity. Gayton McKenzie, as the party's leader, was appointed <strong>Minister of Sports, Arts and Culture</strong> in President Cyril Ramaphosa's cabinet — a portfolio that oversees sport development, the arts, heritage, cultural institutions, and the national lottery.
+            </p>
+            <p class="small">
+              McKenzie's appointment was widely seen as one of the more surprising and symbolically significant moments in the GNU's formation. A former armed robber now responsible for South Africa's cultural and sporting life became a powerful narrative of redemption. The PA also secured several key municipal positions and deputy minister roles as part of the GNU coalition agreement.
+            </p>
+            <p class="small">
+              The PA's participation in the GNU has been controversial within the party's base: some supporters see it as a betrayal of the PA's anti-establishment identity, while McKenzie argues that being inside government is the only way to deliver real change to the communities the party represents.
+            </p>
+          </div>
+        </div>
+
+        <!-- KEY POLICIES -->
+        <div class="section-card card" id="policies">
+          <div class="card-header econ">&#128214; Key Policies</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Prison Reform:</strong> Transform prisons into rehabilitative institutions. Remove criminal records for non-violent offenders after sentence completion. Improve education and vocational training in prisons. Employ more ex-offenders in government and state-owned enterprises. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Coloured Community Empowerment:</strong> Establish a dedicated Coloured Development Agency to address economic marginalisation. Ensure proportional representation of coloured South Africans in government and public institutions. Prioritise coloured-majority areas for infrastructure and social spending. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Immigration Control:</strong> Strict enforcement of immigration laws. Deportation of undocumented foreigners. Prioritise South African citizens for jobs and business opportunities. The party argues that uncontrolled immigration has depressed wages and strained public services. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Crime and Safety:</strong> Restore the death penalty for the most serious crimes (rape, murder of women and children). Increase police presence in townships and coloured communities. Fast-track courts for violent crime cases. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Economic Empowerment:</strong> Support for small and medium enterprises (SMEs). Localisation and "buy South African" policies. Tougher penalties for tender fraud and corruption. Lower taxes for businesses that employ ex-offenders. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+              <li><strong>Social Welfare:</strong> Expand the social grant system while linking it to skills training and job-seeking requirements. Introduce a universal basic income grant — the PA has expressed support for the idea while insisting it be funded by cutting wasteful government expenditure. <a href="https://www.patrioticalliance.co.za/policies" target="_blank">[PA Policy]</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="section-card card" id="sources">
+          <div class="card-header" style="background:#002395;color:white;">&#128218; Sources & Further Reading</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Patriotic Alliance</strong> — Official website and policy documents. Available at: <a href="https://www.patrioticalliance.co.za" target="_blank">patrioticalliance.co.za</a></li>
+              <li><strong>Electoral Commission of South Africa (IEC)</strong> — Election results 2019, 2021, 2024. Available at: <a href="https://www.elections.org.za" target="_blank">elections.org.za</a></li>
+              <li><strong>South African History Online</strong> — PA profile and history. Available at: <a href="https://www.sahistory.org.za" target="_blank">sahistory.org.za</a></li>
+              <li><strong>McKenzie, G.</strong> (2015). <em>The Choice: From Prison to Purpose</em>. A memoir of his journey from gangster to politician.</li>
+              <li><strong>Daily Maverick</strong> — PA coverage, election analysis, and McKenzie's cabinet appointment. Available at: <a href="https://www.dailymaverick.co.za" target="_blank">dailymaverick.co.za</a></li>
+              <li><strong>News24</strong> — Political coverage of the PA and its role in the GNU. Available at: <a href="https://www.news24.com" target="_blank">news24.com</a></li>
+              <li><strong>Mail & Guardian</strong> — "The rise of the Patriotic Alliance: From prison to parliament" (2024). Available at: <a href="https://mg.co.za" target="_blank">mg.co.za</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="politics.html" class="btn btn-outline-secondary mb-4">&larr; Back to Politics</a>
+
+        <hr>
+        <p class="text-muted text-center">The Patriotic Alliance &mdash; from prison yards to Parliament. A story of second chances and political disruption.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

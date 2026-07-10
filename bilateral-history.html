@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bilateral Trading History • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="bilateral-trading.html" class="btn btn-light btn-sm">🤝 Bilateral Trading</a>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-5 fw-bold text-sa-green">🌍 Bilateral Trading History</h1>
+    <p class="lead">How South Africa's trade relationships evolved from sanctions to BRICS, AGOA, and beyond — and which countries were added or dropped for political reasons.</p>
+
+    <!-- Key stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">~$200B</div>
+          <div class="text-muted small">Total annual trade (2024)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">China #1</div>
+          <div class="text-muted small">Largest trade partner (since 2009)</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">AGOA</div>
+          <div class="text-muted small">Critical US access, renewed to 2025</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm text-center p-3">
+          <div class="fs-4 fw-bold text-sa-green">RCEP + AfCFTA</div>
+          <div class="text-muted small">New frontiers for trade expansion</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Timeline by Era -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">📅 The Evolution of South Africa's Trade Relationships</h4>
+
+        <h6 class="fw-bold mt-3">🕰️ Era 1: Sanctions & Isolation (1960-1993)</h6>
+        <p>Under apartheid, South Africa faced escalating trade sanctions from the UN, the Commonwealth, the OAU, and most Western countries. Key trading partners during this period were those willing to break the sanctions:</p>
+        <ul>
+          <li><strong>Included:</strong> Taiwan (major partner — South Africa was one of the few countries to maintain full diplomatic relations with Taipei), Israel (close military and technology trade), Saudi Arabia (oil), Iran (oil), the United Kingdom (continued covert trade through front companies), and various African states that were diplomatically isolated themselves (Malawi, Swaziland).</li>
+          <li><strong>Excluded or restricted:</strong> The US (Comprehensive Anti-Apartheid Act of 1986 banned new investment and many imports), the European Community (economic sanctions from 1986), Japan (restricted trade after 1985), the Soviet bloc (ideological opposition), and most of Africa (boycotted South African goods, though much was transhipped through third countries).</li>
+          <li><strong>Sanctions worked — but partially:</strong> South Africa developed import-substitution industries (oil-from-coal via Sasol, arms manufacturing via Denel) to bypass sanctions. The economy remained functional but was distorted and inefficient. Total trade actually grew in the 1970s and early 1980s via covert channels before contracting sharply in the late 1980s as sanctions tightened.</li>
+        </ul>
+
+        <h6 class="fw-bold mt-3">🌐 Era 2: Re-entry & Liberalisation (1994-2000)</h6>
+        <p>After the 1994 elections, South Africa was welcomed back into the global trading system at remarkable speed:</p>
+        <ul>
+          <li><strong>New partners included:</strong> The entire African continent (diplomatic missions opened in all OAU/AU states); the US (normalised relations); the EU (negotiated the Trade, Development and Cooperation Agreement — TDCA, signed 1999); China (diplomatic relations established 1998, ending recognition of Taiwan); India, Brazil, and other developing countries through the IBSA and India-Brazil-South Africa dialogue forums.</li>
+          <li><strong>Partners downgraded or dropped:</strong> Taiwan (diplomatic relations severed in 1998 when South Africa switched recognition to the People's Republic of China). This was a significant political choice — Taiwan had been one of South Africa's most reliable trading partners during sanctions, but the prize of China's market and the One-China policy made the switch unavoidable. Trade with Taiwan did not disappear entirely but collapsed from ~$3 billion in the 1990s to minimal levels.</li>
+          <li><strong>SACU and SADC:</strong> South Africa remained a member of the Southern African Customs Union (SACU — with Botswana, Lesotho, Namibia, Eswatini) and took a leading role in the Southern African Development Community (SADC) free trade area, which launched in 2000.</li>
+          <li><strong>WTO accession:</strong> As a founding member of the WTO (1995), South Africa committed to significant tariff reductions. Average weighted tariffs fell from ~20% in 1994 to under 8% by 2000, opening the economy dramatically. This was the period when Chinese imports began to flood in.</li>
+        </ul>
+
+        <h6 class="fw-bold mt-3">📈 Era 3: The Commodity Super-Cycle & China's Rise (2001-2012)</h6>
+        <ul>
+          <li><strong>China went from nowhere to #1:</strong> In 2000, China accounted for less than 2% of South Africa's trade. By 2012, it was <strong>the single largest trading partner</strong>, a position it has held ever since. South Africa exports iron ore, manganese, chrome, coal, and platinum to China; it imports manufactured goods, electronics, machinery, and clothing.</li>
+          <li><strong>AGOA (2000-present):</strong> The African Growth and Opportunity Act, signed by the US in 2000, granted South Africa duty-free access for most products. This was transformative for the automotive sector (vehicles exported to the US surged), agriculture (citrus, wine, nuts), and manufactured goods. AGOA is renewed periodically by the US Congress, and each renewal has been subject to political conditions including human rights, governance, and trade policy. South Africa was <strong>threatened with expulsion from AGOA</strong> in 2015 (over chicken and pork trade disputes) and again in 2023-2024 (over South Africa's diplomatic relationship with Russia and China, the "Lady R" arms controversy, and the country's stance on the Ukraine war). AGOA was renewed through 2025 but with strong conditions.</li>
+          <li><strong>EU TDCA (2000-present):</strong> The EU-South Africa Trade, Development and Cooperation Agreement entered into force in 2000, creating a free trade area covering 90% of bilateral trade. The EU remains South Africa's <strong>largest regional trading bloc</strong>, though its share has declined from ~35% of total trade in 2000 to ~20% in 2024. Key SA exports to the EU: citrus, wine, fruit, vehicles, PGMs.</li>
+          <li><strong>BRICS (2010-present):</strong> South Africa joined the BRICS group (Brazil, Russia, India, China, South Africa) in 2010. The BRICS New Development Bank was established in 2014 with South Africa as a founding member. However, intra-BRICS trade has been disappointing — beyond China, trade with Brazil and India remains relatively small compared with South Africa's traditional partners. Russia's share rose during the commodity boom (platinum, coal, chrome) but has been complicated by sanctions since 2022.</li>
+          <li><strong>Excluded or downgraded:</strong> Iran (trade declined after international sanctions on Iran's nuclear programme, though South Africa continued importing some oil via third parties). Libya (trade collapsed after the 2011 civil war and NATO intervention — South Africa opposed the intervention but followed the UN sanctions regime).</li>
+        </ul>
+
+        <h6 class="fw-bold mt-3">⚔️ Era 4: Geopolitical Tensions & New Frontiers (2013-present)</h6>
+        <ul>
+          <li><strong>Russia sanctions — a contested relationship:</strong> After Russia's invasion of Ukraine in 2022, South Africa faced intense pressure from the US and EU to join Western sanctions. South Africa refused, maintaining a position of "non-alignment" or "neutrality." The "Lady R" incident (a Russian cargo ship allegedly loading weapons in Simon's Town in December 2022) caused a diplomatic crisis with the US. AGOA renewal was nearly derailed. South Africa's trade with Russia — which had been growing (platinum, coal, fruit exports) — became politically fraught. South Africa has continued trading with Russia but faces secondary sanctions risks for financial institutions.</li>
+          <li><strong>Africa — the giant unrealised:</strong> Trade with the rest of Africa has grown to ~$30 billion annually (~15% of total trade), but remains concentrated in a few countries: Botswana (diamonds), Nigeria (oil), Namibia, Mozambique, Zambia, Zimbabwe. South Africa runs a large trade surplus with Africa (exports of manufactured goods, processed food, vehicles, services). The <strong>African Continental Free Trade Area (AfCFTA)</strong>, launched in 2021, promises to significantly expand African trade in the long term, but implementation has been slow and non-tariff barriers remain high.</li>
+          <li><strong>India — a growing but underdeveloped relationship:</strong> Bilateral trade with India has grown to ~$10 billion annually. South Africa exports coal, gold, ferroalloys, and fertilisers to India; imports vehicles, pharmaceuticals, textiles, and rice. A preferential trade agreement has been under negotiation for years but has not been finalised.</li>
+          <li><strong>Middle East — complicated:</strong> South Africa's relationship with Israel deteriorated sharply after the Gaza war (2023-present). South Africa brought a case at the International Court of Justice accusing Israel of genocide and has supported the boycott of Israeli goods. Trade with Israel, which peaked at ~$1 billion, has declined. At the same time, South Africa has strengthened trade with Saudi Arabia, the UAE, and Qatar.</li>
+          <li><strong>Japan — steady but declining:</strong> Japan was a major trading partner in the 1980s and 1990s (automotive, PGMs, coal). Its share has declined as China replaced it in many categories, but Japan remains a significant buyer of platinum, coal, and iron ore.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 2: Who's In and Who's Out -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">🎭 Who Was Added, Who Was Dropped — and Why</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Country / Bloc</th>
+                <th>Add/Drop</th>
+                <th>Era</th>
+                <th>Political Reason</th>
+                <th>Trade Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Taiwan</td>
+                <td><span class="text-danger">Dropped</span></td>
+                <td>1998</td>
+                <td>One-China policy — switched diplomatic recognition to PRC</td>
+                <td>~$3B→minimal</td>
+              </tr>
+              <tr>
+                <td>China (PRC)</td>
+                <td><span class="text-success">Added</span></td>
+                <td>1998</td>
+                <td>Diplomatic recognition + economic opportunity</td>
+                <td><1% → ~$30B</td>
+              </tr>
+              <tr>
+                <td>United States (AGOA)</td>
+                <td><span class="text-success">Added</span></td>
+                <td>2000</td>
+                <td>Post-apartheid reintegration + trade preference programme</td>
+                <td>~$12B (AGOA-eligible)</td>
+              </tr>
+              <tr>
+                <td>European Union (TDCA)</td>
+                <td><span class="text-success">Added</span></td>
+                <td>2000</td>
+                <td>Post-apartheid trade liberalisation</td>
+                <td>~$25B</td>
+              </tr>
+              <tr>
+                <td>Iran</td>
+                <td><span class="text-warning">Restricted</span></td>
+                <td>2006-2015</td>
+                <td>UN sanctions on Iran nuclear programme</td>
+                <td>Moderate decline</td>
+              </tr>
+              <tr>
+                <td>Libya</td>
+                <td><span class="text-danger">Dropped</span></td>
+                <td>2011</td>
+                <td>UN sanctions after civil war; South Africa supported AU position but complied</td>
+                <td>Minimal to start</td>
+              </tr>
+              <tr>
+                <td>Russia</td>
+                <td><span class="text-warning">Contested</span></td>
+                <td>2022-present</td>
+                <td>Ukraine war — SA refuses to sanction; trade continues but under threat</td>
+                <td>~$2B (stable, risky)</td>
+              </tr>
+              <tr>
+                <td>Israel</td>
+                <td><span class="text-warning">Declining</span></td>
+                <td>2024</td>
+                <td>ICJ genocide case; growing boycott pressure</td>
+                <td>Stress scenario</td>
+              </tr>
+              <tr>
+                <td>BRICS+</td>
+                <td><span class="text-success">Added</span></td>
+                <td>2010-2024</td>
+                <td>Multilateral alignment; expansion to include Iran, UAE, Egypt, Ethiopia, Indonesia</td>
+                <td>Growing</td>
+              </tr>
+              <tr>
+                <td>AfCFTA</td>
+                <td><span class="text-success">Added</span></td>
+                <td>2021</td>
+                <td>Continental integration — largest FTA by population</td>
+                <td>Potential only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Top Partners -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">📊 South Africa's Top Trading Partners (2024)</h4>
+        <div class="table-responsive mb-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Country / Bloc</th>
+                <th class="text-end">Total trade (est. $B)</th>
+                <th>Main SA exports</th>
+                <th>Main SA imports</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>🇨🇳 China</td><td class="text-end">~$32B</td><td>Iron ore, coal, PGMs, chrome, manganese</td><td>Electronics, machinery, clothing, steel</td></tr>
+              <tr><td>2</td><td>🇩🇪 Germany</td><td class="text-end">~$18B</td><td>PGMs, vehicles, fruit, wine</td><td>Machinery, vehicles, chemicals</td></tr>
+              <tr><td>3</td><td>🇺🇸 United States</td><td class="text-end">~$17B</td><td>Vehicles, PGMs, citrus, wine, ferroalloys</td><td>Machinery, aircraft, chemicals</td></tr>
+              <tr><td>4</td><td>🇯🇵 Japan</td><td class="text-end">~$12B</td><td>Coal, PGMs, iron ore, manganese</td><td>Vehicles, machinery, electronics</td></tr>
+              <tr><td>5</td><td>🇮🇳 India</td><td class="text-end">~$10B</td><td>Coal, gold, PGMs, fertilisers</td><td>Pharmaceuticals, vehicles, rice, textiles</td></tr>
+              <tr><td>6</td><td>🇬🇧 United Kingdom</td><td class="text-end">~$9B</td><td>PGMs, gold, fruit, wine, vehicles</td><td>Machinery, aircraft, beverages</td></tr>
+              <tr><td>7</td><td>🇳🇱 Netherlands</td><td class="text-end">~$7B</td><td>PGMs, fruit, metal ores</td><td>Machinery, chemicals</td></tr>
+              <tr><td>8</td><td>🇧🇼 Botswana</td><td class="text-end">~$6B</td><td>Manufactured goods, machinery, food</td><td>Diamonds</td></tr>
+              <tr><td>9</td><td>🇲🇿 Mozambique</td><td class="text-end">~$5B</td><td>Electricity, machinery, food</td><td>Natural gas, aluminium, coal</td></tr>
+              <tr><td>10</td><td>🇳🇬 Nigeria</td><td class="text-end">~$4B</td><td>Refined petroleum, chemicals, vehicles</td><td>Crude oil</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Trade Agreements -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">📝 Major Trade Agreements Involving South Africa</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>SACU (1910):</strong> Southern African Customs Union — the world's oldest customs union. Members: South Africa, Botswana, Lesotho, Namibia, Eswatini. Common external tariff, revenue-sharing formula. South Africa is the dominant economy and effectively sets tariff policy for the bloc.</li>
+          <li class="list-group-item"><strong>SADC FTA (2000):</strong> Southern African Development Community Free Trade Area — 16 member states. Partial liberalisation; many sensitive products excluded. Implementation has been slow and non-tariff barriers remain significant.</li>
+          <li class="list-group-item"><strong>EU TDCA (2000):</strong> EU-South Africa Trade, Development and Cooperation Agreement — asymmetrical liberalisation (EU opened fully, SA opened more slowly). Covers 90% of bilateral trade. Renegotiated as the SADC-EU EPA in 2016.</li>
+          <li class="list-group-item"><strong>AGOA (2000):</strong> US African Growth and Opportunity Act — duty-free access to US market for ~6,500 products. <strong>Conditional on governance, human rights, and trade policy compliance.</strong> Renewed through 2025, but South Africa's renewal was controversial (2023 hearings raised concerns about SA-Russia relations).</li>
+          <li class="list-group-item"><strong>AfCFTA (2021):</strong> African Continental Free Trade Area — the world's largest free trade area by population (1.3 billion). South Africa ratified in 2018, trade under preferences began in 2021. Gradually phasing out tariffs on 90% of goods over 5-10 years. Potential to boost intra-African trade by 30-50%, but implementation faces major infrastructure, logistics, and non-tariff barrier challenges.</li>
+          <li class="list-group-item"><strong>BRICS (2010):</strong> Not a formal trade agreement but a political grouping with trade facilitation elements. SA-China trade has exploded; SA-India trade has grown more slowly; SA-Brazil trade is disappointing; SA-Russia trade is politically contested.</li>
+          <li class="list-group-item"><strong>UK-SA PTA (2021):</strong> Post-Brexit bilateral trade agreement replicating the EU TDCA terms. Otherwise, the UK's departure from the EU would have left South Africa without preferential access to its 5th-largest trading partner.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 5: The Political Dimension -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">⚖️ When Politics Overrides Trade — Case Studies</h4>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold">🇹🇼🇨🇳 Taiwan vs China (1998)</h6>
+            <p>The most dramatic switch. South Africa had full diplomatic relations with Taiwan from 1949 to 1998 (one of only a handful of countries maintaining recognition of the ROC). Taiwan was a significant trading partner and investor, and helped South Africa bypass sanctions. In 1998, under President Mandela's government, South Africa switched recognition to the PRC. The trade relationship with China went from negligible in 1998 to $32 billion by 2024 — the fastest-growing bilateral trade relationship in South Africa's history. Taiwan trade collapsed to minimal levels. The clear message: <strong>political recognition of China was worth more than the Taiwan trade relationship</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold">🇺🇸 AGOA — The Conditional Gift (2000-present)</h6>
+            <p>AGOA has been the foundation of SA-US trade for 25 years. But it has been repeatedly <strong>weaponised for political leverage</strong>. In 2015, South Africa was threatened with AGOA expulsion over a poultry and pork trade dispute — resolved through negotiations. In 2023, the "Lady R" incident and South Africa's refusal to condemn Russia's invasion of Ukraine led to serious Congressional hearings on whether South Africa should be removed from AGOA. The 2024-2025 renewal was extended only after South Africa made diplomatic concessions. The lesson: <strong>AGOA is not a permanent right; it is a political privilege that can be withdrawn</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold">🤝 Non-Alignment & Russia (2022-present)</h6>
+            <p>South Africa's refusal to sanction Russia has been the defining foreign policy choice of the Ramaphosa presidency. It places South Africa in a delicate position: the country maintains its BRICS alliance with Russia and China, but at the cost of its relationship with the US and EU. Trade with Russia itself is small (~$2B), but the relationship threatens the much larger AGOA and TDCA trade relationships worth ~$40B combined. This is the <strong>highest-stakes political trade-off</strong> in South Africa's post-1994 trade history.</p>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold">🇮🇱🇵🇸 Israel-Palestine (2024)</h6>
+            <p>South Africa's ICJ case against Israel and its strong pro-Palestinian stance has led to boycotts of Israeli goods and declining trade. The ANC government has historically been pro-Palestinian (a relationship dating to the anti-apartheid struggle, when the PLO and ANC were allies). The Gaza war has deepened this stance. Israel is a small trading partner (~$1B), so the economic cost of the political stance is low, but it signals South Africa's broader willingness to <strong>sacrifice trade relationships for foreign policy principles</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Conclusion -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold text-sa-green">💡 The Big Picture — Trade as a Mirror of Politics</h4>
+        <p>South Africa's bilateral trading relationships have been <strong>shaped more by political choices than by economic logic</strong>. The switch from Taiwan to China (1998) was a political decision with massive economic consequences. AGOA was a political programme with economic benefits that can be withdrawn. The BRICS alliance was a political alignment that deepened trade with China but left trade with Brazil and India underwhelming. The refusal to sanction Russia (2022) is a political stance that risks material economic loss.</p>
+        <p>Three countries have been <strong>dropped or significantly downgraded</strong> for political reasons: Taiwan (1998), Iran (2006), and Libya (2011). Russia may be next if the political cost of the relationship exceeds the benefit. The AfCFTA offers the most important opportunity for politically-driven trade expansion — but like all previous agreements, its success depends on implementation, infrastructure, and political will.</p>
+        <p>The bottom line: South Africa's trade geography has been transformed since 1994. The country is far more integrated into the global economy than it was under apartheid. But it has also made clear that <strong>foreign policy principles can override trade relationships</strong> — sometimes with significant economic consequences. The tension between the two will only intensify as global geopolitics become more confrontational.</p>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 mb-4">
+      <button class="btn btn-outline-secondary" onclick="history.back()">← Back</button>
+      <a href="bilateral-trading.html" class="btn btn-outline-secondary">🤝 Bilateral Trading</a>
+    </div>
+  </div>
+</body>
+</html>
