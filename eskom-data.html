@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eskom 5Y Data • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <style>
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .stat-card { background: #f5f0f7; border-radius: 12px; padding: 1rem; text-align: center; height: 100%; }
+    .stat-card .num { font-size: 2rem; font-weight: 800; color: #2d1b3e; }
+    .stat-card .label { font-size: 0.8rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .data-table-wrap { max-height: 600px; overflow-y: auto; font-size: 0.8rem; }
+    .data-table-wrap th { position: sticky; top: 0; background: #f8f9fa; z-index: 1; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-amber { background: #fff8e1; color: #f57f17; }
+    .badge-red { background: #fce4ec; color: #c62828; }
+    .kpi-box { padding: 1rem; border-radius: 12px; text-align: center; }
+    .kpi-box h3 { font-weight: 800; font-size: 1.8rem; margin-bottom: 0; }
+    .kpi-box p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0; color: #666; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="eskom.html" class="btn btn-light btn-sm">⚡ Eskom</a>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="p-4 mb-3" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 16px;">
+          <h1 class="fw-bold">📊 Eskom 5-Year Data Analysis</h1>
+          <p class="mb-0">Hourly operational data from <strong id="dateRange">Apr 2022 – Mar 2027</strong> — 43,824 hourly records covering generation, demand, forecasts, outages, renewables, and international trade.</p>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="row g-2 mb-4" id="kpiRow">
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiHours">43,824</div><div class="label">Hourly Records</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiDays">1,826</div><div class="label">Days of Data</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiColumns">43</div><div class="label">Data Fields</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiGenAvg">24,500</div><div class="label">Avg Dispatchable Gen (MW)</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiThermalPct">78%</div><div class="label">Thermal Share of Gen</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num" id="kpiRE">2,025</div><div class="label">Avg RE Generation (MW)</div></div>
+          </div>
+        </div>
+
+        <!-- Generation Mix by Year -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">⚡ Generation Mix by Year (Hourly Averages, MW)</h4>
+            <p class="text-muted small">Thermal (coal), nuclear, OCGT, hydro, pumped storage, and renewables — showing how the fleet composition and dispatch patterns change.</p>
+            <div id="genMixChart" style="height: 400px;"></div>
+          </div>
+        </div>
+
+        <!-- Key Trends -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📈 Key Trends</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h6 class="fw-bold">Dispatchable Generation & Demand</h6>
+                <div id="genDemandChart" style="height: 320px;"></div>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Outages: UCLF vs OCLF vs MLR</h6>
+                <div id="outageChart" style="height: 320px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Heatmap -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🗓️ Monthly Dispatchable Generation Heatmap (MW Average)</h4>
+            <p class="text-muted small">Seasonal patterns — winter peaks (Jun–Aug) vs summer troughs (Nov–Jan), showing the impact of seasonal demand and plant maintenance cycles.</p>
+            <div id="heatmapChart" style="height: 300px;"></div>
+          </div>
+        </div>
+
+        <!-- Hourly Profile -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🕐 Hourly Dispatch Profile</h4>
+            <p class="text-muted small">Average generation by hour of day for each year. Shows the daily demand cycle (morning ramp, mid-day plateau, evening peak, overnight trough) and how it shifts year to year.</p>
+            <div id="hourlyChart" style="height: 350px;"></div>
+          </div>
+        </div>
+
+        <!-- Renewables & Imports -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🌱 Renewables, Imports & Installed Capacity</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h6 class="fw-bold">Wind, PV, Imports & Total RE</h6>
+                <div id="reChart" style="height: 320px;"></div>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">OCGT & Load Reduction Trends</h6>
+                <div id="ocgtMlrChart" style="height: 320px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column Stats Table -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📋 Field-by-Field Statistics</h4>
+            <p class="text-muted small">All 34 numeric fields with average, min, max, and non-null counts. Fields ending the dataset (forecast-only period) show fewer non-null records.</p>
+            <div class="table-responsive data-table-wrap">
+              <table class="table table-sm table-bordered" id="statsTable">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Avg</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Non-Null</th>
+                    <th>% Complete</th>
+                  </tr>
+                </thead>
+                <tbody id="statsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Yearly Data Table -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📅 Yearly Averages for Key Metrics</h4>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered" id="yearlyTable">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>2022</th>
+                    <th>2023</th>
+                    <th>2024</th>
+                    <th>2025</th>
+                    <th>2026</th>
+                    <th>Trend</th>
+                  </tr>
+                </thead>
+                <tbody id="yearlyTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-source-footer mb-4">
+          <strong>Source:</strong> Eskom 5-Year Data Request (hourly operational data). <strong>Fields:</strong> Generation by fuel type, demand, forecasts, outages (PCLF/UCLF/OCLF), load reduction, renewables, international trade, and pumped storage. <strong>Date Range:</strong> April 2022 – March 2027.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load summary JSON
+    let DATA = null;
+
+    fetch('data/eskom_5y_summary.json')
+      .then(r => r.json())
+      .then(d => {
+        DATA = d;
+        renderAll();
+      });
+
+    function renderAll() {
+      if (!DATA) return;
+      const d = DATA;
+
+      document.getElementById('kpiHours').textContent = d.totalHours.toLocaleString();
+      document.getElementById('kpiDays').textContent = d.totalDays.toLocaleString();
+      document.getElementById('kpiColumns').textContent = '43';
+
+      const yearly = d.yearly;
+      const years = Object.keys(yearly).filter(y => parseInt(y) < 2027).sort();
+
+      // KPI averages
+      let genVals = [], thermalVals = [], reVals = [];
+      years.forEach(yr => {
+        if (yearly[yr] && yearly[yr]['Dispatchable Generation']) genVals.push(yearly[yr]['Dispatchable Generation'].avg);
+        if (yearly[yr] && yearly[yr]['Thermal Generation']) thermalVals.push(yearly[yr]['Thermal Generation'].avg);
+        if (yearly[yr] && yearly[yr]['Total RE']) reVals.push(yearly[yr]['Total RE'].avg);
+      });
+      document.getElementById('kpiGenAvg').textContent = Math.round(genVals.reduce((a,b)=>a+b,0)/genVals.length).toLocaleString();
+      document.getElementById('kpiThermalPct').textContent = Math.round(100 * thermalVals.reduce((a,b)=>a+b,0) / genVals.reduce((a,b)=>a+b,0)) + '%';
+      document.getElementById('kpiRE').textContent = Math.round(reVals.reduce((a,b)=>a+b,0)/reVals.length).toLocaleString();
+
+      // Generation Mix Stacked Bar
+      const genCategories = ['Thermal Generation', 'Nuclear Generation', 'Eskom OCGT Generation', 'Hydro Water Generation', 'Pumped Water Generation', 'Wind', 'PV'];
+      const genColors = ['#ef5350', '#7c4dff', '#ff6d00', '#1565c0', '#00838f', '#43a047', '#ffb300'];
+      const genTraces = genCategories.map((cat, i) => ({
+        x: years,
+        y: years.map(yr => yearly[yr] && yearly[yr][cat] ? yearly[yr][cat].avg : 0),
+        name: cat.replace(' Generation','').replace('Eskom ',''),
+        type: 'bar',
+        marker: { color: genColors[i] }
+      }));
+      Plotly.newPlot('genMixChart', genTraces, {
+        barmode: 'stack',
+        margin: { l: 60, r: 20, t: 20, b: 40 },
+        yaxis: { title: 'MW (average)' },
+        legend: { orientation: 'h', y: -0.2 },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // Generation & Demand line chart
+      const dispatchTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Dispatchable Generation'] ? yearly[yr]['Dispatchable Generation'].avg : 0),
+        name: 'Dispatchable Generation', mode: 'lines+markers', line: { color: '#1565c0', width: 3 }
+      };
+      const demandTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Residual Demand'] ? yearly[yr]['Residual Demand'].avg : 0),
+        name: 'Residual Demand', mode: 'lines+markers', line: { color: '#e53935', width: 3, dash: 'dash' }
+      };
+      Plotly.newPlot('genDemandChart', [dispatchTrace, demandTrace], {
+        margin: { l: 50, r: 20, t: 10, b: 40 },
+        yaxis: { title: 'MW (average)' },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // Outages chart
+      const uclfTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Total UCLF'] ? yearly[yr]['Total UCLF'].avg : 0),
+        name: 'UCLF (Unplanned)', mode: 'lines+markers', line: { color: '#d32f2f', width: 3 }
+      };
+      const oclfTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Total OCLF'] ? yearly[yr]['Total OCLF'].avg : 0),
+        name: 'OCLF (Other)', mode: 'lines+markers', line: { color: '#f57c00', width: 3 }
+      };
+      const mlrTrace2 = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Manual Load_Reduction(MLR)'] ? yearly[yr]['Manual Load_Reduction(MLR)'].avg : 0),
+        name: 'MLR (Load Reduction)', mode: 'lines+markers', line: { color: '#6a1b9a', width: 3 }
+      };
+      Plotly.newPlot('outageChart', [uclfTrace, oclfTrace, mlrTrace2], {
+        margin: { l: 50, r: 20, t: 10, b: 40 },
+        yaxis: { title: 'MW (average)' },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // Monthly heatmap
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      let heatYears = Object.keys(d.monthlyAverages).filter(y => parseInt(y) < 2027).sort();
+      let heatData = heatYears.map(yr => months.map((_, mi) => d.monthlyAverages[yr] && d.monthlyAverages[yr][mi+1] ? d.monthlyAverages[yr][mi+1] : 0));
+      Plotly.newPlot('heatmapChart', [{
+        z: heatData,
+        x: months,
+        y: heatYears,
+        type: 'heatmap',
+        colorscale: 'Greens',
+        hovertemplate: '%{y} %{x}<br>%{z} MW<extra></extra>'
+      }], {
+        margin: { l: 40, r: 20, t: 20, b: 40 },
+        yaxis: { autorange: 'reversed' }
+      }, { responsive: true });
+
+      // Hourly profile
+      const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
+      const hourlyTraces = heatYears.map(yr => ({
+        x: hours,
+        y: hours.map((_, h) => d.hourlyProfile[yr] && d.hourlyProfile[yr][h] ? d.hourlyProfile[yr][h] : 0),
+        name: yr,
+        mode: 'lines',
+        line: { width: 2 }
+      }));
+      Plotly.newPlot('hourlyChart', hourlyTraces, {
+        margin: { l: 50, r: 20, t: 20, b: 60 },
+        yaxis: { title: 'MW (average)' },
+        xaxis: { tickangle: -45 },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // Renewables chart
+      const reTrace1 = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Wind'] ? yearly[yr]['Wind'].avg : 0),
+        name: 'Wind', mode: 'lines+markers', line: { color: '#43a047', width: 2 }
+      };
+      const reTrace2 = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['PV'] ? yearly[yr]['PV'].avg : 0),
+        name: 'PV (Solar)', mode: 'lines+markers', line: { color: '#ffb300', width: 2 }
+      };
+      const reTrace3 = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Total RE'] ? yearly[yr]['Total RE'].avg : 0),
+        name: 'Total RE', mode: 'lines+markers', line: { color: '#1b5e20', width: 3 }
+      };
+      const reTrace4 = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['International Imports'] ? yearly[yr]['International Imports'].avg : 0),
+        name: 'Imports', mode: 'lines+markers', line: { color: '#6a1b9a', width: 2, dash: 'dot' }
+      };
+      Plotly.newPlot('reChart', [reTrace1, reTrace2, reTrace3, reTrace4], {
+        margin: { l: 50, r: 20, t: 10, b: 40 },
+        yaxis: { title: 'MW (average)' },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // OCGT & MLR chart
+      const ocgtTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Eskom OCGT Generation'] ? yearly[yr]['Eskom OCGT Generation'].avg : 0),
+        name: 'OCGT Generation', mode: 'lines+markers', line: { color: '#ff6d00', width: 3 }
+      };
+      const mlrTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Manual Load_Reduction(MLR)'] ? yearly[yr]['Manual Load_Reduction(MLR)'].avg : 0),
+        name: 'Load Reduction (MLR)', mode: 'lines+markers', line: { color: '#c62828', width: 3, dash: 'dash' }
+      };
+      const pclfTrace = {
+        x: years, y: years.map(yr => yearly[yr] && yearly[yr]['Total PCLF'] ? yearly[yr]['Total PCLF'].avg : 0),
+        name: 'PCLF (Planned)', mode: 'lines+markers', line: { color: '#1565c0', width: 2, dash: 'dot' }
+      };
+      Plotly.newPlot('ocgtMlrChart', [ocgtTrace, mlrTrace, pclfTrace], {
+        margin: { l: 50, r: 20, t: 10, b: 40 },
+        yaxis: { title: 'MW (average)' },
+        hovermode: 'x unified'
+      }, { responsive: true });
+
+      // Stats table
+      const statsBody = document.getElementById('statsTableBody');
+      const colStats = d.columnStats;
+      Object.keys(colStats).forEach(field => {
+        const s = colStats[field];
+        const pct = s.pct;
+        const badge = pct >= 80 ? 'badge-green' : pct >= 30 ? 'badge-amber' : 'badge-red';
+        statsBody.innerHTML += `<tr>
+          <td><strong>${field}</strong></td>
+          <td>${typeof s.avg === 'number' ? s.avg.toLocaleString(undefined, {maximumFractionDigits:1}) : '—'}</td>
+          <td>${typeof s.min === 'number' ? s.min.toLocaleString(undefined, {maximumFractionDigits:1}) : '—'}</td>
+          <td>${typeof s.max === 'number' ? s.max.toLocaleString(undefined, {maximumFractionDigits:1}) : '—'}</td>
+          <td>${s.nonnull.toLocaleString()} / ${s.total.toLocaleString()}</td>
+          <td><span class="badge ${badge}">${s.pct}%</span></td>
+        </tr>`;
+      });
+
+      // Yearly table
+      const yearlyBody = document.getElementById('yearlyTableBody');
+      const metrics = [
+        { name: 'Dispatchable Generation', key: 'Dispatchable Generation', unit: 'MW' },
+        { name: 'Residual Demand', key: 'Residual Demand', unit: 'MW' },
+        { name: 'Thermal Generation', key: 'Thermal Generation', unit: 'MW' },
+        { name: 'Nuclear Generation', key: 'Nuclear Generation', unit: 'MW' },
+        { name: 'OCGT Generation', key: 'Eskom OCGT Generation', unit: 'MW' },
+        { name: 'Pumped Storage Gen', key: 'Pumped Water Generation', unit: 'MW' },
+        { name: 'Wind', key: 'Wind', unit: 'MW' },
+        { name: 'PV (Solar)', key: 'PV', unit: 'MW' },
+        { name: 'Total RE', key: 'Total RE', unit: 'MW' },
+        { name: 'International Imports', key: 'International Imports', unit: 'MW' },
+        { name: 'PCLF (Planned Outage)', key: 'Total PCLF', unit: 'MW' },
+        { name: 'UCLF (Unplanned Outage)', key: 'Total UCLF', unit: 'MW' },
+        { name: 'OCLF (Other Outage)', key: 'Total OCLF', unit: 'MW' },
+        { name: 'Manual Load Reduction', key: 'Manual Load_Reduction(MLR)', unit: 'MW' },
+      ];
+      metrics.forEach(m => {
+        const vals = years.map(yr => yearly[yr] && yearly[yr][m.key] ? yearly[yr][m.key].avg : 0);
+        const first = vals[0] || 0;
+        const last = vals[vals.length-1] || 0;
+        const change = last - first;
+        const arrow = change > 0 ? '↑' : change < 0 ? '↓' : '→';
+        const color = change > 0 ? 'red' : change < 0 ? 'green' : 'gray';
+        yearlyBody.innerHTML += `<tr>
+          <td><strong>${m.name}</strong></td>
+          ${vals.map(v => `<td>${v ? Math.round(v).toLocaleString() : '—'}</td>`).join('')}
+          <td style="color: ${color}; font-weight: 600;">${arrow} ${Math.abs(change).toFixed(0).toLocaleString()} ${m.unit}</td>
+        </tr>`;
+      });
+
+      // Configure CSV download
+    }
+
+    // Load the CSV directly for the data table
+    async function loadRawData() {
+      const resp = await fetch('data/Eskom 5Y Data Request.csv');
+      const text = await resp.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = parseCSVLine(lines[0]);
+      const totalLines = lines.length - 1;
+      document.getElementById('rawRowCount').textContent = totalLines.toLocaleString();
+    }
+    loadRawData();
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') { inQuotes = !inQuotes; continue; }
+        if (ch === ',' && !inQuotes) { result.push(current.trim()); current = ''; continue; }
+        current += ch;
+      }
+      result.push(current.trim());
+      return result;
+    }
+  </script>
+</body>
+</html>

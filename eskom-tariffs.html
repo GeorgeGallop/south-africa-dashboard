@@ -254,17 +254,17 @@
             </tr>
             <tr>
               <td>🔴 <strong>Peak Energy Charge</strong></td>
-              <td id="breakdownPeak">684.59 c/kWh</td>
+              <td id="breakdownPeak"></td>
               <td>Cost of generating electricity during high-demand hours (6-9am, 5-8pm weekdays). Generators running at full throttle — expensive fuel, older plants.</td>
             </tr>
             <tr>
               <td>🟢 <strong>Standard Energy Charge</strong></td>
-              <td id="breakdownStd">171.15 c/kWh</td>
+              <td id="breakdownStd"></td>
               <td>Generation cost during normal working hours. Base-load plants running efficiently.</td>
             </tr>
             <tr>
               <td>⚪ <strong>Off-Peak Energy Charge</strong></td>
-              <td id="breakdownOffpk">114.09 c/kWh</td>
+              <td id="breakdownOffpk"></td>
               <td>Cheapest electrons — overnight and weekends when demand is low and only the most efficient plants run.</td>
             </tr>
             <tr class="table-warning">
@@ -272,22 +272,22 @@
             </tr>
             <tr>
               <td><strong>Generation Capacity Charge</strong></td>
-              <td>R 9.40 / kVA / month</td>
+              <td id="bdGenCap">R 9.40 / kVA / month</td>
               <td>Reserving power plant capacity to meet <em>your</em> peak demand. Think of it as a "seat fee" for the power station, even if you don't use it fully.</td>
             </tr>
             <tr>
               <td><strong>TUoS (Transmission Network Charge)</strong></td>
-              <td>R 48.10 / kVA / month</td>
+              <td id="bdTuos">R 48.10 / kVA / month</td>
               <td>Transmission Use-of-System — the high-voltage power lines that carry electricity across provinces. Eskom's ~28,000 km of transmission lines.</td>
             </tr>
             <tr>
               <td><strong>DUoS (Distribution Network Charge)</strong></td>
-              <td>R 12.50 / kVA / month</td>
+              <td id="bdDuos">R 12.50 / kVA / month</td>
               <td>Distribution Use-of-System — the lower-voltage network that delivers power to your specific location. The poles and cables on your street.</td>
             </tr>
             <tr>
               <td><strong>Urban Low Voltage Subsidy</strong></td>
-              <td>R 0.00 / kVA / month (<500V)</td>
+              <td id="bdUlv">R 0.00 / kVA / month (<500V)</td>
               <td>Cross-subsidy from higher-voltage customers to those connected at low voltage (<500V) who cost more to serve. Zero at <500V because you're already paying the full low-voltage cost.</td>
             </tr>
             <tr class="table-secondary">
@@ -295,12 +295,12 @@
             </tr>
             <tr>
               <td><strong>Service Charge</strong></td>
-              <td>R 198.52 / day (>1 MVA)</td>
+              <td id="bdService">R 198.52 / day (>1 MVA)</td>
               <td>Meter reading, billing, call centre, IT systems. Flat daily fee regardless of usage. For Key Customers it's R 1,118.46/day.</td>
             </tr>
             <tr>
               <td><strong>Administration Charge</strong></td>
-              <td>R 19.37 / day</td>
+              <td id="bdAdmin">R 19.37 / day</td>
               <td>Account administration, credit management, and regulatory compliance costs.</td>
             </tr>
             <tr class="table-danger">
@@ -308,42 +308,42 @@
             </tr>
             <tr>
               <td><strong>Legacy Charge</strong></td>
-              <td>22.78 c/kWh</td>
+              <td id="bdLegacy"></td>
               <td>Stranded costs from old power stations and past investment decisions. This is the "historical baggage" charge — paying for plants that may no longer run but haven't been written off. <em>Commonly called the "load-shedding tax."</em></td>
             </tr>
             <tr>
               <td><strong>Electrification & Rural Subsidy (NN)</strong></td>
-              <td>2.45 c/kWh</td>
+              <td id="bdElecSub"></td>
               <td>Cross-subsidy to connect rural households and schools to the grid. Urban customers pay extra so rural areas can have electricity.</td>
             </tr>
             <tr>
               <td><strong>Affordability Subsidy</strong></td>
-              <td>4.69 c/kWh</td>
+              <td id="bdAffordSub"></td>
               <td>Subsidy for low-usage residential customers (Homelight 20A). Large customers help keep power affordable for poor households.</td>
             </tr>
             <tr>
               <td><strong>Ancillary Services (DSM)</strong></td>
-              <td>0.75 c/kWh</td>
+              <td id="bdDsm"></td>
               <td>Demand Side Management — paying large customers to reduce usage during peak times. Cheaper than building new plants.</td>
             </tr>
             <tr>
               <td><strong>Ancillary Services (ASF)</strong></td>
-              <td>0.36 c/kWh</td>
+              <td id="bdAsf"></td>
               <td>Ancillary Service Fees — grid stability services (frequency control, voltage support, reserves). Like insurance for the grid.</td>
             </tr>
             <tr>
               <td><strong>Energy Management Charge</strong></td>
-              <td>0.15 c/kWh</td>
+              <td id="bdEnergyMgmt"></td>
               <td>NERSA regulatory levy — funding the energy regulator that oversees Eskom.</td>
             </tr>
             <tr>
               <td><strong>Environmental Levy</strong></td>
-              <td>3.50 c/kWh</td>
+              <td id="bdEnvLevy"></td>
               <td>Tax on electricity from fossil fuels (coal). Government's carbon pricing mechanism. Applied to non-municipal customers.</td>
             </tr>
             <tr>
               <td><strong>Reactive Energy Charge</strong></td>
-              <td>22.80 c/kVArh</td>
+              <td id="bdReactive">22.80 c/kVArh</td>
               <td>Penalty for poor power factor (below 0.96). If your factory's electrical equipment causes inefficiency on the grid, you pay extra.</td>
             </tr>
             <tr>
@@ -356,10 +356,10 @@
       </div>
 
       <div class="alert alert-light small mt-3 mb-0 border">
-        <strong>💡 Bottom line:</strong> For 2025/26 at Peak times, the <strong>Active Energy Charge (684.59 c/kWh)</strong> is the headline number, but the 
-        <strong>Legacy Charge (22.78 c/kWh)</strong>, <strong>Generation Capacity (R 9.40/kVA)</strong>, and <strong>Network Charges (TUoS + DUoS = R 60.60/kVA)</strong> 
+        <strong>💡 Bottom line:</strong> For 2025/26 at Peak times, the <strong>Active Energy Charge (<span id="bdPeakInline"></span>)</strong> is the headline number, but the 
+        <strong>Legacy Charge (<span id="bdLegacyInline"></span>)</strong>, <strong>Generation Capacity (R 9.40/kVA)</strong>, and <strong>Network Charges (TUoS + DUoS = R 60.60/kVA)</strong> 
         add significant fixed costs. A customer using 100,000 kWh/month at 5,000 kVA would pay roughly:
-        <strong id="breakdownExample">~R 520,000/month in energy + ~R 350,000/month in fixed/capacity = ~R 870,000 total</strong>.
+        <strong><span id="bdExample"></span></strong>.
         The "c/kWh you see" is only part of the story.
       </div>
     </div>
@@ -819,6 +819,7 @@ function onSettingChange() {
   renderConsumerChart(activeProfile);
   renderTable();
   calcStats();
+  updateBreakdown();
 }
 
 // ============================================================
@@ -854,6 +855,81 @@ function renderTable() {
 }
 
 // ============================================================
+// BREAKDOWN TABLE (dynamic units)
+// ============================================================
+const BREAKDOWN_CENTS = {
+  peak: 684.59, std: 171.15, offpk: 114.09,
+  legacy: 22.78, elecSub: 2.45, affordSub: 4.69,
+  dsm: 0.75, asf: 0.36, energyMgmt: 0.15, envLevy: 3.50
+};
+
+function updateBreakdown() {
+  const unit = unitSuffix();
+  const fmt = (v) => {
+    if (v === null || v === undefined) return '—';
+    const c = conv(v);
+    if (c === null) return '—';
+    return displayUnit === 'MWh' ? c.toFixed(2) : c.toFixed(4);
+  };
+
+  // Energy charges
+  document.getElementById('breakdownPeak').textContent = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
+  document.getElementById('breakdownStd').textContent = fmt(BREAKDOWN_CENTS.std) + ' ' + unit;
+  document.getElementById('breakdownOffpk').textContent = fmt(BREAKDOWN_CENTS.offpk) + ' ' + unit;
+
+  // Levies (also c/kWh based)
+  document.getElementById('bdLegacy').textContent = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
+  document.getElementById('bdElecSub').textContent = fmt(BREAKDOWN_CENTS.elecSub) + ' ' + unit;
+  document.getElementById('bdAffordSub').textContent = fmt(BREAKDOWN_CENTS.affordSub) + ' ' + unit;
+  document.getElementById('bdDsm').textContent = fmt(BREAKDOWN_CENTS.dsm) + ' ' + unit;
+  document.getElementById('bdAsf').textContent = fmt(BREAKDOWN_CENTS.asf) + ' ' + unit;
+  document.getElementById('bdEnergyMgmt').textContent = fmt(BREAKDOWN_CENTS.energyMgmt) + ' ' + unit;
+  document.getElementById('bdEnvLevy').textContent = fmt(BREAKDOWN_CENTS.envLevy) + ' ' + unit;
+
+  // Capacity charges (ZAR/kVA/month — convert to USD if needed)
+  const capCharges = [
+    { id:'bdGenCap', zar:9.40, label:'/kVA / month' },
+    { id:'bdTuos', zar:48.10, label:'/kVA / month' },
+    { id:'bdDuos', zar:12.50, label:'/kVA / month' },
+    { id:'bdUlv', zar:0.00, label:'/kVA / month (<500V)' },
+  ];
+  const svcCharges = [
+    { id:'bdService', zar:198.52, label:'/ day (>1 MVA)' },
+    { id:'bdAdmin', zar:19.37, label:'/ day' },
+  ];
+
+  if (currency === 'USD') {
+    capCharges.forEach(c => {
+      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
+    });
+    svcCharges.forEach(c => {
+      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
+    });
+  } else {
+    capCharges.forEach(c => {
+      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
+    });
+    svcCharges.forEach(c => {
+      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
+    });
+  }
+
+  // Bottom line inline
+  const peakUnit = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
+  const legacyUnit = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
+  document.getElementById('bdPeakInline').textContent = peakUnit;
+  document.getElementById('bdLegacyInline').textContent = legacyUnit;
+
+  // Example bill: 100,000 kWh/month, 5,000 kVA
+  const energyCost = conv(BREAKDOWN_CENTS.peak) * 100000 * 0.5 + conv(BREAKDOWN_CENTS.std) * 100000 * 0.3 + conv(BREAKDOWN_CENTS.offpk) * 100000 * 0.2;
+  const fixedCost = 9.40 * 5000 + 48.10 * 5000 + 12.50 * 5000 + 198.52 * 30 + 19.37 * 30;
+  const fixedCostDisplay = currency === 'USD' ? '$' + (fixedCost / fxRate).toFixed(0) : 'R' + fixedCost.toFixed(0);
+  const energyDisplay = currency === 'USD' ? '$' + energyCost.toFixed(0) : 'R' + energyCost.toFixed(0);
+  const totalDisplay = currency === 'USD' ? '$' + ((energyCost + fixedCost/fxRate)).toFixed(0) : 'R' + (energyCost + fixedCost).toFixed(0);
+  document.getElementById('bdExample').textContent = '~' + energyDisplay + '/month in energy + ~' + fixedCostDisplay + '/month in fixed/capacity = ~' + totalDisplay + ' total';
+}
+
+// ============================================================
 // STATS (uses conversion)
 // ============================================================
 function calcStats() {
@@ -884,6 +960,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTable();
   renderFwdCurve();
   renderConsumerChart(activeProfile);
+  updateBreakdown();
 
   document.querySelectorAll('.peakness-badge').forEach(badge => {
     badge.addEventListener('click', () => {
