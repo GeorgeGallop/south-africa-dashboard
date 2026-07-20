@@ -19,88 +19,102 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-3">
-      <div>
-        <h1 class="display-5 fw-bold text-sa-green">📰 Africa News Brief</h1>
-      </div>
+  <div class="container-fluid px-3 px-xl-4 mt-3">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+      <h1 class="display-5 fw-bold text-sa-green mb-0">📰 Africa News Brief</h1>
       <div class="d-flex align-items-center gap-3">
-        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
         <span id="last-updated" class="text-muted small"></span>
+        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
       </div>
     </div>
 
-    <div class="row mb-4">
-      <div class="col-lg-8">
-        <div id="ai-summary" class="alert alert-light border-success shadow-sm h-100">
-          <h5 class="text-sa-green mb-3">🔍 Top story snapshot</h5>
-          <div id="summary-content" class="small"></div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h6 class="text-sa-green mb-3">Sources & filters</h6>
-            <div id="category-pills" class="mb-3"></div>
-            <div id="sources-list" class="mb-3"></div>
-
-            <div class="mb-3">
-              <label class="form-label small">Keywords</label>
-              <input id="keyword-input" type="text" class="form-control form-control-sm" placeholder="ramaphosa, eskom, mining, load shedding" onkeydown="if(event.key==='Enter') loadNews()">
-            </div>
-
-            <div class="row align-items-end">
-              <div class="col-6">
-                <label class="form-label small">Stories</label>
-                <input id="story-count" type="number" class="form-control form-control-sm" value="75" min="75" max="200">
-              </div>
-              <div class="col-6">
-                <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply</button>
-              </div>
-            </div>
+    <!-- FILTERS BAR -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-body py-2 px-3">
+        <div class="row g-2 align-items-end">
+          <div class="col-12 col-md">
+            <small class="text-muted fw-bold d-block mb-1">Keywords (comma-separated)</small>
+            <input id="keyword-input" type="text" class="form-control form-control-sm"
+              placeholder="ramaphosa, eskom, mining, load shedding"
+              onkeydown="if(event.key==='Enter') loadNews()">
+          </div>
+          <div class="col-6 col-md-auto" style="min-width:110px">
+            <small class="text-muted fw-bold d-block mb-1">Stories</small>
+            <input id="story-count" type="number" class="form-control form-control-sm" value="75" min="10" max="500" step="5">
+          </div>
+          <div class="col-6 col-md-auto d-flex align-items-end">
+            <button onclick="loadNews()" class="btn btn-outline-success w-100">Apply</button>
+          </div>
+          <div class="col-6 col-md-auto d-flex align-items-end">
+            <button onclick="clearFilters()" class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- SOURCES BAR -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <small class="text-muted fw-bold">Sources</small>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-dark btn-sm" onclick="selectAllSources()">Select All</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="deselectAllSources()">Deselect All</button>
+          </div>
+        </div>
+        <div id="sources-list" class="mt-2 d-flex flex-wrap gap-1"></div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div id="status-bar" class="mb-3" style="display:none;">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <span id="story-count-display" class="badge bg-dark fs-6"></span>
+        <span id="active-filters-display" class="text-muted small"></span>
+        <span id="error-summary" class="text-danger small"></span>
+      </div>
+    </div>
+
+    <!-- HEADLINE LIST -->
+    <div id="summary-content">
+      <div class="text-center py-5">
+        <div class="spinner-border text-success"></div>
+        <div class="mt-3">Loading top Africa headlines…</div>
+      </div>
+    </div>
+
   </div>
 
   <script>
     const FETCH_TIMEOUT_MS = 8000;
 
     const availableSources = [
-      { 
-        name: "Reuters Africa", 
-        type: "reuters-html",
-        url: "https://www.reuters.com/world/africa/",
-        categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], 
-        credibility: 5, 
-        bias: "neutral" 
-      },
-      { name: "Bloomberg Africa", url: "https://www.bloomberg.com/feeds/site/africa.xml", categories: ["Africa", "Africa Energy", "Africa Economy", "Global"], credibility: 5, bias: "neutral" },
-      { name: "BBC Africa", url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 5, bias: "neutral" },
-      { name: "Africanews", url: "https://www.africanews.com/feed/rss", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 4, bias: "centrist" },
-      { name: "CNBC Africa", url: "https://www.cnbcafrica.com/feed/", categories: ["Africa", "Africa Energy", "Africa Economy", "Global"], credibility: 4, bias: "business" },
-      { name: "Al Jazeera English", url: "https://www.aljazeera.com/xml/rss/all.xml", categories: ["Global", "Africa", "Africa Politics"], credibility: 4, bias: "center-left" },
-      { name: "FT Global", url: "https://www.ft.com/?format=rss", categories: ["Global", "Africa Economy"], credibility: 5, bias: "business" },
-      { name: "The Economist - World News", url: "https://www.economist.com/world-this-week/rss.xml", categories: ["Global", "Africa Economy"], credibility: 5, bias: "business" },
-      { name: "Business Day", url: "https://www.businesslive.co.za/rss/", categories: ["South Africa", "Africa Economy", "Africa Energy", "Africa Politics"], credibility: 4, bias: "business" },
-      { name: "Engineering News", url: "https://www.engineeringnews.co.za/feed/", categories: ["South Africa", "Africa Energy", "Africa Economy"], credibility: 4, bias: "industry" },
-      { name: "Moneyweb", url: "https://www.moneyweb.co.za/feed/", categories: ["South Africa", "Africa Economy"], credibility: 3, bias: "business" },
-      { name: "News24", url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", categories: ["South Africa", "Africa Politics"], credibility: 3, bias: "general" },
-      { name: "eNCA", url: "https://www.enca.com/rss", categories: ["South Africa", "Africa Politics"], credibility: 3, bias: "general" },
-      { name: "The Citizen", url: "https://citizen.co.za/feed/", categories: ["South Africa", "Africa Politics", "Africa Economy"], credibility: 3, bias: "general" },
-      { name: "France 24", url: "https://www.france24.com/en/rss", categories: ["Global", "Africa", "Africa Politics"], credibility: 4, bias: "international" },
-      { name: "X Search", url: "https://twitrss.me/twitter_search_to_rss/?term=%28africa%20OR%20South%20Africa%29%20%28energy%20OR%20gas%20OR%20LNG%20OR%20oil%20OR%20policy%20OR%20power%20OR%20economy%20OR%20eskom%29", categories: ["Africa", "Africa Energy", "Africa Politics", "Africa Economy", "Global"], credibility: 3, bias: "social" },
-      { name: "Semafor", type: "semafor", url: "https://www.semafor.com/vertical/africa", actor: "parseforge~semafor-articles-scraper", section: "africa", categories: ["Africa", "Africa Politics", "Africa Economy", "Global"], credibility: 4, bias: "news" }
+      { name: "BBC Africa",        url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",    credibility: 5, status: "working" },
+      { name: "Africanews",        url: "https://www.africanews.com/feed/rss",                    credibility: 4, status: "working" },
+      { name: "Al Jazeera English",url: "https://www.aljazeera.com/xml/rss/all.xml",              credibility: 4, status: "working" },
+      { name: "France 24",         url: "https://www.france24.com/en/rss",                        credibility: 4, status: "working" },
+      { name: "CNBC Africa",       url: "https://www.cnbcafrica.com/feed/",                       credibility: 4, status: "failing", failReason: "rss2json HTTP 500" },
+      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/feed/",                 credibility: 4, status: "failing", failReason: "rss2json HTTP 500" },
+      { name: "Business Day",      url: "https://www.businesslive.co.za/rss/",                     credibility: 4, status: "failing", failReason: "rss2json HTTP 500" },
+      { name: "eNCA",              url: "https://www.enca.com/rss",                               credibility: 3, status: "failing", failReason: "rss2json HTTP 500" },
+      { name: "Reuters Africa",    url: "https://www.reuters.com/world/africa/", type: "reuters-html", credibility: 5, status: "failing", failReason: "CORS proxy down. No open RSS." },
+      { name: "Bloomberg Africa",  url: "https://www.bloomberg.com/feeds/site/africa.xml",        credibility: 5, status: "failing", failReason: "Paywalled RSS" },
+      { name: "FT Global",         url: "https://www.ft.com/?format=rss",                        credibility: 5, status: "failing", failReason: "Paywalled RSS" },
+      { name: "The Economist",     url: "https://www.economist.com/world-this-week/rss.xml",      credibility: 5, status: "failing", failReason: "Paywalled RSS" },
+      { name: "News24",            url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", credibility: 3, status: "failing", failReason: "HTTP blocked by browser" },
+      { name: "X Search",          url: "https://twitrss.me/twitter_search_to_rss/?term=%28africa%20OR%20South%20Africa%29%20%28energy%20OR%20gas%20OR%20LNG%20OR%20oil%20OR%20policy%20OR%20power%20OR%20economy%20OR%20eskom%29", credibility: 3, status: "failing", failReason: "twitrss.me down" },
+      { name: "Semafor",           url: "https://www.semafor.com/vertical/africa", type: "semafor", credibility: 4, status: "failing", failReason: "CORS proxy down. No RSS." }
     ];
 
-    const categoryOptions = ["All", "Africa", "Africa Energy", "Africa Politics", "Africa Economy", "South Africa", "Global"];
-    let selectedCategory = "Africa";
-    let selectedSources = ["Reuters Africa", "Bloomberg Africa", "BBC Africa", "Africanews", "CNBC Africa", "Al Jazeera English", "Business Day", "Engineering News", "X Search", "Semafor"];
+    let selectedSources = availableSources.map(s => s.name);
+
+    // ---- HELPERS ----
 
     function formatDate(dateString) {
       if (!dateString) return "";
       const dt = new Date(dateString);
+      if (isNaN(dt.getTime())) return "";
       return dt.toLocaleString('en-ZA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
 
@@ -115,28 +129,61 @@
       return Math.max(0, score);
     }
 
-    function categorizeStory(item) {
-      const text = (item.title + ' ' + (item.description || '')).toLowerCase();
-      if (/\b(power|electricity|eskom|gas|renewable|solar|wind|hydro|energy|oil|lpg|lignite|coal|pipeline|lng|fsru|regas|fuel)\b/i.test(text)) return 'Africa Energy';
-      if (/\b(election|parliament|government|ramaphosa|anc|da|coalition|corruption|court|politics|policy|ministry|cabinet|vote|regulator|strike)\b/i.test(text)) return 'Africa Politics';
-      if (/\b(inflation|economic|growth|GDP|debt|investment|market|finance|rand|export|import|commodity|mining|bank|rating|trade|budget|reserve bank)\b/i.test(text)) return 'Africa Economy';
-      if (/\b(south africa|africa|continent|regional|african)\b/i.test(text)) return 'Africa';
-      return 'Global';
+    function sanitizeId(value) {
+      return value.replace(/[^a-zA-Z0-9_-]/g, '-');
     }
 
-    function normalizeSemaforTitle(title) {
-      if (!title) return title;
-      let cleaned = title.trim();
-      cleaned = cleaned.replace(/^\s*[0-9]+[\.\)\-:\s]*/, '');
-      cleaned = cleaned.replace(/\s+/g, ' ');
-      return cleaned;
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
     }
 
-    function getSourceDisplayName(sourceName) {
-      if (!sourceName) return sourceName;
-      if (sourceName.toLowerCase().includes('semafor')) return 'Semafor';
-      return sourceName;
+    // ---- SOURCE CHECKBOXES ----
+
+    function renderSourceCheckboxes() {
+      const container = document.getElementById('sources-list');
+      let html = '';
+      availableSources.forEach(src => {
+        const checked = selectedSources.includes(src.name) ? 'checked' : '';
+        const safeId = sanitizeId(src.name);
+        const badgeClass = src.status === 'failing' ? 'source-badge-failing' : 'source-badge-working';
+        const statusLabel = src.status === 'failing' ? '⚠️' : '✅';
+        const titleAttr = src.failReason ? ` title="${escapeHtml(src.failReason)}"` : '';
+
+        html += `<div class="form-check form-check-inline source-chip ${badgeClass} me-1 mb-1"${titleAttr}>
+          <input class="form-check-input" type="checkbox" id="src-${safeId}" value="${src.name}" ${checked} onchange="toggleSource('${escapeHtml(src.name)}')">
+          <label class="form-check-label small" for="src-${safeId}">${statusLabel} ${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
+        </div>`;
+      });
+      container.innerHTML = html;
     }
+
+    window.toggleSource = function(name) {
+      if (selectedSources.includes(name)) {
+        selectedSources = selectedSources.filter(s => s !== name);
+      } else {
+        selectedSources.push(name);
+      }
+    };
+
+    window.selectAllSources = function() {
+      selectedSources = availableSources.map(s => s.name);
+      renderSourceCheckboxes();
+    };
+
+    window.deselectAllSources = function() {
+      selectedSources = [];
+      renderSourceCheckboxes();
+    };
+
+    window.clearFilters = function() {
+      document.getElementById('keyword-input').value = '';
+      document.getElementById('story-count').value = '75';
+      loadNews();
+    };
+
+    // ---- DISPLAY ----
 
     function truncateTitleForLine(title, metaText) {
       if (!title) return title;
@@ -154,146 +201,72 @@
       return shortened || raw.slice(0, allowed);
     }
 
-    function getCategoryButtonClass(cat) {
-      return selectedCategory === cat ? 'btn-success' : 'btn-outline-secondary';
-    }
-
-    function sanitizeId(value) {
-      return value.replace(/[^a-zA-Z0-9_-]/g, '-');
-    }
-
-    function renderCategoryPills() {
-      const container = document.getElementById('category-pills');
-      container.innerHTML = categoryOptions.map(cat => `
-        <button type="button" class="btn ${getCategoryButtonClass(cat)} btn-sm me-2 mb-2" onclick="setCategory('${cat}')">${cat}</button>
-      `).join('');
-    }
-
-    function renderSourceCheckboxes() {
-      const container = document.getElementById('sources-list');
-      let html = '';
-      availableSources.forEach(src => {
-        if (selectedCategory !== 'All' && !src.categories.includes(selectedCategory)) return;
-        const checked = selectedSources.includes(src.name) ? 'checked' : '';
-        const safeId = sanitizeId(src.name);
-        html += `
-          <div class="form-check form-check-inline me-2 mb-2">
-            <input class="form-check-input" type="checkbox" id="src-${safeId}" value="${src.name}" ${checked} onchange="toggleSource('${src.name}')">
-            <label class="form-check-label small" for="src-${safeId}">${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
-          </div>`;
-      });
-      if (!html) html = '<div class="text-muted small">No sources available for this category.</div>';
-      container.innerHTML = html;
-    }
-
-    function setCategory(category) {
-      selectedCategory = category;
-      renderCategoryPills();
-      renderSourceCheckboxes();
-    }
-
-    window.toggleSource = function(name) {
-      if (selectedSources.includes(name)) {
-        selectedSources = selectedSources.filter(src => src !== name);
-      } else {
-        selectedSources.push(name);
+    function buildNewsList(items) {
+      if (items.length === 0) {
+        return '<div class="text-center py-5 text-muted">No stories match your filters.</div>';
       }
-    };
-
-    function buildSummary(items) {
       const links = items.map(item => {
         const date = formatDate(item.pubDate);
-        const displaySource = getSourceDisplayName(item.source);
-        const metaText = `| ${displaySource} | ${date}`;
+        const sourceName = item.source || '';
+        const metaText = `${sourceName} · ${date}`;
         const titleText = truncateTitleForLine(item.title, metaText);
-        return `<a href="${item.link}" target="_blank" class="summary-link"><span class="summary-title">${titleText}</span><span class="summary-meta">${metaText}</span></a>`;
+        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link"><span class="headline-title">${escapeHtml(titleText)}</span><span class="headline-meta">${metaText}</span></a>`;
       }).join('');
-
-      return `<div class="summary-links">${links}</div>`;
+      return `<div class="headline-list">${links}</div>`;
     }
+
+    // ---- FETCHING ----
 
     async function fetchTextWithTimeout(url, timeoutMs) {
       const controller = new AbortController();
       const t = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        const response = await fetch(url, { signal: controller.signal });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.text();
-      } finally {
-        clearTimeout(t);
-      }
+        const r = await fetch(url, { signal: controller.signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.text();
+      } finally { clearTimeout(t); }
     }
 
     async function fetchJsonWithTimeout(url, timeoutMs) {
       const controller = new AbortController();
       const t = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        const response = await fetch(url, { signal: controller.signal });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-      } finally {
-        clearTimeout(t);
-      }
+        const r = await fetch(url, { signal: controller.signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.json();
+      } finally { clearTimeout(t); }
     }
 
-    // ==================== IMPROVED REUTERS SCRAPER ====================
     async function fetchReutersHtmlArticles(source, perSourceFetchCount) {
       const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(source.url)}`;
       const html = await fetchTextWithTimeout(proxy, FETCH_TIMEOUT_MS);
       const doc = new DOMParser().parseFromString(html, 'text/html');
-
       const items = [];
       const seen = new Set();
-
-      // Target Reuters article cards more reliably
-      const cards = doc.querySelectorAll(
-        'div[data-testid*="card"], article, [class*="StoryCard"], [class*="story-card"], .media-story-card'
-      );
-
+      const cards = doc.querySelectorAll('div[data-testid*="card"], article, [class*="StoryCard"], [class*="story-card"], .media-story-card');
       for (const card of cards) {
         if (items.length >= perSourceFetchCount) break;
-
-        // Find link inside the card that points to an Africa story
         const link = card.querySelector('a[href*="/world/africa/"]') || card.querySelector('a[href*="/article/"]');
         if (!link) continue;
-
         let href = link.getAttribute('href');
         if (!href) continue;
-
-        const normalizedHref = href.startsWith('http') ? href : `https://www.reuters.com${href}`;
-        if (seen.has(normalizedHref)) continue;
-        seen.add(normalizedHref);
-
-        // Get title from heading inside card or from link
+        const normalized = href.startsWith('http') ? href : `https://www.reuters.com${href}`;
+        if (seen.has(normalized)) continue;
+        seen.add(normalized);
         let title = '';
-        const heading = card.querySelector('h2, h3, h1, [data-testid*="headline"]');
-        if (heading) title = heading.textContent.trim();
+        const h = card.querySelector('h2, h3, h1, [data-testid*="headline"]');
+        if (h) title = h.textContent.trim();
         if (!title) title = (link.getAttribute('aria-label') || link.textContent || '').trim();
-
         if (!title || title.length < 15) continue;
-
-        // Get description
-        let description = '';
-        const descEl = card.querySelector('p');
-        if (descEl) description = descEl.textContent.trim();
-
-        // Get date
+        let desc = '';
+        const p = card.querySelector('p');
+        if (p) desc = p.textContent.trim();
         let pubDate = '';
-        const timeEl = card.querySelector('time');
-        if (timeEl) pubDate = timeEl.getAttribute('datetime') || timeEl.textContent.trim();
+        const time = card.querySelector('time');
+        if (time) pubDate = time.getAttribute('datetime') || time.textContent.trim();
         if (!pubDate) pubDate = new Date().toISOString();
-
-        items.push({
-          title,
-          link: normalizedHref,
-          pubDate,
-          description,
-          source: source.name,
-          category: categorizeStory({ title, description })
-        });
+        items.push({ title, link: normalized, pubDate, description: desc, source: source.name });
       }
-
-      console.log(`[Reuters Africa] Found ${items.length} articles`); // helpful for debugging
       return items.slice(0, perSourceFetchCount);
     }
 
@@ -304,66 +277,62 @@
       const anchors = Array.from(doc.querySelectorAll('a[href*="/article/"]'));
       const items = [];
       const seen = new Set();
-
       anchors.forEach(anchor => {
         const href = anchor.getAttribute('href');
         if (!href) return;
-        const normalizedHref = href.startsWith('http') ? href : `https://www.semafor.com${href}`;
-        if (seen.has(normalizedHref)) return;
-        seen.add(normalizedHref);
-
-        let title = anchor.textContent || '';
-        title = title.trim();
-        if (!title) {
-          const heading = anchor.querySelector('h1, h2, h3, h4');
-          title = heading ? heading.textContent.trim() : '';
-        }
-        title = normalizeSemaforTitle(title);
+        const normalized = href.startsWith('http') ? href : `https://www.semafor.com${href}`;
+        if (seen.has(normalized)) return;
+        seen.add(normalized);
+        let title = (anchor.textContent || '').trim().replace(/^\s*[0-9]+[\.\)\-:\s]*/, '').replace(/\s+/g, ' ');
         if (!title) return;
-
-        let description = '';
+        let desc = '';
         const summary = anchor.querySelector('p');
-        if (summary) description = summary.textContent.trim();
-
+        if (summary) desc = summary.textContent.trim();
         let pubDate = '';
-        const timeEl = anchor.querySelector('time') || anchor.closest('article')?.querySelector('time');
-        if (timeEl) pubDate = timeEl.getAttribute('datetime') || timeEl.textContent.trim();
+        const time = anchor.querySelector('time') || anchor.closest('article')?.querySelector('time');
+        if (time) pubDate = time.getAttribute('datetime') || time.textContent.trim();
         if (!pubDate) pubDate = new Date().toISOString();
-
-        items.push({
-          title,
-          link: normalizedHref,
-          pubDate,
-          description,
-          source: source.name,
-          category: categorizeStory({ title, description })
-        });
+        items.push({ title, link: normalized, pubDate, description: desc, source: source.name });
       });
-
       return items.slice(0, perSourceFetchCount);
     }
+
+    // ---- MAIN LOAD ----
 
     async function loadNews() {
       const summaryEl = document.getElementById('summary-content');
       const lastUpdatedEl = document.getElementById('last-updated');
+      const statusBar = document.getElementById('status-bar');
+      const storyCountDisplay = document.getElementById('story-count-display');
+      const activeFiltersDisplay = document.getElementById('active-filters-display');
+      const errorSummary = document.getElementById('error-summary');
+
       summaryEl.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success"></div><div class="mt-3">Loading top Africa headlines…</div></div>';
+      statusBar.style.display = 'none';
 
       let loadingTimer = window.setTimeout(() => {
-        summaryEl.innerHTML = '<div class="alert alert-light border-warning shadow-sm"><strong>Still loading…</strong><div class="small text-muted">Some sources may be rate-limited.</div></div>';
-      }, 4000);
+        summaryEl.innerHTML = '<div class="alert alert-light border-warning shadow-sm text-center"><strong>Still loading…</strong><div class="small text-muted">Some sources may be rate-limited.</div></div>';
+      }, 6000);
 
       try {
         const keywordText = document.getElementById('keyword-input').value.trim();
         const rawStoryCount = parseInt(document.getElementById('story-count').value, 10);
-        const storyCount = Number.isInteger(rawStoryCount) && rawStoryCount >= 75 ? rawStoryCount : 75;
-        const perSourceFetchCount = 200;
+        const requestedCount = Number.isInteger(rawStoryCount) && rawStoryCount >= 10 ? rawStoryCount : 75;
+        const perSourceFetchCount = 100;
 
         let allItems = [];
         let totalFetched = 0;
-        let fetchBySource = {};
         let errorsBySource = {};
+        let countsBySource = {};
 
-        const selected = availableSources.filter(source => selectedSources.includes(source.name));
+        const selected = availableSources.filter(s => selectedSources.includes(s.name));
+
+        if (selected.length === 0) {
+          window.clearTimeout(loadingTimer);
+          summaryEl.innerHTML = '<div class="alert alert-warning text-center">No sources selected. Check at least one source above.</div>';
+          return;
+        }
+
         const fetchPromises = selected.map(async (source) => {
           try {
             let data;
@@ -376,11 +345,10 @@
               const json = await fetchJsonWithTimeout(proxy, FETCH_TIMEOUT_MS);
               data = json.items ? json.items.slice(0, perSourceFetchCount) : [];
             }
-
             const count = Array.isArray(data) ? data.length : 0;
             return { sourceName: source.name, items: Array.isArray(data) ? data : [], count, error: null };
           } catch (error) {
-            console.error(`[${source.name}] Error:`, error.message);
+            console.warn(`[${source.name}] ${error.message}`);
             return { sourceName: source.name, items: [], count: 0, error: error.message || 'Unknown error' };
           }
         });
@@ -388,98 +356,127 @@
         const results = await Promise.all(fetchPromises);
 
         results.forEach(result => {
-          fetchBySource[result.sourceName] = result.count;
+          countsBySource[result.sourceName] = result.count;
           if (result.error) errorsBySource[result.sourceName] = result.error;
           totalFetched += result.count;
-
           result.items.forEach(item => {
             item.source = result.sourceName;
-            item.category = item.category || categorizeStory(item);
             allItems.push(item);
           });
         });
 
-        if (allItems.length === 0) {
-          window.clearTimeout(loadingTimer);
-          summaryEl.innerHTML = `
-            <div class="alert alert-warning">
-              No stories could be loaded.
-              ${Object.keys(errorsBySource).length ? `<div class="mt-2 small text-danger"><strong>Errors:</strong> ${Object.keys(errorsBySource).join(', ')}</div>` : ''}
-            </div>`;
-          return;
+        // ---- DEDUPLICATE ----
+        const deduped = [];
+        const seenTitles = new Set();
+        for (const item of allItems) {
+          const normalized = item.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 80);
+          if (seenTitles.has(normalized)) continue;
+          seenTitles.add(normalized);
+          deduped.push(item);
         }
+        allItems = deduped;
 
-        // Keyword filtering
-        const keywords = keywordText.toLowerCase().split(/[\s,]+/).map(k => k.trim()).filter(Boolean);
+        // ---- KEYWORD FILTERING (searches title + description + content) ----
+        const keywords = keywordText.toLowerCase().split(/[,;\s]+/).map(k => k.trim()).filter(Boolean);
+        let keywordFilteredCount = 0;
         if (keywords.length > 0) {
+          const before = allItems.length;
           allItems = allItems.filter(item => {
-            const text = [item.title, item.description, item.contentSnippet].filter(Boolean).join(' ').toLowerCase();
+            const text = [item.title, item.description, item.content].filter(Boolean).join(' ').toLowerCase();
             return keywords.some(kw => text.includes(kw));
           });
+          keywordFilteredCount = before - allItems.length;
         }
 
+        // ---- SCORE & SORT ----
         allItems = allItems.map(item => ({ ...item, importanceScore: calculateImportanceScore(item) }));
         allItems.sort((a, b) => b.importanceScore - a.importanceScore);
 
-        const topItems = allItems.slice(0, storyCount);
+        // ---- STORY COUNT: show whichever is smaller, requested or available ----
+        const showCount = Math.min(requestedCount, allItems.length);
+        const topItems = allItems.slice(0, showCount);
 
-        summaryEl.innerHTML = `
-          <div class="mb-3 text-muted small">
-            <strong>Loaded:</strong> ${totalFetched} stories • Showing ${topItems.length} top stories<br>
-            ${Object.entries(errorsBySource).length ? `<strong class="text-danger">Errors: ${Object.keys(errorsBySource).join(', ')}</strong>` : ''}
-          </div>
-          ${buildSummary(topItems)}
-        `;
+        // ---- RENDER ----
+        summaryEl.innerHTML = buildNewsList(topItems);
         window.clearTimeout(loadingTimer);
+
+        // ---- STATUS BAR ----
+        statusBar.style.display = 'block';
+        storyCountDisplay.textContent = `Showing ${topItems.length} stories (${allItems.length} after filter, ${totalFetched} fetched)`;
+
+        const filterParts = [];
+        if (keywords.length > 0) filterParts.push(`Keywords: ${keywords.join(', ')}`);
+        activeFiltersDisplay.textContent = filterParts.length ? `🔍 ${filterParts.join(' | ')}` : '';
+
+        const errorSources = Object.keys(errorsBySource);
+        if (errorSources.length > 0) {
+          errorSummary.innerHTML = `⚠️ Failed: ${errorSources.map(s => `${s} (${errorsBySource[s]})`).join('; ')}`;
+        } else {
+          errorSummary.innerHTML = '';
+        }
+
+        updateSourceLiveCounts(countsBySource, errorsBySource);
         lastUpdatedEl.textContent = `Updated ${new Date().toLocaleTimeString('en-ZA')}`;
 
       } catch (error) {
         window.clearTimeout(loadingTimer);
         console.error(error);
-        summaryEl.innerHTML = '<div class="text-center py-5 text-danger">Failed to load news. Please try again.</div>';
+        summaryEl.innerHTML = '<div class="text-center py-5 text-danger"><strong>Failed to load news.</strong><br><small>Check console for details.</small><br><button class="btn btn-outline-danger btn-sm mt-3" onclick="loadNews()">Retry</button></div>';
       }
     }
 
+    function updateSourceLiveCounts(countsBySource, errorsBySource) {
+      availableSources.forEach(src => {
+        const safeId = sanitizeId(src.name);
+        const label = document.querySelector(`label[for="src-${safeId}"]`);
+        if (!label) return;
+        const existing = label.querySelector('.live-count');
+        if (existing) existing.remove();
+        const count = countsBySource[src.name];
+        const err = errorsBySource[src.name];
+        let html = '';
+        if (err) {
+          html = ` <span class="live-count text-danger small">(❌)</span>`;
+        } else if (count !== undefined && count >= 0) {
+          html = ` <span class="live-count text-success small">(${count})</span>`;
+        }
+        label.insertAdjacentHTML('beforeend', html);
+      });
+    }
+
     window.onload = function() {
-      renderCategoryPills();
       renderSourceCheckboxes();
       loadNews();
     };
   </script>
 
   <style>
-    .summary-link {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      font-size: 0.88rem;
-      line-height: 1.2;
-      margin-bottom: 0.15rem;
-      text-decoration: none;
-      color: #0d6efd;
-      overflow: hidden;
-      white-space: nowrap;
+    .container-fluid { max-width: 100%; }
+
+    .source-chip {
+      padding: 2px 8px; border-radius: 20px; background: #f1f3f5;
+      border: 1px solid #dee2e6; cursor: pointer; transition: all 0.15s ease; font-size: 0.82rem;
     }
-    .summary-link:hover {
-      text-decoration: underline;
+    .source-chip:hover { background: #e9ecef; }
+    .source-badge-failing { background: #fff3cd; border-color: #ffc107; }
+    .source-badge-working { background: #d1e7dd; border-color: #198754; }
+    .source-chip .form-check-input { margin-top: 0.15rem; margin-right: 0.25rem; }
+    .source-chip .form-check-label { cursor: pointer; }
+
+    .headline-list { border-top: 2px solid #212529; }
+    .headline-link {
+      display: flex; flex-wrap: nowrap; align-items: baseline; font-size: 0.92rem;
+      line-height: 1.3; padding: 8px 4px; text-decoration: none; color: #212529;
+      border-bottom: 1px solid #dee2e6; overflow: hidden; white-space: nowrap; transition: background 0.1s;
     }
-    .summary-title {
-      display: inline-block;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .summary-meta {
-      flex-shrink: 0;
-      color: #6c757d;
-      font-size: 0.78rem;
-      margin-left: 0.5rem;
-      white-space: nowrap;
-    }
-    #summary-content {
-      max-height: 70vh;
-      overflow-y: auto;
+    .headline-link:hover { background: #f8f9fa; color: #007A4D; }
+    .headline-title { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+    .headline-meta { flex-shrink: 0; color: #6c757d; font-size: 0.78rem; font-weight: 400; margin-left: 0.75rem; white-space: nowrap; }
+
+    @media (max-width: 768px) {
+      .headline-link { font-size: 0.84rem; }
+      .headline-meta { font-size: 0.72rem; margin-left: 0.4rem; }
+      .source-chip { font-size: 0.75rem; }
     }
   </style>
 </body>
