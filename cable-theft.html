@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cable Theft • Crime • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #c62828; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="crime.html" class="btn btn-light btn-sm">🔒 Crime</a>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #c62828;">🔌 Cable Theft</h1>
+    <h5 class="text-muted mb-4">The Organised Crime That Is Dismantling South Africa's Infrastructure — Wire by Wire</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">South Africa's copper cable theft crisis is one of the most economically destructive forms of organised crime in the world — not because the stolen metal is especially valuable (though hundreds of millions of rand are stolen each year), but because <strong>the damage caused by removing it is orders of magnitude greater than the scrap value of the copper</strong>. A metre of overhead rail wire worth R500–1,000 as scrap can stop R50 million worth of coal exports. A stolen substation transformer worth R50,000 in copper can black out a factory employing 500 people for weeks. The ratio of damage-to-theft-value is perhaps the highest of any crime category in the country — and that is precisely why it persists. This is the story of what gets stolen, who steals it, how it moves through the economy, and why it has proven so difficult to stop.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Annual direct cost (Transnet):</strong> R2+ billion<br>
+          <strong>Annual direct cost (Eskom):</strong> R2–3 billion<br>
+          <strong>Total infrastructure theft:</strong> R50+ billion/year<br>
+          <strong>Replacement cost multiplier:</strong> 5–10× scrap value<br>
+          <strong>Main targets:</strong> Rail catenary wire, Eskom conductors, Telkom copper, substation equipment
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Rail Wire Stolen</small>
+          <h3>1,000s</h3>
+          <small class="text-muted">km over past decade</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Eskom Cable Theft</small>
+          <h3>R2–3B</h3>
+          <small class="text-muted">per year</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Replacement Cost</small>
+          <h3>5–10×</h3>
+          <small class="text-muted">scrap metal value</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Prosecution Rate</small>
+          <h3>Very Low</h3>
+          <small class="text-muted">near-impunity</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 1: WHAT GETS STOLEN ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 1: What Gets Stolen — The Target List</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Cable theft is not random. Syndicates target specific high-value copper assets with the highest scrap value relative to the effort required to extract them. Here is what they go after, ranked by economic damage:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">🚂 Rail Overhead Catenary Wire</h6>
+            <p class="small mb-0"><strong>What:</strong> Copper contact wire (the wire the locomotive's pantograph touches) and copper catenary wire (the support wire above it), plus copper feeder cables that bring power from substations to the overhead system.<br><strong>Why:</strong> High-purity copper, easily accessible along thousands of kilometres of track, often in remote areas with no security. A single night's work can strip 500 metres of wire — worth R200,000–500,000 as scrap, but costing R2–5 million to replace and shutting down the line for days.<br><strong>Impact:</strong> When the wire is gone, the line is dead. Electric trains cannot run. Diesel locomotives must be substituted (if available). In many cases, the line simply closes — permanently — because Transnet cannot afford to replace wire that will be stolen again within weeks.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">⚡ Eskom Transmission & Distribution Lines</h6>
+            <p class="small mb-0"><strong>What:</strong> Copper and aluminium conductors from overhead power lines, copper busbars from substations, transformer windings, earth wires, and even the steel lattice towers (cut down for scrap).<br><strong>Why:</strong> Eskom's network spans the entire country, much of it in remote rural areas. A transmission line carries thick copper or aluminium conductors that are valuable as scrap. Substations contain concentrated copper in busbars, switches, and transformers — a single substation can yield R100,000+ in scrap metal in a single night.<br><strong>Impact:</strong> Power outages lasting days or weeks for entire communities or industrial areas. When a transformer is stripped, Eskom must source a replacement — which can take months. The load shedding crisis is exacerbated because stolen infrastructure means less capacity to move power even when generation is available.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color:#002395;">📡 Telkom & Telecom Copper Networks</h6>
+            <p class="small mb-0"><strong>What:</strong> Thousands of kilometres of copper telephone lines — the legacy fixed-line network that Telkom built over decades.<br><strong>Why:</strong> Telkom's copper network is being decommissioned in favour of fibre and wireless, partly because theft made it uneconomical to maintain. But millions of homes and businesses still depend on it — and thieves strip it relentlessly.<br><strong>Impact:</strong> Communities lose landline phone service and DSL internet. Businesses lose connectivity. Telkom has effectively abandoned copper in many areas, accelerating the shift to wireless — but leaving behind digital divides in poorer communities. The theft of mobile tower backup batteries (lead-acid and lithium) also causes network outages during load shedding.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">🏗️ Municipal Infrastructure & Signal Cables</h6>
+            <p class="small mb-0"><strong>What:</strong> Copper and brass water pipe fittings, manhole covers (cast iron), streetlight poles (aluminium and steel), electrical wiring from municipal buildings and housing projects, guardrails from highways, signalling cables from railways.<br><strong>Why:</strong> These are the easiest targets — publicly accessible, often unguarded, and valuable as scrap. A manhole cover takes 30 seconds to lift and is worth R500–1,000 as scrap iron.<br><strong>Impact:</strong> Stolen manhole covers kill pedestrians who fall into open shafts. Stolen rail signalling cables cause train collisions. Stolen water pipe fittings cause leaks and supply interruptions. The cumulative cost across thousands of municipalities is enormous — and the response has often been to replace metal with concrete or plastic, which solves the theft problem at the cost of functionality.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 2: WHO STEALS IT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Part 2: Who Steals It — The Criminal Enterprise</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Cable theft is not committed by desperate individuals acting alone. It is an <strong>organised criminal industry</strong> with a clear hierarchy:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h3 class="fw-bold" style="color:#c62828;">Level 1</h3>
+            <h6 class="fw-bold">The Ground Crews</h6>
+            <p class="small">The people who physically climb poles, cut wires, and load trucks. Often recruited from impoverished communities, paid a few hundred rand per night. They take the physical risk — electrocution from live cables is a leading cause of death among cable thieves. Many are drug users recruited by syndicate handlers. They are the disposable labour of the operation and the ones most likely to be caught.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h3 class="fw-bold" style="color:#e65100;">Level 2</h3>
+            <h6 class="fw-bold">The Middlemen</h6>
+            <p class="small">Scrap metal dealers who buy the stolen metal, strip insulation, cut it into untraceable pieces, and sell it up the chain. Many are legitimate businesses that also handle legal scrap — the stolen metal is mixed in and becomes indistinguishable. Some know the metal is stolen; others look the other way. This is the bottleneck in the supply chain — without a buyer, there is no market for stolen metal. Yet enforcement against scrap dealers is extremely weak.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h3 class="fw-bold" style="color:#002395;">Level 3</h3>
+            <h6 class="fw-bold">The Syndicate Leaders & Exporters</h6>
+            <p class="small">The organisers who finance operations, bribe officials, arrange transport, and manage export logistics. They never touch the wire. Much of the stolen copper is exported — primarily to China and India — as "recycled scrap," with falsified paperwork. These are sophisticated, well-capitalised criminal enterprises that operate across provincial and national borders. They are almost never prosecuted — the evidence chain breaks before it reaches them.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3" style="background: #fff5f5; border-left: 6px solid #c62828;">
+        <strong>The insider problem:</strong> A significant share of cable theft involves current or former employees of Transnet, Eskom, or Telkom — people who know which cables are live, which are decommissioned, where the security patrols are, and how to access restricted areas. This insider knowledge makes the theft far more targeted and efficient than random vandalism. In some cases, employees have been caught selling detailed maps of cable routes and substation layouts to syndicates. This is not opportunistic crime — it is a fundamentally compromised workforce problem.
+      </div>
+    </div>
+
+    <!-- ========== PART 3: THE ECONOMICS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 3: The Economics of Cable Theft — Why It Pays</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The reason cable theft persists is simple: <strong>the economics overwhelmingly favour the criminal</strong>. Consider the risk-reward calculus for each level of the operation:</p>
+
+      <div class="table-responsive mt-3">
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light">
+            <tr><th>Level</th><th>Potential Gain</th><th>Probability of Arrest</th><th>Severity If Caught</th><th>Risk-Reward</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Ground crew</strong></td><td>R500–2,000 per night</td><td>Low-Moderate</td><td>~R5,000 fine or 6–12 months (rarely served)</td><td style="color:#c62828; font-weight:800;">Highly Positive</td></tr>
+            <tr><td><strong>Scrap dealer</strong></td><td>R50,000–500,000/month</td><td>Very Low</td><td>Fine or licence revocation (rarely enforced)</td><td style="color:#c62828; font-weight:800;">Extremely Positive</td></tr>
+            <tr><td><strong>Syndicate leader</strong></td><td>Millions per month</td><td>Near-Zero</td><td>Almost never prosecuted</td><td style="color:#c62828; font-weight:800;">Overwhelmingly Positive</td></tr>
+            <tr><td><strong>Transnet/Eskom (victim)</strong></td><td>N/A</td><td>N/A</td><td>R2–10 million per incident (replacement), R500M+ lost exports</td><td style="color:#c62828; font-weight:800;">Catastrophic</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-3">The table makes the problem clear: at every level, the expected value of stealing copper infrastructure is positive — often overwhelmingly positive — while the expected value of trying to protect it is catastrophic for the victim. Until this calculus changes, the theft will continue.</p>
+
+      <h6 class="fw-bold mt-4">The Replacement Cost Multiplier</h6>
+      <p>This is the single most important concept for understanding why cable theft is so devastating:</p>
+      <ul>
+        <li><strong>Scrap value of 1 metre of copper catenary wire:</strong> R500–1,000</li>
+        <li><strong>Cost to replace 1 metre of copper catenary wire:</strong> R5,000–10,000 (including labour, equipment, line shutdown, testing)</li>
+        <li><strong>Cost if a train hits the stolen section before it's discovered:</strong> R50,000–500,000 (locomotive pantograph damage, delay penalties, schedule disruption)</li>
+        <li><strong>Cost if the coal line shuts down for a week:</strong> R50–100 million in lost export revenue (76 million tonnes/year ÷ 52 weeks × average coal price)</li>
+      </ul>
+      <p>The ratio between the criminal's gain and the victim's loss can exceed <strong>1:10,000</strong> — meaning every rand earned by a cable thief costs the economy up to R10,000. No other crime category in South Africa has a damage multiplier this extreme. A cash-in-transit heist that nets R2 million costs roughly R2 million (the value of the cash). A cable theft that nets R2 million in scrap copper can cost R100 million in economic damage. This is why cable theft, despite being less violent and less visible than other crimes, is arguably the single most economically destructive form of crime in the country.</p>
+    </div>
+
+    <!-- ========== PART 4: RAIL CABLE THEFT DEEP DIVE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 4: The Rail Network — Ground Zero</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's rail network is arguably the most cable-theft-vulnerable infrastructure in the world. The reasons are specific and structural:</p>
+      <ul>
+        <li><strong>20,000+ km of track, much of it electrified:</strong> The sheer length of the network makes comprehensive security impossible. Every kilometre of electrified track has overhead copper wire — roughly 9,000 km of catenary, plus thousands more in feeder cables and signalling wires. Securing all of it would require an army.</li>
+        <li><strong>Remote locations:</strong> Much of the rail network passes through rural areas, far from police stations, security patrols, or even cellphone coverage. A crew with a truck, bolt cutters, and a ladder can strip 500 metres of wire in a single night, and no one will know until the next train tries to pass.</li>
+        <li><strong>Known schedules:</strong> Train schedules are predictable. Syndicates know when the last train of the day passes a given section and when the first train of the morning is due — giving them a clear window for theft.</li>
+        <li><strong>Post-theft detection is slow:</strong> Transnet's signalling system can detect a break in the catenary wire (loss of continuity), but by the time the alarm is raised, the thieves are long gone. The damage is done.</li>
+        <li><strong>Replacement is slow and expensive:</strong> Restringing overhead catenary wire requires specialised crews, specialised equipment (tensioning machines, elevated work platforms), and a track possession (the line must be closed to traffic). A single incident can take 2–5 days to repair, during which the line is either dead or restricted to diesel traction.</li>
+      </ul>
+
+      <p><strong>The cascade effect on the electrified network:</strong> When a section of catenary wire is stolen and not replaced — because Transnet cannot afford to replace wire that will be stolen again — the line reverts to diesel traction. If diesel locomotives are not available (and many are not, because the fleet is ageing and poorly maintained), the line simply ceases to function as a freight corridor. Thousands of kilometres of formerly electrified track are now effectively dead — not because the track is bad, but because the wires above it were stolen and never replaced. This is how the electrified network shrinks, not through a formal decision, but through a thousand individual thefts that collectively dismantle the system.</p>
+    </div>
+
+    <!-- ========== PART 5: WHAT HAS BEEN TRIED ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 5: What Has Been Tried — And Why It Hasn't Worked</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa has tried multiple approaches to stopping cable theft. None have succeeded at scale:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">Scrap Metal Export Ban (2022)</h6>
+            <p class="small mb-0">The government banned the export of scrap copper and certain other metals, arguing that stolen infrastructure copper was being exported as "recycled scrap." The ban was partially effective — reported theft incidents declined — but faced legal challenges from the scrap metal industry. Enforcement was weak: scrap continued to be smuggled across borders or misdeclared. The ban also hurt legitimate scrap recyclers who were not involved in theft. In practice, the ban slowed the export of stolen copper but did not stop it, and it created a powerful lobbying constituency (the scrap industry) that opposes further regulation.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">Dedicated Police Units (Copperheads)</h6>
+            <p class="small mb-0">The SAPS established specialised units — the most famous being the "Copperheads" — to target infrastructure theft. These units had some success: arrests increased, and several syndicates were disrupted. But the units were repeatedly disbanded, reorganised, or starved of resources. The political commitment to sustained, well-resourced enforcement has been inconsistent. The units that exist are small relative to the scale of the problem — a few hundred officers cannot secure 20,000 km of rail line and hundreds of thousands of kilometres of power lines.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color:#002395;">Private Security & Technology</h6>
+            <p class="small mb-0">Transnet and Eskom have deployed private security contractors, drones, camera systems, and motion sensors on the most critical corridors. These measures have reduced theft on the highest-priority lines (Sishen–Saldanha, the coal line to Richards Bay) — but at enormous cost, and they cannot cover the entire network. The security approach is inherently defensive: you can protect a specific asset if you throw enough resources at it, but you cannot protect everything. Syndicates simply shift to softer targets — less-guarded branch lines, secondary substations, rural power lines.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">Alternative Materials</h6>
+            <p class="small mb-0">Transnet has experimented with aluminium catenary wire instead of copper — aluminium has lower scrap value and is less attractive to thieves. Eskom has used aluminium conductor steel-reinforced (ACSR) cable for years, partly for cost and weight reasons, but aluminium is still stolen when copper is unavailable. Some municipalities have replaced metal manhole covers with concrete. These material substitutions reduce the incentive for theft but cannot eliminate it — and they often come with performance trade-offs (aluminium wire has higher electrical resistance and lower tensile strength than copper).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3" style="background: #fff5f5; border-left: 6px solid #c62828;">
+        <strong>Why none of this has worked at scale:</strong> Each solution addresses a symptom, not the root cause. The root cause is that there is a <strong>functioning market for stolen copper</strong> — scrap dealers who will buy it, consolidators who will aggregate it, and export markets that will absorb it — and the probability of being caught at any point in that chain is negligible. Until the scrap metal supply chain is regulated effectively — with mandatory proof of origin for all copper scrap, auditable records, and serious criminal penalties for dealers who buy stolen metal — the theft will continue regardless of how many police officers are deployed or how many cameras are installed. The economics of the crime must be inverted: the probability of getting caught must exceed the profitability of the theft. Currently, it does not.
+      </div>
+    </div>
+
+    <!-- ========== PART 6: THE WAY FORWARD ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 6: What Would It Take to Stop Cable Theft?</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>No country has eliminated cable theft entirely. But countries have reduced it to manageable levels. The formula that works — demonstrated in the UK, parts of Europe, and even in South Africa on specific well-guarded corridors — has four components:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>1. Regulate the Scrap Metal Market</strong>
+            <p class="small mb-0">Require all scrap metal dealers to be licensed, to verify the identity of sellers, to maintain auditable records of all purchases, to hold metal for a minimum period before resale (to allow for inspection), and to refuse cash payments (electronic payments only, creating a traceable financial record). Dealers who buy stolen metal lose their licences and face criminal prosecution — not just fines, but prison. This is the single most effective measure available. It attacks the market for stolen metal at its bottleneck — the scrap dealer who converts stolen wire into untraceable scrap.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>2. Invest in Targeted Security</strong>
+            <p class="small mb-0">Not blanket coverage of the entire network — that is impossible. But targeted, intelligence-led security on the highest-value corridors, using drones, cameras, motion sensors, and rapid-response teams. The Sishen–Saldanha line and the coal export line to Richards Bay must be treated as strategic national assets and protected accordingly. The cost of security is a fraction of the cost of lost exports.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>3. Use Theft-Resistant Materials</strong>
+            <p class="small mb-0">Where technically feasible, replace copper with materials that have lower scrap value — aluminium catenary wire, copper-clad steel conductors, concrete and composite covers instead of cast iron. This does not eliminate theft but reduces the incentive. In the long term, fibre-optic signalling replaces copper signalling cables — not just for theft resistance but also for performance.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>4. Prosecute the Organisers</strong>
+            <p class="small mb-0">The low-level thieves are replaceable — for every one arrested, two more are recruited. The scrap dealers and syndicate leaders must be the targets. This requires financial investigation, asset forfeiture, and the use of organised crime legislation (racketeering charges under POCA — the Prevention of Organised Crime Act). It also requires protecting whistleblowers and insulating investigators from political interference. This is the hardest component — and the one where South Africa has made the least progress.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fw-bold fs-5 mt-4">Cable theft is not a mystery. It is a market. The demand side — global copper prices — cannot be controlled by South Africa. The supply side — thousands of kilometres of accessible, unguarded copper infrastructure — is the legacy of a century of electrification. The bottleneck — the scrap metal dealers who convert stolen wire into untraceable scrap — is where the market can be broken. Until that bottleneck is closed, the theft will continue. The question is not whether cable theft can be stopped — it can. The question is whether the political will exists to regulate the scrap metal industry, fund the security, and prosecute the organisers. So far, the answer has been no.</p>
+
+    <hr>
+    <p class="text-muted"><strong>Related Pages:</strong></p>
+    <ul>
+      <li><a href="crime.html">Crime & Economic Sabotage — Overview</a></li>
+      <li><a href="electric-rail.html">Electrified Rail — Why the Wires Matter</a></li>
+      <li><a href="transnet.html">Transnet SOC Ltd</a></li>
+      <li><a href="eskom.html">Eskom Overview</a></li>
+      <li><a href="anc-corruption.html">ANC — History of Corruption</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

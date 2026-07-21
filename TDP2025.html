@@ -3,84 +3,392 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TDP2025 • Power</title>
+  <title>TDP 2025-2034 • Transmission Development Plan • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    .tdp-figure { width: 100%; border-radius: 16px; border: 1px solid rgba(0,0,0,0.08); background: #fff; padding: 0.75rem; }
-    .tdp-figure img { width: 100%; height: auto; border-radius: 12px; display: block; margin: 0 auto; }
-    .tdp-figure figcaption { margin-top: 0.75rem; color: #555; font-size: 0.95rem; }
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .tdp-figure { border: 4px solid #000; padding: 0; box-shadow: 10px 10px 0 rgba(0,0,0,0.15); border-radius: 0; }
+    .tdp-figure img { width: 100%; display: block; }
+    .tdp-figure figcaption { background: #1a1a2e; color: #FFCD00; padding: 12px 16px; font-weight: 700; font-size: 0.9rem; }
+    .corridor-card { border: 3px solid #000; padding: 1.25rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); border-radius: 0; }
+    .cost-bar { height: 8px; background: #ddd; margin-top: 4px; }
+    .cost-bar-fill { height: 100%; background: #007A4D; }
   </style>
 </head>
 <body>
-  <!-- Top Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
       <div class="d-flex gap-2">
         <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
         <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
       </div>
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <h1 class="display-4 fw-bold text-success text-center">TDP 2025-2034</h1>
-    <p class="lead text-center">Transmission Development Plan 2025-2034: the National Transmission Company South Africa's strategy for long-term grid expansion and reinforcement.</p>
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #007A4D;">⚡🔗 TDP 2025–2034</h1>
+    <h5 class="text-muted mb-4">Transmission Development Plan — The Blueprint for South Africa's Future Grid</h5>
 
-    <div class="card shadow-sm mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Overview</h5>
-        <p>The Transmission Development Plan (TDP) 2025-2034 sets out the transmission network investments required to deliver a reliable, resilient, and future-ready grid across South Africa. It focuses on building the high-voltage backbone that will connect new generation capacity, support demand growth, and enable the transition to renewable and cleaner energy sources.</p>
-        <p>The plan is aligned with the broader energy transition objectives, identifying key reinforcement projects, new corridors, substation upgrades, and system strengthening measures needed to maintain supply security and unlock new power sources.</p>
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">The Transmission Development Plan (TDP) 2025–2034 is the single most important infrastructure planning document most South Africans have never heard of. Published by the National Transmission Company of South Africa (NTCSA) — the newly independent transmission entity unbundled from Eskom — the TDP maps out every high-voltage transmission line, every substation, every transformer, and every grid reinforcement project the country needs over the next decade. Without the TDP, the Integrated Resource Plan (IRP) is just a wish list — because generation capacity is worthless if you can't move the power from where it's produced to where it's consumed. This page unpacks the plan: the existing network, the corridors being built, the billions of rand it will cost, the constraints that threaten it, and why getting this right is the difference between ending load shedding permanently or locking it in forever.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Published by:</strong> NTCSA<br>
+          <strong>Period:</strong> 2025–2034 (10-year horizon)<br>
+          <strong>Network length:</strong> ~33,000 km of high-voltage lines<br>
+          <strong>Voltage levels:</strong> 132 kV, 220 kV, 275 kV, 400 kV, 765 kV<br>
+          <strong>Estimated cost:</strong> R200+ billion over 10 years
+        </div>
       </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Key priorities</h5>
-        <ul>
-          <li>Reinforcing the bulk transmission network to reduce congestion and support higher power transfers.</li>
-          <li>Constructing new 400 kV and 765 kV transmission corridors to link renewable energy zones with major load centres.</li>
-          <li>Upgrading existing substations and lines to improve reliability and minimise outages.</li>
-          <li>Providing the grid capacity needed for large-scale solar, wind, gas, and hydro generation projects.</li>
-          <li>Enabling cross-border power exchange and regional energy trade.</li>
-          <li>Planning for future growth in distributed generation, embedded resources, and market flexibility.</li>
-        </ul>
+    <!-- Key Stats -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Existing HV Network</small>
+          <h3>~33,000</h3>
+          <small class="text-muted">km of transmission lines</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">New Lines Needed</small>
+          <h3>~14,000</h3>
+          <small class="text-muted">km over 10 years</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Transformer Capacity</small>
+          <h3>~50,000</h3>
+          <small class="text-muted">MVA of new transformers</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Estimated Investment</small>
+          <h3>R200B+</h3>
+          <small class="text-muted">over 10 years</small>
+        </div>
       </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Spatial flow: load, generation and transmission</h5>
-        <p>Here are the original TDP figures exactly as they appear in the plan.</p>
-        <figure class="tdp-figure">
-          <img src="images/tdp2024/Spatial_Generation_And_Load_Distribution.png" alt="Spatial Generation And Load Distribution">
-          <figcaption>Figure: Spatial generation and load distribution from the TDP 2024 plan.</figcaption>
-        </figure>
+    <!-- ========== PART 1: THE EXISTING NETWORK ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 1: The Network South Africa Has — 33,000 km of High-Voltage Backbone</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's transmission grid is one of the largest and most interconnected on the African continent. It consists of approximately <strong>33,000 kilometres of high-voltage transmission lines</strong>, operating at voltages from 132 kV up to 765 kV, connecting Eskom's power stations in Mpumalanga to load centres across all nine provinces. The network was built primarily between the 1960s and 1980s, when Eskom was constructing its coal-fired power stations and needed to move electricity from the Mpumalanga coal fields to the rest of the country.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color: #002395;">The Voltage Hierarchy</h6>
+            <table class="table table-sm table-bordered small mb-0">
+              <thead class="table-light"><tr><th>Voltage</th><th>Role</th><th>Approx. Length</th></tr></thead>
+              <tbody>
+                <tr><td><strong>765 kV</strong></td><td>Ultra-high-voltage backbone — moves bulk power over very long distances</td><td>~3,000 km</td></tr>
+                <tr><td><strong>400 kV</strong></td><td>Primary transmission — the workhorse of the national grid</td><td>~18,000 km</td></tr>
+                <tr><td><strong>275 kV</strong></td><td>Secondary transmission — regional distribution</td><td>~6,000 km</td></tr>
+                <tr><td><strong>220 kV / 132 kV</strong></td><td>Sub-transmission — feeds into distribution networks</td><td>~6,000 km</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">The Geographic Reality</h6>
+            <p class="small">The existing grid was designed around a simple premise: <strong>generation is in the northeast, load is everywhere</strong>. Eskom's coal-fired power stations are concentrated in Mpumalanga (with a few outliers — Koeberg nuclear in the Western Cape, peaking plants elsewhere). The transmission network radiates outward from Mpumalanga like spokes from a hub, carrying power to Gauteng (the largest load centre), KwaZulu-Natal, the Western Cape, and the Eastern Cape. This design made sense when all generation was coal-fired and located in one province. It makes far less sense when the future generation mix will be dominated by solar and wind — resources that are strongest in the Northern Cape, Eastern Cape, and Western Cape — areas far from the existing grid's strongest nodes.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3"><strong>Why this matters:</strong> The existing network was built to move power FROM Mpumalanga TO the rest of the country. The future requires moving power FROM the Cape provinces (solar, wind) and FROM distributed sources across the country TO the load centres — including back toward Mpumalanga as coal plants retire. This is not a capacity problem; it is a <strong>direction-of-flow problem</strong>. The grid is strong where the coal plants are and weak where the renewable resources are. Fixing this is the central challenge of the TDP.</p>
+    </div>
+
+    <!-- ========== PART 2: WHY THE GRID NEEDS TO DOUBLE IN SIZE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 2: The Grid Capacity Crunch — Why South Africa Needs to Build 14,000 km of New Lines</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The TDP identifies a staggering requirement: approximately <strong>14,000 kilometres of new high-voltage transmission lines</strong> must be built over the next decade — roughly a 40% expansion of the existing 33,000 km network. This is not a nice-to-have; it is the minimum required to connect new generation capacity and prevent the grid from becoming the binding constraint on ending load shedding. Here is why the need is so acute:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">The Renewable Energy Zones Are Far From the Grid</h6>
+            <p class="small mb-0">South Africa's best solar resources are in the Northern Cape (Upington, Postmasburg) — an area with some of the highest solar irradiance on Earth. The best wind resources are in the Eastern Cape and Western Cape. But the existing transmission network in these areas is thin — designed to serve small towns and farms, not to evacuate gigawatts of renewable power. To connect a single 2 GW solar cluster in the Northern Cape to Gauteng's load requires a new 400 kV or 765 kV line stretching 800+ km — and there are multiple such clusters planned across the three Cape provinces. Each one needs its own corridor.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">Coal Plant Retirements Will Shift the Power Flows</h6>
+            <p class="small mb-0">As Eskom's ageing coal fleet is decommissioned (most stations are scheduled for retirement between 2030 and 2050), the generation centre of gravity moves away from Mpumalanga. The grid that was built to move power FROM Mpumalanga must be reconfigured to move power TO Mpumalanga — or at least to serve a province that will lose most of its generation. This requires new lines, upgraded substations, and new reactive power support (capacitors, STATCOMs) to maintain voltage stability when the large spinning generators at coal stations are taken offline.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color:#002395;">Grid Connection Applications Are Overwhelming</h6>
+            <p class="small mb-0">NTCSA has received connection applications from IPPs totalling tens of gigawatts — far more than the current grid can accommodate. The "grid capacity crunch" that made headlines in 2022–2023 (when Eskom declared that certain areas had zero remaining grid capacity for new generation) was not caused by a lack of generation — it was caused by a lack of transmission. Generators wanted to connect, but the wires couldn't carry the power. The TDP is the plan to fix this — but building transmission takes 7–10 years from planning to energisation, so the crunch will persist until the new corridors are built.</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Peak demand outlook to 2034</h5>
-        <p>Below is the TDP peak demand outlook and transmission requirement graph.</p>
-        <figure class="tdp-figure">
-          <img src="images/tdp2024/Peak_Demand_2034.png" alt="Peak Demand 2034">
-          <figcaption>Figure: Peak demand outlook and transmission requirement from the TDP 2024 plan.</figcaption>
-        </figure>
+    <!-- ========== PART 3: THE SPATIAL PROBLEM (IMAGES) ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 3: The Spatial Mismatch — Generation in One Place, Load in Another</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The central challenge the TDP must solve is geographic. The map below shows the distribution of generation capacity (where the power stations are) against load centres (where the people and factories are). The mismatch is stark: generation is concentrated in Mpumalanga and the northern provinces; the best renewable resources are in the Cape; the largest load is in Gauteng. Transmission lines must bridge all three — at enormous distances.</p>
+
+      <figure class="tdp-figure">
+        <img src="images/tdp2024/Spatial_Generation_And_Load_Distribution.png" alt="Spatial Generation and Load Distribution across South Africa">
+        <figcaption>⚡ TDP 2024 Figure: Spatial generation and load distribution. This is why the transmission network must expand — the power sources and the power consumers are not in the same place, and the distance between them is growing as renewables shift generation to the Cape provinces.</figcaption>
+      </figure>
+
+      <div class="row g-3 mt-4">
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Gauteng Load</small>
+            <h3>~25%</h3>
+            <small class="text-muted">of national demand</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Mpumalanga Generation</small>
+            <h3>~80%</h3>
+            <small class="text-muted">of current supply</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Cape Renewable Potential</small>
+            <h3>~60%+</h3>
+            <small class="text-muted">of future wind & solar</small>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="card shadow-sm mt-4 mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Why it matters</h5>
-        <p>The TDP is the transmission counterpart to the Integrated Resource Plan. It ensures that generation plans are matched by the physical grid capacity needed to move power from source to demand centres. Without the TDP, new generation projects may be constrained by bottlenecks, delayed by network reinforcement schedules, or unable to deliver reliably to customers.</p>
-        <p>This plan is especially important for South Africa’s energy transition because it helps integrate renewable energy and supports a more flexible, modern grid while also addressing the challenges of ageing infrastructure and rising demand.</p>
-        <a href="https://www.ntcsa.co.za/tdp/transmission-development-plan-2025-2034/" target="_blank" rel="noopener noreferrer" class="btn btn-success">View the full TDP 2025-2034 document</a>
+    <!-- ========== PART 4: THE NEW CORRIDORS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 4: The Corridors Being Built — Where the New Lines Will Go</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The TDP identifies multiple priority transmission corridors. These are the routes where new high-voltage lines will be strung. Each corridor involves not just the line itself, but new substations at both ends, intermediate switching stations, transformer capacity, and reactive power compensation (capacitors, reactors, STATCOMs) to maintain voltage stability over long distances.</p>
+
+      <div class="row g-4 mt-3">
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">Cape Corridor (Northern Cape → Western Cape → Eastern Cape)</h6>
+            <p class="small">The single most important new corridor. Will connect the solar-rich Northern Cape and wind-rich Eastern Cape to the national grid at 400 kV and potentially 765 kV. Multiple new substations are planned along the route. This corridor unlocks the largest concentration of renewable energy potential in the country — without it, the IRP's renewable targets cannot be met.</p>
+            <p class="small"><strong>Status:</strong> Planning and environmental approvals underway. First sections expected 2028–2030.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #FFCD00;">
+            <h6 class="fw-bold" style="color: #b8860b;">West Coast Corridor (Northern Cape → Western Cape)</h6>
+            <p class="small">Connects the Upington/Postmasburg solar hub to the Western Cape grid. The Western Cape currently imports most of its power via a single 400 kV corridor from the north — a critical vulnerability that the West Coast corridor will relieve. Also supports the connection of offshore wind (future) and existing onshore wind farms.</p>
+            <p class="small"><strong>Status:</strong> Advanced planning. Target 2027–2029.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color: #002395;">Mpumalanga Reinforcement Corridor</h6>
+            <p class="small">As coal plants retire, the Mpumalanga grid must be reinforced to maintain voltage stability. Large spinning generators at coal stations provide inertia and reactive power that keep the grid stable; when they retire, that stability must be replaced by new equipment (synchronous condensers, STATCOMs, battery storage with grid-forming inverters). This corridor upgrades existing lines and substations rather than building entirely new routes.</p>
+            <p class="small"><strong>Status:</strong> Ongoing. Linked to coal decommissioning schedule.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">Gauteng Ring Reinforcement</h6>
+            <p class="small">Gauteng is the single largest load centre — consuming roughly 25% of national electricity. The existing 400 kV ring around the province is ageing and congested. The TDP plans to reinforce this ring with new 400 kV lines and substations, ensuring that power can flow into Gauteng from multiple directions (north from Limpopo, east from Mpumalanga, south from the Free State, and eventually west from the Northern Cape corridor).</p>
+            <p class="small"><strong>Status:</strong> Partial. Some sections under construction.</p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- ========== PART 5: THE MONEY ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 5: The Money — R200+ Billion and Where It Comes From</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Building 14,000 km of high-voltage transmission lines and the associated substations, transformers, and reactive power equipment is extraordinarily expensive. The TDP estimates a total investment requirement of <strong>R200+ billion over the 10-year planning period</strong> — roughly R20 billion per year, every year, for a decade. To put this in perspective: Eskom's total capital expenditure on transmission averaged less than R5 billion per year in the 2010s. The TDP requires a <strong>4–5× increase in annual transmission investment</strong> — sustained for a decade.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">The Cost Breakdown</h6>
+            <table class="table table-sm table-bordered small mb-0">
+              <thead class="table-light"><tr><th>Component</th><th>Estimated Cost</th></tr></thead>
+              <tbody>
+                <tr><td>New 400 kV lines (~10,000 km)</td><td>R80–100 billion</td></tr>
+                <tr><td>New 765 kV lines (~2,000 km)</td><td>R30–40 billion</td></tr>
+                <tr><td>New substations & switching stations</td><td>R30–40 billion</td></tr>
+                <tr><td>Transformer capacity (50,000+ MVA)</td><td>R20–30 billion</td></tr>
+                <tr><td>Reactive power compensation (STATCOMs, capacitors)</td><td>R10–15 billion</td></tr>
+                <tr><td>Line upgrades & refurbishments (existing network)</td><td>R15–20 billion</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">Where the Money Comes From</h6>
+            <p class="small">Historically, Eskom funded transmission from its own balance sheet (debt and retained earnings). But Eskom's balance sheet is wrecked — R400+ billion in debt, dependent on government bailouts. The unbundling of NTCSA as an independent entity creates the possibility of new funding sources:</p>
+            <ul class="small mb-0">
+              <li><strong>NTCSA borrowing:</strong> As an independent entity with its own regulated revenue stream (transmission tariffs set by NERSA), NTCSA can borrow on its own balance sheet — potentially at better rates than Eskom, since transmission is a lower-risk business than generation.</li>
+              <li><strong>Development finance:</strong> The World Bank, African Development Bank, and other DFIs have expressed interest in funding South Africa's transmission expansion as part of the Just Energy Transition Partnership (JETP) — the R150+ billion international climate finance package.</li>
+              <li><strong>Private sector / IPP participation:</strong> There is growing discussion of allowing private transmission developers to build lines under Build-Operate-Transfer (BOT) or Independent Transmission Project (ITP) models — similar to how IPPs built generation. This would bring private capital and construction expertise into a sector that has been a state monopoly since 1923.</li>
+              <li><strong>Tariff increases:</strong> Ultimately, transmission investment is recovered through NERSA-approved tariffs charged to electricity consumers. Every rand spent on transmission shows up in electricity prices. The TDP implies upward pressure on tariffs — the unavoidable cost of building the infrastructure to end load shedding.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3" style="background: #fff5f5; border-left: 6px solid #c62828;">
+        <strong>The funding gap is real:</strong> The R20 billion/year required for transmission is roughly 4–5× what has been spent annually in recent years. NTCSA does not yet have the balance sheet, the institutional capacity, or the regulatory certainty to raise and deploy capital at this scale. Bridging this gap — finding the money, building the procurement systems, and scaling up the construction industry — is arguably the single hardest challenge in the entire TDP.
+      </div>
+    </div>
+
+    <!-- ========== PART 6: THE CONSTRAINTS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Part 6: The Constraints — What Could Stop the TDP From Happening</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The TDP is a plan, not a guarantee. Multiple constraints threaten its delivery — and if they are not addressed, the grid capacity crunch will persist regardless of what the TDP says on paper.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">1. Servitudes & Land Access</h6>
+            <p class="small mb-0">A 400 kV transmission line needs a servitude (right-of-way corridor) typically 40–80 metres wide, stretching for hundreds of kilometres. Acquiring these servitudes involves negotiating with thousands of individual landowners, tribal authorities, and municipalities — any one of whom can delay the process by years through legal challenges. The Northern Cape alone requires new servitudes across vast tracts of sparsely populated but legally complex land. Environmental impact assessments (EIAs) add 2–4 years before construction can even begin. The TDP's timelines assume servitude acquisition proceeds smoothly; historical experience suggests it will not.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">2. Supply Chain & Manufacturing Capacity</h6>
+            <p class="small mb-0">14,000 km of transmission line requires enormous quantities of specialised materials: aluminium conductor steel-reinforced (ACSR) cable, steel lattice towers, insulators, transformer cores, circuit breakers, and protection relays. The global supply chain for high-voltage equipment is constrained — the world is electrifying, and every country wants transformers and switchgear. Lead times for large power transformers (400 kV and 765 kV) can exceed 3 years from order to delivery. South Africa does not manufacture 765 kV transformers domestically; they must be imported, primarily from China, South Korea, and Europe. A global supply crunch could delay the TDP by years regardless of funding availability.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="corridor-card h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color:#002395;">3. Construction Industry Capacity</h6>
+            <p class="small mb-0">Building 14,000 km of transmission line in 10 years means constructing roughly 1,400 km per year — every year — for a decade. South Africa's current transmission construction capacity is approximately 400–600 km per year. The TDP requires more than doubling the construction industry's throughput, which means more contractors, more skilled workers (linesmen, riggers, substation technicians), more specialised equipment (tension stringing machines, helicopter lifting for tower erection in inaccessible terrain), and more project management capacity. These cannot be created overnight. The skills shortage is particularly acute: South Africa lost many experienced transmission engineers and technicians during the 2010s when capital expenditure was low and the industry contracted.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">4. Regulatory & Tariff Uncertainty</h6>
+            <p class="small mb-0">NTCSA's revenue comes from NERSA-approved transmission tariffs. NERSA has historically been slow to approve tariff increases, and the regulatory methodology for transmission is still being developed post-unbundling. NTCSA cannot borrow R200 billion unless lenders have confidence that it will have a predictable, adequate revenue stream to service the debt. If NERSA suppresses tariffs — as it has done with Eskom's generation tariffs for years — NTCSA will be unable to raise the capital needed to execute the TDP. The independence and credibility of the transmission tariff-setting process is therefore directly linked to whether the TDP gets built.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="corridor-card h-100" style="border-color: #FFCD00;">
+            <h6 class="fw-bold" style="color: #b8860b;">5. The Chicken-and-Egg Problem with IPPs</h6>
+            <p class="small mb-0">Private generators (IPPs) will not build power plants unless they have a grid connection. NTCSA will not build transmission lines unless it has committed generation to connect. This is a classic infrastructure coordination problem: both sides need the other to commit first. The solution is for NTCSA to build transmission ahead of demand — "anticipatory investment" — which requires confidence that the generation will materialise. But if the IRP procurement is delayed (as it often has been), NTCSA risks building lines to nowhere. If procurement accelerates, NTCSA risks not having lines ready in time. Getting this balance right — building just enough transmission, just ahead of generation — is the central planning challenge of the TDP.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 7: PEAK DEMAND (IMAGE) ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 7: Peak Demand — What the Grid Must Handle</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The TDP models multiple demand scenarios, from low growth (stagnant economy) to high growth (rapid electrification and industrial expansion). Peak demand on the South African grid currently sits at approximately <strong>34–37 GW</strong> (winter peak). The TDP projects this rising to <strong>40–50 GW by 2034</strong> depending on the scenario — driven by population growth, electrification of transport and heating, and new energy-intensive industries (data centres, hydrogen electrolysis, mineral processing).</p>
+
+      <figure class="tdp-figure">
+        <img src="images/tdp2024/Peak_Demand_2034.png" alt="Peak Demand Outlook to 2034">
+        <figcaption>⚡ TDP 2024 Figure: Peak demand outlook and transmission requirement. The rising trend reflects both economic recovery and structural electrification. The transmission network must be sized for the highest hour of the year — not the average.</figcaption>
+      </figure>
+
+      <div class="alert alert-warning small mt-3" style="border: 3px solid #000; border-radius: 0; box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+        <strong>⚠️ Winter peak vs. summer:</strong> South Africa's electricity demand is highly seasonal — winter peaks can be 5–7 GW higher than summer valleys, driven by electric heating (especially in Gauteng and the Free State, where winter temperatures drop below freezing). The transmission network must be sized for the winter peak, meaning significant capacity sits underutilised in summer. As the generation mix shifts to solar (which produces more in summer), the seasonal mismatch between generation and load becomes a critical planning variable — and one that transmission must bridge.
+      </div>
+    </div>
+
+    <!-- ========== PART 8: CROSS-BORDER ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 8: Regional Integration — South Africa as the SAPP Anchor</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's transmission grid is not an island. It is the anchor of the <strong>Southern African Power Pool (SAPP)</strong>, which connects 12 countries from South Africa to the DRC. The TDP includes interconnections with neighbouring countries — existing links to Mozambique (Cahora Bassa HVDC), Zimbabwe, Botswana, Namibia, Lesotho, and eSwatini, plus planned new links to strengthen regional trade.</p>
+
+      <p>Regional integration matters for the TDP because:</p>
+      <ul>
+        <li><strong>Imports:</strong> South Africa imports hydropower from Cahora Bassa (Mozambique) via a 1,400 km HVDC line — one of the first HVDC systems in the world (commissioned 1978). Additional imports are possible from the Grand Inga project (DRC) if it is ever built, from gas-fired generation in Mozambique's Rovuma Basin, and from Zambia/Zimbabwe's hydro resources.</li>
+        <li><strong>Exports:</strong> South Africa exports power to its neighbours — Botswana, Namibia, Zimbabwe, Lesotho, eSwatini — and transmission constraints on these interconnectors limit trade volumes.</li>
+        <li><strong>Grid stability:</strong> The interconnections provide frequency support and emergency reserves. During South Africa's load shedding crisis, imports from Cahora Bassa have provided crucial marginal supply.</li>
+      </ul>
+
+      <p>The TDP must plan for these interconnections — ensuring that new domestic corridors also strengthen regional links, and that South Africa's grid can both export surplus renewable power (when the wind blows and the sun shines) and import firm power (hydro, gas) when domestic resources are insufficient.</p>
+    </div>
+
+    <!-- ========== PART 9: TIMELINE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 9: Implementation — What Gets Built When</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="table-responsive">
+        <table class="table table-bordered small">
+          <thead style="background: #002395; color: white;">
+            <tr><th>Timeline</th><th>Projects</th><th>Key Milestones</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold">2025–2027 (Short-Term)</td>
+              <td>Gauteng ring reinforcement, transformer upgrades at existing substations, urgent line refurbishments, connection of Bid Window 7 IPPs</td>
+              <td>NERSA tariff methodology finalised for NTCSA; first IPP connections under new grid access rules; World Bank/DFI funding commitments secured</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">2027–2030 (Medium-Term)</td>
+              <td>Cape Corridor Phase 1 (400 kV), West Coast Corridor, Mpumalanga reinforcement (synchronous condensers, line upgrades), first 765 kV expansion planning</td>
+              <td>First major new corridor energised; Northern Cape solar begins large-scale power evacuation; coal decommissioning begins at Komati-scale stations</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">2030–2034 (Long-Term)</td>
+              <td>Cape Corridor Phase 2 (potential 765 kV upgrade), additional cross-border interconnectors, Gauteng ring completion, Eastern Cape wind corridor reinforcement</td>
+              <td>14,000 km target approached; grid capable of supporting 40–50 GW peak demand; multiple IPPs connected across all provinces; SAPP trade volumes increase materially</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4 p-3" style="background: #f0faf4; border-left: 6px solid #007A4D;">
+        <strong>The critical path runs through the Cape Corridor.</strong> If the Cape Corridor is delayed — by servitude disputes, EIA challenges, supply chain bottlenecks, or funding gaps — the entire IRP renewable energy programme is delayed with it. The Cape Corridor is the single most important infrastructure project in the TDP, and arguably one of the most important projects in the country. Everything else depends on it.
+      </div>
+    </div>
+
+    <!-- ========== PART 10: WHY IT MATTERS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 10: The Bottom Line — Why the TDP Is Make-or-Break</h3>
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D; background: #f0faf4;">
+      <p class="fw-bold fs-5">The Transmission Development Plan is the most important infrastructure document in South Africa that almost no one reads.</p>
+      <p>The IRP tells you what generation will be built. The TDP tells you whether it can actually be connected. Without the TDP, the IRP is a fantasy — gigawatts of solar and wind capacity sitting in the Northern Cape with no wires to carry the power to Gauteng.</p>
+
+      <p>The TDP's success or failure will determine:</p>
+      <ul>
+        <li><strong>Whether load shedding ends permanently:</strong> You can build all the generation you want; if the grid can't move the power, the lights stay off. The TDP is the binding constraint on ending load shedding.</li>
+        <li><strong>Whether the Just Energy Transition happens:</strong> The R150+ billion in international climate finance pledged to South Africa depends on the country demonstrating it can build the transmission infrastructure to integrate renewables. No grid, no transition — and no climate money.</li>
+        <li><strong>Whether South Africa's economy grows:</strong> Electricity is an input to everything. If the grid is constrained, economic growth is constrained. The World Bank estimates that South Africa's GDP growth is 1–2% lower than it would be if the electricity supply were reliable. Fixing the grid is not an engineering project — it is a precondition for economic recovery.</li>
+        <li><strong>Whether NTCSA succeeds as an independent entity:</strong> The unbundling of Eskom's transmission arm into NTCSA is one of the most important institutional reforms in the energy sector. If NTCSA can execute the TDP — raising capital, building lines, connecting IPPs — it validates the unbundling model. If it cannot, the political pressure to re-integrate Eskom will be overwhelming.</li>
+      </ul>
+
+      <p>The TDP is not just a technical plan for wires and substations. It is the physical manifestation of South Africa's energy future. The next decade will determine whether that future is one of abundant, clean, reliable electricity — or one where the grid itself becomes the bottleneck that keeps the country in darkness.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="https://www.ntcsa.co.za/tdp/transmission-development-plan-2025-2034/" target="_blank">NTCSA — Transmission Development Plan 2025–2034 (Full Document)</a></li>
+      <li><a href="IRP2025.html">Integrated Resource Plan (IRP 2025)</a></li>
+      <li><a href="eskom.html">Eskom Overview</a></li>
+      <li><a href="sawem.html">SAWEM — South African Wholesale Electricity Market</a></li>
+      <li><a href="ntcsa.html">National Transmission Company of South Africa (NTCSA)</a></li>
+      <li><a href="power.html">Power Overview</a></li>
+    </ul>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
