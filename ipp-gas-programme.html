@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gas IPP Programme • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .sa-green { color: #007A4D; }
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 0.8rem; border-left: 3px solid #007A4D; }
+    .timeline-year { font-weight: 700; color: #007A4D; }
+    .insight-box { background: #e3f2fd; border-left: 4px solid #1565c0; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .alert-box { background: #fff3e0; border-left: 4px solid #e65100; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
+        <a href="index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3 px-4">
+    <div class="p-4 mb-3" style="background: linear-gradient(135deg, #fff8e1, #ffe0b2); border-radius: 16px;">
+      <h1 class="fw-bold">🔥 Gas IPP Procurement Programme (GIPPPP)</h1>
+      <p class="mb-0">South Africa's first dedicated gas-to-power independent power producer programme — 2,000 MW of new generation capacity from land-based natural gas facilities, launched in December 2023. A landmark moment in the country's energy transition and the first competitive procurement of gas-fired power in South African history.</p>
+    </div>
+
+    <!-- Quick Facts -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">Capacity</div>
+          <div class="fw-bold fs-4 sa-green">2,000 MW</div>
+          <small class="text-muted">Bid Window 1</small>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">RFP Released</div>
+          <div class="fw-bold fs-4 sa-green">14 Dec 2023</div>
+          <small class="text-muted">Launch date</small>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">Bid Submission</div>
+          <div class="fw-bold fs-4 sa-green">30 Aug 2024</div>
+          <small class="text-muted">Deadline</small>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">PPA Term</div>
+          <div class="fw-bold fs-4 sa-green">Up to 20 Years</div>
+          <small class="text-muted">With Eskom</small>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">Procurer</div>
+          <div class="fw-bold fs-4 sa-green">DMRE</div>
+          <small class="text-muted">Department</small>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow-sm text-center p-3">
+          <div class="text-muted small text-uppercase">Buyer</div>
+          <div class="fw-bold fs-4 sa-green">Eskom</div>
+          <small class="text-muted">Offtaker</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">📖 What Is the Gas IPP Procurement Programme (GIPPPP)?</h4>
+        <p>The <strong>Gas IPP Procurement Programme (GIPPPP)</strong> is South Africa's first competitive procurement programme for <strong>gas-fired independent power generation</strong>. Launched by the Department of Mineral Resources and Energy (DMRE) on 14 December 2023, the programme is modelled on the highly successful <strong>Renewable Energy IPP Programme (REIPPPP)</strong> — which has procured over 6,000 MW of wind and solar capacity since 2011 — but applies the same competitive bidding framework to natural gas.</p>
+        <p>The first bid window (Bid Window 1) calls for <strong>2,000 MW</strong> of new generation capacity from land-based gas-fired power plants. This is a <strong>site-agnostic procurement</strong> — bidders can propose projects anywhere within South Africa's borders, at any location where gas can be delivered and grid connection is feasible. The one geographic exclusion is <strong>Zone 13</strong> near the Port of Ngqura (Coega, Eastern Cape), where a separate dedicated procurement process will be run for gas-to-power capacity at that strategic location.</p>
+        <p>The programme represents a fundamental shift in South Africa's electricity supply industry. It opens the gas-to-power sector to <strong>private investment and competition</strong>, breaking Eskom's monopoly on thermal generation and creating a market for independent gas power producers — similar to how the REIPPPP revolutionised renewable energy in the country.</p>
+        <p>The official programme portal is at <strong><a href="https://www.ipp-gas.co.za/" target="_blank">www.ipp-gas.co.za</a></strong>, where all RFP documentation, bidder registration, timelines, and programme updates are published.</p>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">⏳ Programme Timeline</h4>
+
+        <div class="timeline-item">
+          <div class="timeline-year">2010–2012 — IRP 2010 Identifies Gas</div>
+          <p class="small mb-0">The Integrated Resource Plan (IRP) 2010 identified natural gas as a potential fuel source for mid-merit and peaking generation. The plan allocated initial capacity for gas-fired power, but the procurement mechanism had not yet been developed.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2015–2016 — Gas-to-Power IPP Conceptualised</div>
+          <p class="small mb-0">The Department of Energy (now DMRE) began developing a Gas-to-Power IPP Programme modelled on the REIPPPP. An <strong>RFI was issued in 2016</strong>, generating 23 responses. The initial target was 3,126 MW. The programme was structured and ready for launch but was delayed by political instability, regulatory uncertainty, and the state capture crisis.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2019–2022 — Delays & IRP Revisions</div>
+          <p class="small mb-0">The IRP 2019 reduced gas allocations, prioritising renewables and battery storage. The programme stalled. Eskom's financial crisis created uncertainty about the offtaker's creditworthiness. The Gas Amendment Bill and Gas Master Plan moved slowly through government processes. The COVID-19 pandemic added further delays.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022–2023 — Revived Under Energy Crisis</div>
+          <p class="small mb-0">With South Africa experiencing Stage 6+ load shedding, gas-to-power was revived as a priority. The DMRE, under Minister Gwede Mantashe and with the newly appointed Electricity Minister Kgosientsho Ramokgopa, accelerated the programme. The Gas Master Plan was released for public comment. The regulatory framework was finalised, and the RFP was prepared.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year"><strong>14 December 2023</strong> — RFP Released</div>
+          <p class="small mb-0">The DMRE officially launched the <strong>Request for Proposals (RFP)</strong> for GIPPPP Bid Window 1. The RFP calls for 2,000 MW of gas-fired generation capacity. This was a landmark moment — the first competitive procurement of gas power in South African history. The official programme website (<strong>www.ipp-gas.co.za</strong>) was launched to provide bid documentation, timelines, and programme information.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year"><strong>30 August 2024</strong> — Bid Submission Deadline</div>
+          <p class="small mb-0">The deadline for bidders to submit their proposals. Bids must include detailed technical specifications, financial models, gas supply agreements, environmental approvals, grid connection agreements, and economic development commitments. The evaluation process begins after this date.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year"><strong>~November 2024</strong> — Preferred Bidder Announcement (Target)</div>
+          <p class="small mb-0">Approximately three months after the bid submission deadline, the DMRE will announce the <strong>Preferred Bidders</strong> — the successful projects selected through the competitive evaluation process. These projects will proceed to final negotiations.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year"><strong>~March 2025</strong> — Financial Close (Target)</div>
+          <p class="small mb-0">Approximately four months after the Preferred Bidder announcement, successful projects are expected to reach <strong>Financial Close</strong> — the point at which all financing agreements are signed, all conditions precedent are met, and construction can begin. The 20-year Power Purchase Agreement (PPA) with Eskom becomes effective.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year"><strong>~2027–2030</strong> — First Power (Target)</div>
+          <p class="small mb-0">Depending on technology choice (OCGT vs CCGT), project size, and site preparation, the first plants from GIPPPP Bid Window 1 could begin delivering power to the grid within 3–5 years of financial close. OCGT peaking plants (faster to build) could come online by 2027–2028; larger CCGT baseload plants by 2029–2030.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RFP Structure -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">📋 RFP Structure — How the Bidding Works</h4>
+        <p>The GIPPPP RFP follows the same <strong>three-part structure</strong> used in all South African IPP procurement programmes:</p>
+
+        <h6 class="fw-bold mt-3">Part A — General Requirements, Rules & Provisions</h6>
+        <p>Provides general information to bidders — programme rules, legal framework, definitions, bidding procedures, timelines, eligibility criteria, and compliance requirements. Covers the overarching governance structure and the roles of the DMRE (procurer), Eskom (buyer/offtaker), and NERSA (regulator).</p>
+
+        <h6 class="fw-bold mt-3">Part B — Functionality Criteria (Qualification)</h6>
+        <p>Defines the <strong>functionality criteria</strong> that determine whether a bid is compliant and can proceed to evaluation. Key areas: technical capability, credible gas supply agreement, site control, environmental authorisation, grid connection budget quote from Eskom, and financial capability.</p>
+
+        <h6 class="fw-bold mt-3">Part C — Evaluation Criteria (Competition)</h6>
+        <p>Defines how compliant bids are evaluated and ranked. The primary criterion is <strong>price</strong> — the tariff (R/MWh) at which the bidder will sell electricity to Eskom under the 20-year PPA, adjusted for capital cost recovery, fuel cost pass-through, O&M, and return on investment. Under the current PPPFA regulations, <strong>economic development commitments are voluntary</strong> — bidders may elect to make commitments or not at all. 10 points are allocated to specific goals to promote Economic Development.</p>
+      </div>
+    </div>
+
+    <!-- Technology -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">🔧 What Will Be Built — Technologies</h4>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#f5f0f7;height:100%;">
+              <h6 class="fw-bold">⚡ OCGT Peaking</h6>
+              <p class="small mb-0">Open-cycle gas turbines, 50–150 MW/unit, 35–40% efficiency. Build time: 18–24 months. Runs during peak demand. Fastest to deploy — likely dominant technology in Bid Window 1 given urgency.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#f5f0f7;height:100%;">
+              <h6 class="fw-bold">🏭 CCGT Baseload</h6>
+              <p class="small mb-0">Combined-cycle gas + steam turbine, 300–600 MW/unit, 58–63% efficiency. Build time: 36–48 months. Most fuel-efficient but requires reliable, long-term pipeline gas supply from an LNG terminal.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#f5f0f7;height:100%;">
+              <h6 class="fw-bold">🔩 Reciprocating Engines</h6>
+              <p class="small mb-0">Modular gas engines, 10–20 MW/unit, 45–50% efficiency. Build time: 12–18 months. Highly flexible — fast ramp up/down. Ideal for complementing variable renewables. Can be trucked-in LNG.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gas Supply -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">⛽ The Gas Supply Question</h4>
+        <p>The single biggest challenge: South Africa has very limited domestic gas. Bidders must demonstrate credible supply:</p>
+        <ul>
+          <li><strong>Mozambique pipeline (Rompco):</strong> Existing infrastructure — Sasol's Pande/Temane supply. Declining reserves. Future Rovuma Basin (65+ TCF) could feed in, but delayed by insurgency.</li>
+          <li><strong>Imported LNG (FSRU or land-based):</strong> Requires new import terminal at Richards Bay, Ngqura, or Saldanha. Access to global LNG markets but exposed to price volatility (2022: $70/MMBTU).</li>
+          <li><strong>Trucked LNG / virtual pipeline:</strong> ISO containers shipped and trucked. Rapid deployment — 12–18 months. No major infrastructure needed. Higher logistics cost, limited scalability.</li>
+          <li><strong>Domestic gas:</strong> Karoo shale (10–15 years away), offshore Brulpadda/Luiperd (commercially uncertain). <strong>Not viable within GIPPPP timeline.</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- What It Means -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">🔍 What the GIPPPP Means for South Africa</h4>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#e8f5e9;height:100%;">
+              <h6 class="fw-bold">🏆 Competition Drives Costs</h6>
+              <p class="small mb-0">Modelled on the REIPPPP (which drove wind tariffs from R1.50 to R0.45/kWh), the GIPPPP uses competitive bidding to deliver the lowest possible gas-fired power costs.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#e3f2fd;height:100%;">
+              <h6 class="fw-bold">💨 Market-Making</h6>
+              <p class="small mb-0">20-year PPAs create guaranteed gas demand — the anchor needed to justify investment in LNG terminals, pipelines, and distribution networks.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#fff3e0;height:100%;">
+              <h6 class="fw-bold">⚡ Grid Flexibility</h6>
+              <p class="small mb-0">Gas provides dispatchable, flexible capacity to balance intermittent renewables as South Africa targets ~33 GW of wind and solar by 2030.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#ffebee;height:100%;">
+              <h6 class="fw-bold">⚠️ Gas Supply Risk</h6>
+              <p class="small mb-0">The programme procures power from a fuel that does not yet flow reliably in South Africa. No LNG infrastructure exists. Mozambique supply is uncertain. Global prices are volatile.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#e8eaf6;height:100%;">
+              <h6 class="fw-bold">📊 Eskom Credit Risk</h6>
+              <p class="small mb-0">R420B+ debt, negative credit rating. Can Eskom honour 20-year PPAs? Government guarantees may be needed — unresolved question that bidders must price in.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded" style="background:#f5f0f7;height:100%;">
+              <h6 class="fw-bold">🏗️ Investment & Jobs</h6>
+              <p class="small mb-0">2,000 MW = billions in construction investment, thousands of jobs, and voluntary economic development commitments (local content, skills, enterprise development).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Further Reading -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">📚 Official Sources</h4>
+        <ul>
+          <li><strong>GIPPPP Official Website:</strong> <a href="https://www.ipp-gas.co.za/" target="_blank">www.ipp-gas.co.za</a></li>
+          <li><strong>IPP Office:</strong> <a href="https://www.ipp-projects.co.za/" target="_blank">www.ipp-projects.co.za</a></li>
+          <li><strong>Gas Master Plan 2024</strong> — DMRE</li>
+          <li><strong>IRP 2023/2024 (Draft)</strong> — DMRE</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="data-source-footer mb-4">
+      <strong>Sources:</strong> Official GIPPPP programme documents (www.ipp-gas.co.za), IPP Office presentations, DMRE Gas Master Plan, IRP 2019/2023, NERSA gas regulatory framework, and industry analysis.
+    </div>
+  </div>
+</body>
+</html>
