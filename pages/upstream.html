@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upstream Gas • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #e65100; }
+    .report-img { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.15); max-width: 100%; }
+    .report-caption { font-size: 0.8rem; color: #555; font-style: italic; margin-top: 6px; }
+    .discovery-card { background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 1rem; transition: all 0.15s; }
+    .discovery-card:hover { border-color: #e65100; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="gas.html" class="btn btn-light btn-sm">🔥 Gas</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #e65100;">🛢️ Upstream Gas</h1>
+    <h5 class="text-muted mb-4">South Africa's Discoverable Gas Resources — Onshore, Offshore, and What Can Be Imported</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">South Africa sits on significant undiscovered and partially discovered gas resources across multiple basins — from the onshore Karoo shale (209 Tcf recoverable) to deep-water offshore discoveries (3.4 Tcf at Brulpadda/Luiperd) to the emerging Orange Basin play on the Atlantic margin. Combined with pipeline imports from Mozambique (currently supplying ~80% of SA's gas) and planned LNG import terminals, the country's gas future is a complex puzzle of domestic exploration, regional integration, and global LNG markets. This page maps every major gas source — domestic and import — that could supply South Africa's energy transition.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Current SA gas consumption:</strong> ~0.16 Tcf/yr<br>
+          <strong>Current imports (Mozambique):</strong> ~70-80% of supply<br>
+          <strong>Mozambique gas cliff:</strong> ~2028 (Pande/Temane decline)<br>
+          <strong>Total domestic resource potential:</strong> >250 Tcf (mostly Karoo)
+        </div>
+      </div>
+    </div>
+
+    <!-- Map of all gas sources -->
+    <div class="text-center mb-5">
+      <img src="../images/gas/out-eniq-basin.jpg" alt="Outeniqua Basin Overview" class="report-img" style="max-width: 700px;">
+      <div class="report-caption">Regional map showing South Africa's offshore sedimentary basins. The Outeniqua Basin (south coast, Brulpadda/Luiperd) and Orange Basin (west coast, Namibia border) are the two most prospective offshore areas. Source: PASA / geoscience publications.</div>
+    </div>
+
+    <!-- All Gas Sources Grid -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">🇿🇦 Domestic Gas Resources</h3>
+    <div class="row g-3 mb-5">
+      <div class="col-md-6">
+        <a href="shale-gas-karoo.html" class="text-decoration-none">
+          <div class="discovery-card h-100">
+            <h5>🪨 Karoo Shale Gas</h5>
+            <p class="small text-muted mb-1"><strong>Onshore · Permian Whitehill Formation · 1.5-4 km depth</strong></p>
+            <p class="mb-0" style="font-size: 0.85rem;">370 Tcf in place · 209 Tcf recoverable (PASA). One of the world's largest untapped shale gas resources. No commercial wells drilled. 2026 moratorium lifting.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="brulpadda-luiperd.html" class="text-decoration-none">
+          <div class="discovery-card h-100">
+            <h5>🌊 Brulpadda & Luiperd (Outeniqua Basin)</h5>
+            <p class="small text-muted mb-1"><strong>Offshore deep-water · Block 11B/12B · 1,800m depth · ~175 km offshore</strong></p>
+            <p class="mb-0" style="font-size: 0.85rem;">~3.4 Tcf recoverable + 200 MMbbl condensate. First deep-water discoveries (2019-2020). TotalEnergies exited 2024. Development stalled.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="orange-basin.html" class="text-decoration-none">
+          <div class="discovery-card h-100">
+            <h5>🟠 Orange Basin (Atlantic Margin)</h5>
+            <p class="small text-muted mb-1"><strong>Offshore West Coast · Namibia border · Cretaceous turbidites</strong></p>
+            <p class="mb-0" style="font-size: 0.85rem;">Emerging play — massive Namibian discoveries (Venus, Graff, Jonker) by TotalEnergies and Shell just across the maritime border. SA side unexplored but geologically continuous. Potentially the largest prize of all.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🛢️ PetroSA Mossel Bay (FA-EM, F-O)</h5>
+          <p class="small text-muted mb-1"><strong>Offshore · Bredasdorp Basin · ~100-150m depth</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">SA's only producing gas fields, feeding the Mossel Bay GTL refinery since 1992. Near depletion. Current production ~20-30 Bcf/yr, declining rapidly. PetroSA seeking import LNG to keep GTL plant running.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>⛏️ Coal Bed Methane (Waterberg, Limpopo)</h5>
+          <p class="small text-muted mb-1"><strong>Onshore · Karoo-age coal seams · Lephalale basin</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Coal-bed methane (CBM) in the Waterberg coalfields. May require fracking. Environmental authorisation applications submitted. Potential resource: unquantified but possibly significant given massive coal reserves.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🪸 Durban Basin & East Coast</h5>
+          <p class="small text-muted mb-1"><strong>Offshore · KwaZulu-Natal · Mesozoic rift basins</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Unexplored Mesozoic rift basins offshore Durban. No discoveries to date. Seismic data limited. Potential analogous to Mozambique's Rovuma Basin (100+ Tcf). Long-term speculative play.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">🚢 Import Sources</h3>
+    <div class="row g-3 mb-5">
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🇲🇿 Mozambique Pipeline (ROMPCO)</h5>
+          <p class="small text-muted mb-1"><strong>Pande/Temane fields · 865 km pipeline to Secunda · Operating since 2004</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Currently supplies ~70-80% of SA's gas to Sasol and industrial users in Mpumalanga/Gauteng. Production declining — "gas cliff" expected ~2028. New gas from Rovuma Basin (Coral South FLNG, 2022) not yet contracted to SA.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🚢 LNG Imports (Planned)</h5>
+          <p class="small text-muted mb-1"><strong>Richards Bay (Coega) · Saldanha Bay · Matola (Maputo) · Mossel Bay</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Multiple LNG import terminal proposals to replace declining Mozambique pipeline supply. Coega/Richards Bay FSRU is the most advanced. Mossel Bay terminal to feed PetroSA GTL. LNG imports likely to dominate SA gas supply from 2028 onward.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🇳🇦 Namibian Gas (Future)</h5>
+          <p class="small text-muted mb-1"><strong>Orange Basin · Venus & Graff discoveries · Kudu gas field</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Namibia's massive Orange Basin discoveries (TotalEnergies' Venus, Shell's Graff/Jonker — billions of barrels) could supply SA via pipeline or LNG. Kudu gas field (1.3 Tcf) has been considered for gas-to-power for decades. Regional integration potential.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="discovery-card h-100">
+          <h5>🌍 Global LNG Spot Market</h5>
+          <p class="small text-muted mb-1"><strong>Qatar · US Gulf Coast · West Africa · Flexible supply</strong></p>
+          <p class="mb-0" style="font-size: 0.85rem;">Once import terminals are built, SA can access global LNG spot markets. Current spot prices $8-14/MMBtu. Qatar and US Gulf Coast are dominant suppliers. SA would compete with European and Asian buyers — LNG is a globally traded commodity, not a captive resource.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">The Strategic Picture</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa faces a gas supply crisis. The Mozambique pipeline — providing 70-80% of the country's gas — will begin declining around 2028. Domestic discoveries (Brulpadda/Luiperd, 3.4 Tcf) are stranded without market infrastructure. The Karoo shale (209 Tcf) remains untested and politically contested. The Orange Basin — potentially SA's largest prize — is unexplored on the SA side while Namibia has made world-class discoveries just across the maritime border.</p>
+      <p><strong>The most likely near-term pathway:</strong> LNG imports replace declining Mozambique pipeline gas (~2028-2030), while domestic exploration continues (Orange Basin drilling, Karoo scientific programme, replacement operator for Brulpadda/Luiperd). In the medium term (2030s), a hybrid model emerges: LNG imports provide baseload supply security while domestic gas (offshore Orange Basin, potentially Karoo) begins to contribute. Long-term: if the Orange Basin delivers Namibian-scale discoveries, SA could achieve gas self-sufficiency. If not, the country remains dependent on global LNG markets.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources:</strong> PASA · US EIA World Shale Gas Resources (2013) · TotalEnergies · DMRE Gas Master Plan · ROMPCO pipeline data · Upstream newspaper · CSIR SEA for Shale Gas (2016)</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

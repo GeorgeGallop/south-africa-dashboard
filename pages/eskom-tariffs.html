@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eskom Tariff Forward Curve • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --sa-green: #007A4D;
+      --sa-gold: #FFCD00;
+      --sa-blue: #002395;
+      --sa-red: #E03C31;
+      --peak-color: #E03C31;
+      --std-color: #007A4D;
+      --offpk-color: #6C757D;
+    }
+    .hero-tariff {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 3rem 0;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 2rem;
+    }
+    .hero-tariff h1 { font-weight: 800; font-size: 2.8rem; }
+    .hero-tariff .subtitle { font-size: 1.1rem; opacity: 0.85; }
+    .stat-card {
+      border: 2px solid #dee2e6;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      background: white;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .stat-card .stat-value { font-size: 2rem; font-weight: 800; color: var(--sa-green); }
+    .stat-card .stat-label { font-size: 0.85rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .explainer-card {
+      background: white;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+      height: 100%;
+    }
+    .explainer-card .card-body { padding: 1.8rem; }
+    .explainer-card .icon-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+    
+    .chart-container { position: relative; height: 450px; width: 100%; }
+    .chart-container-sm { position: relative; height: 350px; width: 100%; }
+    .peakness-badge {
+      display: inline-block; padding: 0.35rem 0.8rem; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600; margin: 0.2rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .peakness-badge.active { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .peakness-badge:hover { transform: scale(1.05); }
+    
+    .consumer-card {
+      border: 2px solid #dee2e6; border-radius: 16px; padding: 1.5rem;
+      cursor: pointer; transition: all 0.2s; text-align: center;
+      background: white;
+    }
+    .consumer-card:hover { border-color: var(--sa-green); transform: translateY(-2px); }
+    .consumer-card.selected { border-color: var(--sa-green); background: #f0faf4; }
+    .consumer-card .consumption { font-size: 1.5rem; font-weight: 700; }
+    
+    .table-fwd { font-size: 0.85rem; }
+    .table-fwd th { background: #f8f9fa; position: sticky; top: 0; z-index: 2; }
+    
+    .data-source-footer {
+      background: #f8f9fa; border-radius: 12px; padding: 1rem; font-size: 0.85rem;
+      border: 1px solid #dee2e6;
+    }
+
+    .increase-badge {
+      display: inline-block; padding: 0.2rem 0.5rem; border-radius: 6px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .increase-high { background: #fee2e2; color: #dc2626; }
+    .increase-mid { background: #fef3c7; color: #d97706; }
+    .increase-low { background: #dcfce7; color: #16a34a; }
+
+    .unit-toggle .btn {
+      border-radius: 20px;
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+    }
+    .unit-toggle .btn.active {
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .fx-input {
+      max-width: 100px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+    <div class="d-flex gap-2">
+      <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+      <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-tariff">
+  <div class="container text-center">
+    <h1>⚡ Eskom Tariff Forward Curve</h1>
+    <p class="subtitle mx-auto" style="max-width: 700px;">
+      30 years of Eskom Megaflex tariffs (1996–2026) — extracted from official PDFs,
+      broken down by time-of-use peakness, and projected forward.
+    </p>
+    <div class="row mt-4 justify-content-center g-2">
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📄 30 PDFs extracted</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📊 6 TOU periods</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📈 Forward curve to 2030</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOGGLE BAR: Currency + Unit -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+      <div class="row g-2 align-items-center">
+        <div class="col-auto">
+          <strong class="small">💱 Currency:</strong>
+        </div>
+        <div class="col-auto">
+          <div class="btn-group btn-group-sm unit-toggle" role="group">
+            <button class="btn btn-success active" id="btnZar" onclick="setCurrency('ZAR')">🇿🇦 ZAR</button>
+            <button class="btn btn-outline-primary" id="btnUsd" onclick="setCurrency('USD')">🇺🇸 USD</button>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text">1 USD =</span>
+            <input type="number" id="exchangeRate" class="form-control fx-input" value="17.50" step="0.25" min="1" onchange="onSettingChange()">
+            <span class="input-group-text">ZAR</span>
+          </div>
+        </div>
+        <div class="col-auto ms-lg-auto">
+          <strong class="small">📏 Unit:</strong>
+        </div>
+        <div class="col-auto">
+          <div class="btn-group btn-group-sm unit-toggle" role="group">
+            <button class="btn btn-success active" id="btnKwh" onclick="setUnit('kWh')">kWh</button>
+            <button class="btn btn-outline-primary" id="btnMwh" onclick="setUnit('MWh')">MWh</button>
+          </div>
+        </div>
+        <div class="col-auto">
+          <span class="badge bg-light text-dark" id="unitLabel">c/kWh</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARIFFS EXPLAINED SIMPLY -->
+  <div class="row g-4 mb-5">
+    <div class="col-12">
+      <h2 class="fw-bold mb-1">🔌 Eskom Tariffs: Explained Simply</h2>
+      <p class="text-muted">The confusing bits, decoded for normal humans</p>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+      <div class="explainer-card card">
+        <div class="card-body">
+          <div class="icon-circle" style="background:#e8f5e9;"><span>💡</span></div>
+          <h5 class="fw-bold">What's a Tariff?</h5>
+          <p class="text-muted small">Think of it like an <strong>airline ticket</strong>. The price depends on <em>when</em> you fly (time of day), <em>how</em> you book (season), and <em>what class</em> (voltage level).</p>
+          <p class="small mb-0">Eskom's tariff is a bundle of separate charges: the energy itself, the grid to deliver it, the capacity to keep power plants running, and various levies.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+      <div class="explainer-card card">
+        <div class="card-body">
+          <div class="icon-circle" style="background:#fff3e0;"><span>⏰</span></div>
+          <h5 class="fw-bold">Time-of-Use (TOU)</h5>
+          <p class="text-muted small"><strong>Peak</strong> (🔴 most expensive) — Weekdays 6-9am, 5-8pm. When everyone's using power.</p>
+          <p class="text-muted small"><strong>Standard</strong> (🟢 mid) — The rest of the working day.</p>
+          <p class="small mb-0"><strong>Off-Peak</strong> (⚪ cheapest) — Nights and weekends. When demand is lowest.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+      <div class="explainer-card card">
+        <div class="card-body">
+          <div class="icon-circle" style="background:#e3f2fd;"><span>🌡️</span></div>
+          <h5 class="fw-bold">High vs Low Season</h5>
+          <p class="text-muted small"><strong>High Demand Season</strong> (Jun–Aug, winter) — more expensive because heaters are running.</p>
+          <p class="text-muted small"><strong>Low Demand Season</strong> (Sep–May) — cheaper rates.</p>
+          <p class="small mb-0">Peak rates in winter can be <strong>6× more</strong> than off-peak in summer!</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+      <div class="explainer-card card">
+        <div class="card-body">
+          <div class="icon-circle" style="background:#fce4ec;"><span>⚡</span></div>
+          <h5 class="fw-bold">Voltage & Distance</h5>
+          <p class="text-muted small"><strong>Higher voltage</strong> = cheaper per kWh (more efficient transmission). Large factories connect at >132kV and pay less.</p>
+          <p class="small mb-0"><strong>Closer to Joburg</strong> = cheaper. Beyond 900km adds ~3% transmission surcharge.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT MAKES UP YOUR BILL -->
+  <div class="card shadow-sm mb-4" style="border-left: 5px solid #007A4D;">
+    <div class="card-body">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span style="font-size: 2rem;">🧾</span>
+        <div>
+          <h5 class="fw-bold mb-0">What's Actually in Your Electricity Bill?</h5>
+          <p class="text-muted mb-0 small">A single c/kWh rate hides a lot of complexity. Here's what you're really paying for.</p>
+        </div>
+      </div>
+
+      <p class="small">The "energy charge" (Peak/Standard/Off-Peak) that's charted above is only <strong>one piece</strong> of your total bill. 
+      Eskom's Megaflex tariff bundles <strong>10+ separate charges</strong> into what you see on your invoice. 
+      For a typical large customer, the Active Energy Charge makes up about <strong>60-70%</strong> of the total — the rest is fixed and capacity charges you pay regardless of how much power you use.</p>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered small mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th style="width: 35%;">Charge Component</th>
+              <th style="width: 22%;">2025/26 Rate</th>
+              <th style="width: 43%;">What It Pays For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-primary">
+              <td colspan="3"><strong>⚡ Active Energy Charges</strong> — You only pay these when you consume power. Vary by time-of-day and season.</td>
+            </tr>
+            <tr>
+              <td>🔴 <strong>Peak Energy Charge</strong></td>
+              <td id="breakdownPeak"></td>
+              <td>Cost of generating electricity during high-demand hours (6-9am, 5-8pm weekdays). Generators running at full throttle — expensive fuel, older plants.</td>
+            </tr>
+            <tr>
+              <td>🟢 <strong>Standard Energy Charge</strong></td>
+              <td id="breakdownStd"></td>
+              <td>Generation cost during normal working hours. Base-load plants running efficiently.</td>
+            </tr>
+            <tr>
+              <td>⚪ <strong>Off-Peak Energy Charge</strong></td>
+              <td id="breakdownOffpk"></td>
+              <td>Cheapest electrons — overnight and weekends when demand is low and only the most efficient plants run.</td>
+            </tr>
+            <tr class="table-warning">
+              <td colspan="3"><strong>🏗️ Network & Capacity Charges</strong> — Paid on your maximum demand (kVA), not on energy used. These cover the grid.</td>
+            </tr>
+            <tr>
+              <td><strong>Generation Capacity Charge</strong></td>
+              <td id="bdGenCap">R 9.40 / kVA / month</td>
+              <td>Reserving power plant capacity to meet <em>your</em> peak demand. Think of it as a "seat fee" for the power station, even if you don't use it fully.</td>
+            </tr>
+            <tr>
+              <td><strong>TUoS (Transmission Network Charge)</strong></td>
+              <td id="bdTuos">R 48.10 / kVA / month</td>
+              <td>Transmission Use-of-System — the high-voltage power lines that carry electricity across provinces. Eskom's ~28,000 km of transmission lines.</td>
+            </tr>
+            <tr>
+              <td><strong>DUoS (Distribution Network Charge)</strong></td>
+              <td id="bdDuos">R 12.50 / kVA / month</td>
+              <td>Distribution Use-of-System — the lower-voltage network that delivers power to your specific location. The poles and cables on your street.</td>
+            </tr>
+            <tr>
+              <td><strong>Urban Low Voltage Subsidy</strong></td>
+              <td id="bdUlv">R 0.00 / kVA / month (<500V)</td>
+              <td>Cross-subsidy from higher-voltage customers to those connected at low voltage (<500V) who cost more to serve. Zero at <500V because you're already paying the full low-voltage cost.</td>
+            </tr>
+            <tr class="table-secondary">
+              <td colspan="3"><strong>📋 Fixed & Service Charges</strong> — Per-day fees for being connected.</td>
+            </tr>
+            <tr>
+              <td><strong>Service Charge</strong></td>
+              <td id="bdService">R 198.52 / day (>1 MVA)</td>
+              <td>Meter reading, billing, call centre, IT systems. Flat daily fee regardless of usage. For Key Customers it's R 1,118.46/day.</td>
+            </tr>
+            <tr>
+              <td><strong>Administration Charge</strong></td>
+              <td id="bdAdmin">R 19.37 / day</td>
+              <td>Account administration, credit management, and regulatory compliance costs.</td>
+            </tr>
+            <tr class="table-danger">
+              <td colspan="3"><strong>💰 Levies, Subsidies & Penalties</strong> — Policy-driven charges.</td>
+            </tr>
+            <tr>
+              <td><strong>Legacy Charge</strong></td>
+              <td id="bdLegacy"></td>
+              <td>Stranded costs from old power stations and past investment decisions. This is the "historical baggage" charge — paying for plants that may no longer run but haven't been written off. <em>Commonly called the "load-shedding tax."</em></td>
+            </tr>
+            <tr>
+              <td><strong>Electrification & Rural Subsidy (NN)</strong></td>
+              <td id="bdElecSub"></td>
+              <td>Cross-subsidy to connect rural households and schools to the grid. Urban customers pay extra so rural areas can have electricity.</td>
+            </tr>
+            <tr>
+              <td><strong>Affordability Subsidy</strong></td>
+              <td id="bdAffordSub"></td>
+              <td>Subsidy for low-usage residential customers (Homelight 20A). Large customers help keep power affordable for poor households.</td>
+            </tr>
+            <tr>
+              <td><strong>Ancillary Services (DSM)</strong></td>
+              <td id="bdDsm"></td>
+              <td>Demand Side Management — paying large customers to reduce usage during peak times. Cheaper than building new plants.</td>
+            </tr>
+            <tr>
+              <td><strong>Ancillary Services (ASF)</strong></td>
+              <td id="bdAsf"></td>
+              <td>Ancillary Service Fees — grid stability services (frequency control, voltage support, reserves). Like insurance for the grid.</td>
+            </tr>
+            <tr>
+              <td><strong>Energy Management Charge</strong></td>
+              <td id="bdEnergyMgmt"></td>
+              <td>NERSA regulatory levy — funding the energy regulator that oversees Eskom.</td>
+            </tr>
+            <tr>
+              <td><strong>Environmental Levy</strong></td>
+              <td id="bdEnvLevy"></td>
+              <td>Tax on electricity from fossil fuels (coal). Government's carbon pricing mechanism. Applied to non-municipal customers.</td>
+            </tr>
+            <tr>
+              <td><strong>Reactive Energy Charge</strong></td>
+              <td id="bdReactive">22.80 c/kVArh</td>
+              <td>Penalty for poor power factor (below 0.96). If your factory's electrical equipment causes inefficiency on the grid, you pay extra.</td>
+            </tr>
+            <tr>
+              <td><strong>Excess NMD Penalty</strong></td>
+              <td>3× normal demand charge</td>
+              <td>Triple penalty if you exceed your Notified Maximum Demand. Eskom planned capacity for you — going over costs 3×.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alert alert-light small mt-3 mb-0 border">
+        <strong>💡 Bottom line:</strong> For 2025/26 at Peak times, the <strong>Active Energy Charge (<span id="bdPeakInline"></span>)</strong> is the headline number, but the 
+        <strong>Legacy Charge (<span id="bdLegacyInline"></span>)</strong>, <strong>Generation Capacity (R 9.40/kVA)</strong>, and <strong>Network Charges (TUoS + DUoS = R 60.60/kVA)</strong> 
+        add significant fixed costs. A customer using 100,000 kWh/month at 5,000 kVA would pay roughly:
+        <strong><span id="bdExample"></span></strong>.
+        The "c/kWh you see" is only part of the story.
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY STATS -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value" id="statLatestPeak">684.59</div>
+        <div class="stat-label">Latest Peak Rate</div>
+        <small class="text-muted" id="statLatestLabel">2025/26, <500V, <300km (c/kWh)</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value" id="stat30yrPeak">7.16</div>
+        <div class="stat-label">1996 Peak Rate</div>
+        <small class="text-muted" id="statOldLabel">Before load-shedding era (c/kWh)</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value" id="statCAGR">15.9%</div>
+        <div class="stat-label">30-Year CAGR (Peak)</div>
+        <small class="text-muted">Compounded annual growth</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value" style="color: #dc2626;" id="statPeakRatio">6.0×</div>
+        <div class="stat-label">Peak vs Off-Peak (2025/26)</div>
+        <small class="text-muted">Winter peak vs summer off-peak</small>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <!-- FORWARD CURVE CHART -->
+  <h2 class="fw-bold mb-1">📈 Forward Curve: Eskom Megaflex Rates (1996–2030)</h2>
+  <p class="text-muted mb-3">Click a peakness badge to toggle visibility. Hover to see exact values.</p>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="d-flex flex-wrap gap-2 mb-3" id="peaknessControls">
+        <span class="peakness-badge active" style="background:#E03C31;color:white;" data-key="peak">🔴 Peak</span>
+        <span class="peakness-badge active" style="background:#007A4D;color:white;" data-key="standard">🟢 Standard</span>
+        <span class="peakness-badge active" style="background:#6C757D;color:white;" data-key="offpeak">⚪ Off-Peak</span>
+        <span class="peakness-badge" style="background:#f0ad4e;color:white;" data-key="increase">📊 Annual Increase %</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="fwdCurveChart"></canvas>
+      </div>
+      <div class="text-center mt-2">
+        <small class="text-muted">Dashed lines = forward projections · </small>
+        <small class="text-muted" id="chartUnitLabel">Units: ZAR c/kWh</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSUMER TYPE COMPARISON -->
+  <h2 class="fw-bold mb-1 mt-4">🏭 How Different Consumers Are Affected</h2>
+  <p class="text-muted mb-3">Select a consumer profile to see their blended rate over time.</p>
+
+  <div class="row g-3 mb-4" id="consumerProfiles">
+    <div class="col-6 col-lg-3">
+      <div class="consumer-card selected" data-profile="large-industry">
+        <div class="consumption">🏭</div>
+        <div class="fw-bold">Large Industry</div>
+        <small class="text-muted">100 GWh/yr, 30 MVA</small>
+        <div class="small text-muted">Peak: 50% · Std: 30% · OffPk: 20%</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="consumer-card" data-profile="medium-commercial">
+        <div class="consumption">🏢</div>
+        <div class="fw-bold">Medium Commercial</div>
+        <small class="text-muted">10 GWh/yr, 3 MVA</small>
+        <div class="small text-muted">Peak: 15% · Std: 55% · OffPk: 30%</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="consumer-card" data-profile="mine">
+        <div class="consumption">⛏️</div>
+        <div class="fw-bold">Mine</div>
+        <small class="text-muted">50 GWh/yr, 15 MVA</small>
+        <div class="small text-muted">Peak: 35% · Std: 40% · OffPk: 25%</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="consumer-card" data-profile="nightshift">
+        <div class="consumption">🌙</div>
+        <div class="fw-bold">Night-Shift Factory</div>
+        <small class="text-muted">20 GWh/yr, 5 MVA</small>
+        <div class="small text-muted">Peak: 5% · Std: 25% · OffPk: 70%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-5">
+    <div class="card-body">
+      <div class="chart-container-sm">
+        <canvas id="consumerChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <!-- DATA TABLE -->
+  <h2 class="fw-bold mb-1">📋 Full Rate History Table</h2>
+  <p class="text-muted mb-3">All 30 years of Eskom Megaflex rates, <span id="tableUnitDesc">c/kWh ZAR</span>.</p>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body p-0">
+      <div style="overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <table class="table table-sm table-hover table-fwd mb-0" id="rateTable">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Peak High</th>
+              <th>Std High</th>
+              <th>OffPk High</th>
+              <th>Peak Low</th>
+              <th>Std Low</th>
+              <th>OffPk Low</th>
+              <th>Increase</th>
+            </tr>
+          </thead>
+          <tbody id="rateTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOADS -->
+  <div class="row g-3 mb-5">
+    <div class="col-6 col-lg-3">
+      <a href="data/power/tariff_forward_curve.csv" class="btn btn-outline-dark w-100" download>📥 Forward Curve CSV</a>
+    </div>
+    <div class="col-6 col-lg-3">
+      <a href="data/power/tariff_all_years.csv" class="btn btn-outline-dark w-100" download>📥 All Years CSV</a>
+    </div>
+    <div class="col-6 col-lg-3">
+      <a href="data/power/tariff_increases.csv" class="btn btn-outline-dark w-100" download>📥 Increases CSV</a>
+    </div>
+    <div class="col-6 col-lg-3">
+      <a href="data/power/tariff_dataset.json" class="btn btn-outline-dark w-100" download>📥 Full JSON</a>
+    </div>
+  </div>
+
+  <!-- DATA SOURCES -->
+  <div class="data-source-footer mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center">
+      <div>
+        <strong>📚 Data Sources:</strong> 30 Eskom tariff PDFs (1996–2026), NERSA annual determinations.
+        Base rates: <strong>Megaflex Non-Local Authority, <500V, <300km</strong> (VAT excl).
+      </div>
+      <div class="mt-2 mt-md-0">
+        <a href="https://www.eskom.co.za/distribution/tariffs-and-charges/5189-2/" target="_blank" rel="noreferrer" class="btn btn-sm btn-outline-dark">🔗 Eskom Tariff History</a>
+      </div>
+    </div>
+    <div class="small text-muted mt-2">
+      <strong>Methodology:</strong> 2019/20+ rates directly from Megaflex TOU tables.
+      2015/16–2018/19 from Urban Large active energy charges. Pre-2015 rates derived from NERSA-approved increases.
+      Forward projections assume ~12.5% annual escalation.
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ============================================================
+// RAW DATA (always stored as ZAR c/kWh)
+// ============================================================
+const RAW_DATA = {
+  "2025/26": [684.59, 171.15, 114.09, 284.12, 159.74, 114.09, 12.74],
+  "2024/25": [611.94, 186.18, 101.66, 200.38, 138.26, 88.15, 12.74],
+  "2023/24": [542.79, 165.14, 90.17, 177.74, 122.64, 78.19, 18.65],
+  "2022/23": [457.47, 139.18, 76.00, 149.80, 103.36, 65.90, 9.61],
+  "2021/22": [417.36, 126.98, 69.34, 136.67, 94.30, 60.12, 15.06],
+  "2020/21": [362.73, 110.36, 60.26, 118.78, 81.96, 52.25, 8.76],
+  "2019/20": [333.51, 101.47, 55.41, 109.21, 75.36, 48.04, 9.41],
+  "2018/19": [73.31, 58.60, 43.90, 56.85, 46.50, 34.20, 5.23],
+  "2017/18": [69.67, 55.70, 41.73, 54.02, 43.22, 32.41, 2.20],
+  "2016/17": [68.17, 54.50, 40.83, 52.86, 42.29, 31.72, 9.40],
+  "2015/16": [62.31, 49.85, 37.38, 48.32, 38.66, 28.99, 9.69],
+  "2014/15": [55.50, 49.43, 37.07, 43.10, 36.60, 28.30, 5.85],
+  "2013/14": [52.43, 46.62, 34.97, 40.72, 34.52, 26.72, 8.00],
+  "2012/13": [47.60, 42.28, 31.71, 36.96, 31.32, 24.14, 16.00],
+  "2011/12": [41.03, 36.44, 27.33, 31.86, 27.00, 20.82, 24.80],
+  "2010/11": [32.88, 29.20, 21.90, 25.53, 21.64, 16.69, 24.80],
+  "2009/10": [26.35, 23.41, 17.56, 20.46, 17.34, 13.38, 31.30],
+  "2008/09": [20.07, 18.23, 14.63, 15.58, 13.99, 11.25, 27.50],
+  "2007/08": [15.74, 14.30, 11.47, 12.22, 10.97, 8.82, 14.10],
+  "2006/07": [13.79, 12.53, 10.05, 10.71, 9.61, 7.73, 5.10],
+  "2005/06": [13.12, 11.92, 9.56, 10.19, 9.14, 7.35, 4.10],
+  "2004/05": [12.60, 11.45, 9.18, 9.79, 8.78, 7.06, 4.10],
+  "2003/04": [12.11, 11.00, 8.82, 9.40, 8.43, 6.78, 6.50],
+  "2002/03": [11.37, 10.33, 8.28, 8.83, 7.92, 6.37, 9.70],
+  "2001/02": [10.36, 9.42, 7.55, 8.05, 7.22, 5.81, 8.80],
+  "2000/01": [9.53, 8.66, 6.94, 7.40, 6.64, 5.34, 7.80],
+  "1999/00": [8.84, 8.03, 6.44, 6.86, 6.16, 4.95, 6.80],
+  "1998/99": [8.27, 7.52, 6.03, 6.43, 5.77, 4.64, 7.50],
+  "1997/98": [7.70, 7.00, 5.61, 5.98, 5.37, 4.32, 7.50],
+  "1996/97": [7.16, 6.51, 5.22, 5.56, 4.99, 4.01, 4.00]
+};
+
+const FORWARD = {
+  "2026/27": [770.00, 195.00, 130.00, 320.00, 180.00, 129.00, 12.5],
+  "2027/28": [866.00, 220.00, 145.00, 360.00, 202.00, 144.00, 12.5],
+  "2028/29": [975.00, 245.00, 160.00, 405.00, 227.00, 159.00, 12.5],
+  "2029/30": [1096.00, 275.00, 180.00, 455.00, 255.00, 179.00, 12.5]
+};
+
+const ALL_DATA = {...RAW_DATA, ...FORWARD};
+const YEARS = Object.keys(ALL_DATA).sort((a,b) => parseInt(a) - parseInt(b));
+
+const CONSUMERS = {
+  'large-industry':    { name: 'Large Industry',       pct: [0.50, 0.30, 0.20], icon: '🏭' },
+  'medium-commercial': { name: 'Medium Commercial',    pct: [0.15, 0.55, 0.30], icon: '🏢' },
+  'mine':              { name: 'Mine',                 pct: [0.35, 0.40, 0.25], icon: '⛏️' },
+  'nightshift':        { name: 'Night-Shift Factory',  pct: [0.05, 0.25, 0.70], icon: '🌙' }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currency = 'ZAR';       // 'ZAR' or 'USD'
+let displayUnit = 'kWh';    // 'kWh' or 'MWh'
+let fxRate = 17.50;
+let visibleLines = { peak: true, standard: true, offpeak: true, increase: false };
+let activeProfile = 'large-industry';
+
+let fwdChart = null;
+let consumerChart = null;
+
+// ============================================================
+// CONVERSION HELPERS
+// ============================================================
+function conv(val) {
+  /** Convert ZAR c/kWh to display value based on currency & unit */
+  if (val === null || val === undefined) return null;
+  let v = val;
+  // c/kWh -> R/kWh or R/MWh
+  if (displayUnit === 'MWh') v = v * 10;  // c/kWh × 10 = R/MWh
+  else v = v / 100;                       // c/kWh ÷ 100 = R/kWh
+  // ZAR -> USD
+  if (currency === 'USD') v = v / fxRate;
+  return v;
+}
+
+function unitSuffix() {
+  if (currency === 'USD') {
+    return displayUnit === 'MWh' ? '$/MWh' : '$/kWh';
+  }
+  return displayUnit === 'MWh' ? 'R/MWh' : 'R/kWh';
+}
+
+function rawUnitSuffix() {
+  return currency === 'USD' ? 'c/kWh ZAR (base)' : 'c/kWh';
+}
+
+function fmtDisplay(val) {
+  if (val === null || val === undefined) return '—';
+  const v = conv(val);
+  if (v === null) return '—';
+  if (displayUnit === 'MWh') return v.toFixed(2);
+  return v.toFixed(4);
+}
+
+// ============================================================
+// CHART RENDERING
+// ============================================================
+function renderFwdCurve() {
+  const ctx = document.getElementById('fwdCurveChart').getContext('2d');
+  if (fwdChart) fwdChart.destroy();
+
+  const datasets = [];
+  const labels = YEARS;
+
+  const lineCfgs = [
+    { key: 'peak',     label: 'Peak (High Season)',     idx: 0, color: '#E03C31', dash: [] },
+    { key: 'standard', label: 'Standard (High Season)',  idx: 1, color: '#007A4D', dash: [] },
+    { key: 'offpeak',  label: 'Off-Peak (High Season)',  idx: 2, color: '#6C757D', dash: [] },
+    { key: 'increase', label: 'Annual Increase %',       idx: 6, color: '#f0ad4e', dash: [5,5], y2: true }
+  ];
+
+  for (const cfg of lineCfgs) {
+    const rawData = YEARS.map(y => (ALL_DATA[y] || [])[cfg.idx] ?? null);
+    const data = cfg.y2 ? rawData : rawData.map(v => v !== null ? conv(v) : null);
+
+    datasets.push({
+      label: cfg.label,
+      data: data,
+      borderColor: cfg.color,
+      backgroundColor: cfg.color + '22',
+      borderWidth: cfg.y2 ? 2 : 3,
+      pointRadius: cfg.y2 ? 2 : 4,
+      pointBackgroundColor: cfg.color,
+      pointBorderColor: 'white',
+      pointBorderWidth: 1.5,
+      tension: 0.3,
+      hidden: !visibleLines[cfg.key],
+      yAxisID: cfg.y2 ? 'y1' : 'y',
+      segment: {
+        borderDash: (ctx) => {
+          const y = labels[ctx.p0DataIndex];
+          return y in FORWARD && !cfg.y2 ? [8, 4] : [];
+        },
+        borderColor: (ctx) => {
+          const y = labels[ctx.p0DataIndex];
+          return y in FORWARD && !cfg.y2 ? cfg.color + '88' : cfg.color;
+        }
+      }
+    });
+  }
+
+  const unit = unitSuffix();
+
+  fwdChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const val = ctx.parsed.y;
+              if (ctx.dataset.label.includes('Increase')) return `${ctx.dataset.label}: ${val.toFixed(1)}%`;
+              return `${ctx.dataset.label}: ${val.toFixed(displayUnit === 'MWh' ? 2 : 4)} ${unit}`;
+            },
+            afterBody: (items) => {
+              const y = items[0].label;
+              if (y in FORWARD) return '📈 Forward projection';
+              return '';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            maxRotation: 45,
+            callback: (val, idx) => {
+              const y = labels[idx];
+              return y in FORWARD ? y + ' ↗' : y;
+            }
+          }
+        },
+        y: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: unit },
+          grid: { color: '#f0f0f0' }
+        },
+        y1: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Increase %' },
+          grid: { drawOnChartArea: false },
+          min: 0, max: 35
+        }
+      }
+    }
+  });
+
+  document.getElementById('chartUnitLabel').textContent = `Units: ${unit}`;
+}
+
+function renderConsumerChart(profile) {
+  const ctx = document.getElementById('consumerChart').getContext('2d');
+  if (consumerChart) consumerChart.destroy();
+
+  const pct = CONSUMERS[profile].pct;
+  const startIdx = YEARS.indexOf('2019/20');
+  const yrs = YEARS.slice(startIdx >= 0 ? startIdx : 0);
+
+  const blended = yrs.map(y => {
+    const d = ALL_DATA[y];
+    if (!d) return null;
+    const pk = conv(d[0]);
+    const st = conv(d[1]);
+    const op = conv(d[2]);
+    return pk * pct[0] + st * pct[1] + op * pct[2];
+  });
+
+  const colors = { 'large-industry': '#E03C31', 'medium-commercial': '#007A4D', 'mine': '#FFCD00', 'nightshift': '#002395' };
+  const bgColors = { 'large-industry': '#fee2e2', 'medium-commercial': '#dcfce7', 'mine': '#fef3c7', 'nightshift': '#e0e7ff' };
+  const unit = unitSuffix();
+
+  consumerChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: yrs,
+      datasets: [{
+        label: `${CONSUMERS[profile].icon} ${CONSUMERS[profile].name}`,
+        data: blended,
+        borderColor: colors[profile],
+        backgroundColor: bgColors[profile] + '55',
+        borderWidth: 4,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: colors[profile],
+        pointBorderColor: 'white',
+        pointBorderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Blended Rate: ${ctx.parsed.y.toFixed(displayUnit === 'MWh' ? 2 : 4)} ${unit}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { title: { display: true, text: unit }, grid: { color: '#f0f0f0' } }
+      }
+    }
+  });
+}
+
+// ============================================================
+// SETTINGS TOGGLES
+// ============================================================
+function setCurrency(c) {
+  currency = c;
+  document.getElementById('btnZar').className = c === 'ZAR' ? 'btn btn-success active' : 'btn btn-outline-primary';
+  document.getElementById('btnUsd').className = c === 'USD' ? 'btn btn-primary active' : 'btn btn-outline-primary';
+  onSettingChange();
+}
+
+function setUnit(u) {
+  displayUnit = u;
+  document.getElementById('btnKwh').className = u === 'kWh' ? 'btn btn-success active' : 'btn btn-outline-primary';
+  document.getElementById('btnMwh').className = u === 'MWh' ? 'btn btn-primary active' : 'btn btn-outline-primary';
+  document.getElementById('unitLabel').textContent = unitSuffix();
+  onSettingChange();
+}
+
+function onSettingChange() {
+  fxRate = parseFloat(document.getElementById('exchangeRate').value) || 17.50;
+  renderFwdCurve();
+  renderConsumerChart(activeProfile);
+  renderTable();
+  calcStats();
+  updateBreakdown();
+}
+
+// ============================================================
+// DATA TABLE (uses conversion)
+// ============================================================
+function renderTable() {
+  const tbody = document.getElementById('rateTableBody');
+  tbody.innerHTML = '';
+  const unit = unitSuffix();
+  document.getElementById('tableUnitDesc').textContent = unit;
+  
+  for (const y of YEARS) {
+    const d = ALL_DATA[y];
+    if (!d) continue;
+    const inc = d[6];
+    const incClass = inc >= 20 ? 'increase-high' : (inc >= 10 ? 'increase-mid' : 'increase-low');
+    const isFwd = y in FORWARD;
+    
+    const tr = document.createElement('tr');
+    tr.className = isFwd ? 'table-warning' : '';
+    tr.innerHTML = `
+      <td class="fw-bold">${y}${isFwd ? ' ↗' : ''}</td>
+      <td class="text-end">${fmtDisplay(d[0])}</td>
+      <td class="text-end">${fmtDisplay(d[1])}</td>
+      <td class="text-end">${fmtDisplay(d[2])}</td>
+      <td class="text-end">${fmtDisplay(d[3])}</td>
+      <td class="text-end">${fmtDisplay(d[4])}</td>
+      <td class="text-end">${fmtDisplay(d[5])}</td>
+      <td><span class="increase-badge ${incClass}">${inc.toFixed(1)}%</span></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// ============================================================
+// BREAKDOWN TABLE (dynamic units)
+// ============================================================
+const BREAKDOWN_CENTS = {
+  peak: 684.59, std: 171.15, offpk: 114.09,
+  legacy: 22.78, elecSub: 2.45, affordSub: 4.69,
+  dsm: 0.75, asf: 0.36, energyMgmt: 0.15, envLevy: 3.50
+};
+
+function updateBreakdown() {
+  const unit = unitSuffix();
+  const fmt = (v) => {
+    if (v === null || v === undefined) return '—';
+    const c = conv(v);
+    if (c === null) return '—';
+    return displayUnit === 'MWh' ? c.toFixed(2) : c.toFixed(4);
+  };
+
+  // Energy charges
+  document.getElementById('breakdownPeak').textContent = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
+  document.getElementById('breakdownStd').textContent = fmt(BREAKDOWN_CENTS.std) + ' ' + unit;
+  document.getElementById('breakdownOffpk').textContent = fmt(BREAKDOWN_CENTS.offpk) + ' ' + unit;
+
+  // Levies (also c/kWh based)
+  document.getElementById('bdLegacy').textContent = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
+  document.getElementById('bdElecSub').textContent = fmt(BREAKDOWN_CENTS.elecSub) + ' ' + unit;
+  document.getElementById('bdAffordSub').textContent = fmt(BREAKDOWN_CENTS.affordSub) + ' ' + unit;
+  document.getElementById('bdDsm').textContent = fmt(BREAKDOWN_CENTS.dsm) + ' ' + unit;
+  document.getElementById('bdAsf').textContent = fmt(BREAKDOWN_CENTS.asf) + ' ' + unit;
+  document.getElementById('bdEnergyMgmt').textContent = fmt(BREAKDOWN_CENTS.energyMgmt) + ' ' + unit;
+  document.getElementById('bdEnvLevy').textContent = fmt(BREAKDOWN_CENTS.envLevy) + ' ' + unit;
+
+  // Capacity charges (ZAR/kVA/month — convert to USD if needed)
+  const capCharges = [
+    { id:'bdGenCap', zar:9.40, label:'/kVA / month' },
+    { id:'bdTuos', zar:48.10, label:'/kVA / month' },
+    { id:'bdDuos', zar:12.50, label:'/kVA / month' },
+    { id:'bdUlv', zar:0.00, label:'/kVA / month (<500V)' },
+  ];
+  const svcCharges = [
+    { id:'bdService', zar:198.52, label:'/ day (>1 MVA)' },
+    { id:'bdAdmin', zar:19.37, label:'/ day' },
+  ];
+
+  if (currency === 'USD') {
+    capCharges.forEach(c => {
+      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
+    });
+    svcCharges.forEach(c => {
+      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
+    });
+  } else {
+    capCharges.forEach(c => {
+      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
+    });
+    svcCharges.forEach(c => {
+      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
+    });
+  }
+
+  // Bottom line inline
+  const peakUnit = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
+  const legacyUnit = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
+  document.getElementById('bdPeakInline').textContent = peakUnit;
+  document.getElementById('bdLegacyInline').textContent = legacyUnit;
+
+  // Example bill: 100,000 kWh/month, 5,000 kVA
+  const energyCost = conv(BREAKDOWN_CENTS.peak) * 100000 * 0.5 + conv(BREAKDOWN_CENTS.std) * 100000 * 0.3 + conv(BREAKDOWN_CENTS.offpk) * 100000 * 0.2;
+  const fixedCost = 9.40 * 5000 + 48.10 * 5000 + 12.50 * 5000 + 198.52 * 30 + 19.37 * 30;
+  const fixedCostDisplay = currency === 'USD' ? '$' + (fixedCost / fxRate).toFixed(0) : 'R' + fixedCost.toFixed(0);
+  const energyDisplay = currency === 'USD' ? '$' + energyCost.toFixed(0) : 'R' + energyCost.toFixed(0);
+  const totalDisplay = currency === 'USD' ? '$' + ((energyCost + fixedCost/fxRate)).toFixed(0) : 'R' + (energyCost + fixedCost).toFixed(0);
+  document.getElementById('bdExample').textContent = '~' + energyDisplay + '/month in energy + ~' + fixedCostDisplay + '/month in fixed/capacity = ~' + totalDisplay + ' total';
+}
+
+// ============================================================
+// STATS (uses conversion)
+// ============================================================
+function calcStats() {
+  const latest = RAW_DATA['2025/26'];
+  const oldest = RAW_DATA['1996/97'];
+  const unit = unitSuffix();
+  
+  document.getElementById('statLatestPeak').textContent = fmtDisplay(latest[0]);
+  document.getElementById('statLatestLabel').textContent = `2025/26, <500V, <300km (${unit})`;
+  document.getElementById('stat30yrPeak').textContent = fmtDisplay(oldest[0]);
+  document.getElementById('statOldLabel').textContent = `Before load-shedding era (${unit})`;
+  
+  const latestVal = conv(latest[0]);
+  const oldestVal = conv(oldest[0]);
+  const cagr = latestVal && oldestVal ? Math.pow(latestVal / oldestVal, 1/29) - 1 : 0;
+  document.getElementById('statCAGR').textContent = (cagr * 100).toFixed(1) + '%';
+  
+  const ratio = latest[0] / (latest[5] || latest[2]);
+  document.getElementById('statPeakRatio').textContent = ratio.toFixed(1) + '×';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('exchangeRate').value = fxRate;
+  calcStats();
+  renderTable();
+  renderFwdCurve();
+  renderConsumerChart(activeProfile);
+  updateBreakdown();
+
+  document.querySelectorAll('.peakness-badge').forEach(badge => {
+    badge.addEventListener('click', () => {
+      const key = badge.dataset.key;
+      visibleLines[key] = !visibleLines[key];
+      badge.classList.toggle('active');
+      renderFwdCurve();
+    });
+  });
+
+  document.querySelectorAll('.consumer-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.consumer-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      activeProfile = card.dataset.profile;
+      renderConsumerChart(activeProfile);
+    });
+  });
+});
+</script>
+</body>
+</html>

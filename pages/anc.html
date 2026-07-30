@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>African National Congress • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .anc-green { color: #006341; }
+    .anc-gold { color: #FFCD00; }
+    .anc-black { color: #000; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.fail { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .card-header.rise { background: #006341; color: white; border-bottom-color: #004d33; }
+    .card-header.era { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.corrupt { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.econ { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #006341;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #006341;
+    }
+    .quotation {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .stat-fail {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#founding">&#127891; Founding & Struggle</a>
+          <a class="nav-link" href="#mandela">&#9312; Mandela Era</a>
+          <a class="nav-link" href="#mbeki">&#9313; Mbeki Era</a>
+          <a class="nav-link" href="#zuma">&#9314; Zuma Era & State Capture</a>
+          <a class="nav-link" href="#ramaphosa">&#9315; Ramaphosa Era</a>
+          <a class="nav-link" href="#betrayal">&#10060; The Betrayal</a>
+          <a class="nav-link" href="#data">&#128202; Key Statistics</a>
+          <a class="nav-link" href="#sources">&#128218; Sources</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold anc-green">&#127988; The African National Congress</h1>
+        <p class="lead text-muted mb-3">A liberation movement turned governing party: the story of a dream betrayed, a country failed, and a once-moral organisation that became the vehicle for the largest looting of public resources since apartheid.</p>
+
+        <!-- ========================================================== -->
+        <!-- INTRODUCTION                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="introduction">
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Nelson Mandela, 1994:</strong><br>
+              &ldquo;Never, never and never again shall it be that this beautiful land will again experience the oppression of one by another.&rdquo;
+            </div>
+            <div class="quotation">
+              <strong>&#128218; Mamphela Ramphele, 2017:</strong><br>
+              &ldquo;The ANC has become a predator. It feeds on the resources of the state and has lost all moral authority to lead. The movement that freed us has become the greatest threat to our democracy.&rdquo;
+            </div>
+            <p>
+              The African National Congress (ANC) began as a liberation movement dedicated to ending apartheid and building a free, democratic, and prosperous South Africa for all its people. It achieved the first goal brilliantly. It has catastrophically failed the second. Under 30 years of uninterrupted ANC rule, South Africa has gone from one of the world's most hopeful societies to one of the most unequal, one of the most corrupt, and one of the fastest-declining economies on earth. This page tells that story with sources.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- FOUNDING & STRUGGLE                                         -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="founding">
+          <div class="card-header rise">&#127891; Founding & the Anti-Apartheid Struggle (1912–1994)</div>
+          <div class="card-body">
+
+            <div class="timeline-item">
+              <div class="timeline-year">1912 — ANC Founded</div>
+              <p class="small mb-0">The South African Native National Congress (SANNC) is founded in Bloemfontein, later renamed the African National Congress in 1923. Its mission: defend the rights of black South Africans against the segregationist Union of South Africa government. Founders include John Dube (first president), Sol Plaatje, and Pixley ka Isaka Seme. <a href="https://www.sahistory.org.za/article/anc-founding" target="_blank">[SA History]</a></p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-year">1955 — Freedom Charter</div>
+              <p class="small mb-0">The Congress of the People adopts the Freedom Charter at Kliptown, Johannesburg. Its opening words: &ldquo;South Africa belongs to all who live in it, black and white.&rdquo; The Charter demands a non-racial, democratic South Africa with shared wealth and equal rights. <a href="https://www.sahistory.org.za/article/freedom-charter" target="_blank">[SA History]</a></p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-year">1961 — ANC Forms Armed Wing (Umkhonto we Sizwe)</div>
+              <p class="small mb-0">After the Sharpeville Massacre (1960), the ANC is banned and forms Umkhonto we Sizwe (MK) under Nelson Mandela for armed resistance against the apartheid state. Mandela is arrested in 1962 and sentenced to life in 1964 (Rivonia Trial). <a href="https://www.sahistory.org.za/article/rivonia-trial" target="_blank">[SA History]</a></p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-year">1990 — Mandela Released</div>
+              <p class="small mb-0">FW de Klerk unbans the ANC and releases Mandela. Negotiations for a democratic South Africa begin. The ANC enters the Convention for a Democratic South Africa (CODESA). <a href="https://www.sahistory.org.za/article/codesa" target="_blank">[SA History]</a></p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-year">1994 — First Democratic Election</div>
+              <p class="small mb-0">The ANC wins 62.6% of the vote in South Africa's first democratic election. Nelson Mandela becomes the first black President. The ANC enters government with the promise of the Freedom Charter: a better life for all. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- MANDELA ERA                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="mandela">
+          <div class="card-header era">&#9312; The Mandela Era (1994–1999) — The Promise</div>
+          <div class="card-body">
+            <p>The Mandela presidency was a masterclass in reconciliation and institution-building. Mandela's leadership is widely credited with preventing a racial civil war. Achievements include:</p>
+            <ul class="small">
+              <li><strong>Truth and Reconciliation Commission (TRC)</strong> — established in 1995 under Desmond Tutu to heal the wounds of apartheid. <a href="https://www.justice.gov.za/trc" target="_blank">[TRC]</a></li>
+              <li><strong>Constitution (1996)</strong> — widely regarded as one of the most progressive constitutions in the world, with a justiciable Bill of Rights, an independent judiciary, and Chapter 9 institutions (Public Protector, Human Rights Commission, etc.). <a href="https://www.gov.za/documents/constitution" target="_blank">[Constitution]</a></li>
+              <li><strong>Reconstruction and Development Programme (RDP)</strong> — ambitious social and economic programme: built 1.5 million houses, provided water and electricity to millions, and established a social welfare system. <a href="https://www.gov.za/documents/reconstruction-and-development-programme" target="_blank">[RDP]</a></li>
+              <li><strong>Macroeconomic stability</strong> — Mandela's government adopted the Growth, Employment and Redistribution (GEAR) strategy in 1996, a neoliberal framework that stabilised the economy but disappointed leftist allies.</li>
+            </ul>
+            <p class="small">By 1999, South Africa was a beacon of hope: a newly democratic, stable, and rapidly transforming country with functioning institutions, an independent press, and a respected judiciary. The ANC was at its moral peak.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- MBEKI ERA                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="mbeki">
+          <div class="card-header era">&#9313; The Mbeki Era (1999–2008) — The First Cracks</div>
+          <div class="card-body">
+            <p>Thabo Mbeki was a highly intelligent leader but increasingly aloof and authoritarian. His tenure saw significant successes alongside deepening systemic problems:</p>
+            <ul class="small">
+              <li><strong>Economic growth</strong> — GDP grew at an average of ~4.5% from 2000–2007, driven by commodity prices (gold, platinum, coal).</li>
+              <li><strong>HIV/AIDS denialism</strong> — Mbeki and Health Minister Manto Tshabalala-Msimang denied the link between HIV and AIDS, blocked antiretroviral (ARV) treatment, and promoted garlic and beetroot as cures. An estimated <strong>330,000+ preventable deaths</strong> resulted from this policy. <a href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(08)61395-4/fulltext" target="_blank">[Lancet, 2008]</a></li>
+              <li><strong>ANC becomes the state</strong> — Mbeki centralised power in the Presidency and weakened cabinet and parliamentary oversight. The ANC began to treat the state as its political instrument rather than a neutral institution serving all citizens. Cadre deployment policy formally adopted: ANC loyalists placed in civil service regardless of merit. <a href="https://www.anc1912.org.za/cadre-deployment" target="_blank">[ANC Cadre Deployment]</a></li>
+              <li><strong>Zuma vs Mbeki</strong> — Jacob Zuma, then Deputy President, is fired in 2005 after being implicated in the Schabir Shaik fraud trial. This triggers a bitter factional war that consumes the ANC for the next decade.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ZUMA ERA & STATE CAPTURE                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="zuma">
+          <div class="card-header corrupt">&#9314; The Zuma Era & State Capture (2009–2018) — The Looting</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Chief Justice Raymond Zondo, State Capture Report (2022):</strong><br>
+              &ldquo;The evidence shows that the ANC was used as an instrument to facilitate state capture. The party's internal processes were manipulated, its representatives in government were directed to act in the interests of a private family, and the state was systematically looted on an industrial scale. What happened at Eskom alone — over R50 billion in overpriced coal contracts, diesel fraud, and inflated capital projects — represents some of the most egregious theft from the public purse in South Africa's history.&rdquo;
+            </div>
+
+            <p class="small">The Zuma presidency is the single most destructive period in post-apartheid South Africa. His nine years in office constitute a systematic looting of public resources, the hollowing out of state institutions, and the near-collapse of the economy and essential services.</p>
+
+            <h6 class="fw-bold mt-3">Key Events & Evidence:</h6>
+            <ul class="small">
+              <li><strong>2005</strong> — Zuma is charged with corruption (Shabir Shaik case). Charges are dropped in 2006, reinstated, and then controversially dropped again in 2009 shortly before he becomes President. The &ldquo;spy tapes&rdquo; affair. <a href="https://www.justice.gov.za" target="_blank">[NPA]</a></li>
+              <li><strong>2009–2012</strong> — Zuma appoints loyalists to all key positions: National Director of Public Prosecutions, SARS Commissioner, SAPS National Commissioner, Eskom and Transnet boards. The hollowing out begins.</li>
+              <li><strong>2013–2017</strong> — The Gupta family gains political influence through their relationship with Zuma's son, Duduzane. The Gupta family effectively controls ministerial appointments, government contracts, and state-owned enterprises. This period is documented in detail by the Zondo Commission. <a href="https://www.statecapture.org.za" target="_blank">[Zondo Commission]</a></li>
+              <li><strong>2015</strong> — Zuma fires Finance Minister Nhlanhla Nene in the middle of the night, replacing him with the little-known David "Des" van Rooyen. The move triggers a financial crisis: the Rand drops 10% in a single day, R170bn is wiped off the JSE. Zuma is forced to appoint the more credible Pravin Gordhan. <a href="https://www.reuters.com/article/safrica-markets-idUSL8N13Z3XH20151209" target="_blank">[Reuters]</a></li>
+              <li><strong>2016</strong> — The Public Protector's "State of Capture" report (Thuli Madonsela) finds evidence of Gupta influence over government decision-making, including the appointment of ministers. Madonsela recommends a judicial inquiry. Zuma fails to implement it. <a href="https://www.pprotect.org" target="_blank">[Public Protector]</a></li>
+              <li><strong>2017</strong> — The "Gupta Leaks" emails (published by <em>AmaBhungane</em> and <em>Daily Maverick</em>) reveal the mechanics of state capture: Gupta family members directly communicated with ministers, offered cabinet positions, and coordinated the looting of state enterprises including Eskom, Transnet, Denel, and SAA. <a href="https://www.amaBhungane.co.za" target="_blank">[AmaBhungane]</a></li>
+              <li><strong>2018</strong> — Under pressure from the ANC's own leadership (Cyril Ramaphosa elected ANC President in December 2017), Zuma resigns rather than face a parliamentary vote of no confidence.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-4">&#128176; The Cost of State Capture</h6>
+            <div class="row g-2 small">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">R500bn+</div>
+                  <div>Estimated total cost of state capture</div>
+                  <small class="text-muted"><a href="https://www.treasury.gov.za" target="_blank">[National Treasury]</a></small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">R50bn+</div>
+                  <div>Lost to Eskom coal fraud</div>
+                  <small class="text-muted"><a href="https://www.statecapture.org.za" target="_blank">[Zondo Commission]</a></small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center">
+                  <div class="stat-fail">ZERO</div>
+                  <div>Senior politicians convicted</div>
+                  <small class="text-muted">As of 2025. Zuma convicted for contempt<br>but not for state capture itself.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RAMAPHOSA ERA                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="ramaphosa">
+          <div class="card-header era">&#9315; The Ramaphosa Era (2018–Present) — Reform or Stalemate?</div>
+          <div class="card-body">
+            <p class="small">Cyril Ramaphosa came to power in 2018 with a mandate to clean up the ANC, revive the economy, and restore investor confidence. The results have been mixed at best.</p>
+            <ul class="small">
+              <li><strong>Positive steps:</strong> The Zondo Commission was allowed to complete its work. The NPA was strengthened (with Advocate Shamila Batohi as National Director). Eskom is being unbundled. The licensing threshold for private generation was raised to 100 MW in 2021, triggering a boom in embedded generation.</li>
+              <li><strong>Failure to prosecute:</strong> Despite the Zondo Commission recommending criminal prosecution of numerous ANC officials (including Ace Magashule, Gwede Mantashe, Malusi Gigaba, and others implicated in the report), <strong>not one senior ANC politician has been convicted of state capture</strong> as of 2025. Zuma avoided prosecution through legal delays and was ultimately convicted for <em>contempt of court</em> (for refusing to appear before the Zondo Commission), not for state capture itself.</li>
+              <li><strong>Phala Phala scandal (2022):</strong> Ramaphosa himself was implicated in a scandal involving the theft of foreign currency (allegedly $500,000–$4 million) hidden in furniture at his Phala Phala game farm. The CR17 campaign funding controversy also raised questions about the source of his 2017 ANC presidential campaign donations. <a href="https://www.news24.com" target="_blank">[News24]</a></li>
+              <li><strong>2024 election:</strong> The ANC loses its majority for the first time, winning only 40.2% of the vote. Enters a Government of National Unity (GNU) with the DA, IFP, and smaller parties. The ANC's electoral decline continues: from 69.7% (2004) to 66% (2009) to 62% (2014) to 57.5% (2019) to 40.2% (2024). <a href="https://www.elections.org.za" target="_blank">[IEC]</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THE BETRAYAL                                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="betrayal">
+          <div class="card-header fail">&#10060; The Betrayal: How the ANC Failed South Africa</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; William Gumede, <em>Thabo Mbeki and the Battle for the Soul of the ANC</em> (2005):</strong><br>
+              &ldquo;The ANC has become a victim of its own success. Its electoral dominance means it faces no real opposition. This has bred arrogance, entitlement, and contempt for the very constitutional order it fought to create. The movement and the state have become fused, and the distinction between party interest and national interest has been lost.&rdquo;
+            </div>
+
+            <p>The ANC came to power in 1994 with a moral mandate and a clear vision: the Freedom Charter's promise of "a better life for all." Thirty years later, the verdict is devastating. By every meaningful metric, the ANC has failed the people of South Africa. The evidence is overwhelming:</p>
+
+            <h5 class="fw-bold mt-4">&#128202; 1. Economic Collapse</h5>
+            <ul class="small">
+              <li><strong>GDP per capita</strong> peaked in 2011 at ~$8,000 (constant USD) and has been declining ever since. By 2024, South Africa's GDP per capita is lower than it was in 2008. <a href="https://www.worldbank.org/en/country/southafrica" target="_blank">[World Bank]</a></li>
+              <li><strong>Unemployment</strong> rose from 22% in 1994 to 33% in 2024 (expanded definition: 42%). South Africa has the highest unemployment rate in the world among countries with populations over 10 million. <a href="https://www.statssa.gov.za" target="_blank">[StatsSA]</a></li>
+              <li><strong>Youth unemployment</strong> (15–24) exceeds 60%. A generation of young South Africans has never held a formal job. <a href="https://www.statssa.gov.za" target="_blank">[StatsSA]</a></li>
+              <li><strong>Eskom load shedding</strong> cost the economy an estimated R500bn+ from 2022–2024. The ANC presides over a utility that cannot keep the lights on. <a href="https://www.csir.co.za" target="_blank">[CSIR]</a></li>
+              <li><strong>Sovereign credit rating</strong> has been downgraded to "junk" status by all three major agencies (S&P, Moody's, Fitch). South Africa is no longer considered investment-grade. <a href="https://www.treasury.gov.za" target="_blank">[National Treasury]</a></li>
+            </ul>
+
+            <h5 class="fw-bold mt-4">&#128202; 2. Corruption on an Industrial Scale</h5>
+            <ul class="small">
+              <li><strong>Transparency International Corruption Perceptions Index:</strong> South Africa has fallen from 43rd (1995) to 83rd (2023). Zimbabwe is ranked 157th. The gap is narrowing. <a href="https://www.transparency.org/en/cpi/2023" target="_blank">[Transparency International]</a></li>
+              <li><strong>Zondo Commission documented:</strong> over R50bn stolen from Eskom alone through inflated coal contracts, diesel fraud, and corrupt procurement. The total cost of state capture is estimated at R500bn–1 trillion. <a href="https://www.statecapture.org.za" target="_blank">[Zondo Commission]</a></li>
+              <li><strong>No senior ANC official has been convicted for state capture</strong> as of 2025. Not one. Ace Magashule (former ANC Secretary-General and implicated in asbestos corruption) is on trial but the case has dragged for years. Zuma was convicted for CONTEMPT, not state capture. The ANC has protected its own.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-4">&#128202; 3. Collapse of Public Services</h5>
+            <ul class="small">
+              <li><strong>Education:</strong> South Africa's education system ranks last in the world in the Trends in International Mathematics and Science Study (TIMSS). Despite spending 6.4% of GDP on education (among the highest in Africa), the system produces the worst outcomes of any middle-income country. <a href="https://www.timss.org" target="_blank">[TIMSS]</a></li>
+              <li><strong>Healthcare:</strong> Life expectancy fell from 62 (1995) to a low of 53 (2005) during the Mbeki AIDS denialism before recovering to ~65 (2024). The public healthcare system is in crisis: hospitals are dilapidated, staff shortages are chronic, and management is dysfunctional. <a href="https://www.who.int/countries/zaf" target="_blank">[WHO]</a></li>
+              <li><strong>Water & sanitation:</strong> Major cities (Johannesburg, Gqeberha, parts of Durban) have experienced water supply crises. Sewage spills in rivers are endemic. Municipal governance has collapsed in many areas due to cadre deployment of unqualified officials.</li>
+              <li><strong>Crime & policing:</strong> South Africa has one of the highest murder rates in the world (42 murders per 100,000). Police stations are under-resourced, and political interference in the SAPS has destroyed morale. <a href="https://www.saps.gov.za" target="_blank">[SAPS Crime Statistics]</a></li>
+            </ul>
+
+            <h5 class="fw-bold mt-4">&#128202; 4. Inequality Worse Than Apartheid</h5>
+            <ul class="small">
+              <li>South Africa's <strong>Gini coefficient</strong> measured 0.63 in 2022, the highest of any country in the world for which data is available. In 1994, it was 0.64. <em>After 30 years of ANC rule, inequality has barely changed.</em> <a href="https://www.worldbank.org/en/topic/poverty" target="_blank">[World Bank]</a></li>
+              <li>The top 10% of South Africans earn 65% of all income. The bottom 60% earns 8%. <a href="https://www.statssa.gov.za" target="_blank">[StatsSA]</a></li>
+              <li>The wealth gap is overwhelmingly racial: the average white household is approximately 6–10 times wealthier than the average black household. The ANC has failed to transform the economy's ownership structure.</li>
+              <li><strong>Black Economic Empowerment (BEE)</strong> has enriched a small political elite rather than broadly empowering the black majority. The term "tenderpreneur" was coined to describe ANC-connected figures who secured government contracts through political connections, not merit or experience. <a href="https://www.timeslive.co.za" target="_blank">[TimesLive]</a></li>
+            </ul>
+
+            <h5 class="fw-bold mt-4">&#128202; 5. Cadre Deployment: The Poison Pill</h5>
+            <ul class="small">
+              <li>In 2023, the Gauteng High Court declared the ANC's cadre deployment policy unlawful and unconstitutional. Judge Brendan Wepener found that the policy violated the Constitution by ensuring ANC loyalists were placed in the public service regardless of qualification and by creating a system of patronage that facilitated corruption. <a href="https://www.dailymaverick.co.za" target="_blank">[Daily Maverick]</a></li>
+              <li>The records from the ANC's deployment committee meetings, submitted to court, showed that the party vetted candidates for positions including Directors-General, SARS Commissioner, SAPS National Commissioner, SOE boards, and even municipal managers — based on party loyalty, not competence.</li>
+              <li>This is the direct cause of Eskom's collapse, the bankruptcy of municipalities, the hollowing out of SARS, and the rot in virtually every state institution. The ANC systematically replaced qualified professionals with loyal party members. The party that fought against apartheid's cadre system adopted its own version of it.</li>
+            </ul>
+
+            <div style="background:#fbe9e7; border:2px solid #c62828; border-radius:10px; padding:1.25rem; margin:1.5rem 0;">
+              <h5 class="fw-bold" style="color:#c62828;">&#9888; The Core Argument: The ANC Is Responsible</h5>
+              <p class="small mb-0">
+                The ANC inherited a country with functioning institutions, a developed infrastructure, a diversified economy, and a globally respected civil service. Thirty years later, South Africa has fewer people employed in formal jobs than in 1994. Major cities cannot supply clean water. The electricity grid is unreliable. Schools cannot teach children to read. Hospitals have reverted to Third World conditions. Corruption is endemic at every level of government. The ruling party's internal factional battles are more important to its leaders than the welfare of the people.
+              </p>
+              <p class="small mt-2 mb-0">
+                Yes, apartheid left deep structural problems. Yes, the global economy shifted against developing countries. Yes, the COVID-19 pandemic was a shock. But the <em>comparative</em> evidence is damning. Botswana, which had the same GDP per capita as South Africa in 1994, now has a higher GDP per capita, lower inequality, better education outcomes, and far lower corruption. Ghana, at independence poorer than South Africa, has had peaceful democratic transitions. Rwanda has rebuilt from genocide. None of these countries had South Africa's advantages: a sophisticated financial system, world-class universities, a strong rule-of-law tradition, and the moral authority of Nelson Mandela. The ANC had every opportunity to succeed and chose to squander it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- KEY STATISTICS SUMMARY                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="data">
+          <div class="card-header fail">&#128202; South Africa Under ANC Rule: Key Statistics</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered small">
+                <thead class="table-dark">
+                  <tr><th>Metric</th><th>1994 (or early post-apartheid)</th><th>2024</th><th>Trend</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>GDP per capita (constant USD)</td><td>~$7,100</td><td>~$6,000</td><td>&#8595; Declining</td></tr>
+                  <tr><td>Unemployment (official)</td><td>22%</td><td>33%</td><td>&#8595; Worst in the world</td></tr>
+                  <tr><td>Youth unemployment (15–24)</td><td>~35%</td><td>>60%</td><td>&#8595; Catastrophic</td></tr>
+                  <tr><td>Gini coefficient</td><td>0.64</td><td>0.63</td><td>&#8596; Unchanged</td></tr>
+                  <tr><td>GDP growth (average, prior decade)</td><td>~2.5% (1994–2004)</td><td>~0.5% (2014–2024)</td><td>&#8595; Stagnation</td></tr>
+                  <tr><td>Eskom debt</td><td>~R0 (self-sufficient)</td><td>>R420bn</td><td>&#8595; Bankrupt</td></tr>
+                  <tr><td>Load shedding days</td><td>0</td><td>329 (2023 peak)</td><td>&#8595; Collapse</td></tr>
+                  <tr><td>Education ranking (TIMSS)</td><td>Not measured</td><td>Last in the world</td><td>&#8595; Worst on earth</td></tr>
+                  <tr><td>Life expectancy</td><td>62</td><td>~65</td><td>&#8593; But Mbeki AIDS denial killed 330,000+</td></tr>
+                  <tr><td>Corruption Perception Index</td><td>Ranked 43rd (1995)</td><td>Ranked 83rd</td><td>&#8595; Decline</td></tr>
+                  <tr><td>Employment (formal, absolute)</td><td>~8 million</td><td>~8 million</td><td>&#8596; No net job creation in 30 years</td></tr>
+                  <tr><td>Human Development Index</td><td>0.68</td><td>0.73</td><td>&#8593; Marginal improvement</td></tr>
+                  <tr><td>Sovereign credit rating</td><td>Investment-grade (BBB)</td><td>Junk (BB)</td><td>&#8595; 3 downgrades since 2012</td></tr>
+                  <tr><td>Murder rate per 100,000</td><td>66</td><td>42</td><td>&#8593; Dropped from peak 1990s, then rose again</td></tr>
+                  <tr><td>Electricity access (% of households)</td><td>36%</td><td>>90%</td><td>&#8593; Genuine achievement</td></tr>
+                  <tr><td>Social grants recipients</td><td>2.5 million</td><td>~18 million</td><td>&#8593; Dependency, but necessary</td></tr>
+                  <tr><td>Water access (% of households)</td><td>~60%</td><td>~86%</td><td>&#8593; But gains are fraying</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small text-muted mt-2">Sources: StatsSA, World Bank, SARB, National Treasury, Transparency International, CSIR, SAPS, TIMSS.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CONCLUSION                                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card">
+          <div class="card-header fail">&#128270; Conclusion: A Dream Betrayed</div>
+          <div class="card-body">
+            <p>The ANC's story is one of the most tragic political arcs of the 20th and 21st centuries. A liberation movement that achieved the impossible — the peaceful dismantling of one of the most brutal systems of racial oppression in modern history — then frittered away its moral inheritance through corruption, incompetence, and self-dealing.</p>
+            <p>The Freedom Charter promised that "South Africa belongs to all who live in it, black and white." The ANC's record shows that for the last decade at least, South Africa belonged instead to a small political elite who used state power for private enrichment. The party has not been held properly accountable. Not one senior ANC official has been convicted of state capture. The cadre deployment policy — which the High Court ruled unconstitutional in 2023 — remains deeply embedded in the party's culture and the state's dysfunction.</p>
+            <p>The 2024 election — in which the ANC fell below 50% for the first time — may finally mark the beginning of a democratic reckoning. But the damage of 30 years of ANC rule will take generations to repair. The party has inherited the contempt for democratic accountability that it once fought against, and South Africa is paying the price.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SOURCES                                                      -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sources">
+          <div class="card-header" style="background:#002395;color:white;">&#128218; Sources & Further Reading</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>AmaBhungane Centre for Investigative Journalism</strong> — The Gupta Leaks (2017). Available at: <a href="https://www.amabhungane.org" target="_blank">amabhungane.org</a></li>
+              <li><strong>Bhorat, H., et al.</strong> (2017). "State Capture: A South African Case Study." Development Policy Research Unit, UCT. Available at: <a href="https://www.dpru.uct.ac.za" target="_blank">dpru.uct.ac.za</a></li>
+              <li><strong>Corruption Watch</strong> — Annual reports on corruption in South Africa. Available at: <a href="https://www.corruptionwatch.org.za" target="_blank">corruptionwatch.org.za</a></li>
+              <li><strong>Daily Maverick</strong> — Investigative journalism covering state capture, Eskom, and ANC governance failures. Available at: <a href="https://www.dailymaverick.co.za" target="_blank">dailymaverick.co.za</a></li>
+              <li><strong>Gumede, W.</strong> (2005). <em>Thabo Mbeki and the Battle for the Soul of the ANC</em>. Zebra Press.</li>
+              <li><strong>Johnson, R.W.</strong> (2015). <em>How Long Will South Africa Survive?</em> Oxford University Press.</li>
+              <li><strong>Mbeki, M.</strong> (2009). <em>Architects of Poverty: Why African Capitalism Needs Changing</em>. Picador Africa.</li>
+              <li><strong>National Treasury</strong> — Budget Review (annual), Medium-Term Budget Policy Statement. Available at: <a href="https://www.treasury.gov.za" target="_blank">treasury.gov.za</a></li>
+              <li><strong>News24</strong> — Daily coverage of politics, corruption, and governance. Available at: <a href="https://www.news24.com" target="_blank">news24.com</a></li>
+              <li><strong>South African History Online</strong> — ANC history archive. Available at: <a href="https://www.sahistory.org.za" target="_blank">sahistory.org.za</a></li>
+              <li><strong>StatsSA</strong> — Quarterly Labour Force Survey, GDP releases, IES/LCFS. Available at: <a href="https://www.statssa.gov.za" target="_blank">statssa.gov.za</a></li>
+              <li><strong>Transparency International</strong> — Corruption Perceptions Index (annual). Available at: <a href="https://www.transparency.org" target="_blank">transparency.org</a></li>
+              <li><strong>World Bank</strong> — South Africa overview, Gini coefficient, GDP data. Available at: <a href="https://www.worldbank.org/en/country/southafrica" target="_blank">worldbank.org/southafrica</a></li>
+              <li><strong>Zondo Commission</strong> — Judicial Commission of Inquiry into Allegations of State Capture, Parts 1–6 (2018–2022). Available at: <a href="https://www.statecapture.org.za" target="_blank">statecapture.org.za</a></li>
+              <li><strong>Zuma, J.</strong> (2009). <em>Statement on the National Prosecuting Authority's decision to drop charges</em>. See also: <a href="https://www.justice.gov.za" target="_blank">justice.gov.za</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="politics.html" class="btn btn-outline-secondary mb-4">&larr; Back to Politics</a>
+
+        <hr>
+        <p class="text-muted text-center">The African National Congress &mdash; from liberation movement to governing party to what? The jury is still out on its final verdict.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

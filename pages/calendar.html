@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendar • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+  <!-- PapaParse (for Elections.csv parsing) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="display-5 fw-bold text-sa-green">📅 South Africa Calendar</h1>
+      <div>
+        <button onclick="suggestEventsFromNews()" class="btn btn-success me-2">🔄 Refresh from News</button>
+        <button onclick="showAddEventModal()" class="btn btn-outline-success">+ Add Event Manually</button>
+        <button onclick="calendar.view = 'multiMonthYear'" class="btn btn-outline-primary">📆 View Full Year</button>
+      </div>
+    </div>
+
+    <!-- Upcoming Elections (compact dashboard) -->
+    <section class="mt-3 mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+            <div>
+              <div class="text-uppercase text-sa-green fw-semibold mb-1">🗳️ Elections Dashboard</div>
+              <div class="h4 fw-bold mb-0">Upcoming elections (next 10 years)</div>
+              <div class="text-muted small mt-1">Most recent/soonest upcoming first (most imminent at the top).</div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <button type="button" class="btn btn-sm btn-outline-success" onclick="setElectionsView('municipal')">Municipal</button>
+              <button type="button" class="btn btn-sm btn-outline-success" onclick="setElectionsView('national')">National-level</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="setElectionsView('all')">All levels</button>
+            </div>
+          </div>
+
+          <div id="electionsSummary" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+          <div class="mb-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="fw-semibold text-muted">Next election per country (cards)</div>
+              <div class="small text-muted" id="electionsCardsMeta"></div>
+            </div>
+            <div id="electionCards" class="row g-2 mt-1"></div>
+          </div>
+
+          <div class="mt-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="fw-semibold text-muted">Next upcoming elections (table)</div>
+              <div class="small text-muted">Showing earliest upcoming items inside the 10-year window.</div>
+            </div>
+
+            <div class="table-responsive mt-2">
+              <table class="table table-sm align-middle mb-0" style="min-width: 680px;">
+                <thead>
+                  <tr class="bg-light">
+                    <th scope="col" class="text-muted">Date</th>
+                    <th scope="col" class="text-muted">Country</th>
+                    <th scope="col" class="text-muted">Level</th>
+                  </tr>
+                </thead>
+                <tbody id="electionTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="calendar" style="background:white; padding:20px; border-radius:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
+  </div>
+
+  <!-- Add Event Modal -->
+  <div class="modal fade" id="addEventModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input id="eventTitle" class="form-control mb-3" placeholder="Event title">
+          <input id="eventDate" type="date" class="form-control mb-3">
+          <textarea id="eventDesc" class="form-control" rows="2" placeholder="Description"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button onclick="addManualEvent()" class="btn btn-success">Save Event</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let calendar;
+    let events = JSON.parse(localStorage.getItem('saCalendarEvents')) || [];
+
+    // ------------------------
+    // Elections Dashboard
+    // ------------------------
+    let electionsRows = [];
+    let electionsView = 'all'; // 'all' | 'municipal' | 'national'
+
+    function setElectionsView(view) {
+      electionsView = view;
+      renderElectionsDashboard();
+      rebuildElectionEventsOnCalendar();
+    }
+
+    function monthAbbrevToIndex(mon) {
+      const m = String(mon ?? '').slice(0, 3).toLowerCase();
+      const map = {
+        jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+        jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+      };
+      return map[m];
+    }
+
+    // Input examples: "01-Jun-26", "Jul-26", "Sep-26", "Dec-26", "06-Dec-26"
+    function parseElectionDate(dateStr) {
+      const s = String(dateStr ?? '').trim();
+      if (!s) return null;
+
+      // day-Mon-YY
+      const dm = s.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{2})$/);
+      if (dm) {
+        const day = parseInt(dm[1], 10);
+        const monIdx = monthAbbrevToIndex(dm[2]);
+        const yy = parseInt(dm[3], 10);
+        if (!Number.isFinite(day) || monIdx === undefined || !Number.isFinite(yy)) return null;
+
+        const year = 2000 + yy;
+        return new Date(Date.UTC(year, monIdx, day, 12, 0, 0));
+      }
+
+      // Mon-YY
+      const my = s.match(/^([A-Za-z]{3})-(\d{2})$/);
+      if (my) {
+        const monIdx = monthAbbrevToIndex(my[1]);
+        const yy = parseInt(my[2], 10);
+        if (monIdx === undefined || !Number.isFinite(yy)) return null;
+
+        const year = 2000 + yy;
+        // Use 1st of the month as a stable placeholder for aggregation/sorting.
+        return new Date(Date.UTC(year, monIdx, 1, 12, 0, 0));
+      }
+
+      // Fallback: try Date.parse
+      const parsed = Date.parse(s);
+      if (!Number.isNaN(parsed)) return new Date(parsed);
+
+      return null;
+    }
+
+    function formatDateShort(dateObj) {
+      if (!dateObj) return '';
+      // Use local date formatting for readability.
+      const d = new Date(dateObj);
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const m = months[d.getUTCMonth()];
+      const y = d.getUTCFullYear();
+      const day = d.getUTCDate();
+
+      // If date is exactly 1st, show Month + Year to match the source granularity.
+      if (day === 1) return `${m} ${y}`;
+      return `${day} ${m} ${y}`;
+    }
+
+    function isInNext10Years(dateObj, now) {
+      if (!dateObj) return false;
+      const end = new Date(Date.UTC(now.getUTCFullYear() + 10, now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+      return dateObj >= now && dateObj <= end;
+    }
+
+    function isMunicipal(row) {
+      return String(row.Level ?? '').trim().toLowerCase() === 'municipal';
+    }
+
+    function isNationalLevel(row) {
+      const level = String(row.Level ?? '').trim().toLowerCase();
+      return level !== '' && level !== 'municipal';
+    }
+
+    function normalizeCountry(row) {
+      return String(row.Country ?? '').trim();
+    }
+
+    function buildCountryNextEventList(rows, now) {
+      // For each country, pick the earliest event date that is >= now
+      // (but we already filter to next-10-years before calling this).
+      const bestByCountry = new Map();
+
+      for (const row of rows) {
+        const country = normalizeCountry(row);
+        const d = row.parsedDate;
+        if (!country || !d) continue;
+
+        const existing = bestByCountry.get(country);
+        if (!existing || d < existing.parsedDate) {
+          bestByCountry.set(country, row);
+        }
+      }
+
+      // Return sorted by soonest.
+      return Array.from(bestByCountry.values()).sort((a, b) => a.parsedDate - b.parsedDate);
+    }
+
+    function renderElectionsDashboard() {
+      const now = new Date();
+      const electionsInWindow = electionsRows
+        .filter(r => r.parsedDate)
+        .filter(r => isInNext10Years(r.parsedDate, now));
+
+      const filtered = electionsInWindow.filter(r => {
+        if (electionsView === 'all') return true;
+        if (electionsView === 'municipal') return isMunicipal(r);
+        if (electionsView === 'national') return isNationalLevel(r);
+        return true;
+      });
+
+      // Summary chips
+      const chip = (label, value, color) => {
+        const style = color ? `background:${color}; color:white;` : '';
+        return `<span class="badge rounded-pill px-3 py-2" style="${style}">${label}: ${value}</span>`;
+      };
+
+      const total = filtered.length;
+      const municipalCount = filtered.filter(isMunicipal).length;
+      const nationalCount = filtered.filter(isNationalLevel).length;
+
+      document.getElementById('electionsSummary').innerHTML = [
+        chip('Items in 10y window', total, '#007A4D'),
+        chip('Municipal', municipalCount, '#d32f2f'),
+        chip('National-level', nationalCount, '#002395'),
+      ].join('');
+
+      // Cards: next election per country (within the active view filter)
+      const nextPerCountry = buildCountryNextEventList(filtered, now);
+
+      const metaEl = document.getElementById('electionsCardsMeta');
+      const maxCards = 60; // keep compact and fast; user requested lots of windows
+      metaEl.textContent = `Showing ${Math.min(nextPerCountry.length, maxCards)} of ${nextPerCountry.length} countries.`;
+
+      const cards = nextPerCountry.slice(0, maxCards).map(row => {
+        const country = normalizeCountry(row);
+        const level = String(row.Level ?? '').trim();
+        const dateText = formatDateShort(row.parsedDate);
+
+        // Small color hint: municipal red, national blue, unknown gray
+        let badgeClass = 'bg-secondary';
+        const lvlLower = level.toLowerCase();
+        if (lvlLower === 'municipal') badgeClass = 'bg-danger';
+        else if (lvlLower) badgeClass = 'bg-primary';
+
+        return `
+          <div class="col-6 col-sm-4 col-lg-3">
+            <div class="border rounded-3 p-2 bg-white shadow-sm h-100">
+              <div class="d-flex align-items-start justify-content-between gap-2">
+                <span class="badge ${badgeClass} rounded-pill">${level}</span>
+              </div>
+              <div class="fw-bold mt-2" style="font-size: 0.95rem; line-height: 1.15; word-break: break-word;">
+                ${country}
+              </div>
+              <div class="text-muted mt-1" style="font-size: 0.9rem;">
+                ${dateText}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('electionCards').innerHTML = cards.length ? cards : `
+        <div class="text-muted">No elections found in the next 10 years for this view.</div>
+      `;
+
+      // Table: earliest upcoming elections, limited
+      const tableRows = filtered
+        .slice()
+        .sort((a, b) => a.parsedDate - b.parsedDate)
+        .slice(0, 80);
+
+      document.getElementById('electionTableBody').innerHTML = tableRows.map(row => {
+        const country = normalizeCountry(row);
+        const level = String(row.Level ?? '').trim();
+        const dateText = formatDateShort(row.parsedDate);
+        return `
+          <tr>
+            <td class="text-muted">${dateText}</td>
+            <td style="font-weight: 600;">${country}</td>
+            <td>${level}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // If no table rows
+      if (!tableRows.length) {
+        document.getElementById('electionTableBody').innerHTML = `
+          <tr><td colspan="3" class="text-muted py-3">No upcoming elections available for this view.</td></tr>
+        `;
+      }
+    }
+
+    async function loadElectionsFromCSV() {
+      try {
+        const res = await fetch('../data/politics/Elections.csv');
+        const text = await res.text();
+
+        const parsed = Papa.parse(text, {
+          header: true,
+          dynamicTyping: false,
+          skipEmptyLines: true
+        });
+
+        const rows = parsed.data
+          .filter(r => r && r.Country && r.Level && r.Date)
+          .map(r => ({
+            Country: r.Country,
+            Level: r.Level,
+            Date: r.Date,
+            parsedDate: parseElectionDate(r.Date)
+          }));
+
+        electionsRows = rows.filter(r => r.parsedDate);
+
+        // Default render
+        electionsView = 'all';
+        renderElectionsDashboard();
+
+        // Also populate FullCalendar with election events
+        rebuildElectionEventsOnCalendar();
+      } catch (e) {
+        // Fallback UI (keep page usable even if elections fail)
+        document.getElementById('electionsSummary').innerHTML = `
+          <span class="badge rounded-pill bg-danger px-3 py-2">Failed to load Elections.csv</span>
+        `;
+        document.getElementById('electionCards').innerHTML = `
+          <div class="text-muted">Elections dashboard is unavailable.</div>
+        `;
+        document.getElementById('electionTableBody').innerHTML = `
+          <tr><td colspan="3" class="text-muted py-3">No election data.</td></tr>
+        `;
+      }
+    }
+
+    function dateObjToISODate(dateObj) {
+      if (!dateObj) return null;
+      // Ensure stable yyyy-mm-dd in UTC (avoid timezone shifts)
+      const d = new Date(Date.UTC(
+        dateObj.getUTCFullYear(),
+        dateObj.getUTCMonth(),
+        dateObj.getUTCDate()
+      ));
+      return d.toISOString().slice(0, 10);
+    }
+
+    function buildElectionEventsForCalendar() {
+      const now = new Date();
+
+      const electionsInWindow = electionsRows
+        .filter(r => r.parsedDate)
+        .filter(r => isInNext10Years(r.parsedDate, now));
+
+      const filtered = electionsInWindow.filter(r => {
+        if (electionsView === 'all') return true;
+        if (electionsView === 'municipal') return isMunicipal(r);
+        if (electionsView === 'national') return isNationalLevel(r);
+        return true;
+      });
+
+      // High-level aggregate: one (soonest) upcoming election per country
+      const nextPerCountry = buildCountryNextEventList(filtered, now);
+
+      return nextPerCountry.map(row => {
+        const country = normalizeCountry(row);
+        const level = String(row.Level ?? '').trim();
+        const startISO = dateObjToISODate(row.parsedDate);
+
+        // Extended props let us prevent deletion of these events
+        return {
+          id: `election-${country}-${level}-${startISO}`,
+          title: `🗳️ ${country} (${level})`,
+          start: startISO,
+          allDay: true,
+          color: (level.toLowerCase() === 'municipal') ? '#d32f2f' : '#002395',
+          backgroundColor: (level.toLowerCase() === 'municipal') ? '#d32f2f' : '#002395',
+          borderColor: 'transparent',
+          extendedProps: {
+            fromElections: true,
+            electionLevel: level,
+            electionCountry: country
+          }
+        };
+      });
+    }
+
+    function rebuildElectionEventsOnCalendar() {
+      if (!calendar || !electionsRows || !electionsRows.length) return;
+
+      const electionEvents = buildElectionEventsForCalendar();
+
+      // Rebuild calendar with:
+      // - manual events (from localStorage)
+      // - election events (derived from Elections.csv)
+      calendar.removeAllEvents();
+      calendar.addEventSource(events);
+      calendar.addEventSource(electionEvents);
+    }
+
+    // ------------------------
+    // FullCalendar
+    // ------------------------
+    function initCalendar() {
+      const calendarEl = document.getElementById('calendar');
+
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,multiMonthYear,timeGridWeek'
+        },
+        events: events,
+        eventClick: function(info) {
+          // Election events are derived from Elections.csv; don't delete them via the UI.
+          if (info.event.extendedProps && info.event.extendedProps.fromElections) return;
+
+          if (confirm(`Delete "${info.event.title}"?`)) {
+            events = events.filter(e => e.id !== info.event.id);
+            localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+            calendar.refetchEvents();
+            rebuildElectionEventsOnCalendar();
+          }
+        }
+      });
+
+      calendar.render();
+    }
+
+    // Add manual event
+    function showAddEventModal() {
+      new bootstrap.Modal(document.getElementById('addEventModal')).show();
+    }
+
+    function addManualEvent() {
+      const title = document.getElementById('eventTitle').value.trim();
+      const date = document.getElementById('eventDate').value;
+      if (!title || !date) return alert("Title and date required");
+
+      events.push({
+        id: Date.now(),
+        title: title,
+        start: date,
+        color: "#007A4D"
+      });
+
+      localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+      calendar.refetchEvents();
+      bootstrap.Modal.getInstance(document.getElementById('addEventModal')).hide();
+    }
+
+    // Pre-loaded important South Africa dates (2026)
+    function addImportantDates() {
+      const important = [
+        { title: "🗳️ Local Government Elections 2026", start: "2026-11-04", color: "#d32f2f" },
+        { title: "📊 Stats SA Q1 GDP Release", start: "2026-06-10", color: "#007A4D" },
+        { title: "📊 Quarterly Labour Force Survey (Q1)", start: "2026-05-12", color: "#007A4D" },
+        { title: "Human Rights Day", start: "2026-03-21", color: "#FFCD00" },
+        { title: "Freedom Day", start: "2026-04-27", color: "#FFCD00" },
+        { title: "Workers' Day", start: "2026-05-01", color: "#FFCD00" },
+        { title: "Youth Day", start: "2026-06-16", color: "#FFCD00" },
+        { title: "National Women's Day", start: "2026-08-09", color: "#FFCD00" },
+        { title: "Heritage Day", start: "2026-09-24", color: "#FFCD00" },
+        { title: "Mining Indaba / Sector Events", start: "2026-06-15", color: "#388e3c" },
+      ];
+
+      important.forEach(ev => {
+        if (!events.some(e => e.title === ev.title)) {
+          events.push({ ...ev, id: Date.now() + Math.random() });
+        }
+      });
+      localStorage.setItem('saCalendarEvents', JSON.stringify(events));
+    }
+
+    window.onload = () => {
+      addImportantDates();
+      initCalendar();
+      loadElectionsFromCSV();
+    };
+  </script>
+</body>
+</html>

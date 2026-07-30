@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Karoo Shale Gas • Gas • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #e65100; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .report-img { border: 2px solid #333; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); max-width: 100%; background: #fff; }
+    .report-caption { font-size: 0.8rem; color: #555; font-style: italic; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="gas.html" class="btn btn-light btn-sm">🔥 Gas</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #e65100;">🪨 Karoo Shale Gas</h1>
+    <h5 class="text-muted mb-4">South Africa's Giant Unconventional Gas Resource — 370 Tcf In Place, 209 Tcf Recoverable</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">Beneath the semi-desert Karoo lies one of the world's largest untapped shale gas resources. The Permian-aged Whitehill Formation contains an estimated <strong>370 Tcf</strong> of gas in place (209 Tcf recoverable) — enough to supply South Africa for over a thousand years at current consumption. But extraction requires hydraulic fracturing in a water-scarce region, igniting one of the most intense environmental debates in the country's history.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Gas in place:</strong> 370 Tcf (US EIA)<br>
+          <strong>Recoverable:</strong> 209 Tcf (PASA)<br>
+          <strong>Target:</strong> Whitehill Formation<br>
+          <strong>Area:</strong> ~200,000 km²<br>
+          <strong>Depth:</strong> 1.5–4 km<br>
+          <strong>Status:</strong> No commercial production; 2026 moratorium lift
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Gas In Place</small><h3>370</h3><small>Tcf (US EIA)</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Recoverable</small><h3>209</h3><small>Tcf (PASA)</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>TOC Content</small><h3>4.5%</h3><small>avg (up to 14%)</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Thickness</small><h3>35m</h3><small>average</small></div></div>
+    </div>
+
+    <!-- Part 1: Geology with diagram -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Part 1: The Geology — 275 Million Years in the Making</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row">
+        <div class="col-lg-7">
+          <p>The Karoo Basin accumulated sediments for ~100 million years during the Permian–Triassic when South Africa was part of Gondwana. The <strong>Whitehill Formation</strong> (lower Ecca Group) is the shale gas target — a black, organic-rich shale deposited in a deep, oxygen-starved marine basin. Organic matter (algae, plankton) was buried and converted to hydrocarbons by heat and pressure over millions of years.</p>
+          <p>The gas is dispersed throughout the rock — an "unconventional" resource requiring hydraulic fracturing because the shale is too impermeable for natural gas flow. The Whitehill is exceptionally rich: average TOC of 4.5% (up to 14%), thermal maturity of Ro 1–4% (in the gas window), high quartz content (~50%), and continuous over 200,000 km² — four times the size of the Marcellus Shale play in the US. But massive Jurassic dolerite intrusions (~180 million years ago) cut through the formation, potentially baking, fracturing, or compartmentalising the reservoir.</p>
+        </div>
+        <div class="col-lg-5 text-center">
+          <img src="../images/gas/karoo-stratigraphy.png" alt="Karoo Basin Stratigraphy" class="report-img" style="width:100%">
+          <div class="report-caption">Fig 1: Stratigraphic column of the Karoo Basin showing the Whitehill Formation target. Source: PASA / CSIR Strategic Environmental Assessment (2016).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Part 2: Fracking process -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 2: What Fracking Involves</h3>
+    <div class="content-card card p-4 mb-4">
+      <ol>
+        <li><strong>Drill vertical</strong> 1.5–4 km to target shale</li>
+        <li><strong>Turn horizontal</strong> 1–2 km through the formation</li>
+        <li><strong>Steel casing + cement</strong> isolate wellbore from aquifers</li>
+        <li><strong>Perforate</strong> — shaped charges create holes into reservoir</li>
+        <li><strong>Pump fluid</strong> — water (~90%) + sand (~9.5%) + chemicals (~0.5%) at high pressure</li>
+        <li><strong>Proppant holds fractures open</strong> after pressure release</li>
+        <li><strong>Flowback + production</strong> — gas flows through fractures to wellbore</li>
+      </ol>
+      <p>A single well uses 10–20 million litres of water. In the semi-arid Karoo (200–400 mm annual rainfall), this is the central environmental concern.</p>
+    </div>
+
+    <!-- Part 3-7: Same excellent content from original -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 3: The Numbers — What 209 Tcf Means</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-3">
+        <div class="col-md-4"><div class="stat-box"><small>vs SA Consumption</small><h3>~1,300x</h3><small>209 ÷ 0.16 Tcf/yr</small></div></div>
+        <div class="col-md-4"><div class="stat-box"><small>vs Mozambique Gas</small><h3>~48,000x</h3><small>209 ÷ 0.0043 Tcf/yr</small></div></div>
+        <div class="col-md-4"><div class="stat-box"><small>LNG Equivalent</small><h3>~60,000</h3><small>standard cargoes</small></div></div>
+      </div>
+      <p class="mt-3">Even a fraction of 209 Tcf commercially produced would transform SA's energy landscape — domestic gas for power, industry, and petrochemicals. But "gas in place" is not the same as "commercially producible gas" — no flow tests have been conducted.</p>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 4: The Fracking Debate — Why Nothing Has Happened Yet</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Exploration rights applied for 2008–2010 by Shell, Falcon, Bundu. Key events:</p>
+      <ul>
+        <li><strong>2011:</strong> Moratorium imposed; <strong>2012:</strong> Lifted after Econometrix study projected 300,000–700,000 jobs</li>
+        <li><strong>2013–2015:</strong> Massive public opposition; fracking regulations drafted but not finalised</li>
+        <li><strong>2016:</strong> CSIR Strategic Environmental Assessment — water identified as single greatest risk</li>
+        <li><strong>2017–2019:</strong> Legal challenges; regulatory framework stalled</li>
+        <li><strong>2019:</strong> PASA/CGS Shale Gas Strategic Project launched — 5 scientific work packages</li>
+        <li><strong>2022–2024:</strong> Baseline studies: deep drilling planning, groundwater monitoring, seismicity</li>
+        <li><strong>March 2026:</strong> Moratorium lifting announced — shift from precaution to pursuit</li>
+        <li><strong>May 2026:</strong> R48.1 million allocated; Mantashe declares petroleum security "an economic necessity and a national imperative"</li>
+      </ul>
+      <p><strong>As of mid-2026, not a single commercial shale gas well has been drilled.</strong> But the political landscape has shifted decisively. Fracking regulations remain unfinalised; environmental groups have signalled legal challenges are inevitable.</p>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 5: PASA/CGS Scientific Programme</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Five work packages collecting baseline data before any commercial drilling can proceed:</p>
+      <div class="row g-3">
+        <div class="col-md-4"><div class="highlight-box h-100" style="border-color:#007A4D;"><h6 class="fw-bold text-success">1. Deep Drilling</h6><p class="small">Stratigraphic boreholes to core the Whitehill, measure gas content, mineralogy, porosity, permeability.</p></div></div>
+        <div class="col-md-4"><div class="highlight-box h-100" style="border-color:#FFCD00;"><h6 class="fw-bold" style="color:#b8860b;">2. Resource Evaluation</h6><p class="small">3D basin modelling integrating all geological, geophysical, and geochemical data.</p></div></div>
+        <div class="col-md-4"><div class="highlight-box h-100" style="border-color:#002395;"><h6 class="fw-bold" style="color:#002395;">3. Groundwater Monitoring</h6><p class="small">Pre-drilling baseline of water quality, levels, aquifer characteristics across the Karoo.</p></div></div>
+        <div class="col-md-6"><div class="highlight-box h-100" style="border-color:#e65100;"><h6 class="fw-bold" style="color:#e65100;">4. Abandoned Wells</h6><p class="small">Map and assess hundreds of old boreholes — risk of gas/fluid migration through unplugged wellbores.</p></div></div>
+        <div class="col-md-6"><div class="highlight-box h-100" style="border-color:#c62828;"><h6 class="fw-bold text-danger">5. Seismicity Monitoring</h6><p class="small">Baseline seismometer network — Karoo "particularly susceptible" to induced seismicity per ETH Zürich.</p></div></div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 6: The Water Question</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Karoo: semi-arid, 200–400 mm rainfall, groundwater-dependent. One well = 10–20 million litres. 1,000 wells = 10–20 billion litres = a small dam. Options:</p>
+      <ul>
+        <li><strong>Groundwater:</strong> Low-yield, slow recharge — would compete with farms and towns</li>
+        <li><strong>Trucked:</strong> From Gariep Dam or coast — CSIR concluded not feasible at scale</li>
+        <li><strong>Recycled flowback:</strong> Marcellus recycling >90% — but requires treatment infrastructure absent in Karoo</li>
+        <li><strong>Waterless fracking:</strong> Liquid CO₂, N₂ foam, gelled propane — tested but not commercially proven</li>
+      </ul>
+      <p><strong>CSIR 2016 conclusion:</strong> Fracking should not proceed in areas of high water stress. The fundamental hydrology question remains unanswered.</p>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 7: The Future — Moratorium Lifting. Now What?</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>2026 marks a decisive shift. But obstacles remain:</p>
+      <ul>
+        <li><strong>Regulatory uncertainty</strong> — MPRDA fracking regulations still not finalised</li>
+        <li><strong>Litigation risk</strong> — CER, Treasure the Karoo, AfriForum; Section 24 constitutional challenges</li>
+        <li><strong>Water</strong> — irreducible obstacle, no new scientific consensus superseding CSIR 2016</li>
+        <li><strong>Gas market timing</strong> — 2028 Mozambique gas cliff drives LNG imports (Coega terminal); Karoo gas competing in 2030s</li>
+        <li><strong>Infrastructure + capital</strong> — hundreds of billions of rand needed; Shell and Falcon have stepped back</li>
+      </ul>
+      <div class="p-3 mt-3" style="background:#fff8e1; border-left:6px solid #e65100;">
+        <strong>The fork in the road:</strong> The next 5 years will determine whether rigs appear on the Karoo horizon or a landmark Constitutional Court judgment shuts the door. This is a multi-generational decision — 209 Tcf that could reshape SA's economy for 50–100 years, or remain a stranded asset that future generations might access with better technology or might never need.
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources:</strong> PASA Shale Gas Strategic Project · CSIR SEA for Shale Gas Development (2016) · ASSAf Science Action Plan (2022) · DMRE · US EIA World Shale Gas Resources (2013) · Daily Maverick (July 2026)</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

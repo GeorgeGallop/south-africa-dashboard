@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NERSA • National Energy Regulator • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --sa-green: #007A4D;
+      --sa-gold: #FFCD00;
+      --sa-blue: #002395;
+      --sa-red: #E03C31;
+    }
+    .nersa-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 3rem 0;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 2rem;
+    }
+    .nersa-hero h1 { font-weight: 800; font-size: 2.8rem; }
+    .nersa-hero .subtitle { font-size: 1.1rem; opacity: 0.85; }
+
+    .stat-card {
+      border: 2px solid #dee2e6;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      background: white;
+      transition: transform 0.2s;
+      height: 100%;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .stat-card .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--sa-green); }
+    .stat-card .stat-label { font-size: 0.85rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .topic-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+      height: 100%;
+      transition: all 0.25s ease;
+    }
+    .topic-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .topic-card .card-body { padding: 1.8rem; }
+    .topic-card .icon-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 2.5rem;
+      padding-bottom: 1.8rem;
+      border-left: 3px solid var(--sa-green);
+    }
+    .timeline-item:last-child { border-left-color: transparent; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -9px;
+      top: 4px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--sa-green);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--sa-green);
+    }
+    .timeline-item .date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--sa-green);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .timeline-item h5 { margin-top: 0.2rem; margin-bottom: 0.3rem; }
+
+    .rate-case-step {
+      border-left: 4px solid #dee2e6;
+      padding: 1rem 1.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.2s;
+    }
+    .rate-case-step:hover { background: #f8f9fa; border-left-color: var(--sa-green); }
+    .rate-case-step h6 { margin-bottom: 0.2rem; }
+    .rate-case-step .step-num {
+      display: inline-block;
+      width: 28px; height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      background: var(--sa-green);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    .impact-bar {
+      padding: 1rem;
+      border-radius: 12px;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .decision-card {
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 100%;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .decision-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .decision-card .card-header {
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: none;
+    }
+    .decision-card .card-body { padding: 1.5rem; }
+    .decision-card .decision-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .data-source-footer {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1rem;
+      font-size: 0.85rem;
+      border: 1px solid #dee2e6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+    <div class="d-flex gap-2">
+      <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+      <a href="politics-organizations.html" class="btn btn-light btn-sm">🏛️ Government Organizations</a>
+      <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="nersa-hero">
+  <div class="container text-center">
+    <h1>⚡ NERSA</h1>
+    <p class="fw-bold" style="color: #FFCD00;">National Energy Regulator of South Africa</p>
+    <p class="subtitle mx-auto" style="max-width: 700px;">
+      The independent regulator of electricity, piped-gas and petroleum pipelines industries.
+      Custodian of the national electricity regulatory framework — responsible for tariff approvals,
+      licensing, grid access rules, and market transformation.
+    </p>
+    <div class="row mt-4 justify-content-center g-2">
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">⚡ Electricity Regulation Act 4 of 2006</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">🔥 Gas Act 48 of 2001</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">🛢️ Petroleum Pipelines Act 60 of 2003</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KEY STATS -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value">21</div>
+        <div class="stat-label">Years in operation</div>
+        <small class="text-muted">Established 2005</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value">9</div>
+        <div class="stat-label">NERSA Board Members</div>
+        <small class="text-muted">Appointed by Minister</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Regulated Industries</div>
+        <small class="text-muted">Electricity · Gas · Petroleum</small>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="stat-card">
+        <div class="stat-value">R1T+</div>
+        <div class="stat-label">Eskom Revenue Under Oversight</div>
+        <small class="text-muted">MYPD6 period (2025–2028)</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WHAT NERSA DOES ==================== -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-1">🔍 What NERSA Does</h2>
+    <p class="text-muted mb-4">NERSA is South Africa's independent energy regulator with three core mandates.</p>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="topic-card card">
+          <div class="card-body">
+            <div class="icon-circle" style="background:#e8f5e9;"><span>⚡</span></div>
+            <h5 class="fw-bold">Electricity Regulation</h5>
+            <p class="text-muted small">Under the Electricity Regulation Act 4 of 2006, NERSA:</p>
+            <ul class="small mb-0">
+              <li>Issues licences for generation, transmission, distribution, trading, and import/export of electricity</li>
+              <li>Approves Eskom's tariff applications through Multi-Year Price Determinations (MYPD)</li>
+              <li>Sets conditions for electricity supply and grid access</li>
+              <li>Enforces compliance with the Electricity Regulation Act and licence conditions</li>
+              <li>Approves municipal tariffs and bulk electricity prices</li>
+              <li>Regulates the transition to a competitive wholesale electricity market (SAWEM)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="topic-card card">
+          <div class="card-body">
+            <div class="icon-circle" style="background:#fff3e0;"><span>🔥</span></div>
+            <h5 class="fw-bold">Piped-Gas Regulation</h5>
+            <p class="text-muted small">Under the Gas Act 48 of 2001, NERSA:</p>
+            <ul class="small mb-0">
+              <li>Issues licences for gas trading, storage, transmission, distribution, and LNG operations</li>
+              <li>Sets and approves gas tariffs and pipeline access conditions</li>
+              <li>Regulates the construction and operation of gas facilities</li>
+              <li>Enforces gas industry codes of conduct</li>
+              <li>Approves gas import and export applications</li>
+              <li>Oversees the development of South Africa's gas market</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="topic-card card">
+          <div class="card-body">
+            <div class="icon-circle" style="background:#e3f2fd;"><span>🛢️</span></div>
+            <h5 class="fw-bold">Petroleum Pipelines Regulation</h5>
+            <p class="text-muted small">Under the Petroleum Pipelines Act 60 of 2003, NERSA:</p>
+            <ul class="small mb-0">
+              <li>Issues licences for petroleum pipeline construction and operation</li>
+              <li>Regulates pipeline tariffs and access conditions</li>
+              <li>Enforces the Petroleum Pipelines Code</li>
+              <li>Monitors compliance with environmental and safety standards</li>
+              <li>Adjudicates disputes between pipeline owners and users</li>
+              <li>Promotes equitable access to petroleum pipeline infrastructure</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HOW NERSA HANDLES ESKOM RATE CASES ==================== -->
+  <section class="mb-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="fw-bold mb-1">📋 How NERSA Handles Eskom Rate Cases: The MYPD Process</h2>
+        <p class="text-muted mb-4">The Multi-Year Price Determination (MYPD) is NERSA's primary mechanism for setting Eskom's allowable revenue and tariffs. It's a complex, multi-stage process designed to balance Eskom's financial sustainability with consumer protection.</p>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="rate-case-step">
+              <h6><span class="step-num">1</span> Eskom Submits Revenue Application</h6>
+              <p class="small text-muted mb-0">Eskom files a detailed application with NERSA projecting its revenue requirements for the next 3–5 years. This includes: forecast operating costs, fuel costs, capital expenditure, depreciation, return on assets, debt service costs, and expected sales volumes. The application runs thousands of pages and is supported by financial models, plant performance data, and demand forecasts.</p>
+            </div>
+            <div class="rate-case-step">
+              <h6><span class="step-num">2</span> Regulatory Review & Due Diligence</h6>
+              <p class="small text-muted mb-0">NERSA's technical team reviews Eskom's application for reasonableness. They scrutinise cost assumptions, benchmark against international utilities, audit plant performance data, verify capital expenditure plans, and identify disallowed costs (e.g. inefficiencies, excessive executive pay, or non-prudent spending). NERSA may appoint independent consultants.</p>
+            </div>
+            <div class="rate-case-step">
+              <h6><span class="step-num">3</span> Public Hearings & Stakeholder Consultation</h6>
+              <p class="small text-muted mb-0">NERSA publishes Eskom's application and its own analysis for public comment. Public hearings are held in all nine provinces where consumers, business groups, unions, and civil society can make submissions. Key stakeholders include: National Treasury, Department of Mineral Resources & Energy, organised business (BUSSA), unions (NUM, NUMSA), and consumer groups.</p>
+            </div>
+            <div class="rate-case-step">
+              <h6><span class="step-num">4</span> NERSA Deliberation & Decision</h6>
+              <p class="small text-muted mb-0">The Energy Regulator (NERSA's Board of nine members) deliberates based on the technical report and public input. They issue a decision specifying: the total allowable revenue for each year, the maximum tariff increase (%), the Regulatory Asset Base (RAB) value, the allowed return on assets, and any conditions Eskom must meet (e.g. maintenance targets, EAF improvements, cost-reduction milestones).</p>
+            </div>
+            <div class="rate-case-step">
+              <h6><span class="step-num">5</span> Implementation & Compliance Monitoring</h6>
+              <p class="small text-muted mb-0">Eskom implements the approved tariffs. NERSA monitors compliance through quarterly reports, annual performance reviews, and audits. If Eskom fails to meet conditions (e.g. EAF targets), NERSA can impose penalties or adjust future allowances. Eskom can also apply for "regulatory clearing accounts" to recover under-recoveries from prior years.</p>
+            </div>
+            <div class="rate-case-step" style="border-left-color: var(--sa-red);">
+              <h6><span class="step-num">⚖️</span> Judicial Review (If Disputed)</h6>
+              <p class="small text-muted mb-0">If Eskom disagrees with NERSA's decision, it can apply to the High Court for judicial review under Section 31 of the Electricity Regulation Act. This happened with MYPD6 — Eskom challenged NERSA's Generation RAB calculation, leading to the R54 billion settlement in July 2025.</p>
+            </div>
+
+            <div class="alert alert-warning mt-3 mb-0">
+              <strong>💡 Key principle:</strong> NERSA does not set Eskom's profits. It determines the <strong>allowable revenue</strong> — the maximum amount Eskom is permitted to collect from customers. The tariff (c/kWh) is derived by dividing allowable revenue by expected sales. If sales fall short, Eskom bears the risk (or applies for a RCA adjustment).
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card h-100" style="background: #f8f9fa;">
+              <div class="card-body">
+                <h6 class="fw-bold">MYPD Framework Evolution</h6>
+                <ul class="small mb-3">
+                  <li><strong>MYPD1</strong> (2007–2010): Initial 3-year price path</li>
+                  <li><strong>MYPD2</strong> (2010–2013): 3-year path after 2008 crisis</li>
+                  <li><strong>MYPD3</strong> (2013–2018): 5-year path, then abandoned</li>
+                  <li><strong>MYPD4</strong> (2019–2022): COVID-disrupted period</li>
+                  <li><strong>MYPD5</strong> (2022–2025): Single-year extensions</li>
+                  <li><strong>MYPD6</strong> (2025–2028): Current — R54bn settled</li>
+                </ul>
+                <hr>
+                <h6 class="fw-bold">Key Regulatory Concepts</h6>
+                <ul class="small mb-0">
+                  <li><strong>RAB</strong> — Regulatory Asset Base: The value of Eskom's assets on which it earns a return</li>
+                  <li><strong>WACC</strong> — Weighted Average Cost of Capital: The allowed return on RAB</li>
+                  <li><strong>EAF</strong> — Energy Availability Factor: Plant performance metric</li>
+                  <li><strong>RCA</strong> — Regulatory Clearing Account: True-up mechanism</li>
+                  <li><strong>Section 34 Determination</strong>: Ministerial approval for new generation capacity</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT IS IN FRONT OF NERSA NOW ==================== -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-1">📌 Current Matters Before NERSA</h2>
+    <p class="text-muted mb-4">The most significant regulatory decisions currently in progress or recently decided.</p>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-danger">
+          <div class="card-header bg-danger text-white">
+            ⚡ MYPD6 Settlement Implementation
+          </div>
+          <span class="decision-tag bg-warning">Active</span>
+          <div class="card-body">
+            <p class="small">Following the High Court settlement in July 2025 admitting R54 billion in errors, NERSA is implementing revised tariff determinations for 2025/26–2027/28. The corrected tariffs mean higher increases for consumers than originally announced.</p>
+            <p class="small mb-0"><strong>Status:</strong> Settlement approved Aug 2025. Tariffs published Feb 2026. Implementation ongoing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-primary">
+          <div class="card-header bg-primary text-white">
+            🔌 Grid Access Rules & Capacity Allocation
+          </div>
+          <span class="decision-tag bg-success text-white">Decided Nov 2025</span>
+          <div class="card-body">
+            <p class="small">NERSA approved new grid access rules to level the playing field between Eskom and IPPs. Key changes: remove Eskom's preferential access to transmission capacity, implement firm access rights, and create a secondary capacity trading market. Effective January 2026.</p>
+            <p class="small mb-0"><strong>Impact:</strong> Enables IPPs to wheel power through the grid on equal terms — a critical enabler for private generation investment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-success">
+          <div class="card-header bg-success text-white">
+            📝 Section 34 Determinations (New Capacity)
+          </div>
+          <span class="decision-tag bg-warning">Active</span>
+          <div class="card-body">
+            <p class="small">Under Section 34 of the Electricity Regulation Act, the Minister of Electricity & Energy must make determinations for new generation capacity. NERSA reviews these and grants licences. Current matters include: 2,500 MW nuclear procurement, additional REIPPP bid windows, and private transmission projects.</p>
+            <p class="small mb-0"><strong>Status:</strong> Draft regulations for private transmission published Apr 2025. Public comment period closed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-info">
+          <div class="card-header bg-info text-white">
+            🏗️ SAWEM Market Rules Approval
+          </div>
+          <span class="decision-tag bg-warning">Draft Stage</span>
+          <div class="card-body">
+            <p class="small">The South African Wholesale Electricity Market (SAWEM) is South Africa's new competitive electricity market. NERSA must approve the Market Code, Conduct Rules, and Pricing Methodology before go-live. Drafts were published for comment in 2024–2025.</p>
+            <p class="small mb-0"><strong>Status:</strong> Market Code finalisation in progress. Target operational date: 2026–2027.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-secondary">
+          <div class="card-header bg-secondary text-white">
+            🔥 Gas Licensing Framework Update
+          </div>
+          <span class="decision-tag bg-warning">Active</span>
+          <div class="card-body">
+            <p class="small">With the Gas Master Plan driving LNG import infrastructure, NERSA is updating its gas licensing framework. Applications for LNG regasification terminals (Richards Bay, Coega, Saldanha), gas-to-power plants, and pipeline expansions are under review.</p>
+            <p class="small mb-0"><strong>Status:</strong> Multiple LNG licence applications under evaluation. Pipeline tariff methodology being reviewed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="decision-card card border-danger">
+          <div class="card-header bg-danger text-white">
+            🏘️ Municipal Electricity Tariff Approvals
+          </div>
+          <span class="decision-tag bg-warning">Recurring</span>
+          <div class="card-body">
+            <p class="small">NERSA must approve all municipal electricity tariffs annually. With Eskom's bulk tariff increases flowing through, municipalities are under pressure. Several municipalities have defaulted on Eskom payments (municipal debt ~R74bn). NERSA is under court pressure to process tariffs faster so municipalities can set lawful budgets.</p>
+            <p class="small mb-0"><strong>Status:</strong> Ongoing annual cycle. High Court case (Afriforum v NERSA, Oct 2025) ordered faster processing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== NERSA'S DECISIONS TIMELINE ==================== -->
+  <section class="mb-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="fw-bold mb-1">📅 Key NERSA Decisions: Timeline</h2>
+        <p class="text-muted mb-4">Major regulatory decisions that have shaped South Africa's energy landscape.</p>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="timeline-item">
+              <div class="date">2006</div>
+              <h5>Electricity Regulation Act enacted</h5>
+              <p class="small text-muted mb-0">NERSA established as the custodian and enforcer of the national electricity regulatory framework, replacing the National Electricity Regulator (NER).</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2007–2010</div>
+              <h5>MYPD1: First Multi-Year Price Determination</h5>
+              <p class="small text-muted mb-0">Set Eskom's revenue path following the 2008 load-shedding crisis. Approved average increases of ~27% per year to fund the build programme (Medupi, Kusile).</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2011</div>
+              <h5>REIPPP Bid Window 1 Approval</h5>
+              <p class="small text-muted mb-0">NERSA licenced the first renewable energy IPPs under the Renewable Energy Independent Power Producer Procurement Programme. This unlocked SA's first large-scale wind and solar projects.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2013</div>
+              <h5>MYPD3: 5-Year Determination</h5>
+              <p class="small text-muted mb-0">Approved 5-year price path (2013–2018). Eskom later abandoned MYPD3, claiming under-recovery. Led to regulatory clearing account claims and disputes.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2019</div>
+              <h5>MYPD4: 3-Year Determination</h5>
+              <p class="small text-muted mb-0">Approved increases of 9.41%, 8.76%, and 15.06% for 2019/20–2021/22. Included conditions on plant performance, cost reduction, and unbundling milestones.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2021</div>
+              <h5>Nuclear Procurement Approval</h5>
+              <p class="small text-muted mb-0">NERSA approved the procurement of 2,500 MW of nuclear power under Section 34. This decision was controversial — critics argued it was premature without a clear cost-benefit analysis.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="timeline-item">
+              <div class="date">2022</div>
+              <h5>Eskom Unbundling & NTCSA Establishment</h5>
+              <p class="small text-muted mb-0">NERSA supported the legal separation of Eskom's transmission entity (NTCSA). Licenced NTCSA as an independent transmission utility with open-access obligations.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Jan 2025</div>
+              <h5>ERA Amendments Commence</h5>
+              <p class="small text-muted mb-0">Amendments to the Electricity Regulation Act took effect, enabling private transmission projects, removing the 1 MW generation licence threshold, and strengthening NERSA's enforcement powers.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Jun 2025</div>
+              <h5>MYPD6 Decision (Original)</h5>
+              <p class="small text-muted mb-0">NERSA published its MYPD6 revenue decision for 2025/26–2027/28. Eskom immediately challenged it, citing a R107 billion shortfall due to errors in the Generation RAB calculation.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Jul 2025</div>
+              <h5>R54 Billion Settlement</h5>
+              <p class="small text-muted mb-0">NERSA admitted errors in its MYPD6 calculation. Settled with Eskom for R54 billion additional revenue over three years — significantly higher tariffs than originally announced. Admitting the error was unprecedented for NERSA and sparked political backlash.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Nov 2025</div>
+              <h5>Grid Access Reform Package</h5>
+              <p class="small text-muted mb-0">NERSA announced sweeping grid access changes: removed Eskom's priority access rights, implemented firm access rights, approved secondary capacity trading, and introduced non-discriminatory connection rules. Called the "most significant electricity market reform since 1994."</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Jan 2026</div>
+              <h5>Grid Access Rules Take Effect</h5>
+              <p class="small text-muted mb-0">New grid connection and capacity allocation rules became effective. IPPs can now access transmission capacity on equal terms with Eskom. NERSA began processing connection applications under the new framework.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">Feb 2026</div>
+              <h5>Revised MYPD6 Tariffs Published</h5>
+              <p class="small text-muted mb-0">Following the court settlement, NERSA confirmed the revised tariff increases for 2025/26–2027/28. Eskom's peak rate rose to 684.59 c/kWh for 2025/26 — a ~12.74% increase reflecting the corrected RAB.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== NERSA'S STRUCTURE & GOVERNANCE ==================== -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-1">🏛️ Governance & Structure</h2>
+    <p class="text-muted mb-4">How NERSA is constituted and how it operates.</p>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="fw-bold">Board Composition</h5>
+            <p class="small">NERSA is governed by a Board of nine members (the "Energy Regulator") appointed by the Minister of Mineral Resources and Energy, in consultation with Parliament. The Board includes a Chairperson, CEO, and seven other members with expertise in:</p>
+            <ul class="small">
+              <li><strong>Energy regulation</strong> — electricity, gas, petroleum</li>
+              <li><strong>Economics & finance</strong> — tariff setting, cost modelling</li>
+              <li><strong>Engineering</strong> — power systems, pipelines, safety</li>
+              <li><strong>Law</strong> — regulatory and administrative law</li>
+              <li><strong>Consumer protection</strong> — public interest advocacy</li>
+              <li><strong>Environmental science</strong> — climate, emissions, sustainability</li>
+            </ul>
+            <p class="small mb-0"><strong>Current Chairperson:</strong> Thembani Bukula<br><strong>Current CEO:</strong> Nomalanga Sithole</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="fw-bold">Regulatory Divisions</h5>
+            <p class="small">NERSA's operational structure is divided into four regulatory divisions, each headed by a Senior Manager:</p>
+            <ul class="small mb-0">
+              <li><strong>Electricity Regulation Division</strong> — Licensing, tariff approvals, compliance monitoring, MYPD management, market rules, grid access regulation</li>
+              <li><strong>Gas Regulation Division</strong> — Gas licensing, pipeline tariffs, LNG project approvals, gas market development</li>
+              <li><strong>Petroleum Pipelines Regulation Division</strong> — Pipeline licensing, tariff regulation, code enforcement, dispute resolution</li>
+              <li><strong>Corporate Services</strong> — Finance, HR, IT, legal, communications, stakeholder management</li>
+            </ul>
+            <hr>
+            <h5 class="fw-bold">Funding</h5>
+            <p class="small mb-0">NERSA is funded through regulatory levies charged to licensees (Eskom, IPPs, gas companies, pipeline operators). The levy is typically 0.15 c/kWh on electricity sales — a tiny fraction of the tariff but sufficient to fund the regulator's R200m+ annual budget.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CRITICISMS & CHALLENGES ==================== -->
+  <section class="mb-5">
+    <div class="card shadow-sm border-danger">
+      <div class="card-body p-4">
+        <h2 class="fw-bold mb-1">⚠️ Criticisms & Challenges</h2>
+        <p class="text-muted mb-3">NERSA faces significant scrutiny and institutional challenges that affect its credibility and effectiveness.</p>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card h-100 border-0" style="background: #fef2f2;">
+              <div class="card-body">
+                <h6 class="fw-bold text-danger">R54 Billion MYPD6 Error</h6>
+                <p class="small mb-0">The most damaging episode in NERSA's history. Admitting to a R54 billion calculation error in Eskom's revenue determination severely damaged public trust. Parliament summoned NERSA for an explanation in September 2025. The error was attributed to "incorrect application of the Generation RAB methodology" — a fundamental flaw in the regulator's core function.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0" style="background: #fef2f2;">
+              <div class="card-body">
+                <h6 class="fw-bold text-danger">Regulatory Independence Questions</h6>
+                <p class="small mb-0">Critics argue NERSA lacks true independence from the executive. Board members are appointed by the Minister. Major decisions (e.g. nuclear procurement, Section 34 determinations) originate from the Minister, with NERSA's role reduced to "rubber stamping." The energy regulator should be insulated from political pressure to function effectively.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0" style="background: #fef2f2;">
+              <div class="card-body">
+                <h6 class="fw-bold text-danger">Capacity & Skills Constraints</h6>
+                <p class="small mb-0">NERSA struggles to attract and retain skilled technical staff (engineers, economists, financial modellers) due to public-sector salary constraints. Eskom's applications are enormously complex — requiring deep expertise in power systems, financial modelling, and regulatory accounting. The MYPD6 error partly reflects these capacity limitations.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0" style="background: #fef2f2;">
+              <div class="card-body">
+                <h6 class="fw-bold text-danger">Slowness of Decision-Making</h6>
+                <p class="small mb-0">NERSA has been criticised for lengthy processing times — licence applications can take 12–18 months, tariff approvals often miss budget deadlines, and market rule approvals have delayed the SAWEM launch. The High Court (Afriforum case, Oct 2025) ordered NERSA to process municipal tariff applications within prescribed timeframes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== NERSA'S IMPACT ON ESKOM TARIFFS ==================== -->
+  <section class="mb-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="fw-bold mb-1">📊 NERSA's Impact: Eskom Tariff Trajectory</h2>
+        <p class="text-muted mb-3">Every single Eskom tariff increase since 1996 has passed through NERSA's approval. The chart below shows the 30-year trajectory of Eskom's Megaflex Peak rates — each data point represents a NERSA regulatory decision.</p>
+
+        <div class="row g-3 align-items-center">
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered small">
+                <thead class="table-dark">
+                  <tr>
+                    <th>MYPD Period</th>
+                    <th>Years</th>
+                    <th>Avg Annual Increase</th>
+                    <th>Peak Rate Start → End</th>
+                    <th>Key Driver</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Pre-MYPD</strong></td>
+                    <td>1996–2006</td>
+                    <td>~6.5%</td>
+                    <td>7.16 → 13.79 c/kWh</td>
+                    <td>Cost-recovery, stable period</td>
+                  </tr>
+                  <tr>
+                    <td><strong>MYPD1</strong></td>
+                    <td>2007–2010</td>
+                    <td>~27.5%</td>
+                    <td>15.74 → 26.35 c/kWh</td>
+                    <td>Post-2008 crisis, build programme funding</td>
+                  </tr>
+                  <tr>
+                    <td><strong>MYPD2</strong></td>
+                    <td>2010–2013</td>
+                    <td>~24.8%</td>
+                    <td>32.88 → 47.60 c/kWh</td>
+                    <td>Medupi/Kusile construction costs</td>
+                  </tr>
+                  <tr>
+                    <td><strong>MYPD3</strong></td>
+                    <td>2013–2018</td>
+                    <td>~8.7%</td>
+                    <td>52.43 → 73.31 c/kWh</td>
+                    <td>Abandoned early; RCA disputes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>MYPD4</strong></td>
+                    <td>2019–2022</td>
+                    <td>~12.74%</td>
+                    <td>333.51 → 417.36 c/kWh</td>
+                    <td>Load shedding costs, diesel, OCGTs</td>
+                  </tr>
+                  <tr>
+                    <td><strong>MYPD5</strong></td>
+                    <td>2022–2025</td>
+                    <td>~14.3%</td>
+                    <td>457.47 → 611.94 c/kWh</td>
+                    <td>Debt relief conditions, unbundling costs</td>
+                  </tr>
+                  <tr class="table-warning">
+                    <td><strong>MYPD6</strong></td>
+                    <td>2025–2028</td>
+                    <td>~12.5% (settled)</td>
+                    <td>684.59 → 1,096.00 c/kWh (fwd)</td>
+                    <td>R54bn settlement correcting RAB error</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0" style="background: #f8f9fa;">
+              <div class="card-body text-center">
+                <h6 class="fw-bold">Cumulative Increase Since 1996</h6>
+                <div class="display-4 fw-bold text-danger">9,464%</div>
+                <p class="small text-muted">From 7.16 c/kWh (1996) to 684.59 c/kWh (2025/26)</p>
+                <hr>
+                <h6 class="fw-bold">30-Year CAGR</h6>
+                <div class="display-6 fw-bold text-sa-green">15.9%</div>
+                <p class="small text-muted">Compounded annual growth rate</p>
+                <hr>
+                <div class="small text-muted">
+                  <strong>Note:</strong> Pre-2019 rates were for <strong><500V, <300km</strong> at standard time-of-use. The jump between 2018/19 and 2019/20 reflects a change in how Eskom structured charges — the Regulator approved the transition to cost-reflective tariffs.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-source-footer mt-3">
+          <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+              <strong>📚 Data Source:</strong> Eskom tariff PDFs (1996–2026), NERSA Annual Reports & MYPD Decisions.
+              <span class="badge bg-light text-dark ms-2">Updated: Jul 2026</span>
+            </div>
+            <div>
+              <a href="eskom-tariffs.html" class="btn btn-sm btn-outline-dark">📈 Full Tariff Forward Curve →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LINKS & FURTHER READING ==================== -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-3">🔗 Official Links & Further Reading</h2>
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <a href="https://www.nersa.org.za" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">🌐</span>
+              <div>
+                <h6 class="mb-0 fw-bold">NERSA Official Website</h6>
+                <small class="text-muted">nersa.org.za</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="https://www.gov.za/documents/electricity-regulation-act" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">⚖️</span>
+              <div>
+                <h6 class="mb-0 fw-bold">Electricity Regulation Act</h6>
+                <small class="text-muted">Act 4 of 2006</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="https://www.nersa.org.za/regulator-decisions/150" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">📋</span>
+              <div>
+                <h6 class="mb-0 fw-bold">NERSA Regulator Decisions</h6>
+                <small class="text-muted">Full decision database</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="eskom-tariffs.html" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">📈</span>
+              <div>
+                <h6 class="mb-0 fw-bold">Eskom Tariff Forward Curve</h6>
+                <small class="text-muted">Full rate history & projections</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="policy-tracker.html" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">📋</span>
+              <div>
+                <h6 class="mb-0 fw-bold">Policy Tracker</h6>
+                <small class="text-muted">Energy policies, regulations, SAWEM lifecycle</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="https://en.wikipedia.org/wiki/National_Energy_Regulator_of_South_Africa" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <span style="font-size: 2rem;">📚</span>
+              <div>
+                <h6 class="mb-0 fw-bold">Wikipedia: NERSA</h6>
+                <small class="text-muted">Background & history</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="data-source-footer mb-4">
+    <strong>📝 Note:</strong> This page is a summary compiled from NERSA official documents, Eskom tariff filings, High Court judgments, news reporting, and parliamentary records. The regulatory landscape changes frequently — verify with NERSA for the latest decisions.
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vesting Contracts • SAWEM Price Formation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --sa-green: #007A4D;
+      --sa-gold: #FFCD00;
+      --sa-blue: #002395;
+      --sa-red: #E03C31;
+    }
+    body { background: #f8f9fa; }
+    .hero-vesting {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #533483 100%);
+      color: white;
+      padding: 3rem 0;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 2rem;
+    }
+    .hero-vesting h1 { font-weight: 800; font-size: 2.6rem; }
+    .hero-vesting .subtitle { font-size: 1rem; opacity: 0.85; }
+    
+    .quote-block {
+      border-left: 4px solid var(--sa-green);
+      background: #f0faf4;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+    .quote-block .attribution {
+      font-size: 0.8rem;
+      color: #6c757d;
+      margin-top: 0.5rem;
+    }
+    .quote-block-warn {
+      border-left: 4px solid #E03C31;
+      background: #fef2f2;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+    .quote-block-idea {
+      border-left: 4px solid #f0ad4e;
+      background: #fffbeb;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+    
+    .mechanism-card {
+      border: 2px solid #dee2e6;
+      border-radius: 16px;
+      padding: 1.5rem;
+      background: white;
+      transition: transform 0.2s;
+      height: 100%;
+    }
+    .mechanism-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .mechanism-card .card-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    
+    .flow-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .flow-step:last-child { border-bottom: none; }
+    .flow-step .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--sa-green); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+    }
+    
+    .price-confusion-table td:first-child { font-weight: 600; }
+    
+    .source-tag {
+      font-size: 0.7rem; padding: 0.15rem 0.5rem;
+      border-radius: 10px; display: inline-block;
+    }
+    .source-spec { background: #dbeafe; color: #1e40af; }
+    .source-code { background: #dcfce7; color: #166534; }
+    .source-cpa { background: #fef3c7; color: #92400e; }
+    .source-ner { background: #f3e8ff; color: #6b21a8; }
+
+    .chart-container { position: relative; height: 350px; width: 100%; }
+    .chart-container-lg { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+    <div class="d-flex gap-2">
+      <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+      <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      <a href="sawem-market-structure.html" class="btn btn-light btn-sm">📄 Market Structure</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-vesting">
+  <div class="container text-center">
+    <h1>🏛️ Vesting Contracts & Price Formation</h1>
+    <p class="subtitle mx-auto" style="max-width: 750px;">
+      How Eskom's legacy tariffs, the SAWEM Day-Ahead Market SMP, IPP PPA strike prices, and the 
+      Central Purchasing Agency interact — and why the "price of electricity" depends on which 
+      lens you're looking through.
+    </p>
+    <div class="row mt-4 justify-content-center g-2">
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">⚡ 4 different price regimes</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📄 Sourced from SAWEM docs</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">🏗️ CPA as intermediary</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- INTRO: The core problem -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">🤔 The Price Confusion — Four Different Prices, One Grid</h2>
+      <p class="lead">There isn't one "price of electricity" in South Africa. There are <strong>at least four</strong>, and they're all correct — they just measure different things.</p>
+
+      <table class="table table-bordered table-sm price-confusion-table">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 18%;">Price</th>
+            <th style="width: 22%;">Level (2025/26 est.)</th>
+            <th style="width: 60%;">What It Really Is</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🏛️ <strong>Eskom Regulated Tariff</strong><br><small>(Megaflex Peak)</small></td>
+            <td><strong>~R 6.85 / kWh</strong><br><small>684.59 c/kWh</small></td>
+            <td>The bundled, NERSA-approved price paid by Eskom's direct customers. Covers generation, transmission, distribution, legacy costs, subsidies, and a regulated return. This is the "retail-ish" price that appears on your bill. It reflects Eskom's <em>average cost of service</em>, not the marginal cost of any specific power plant.</td>
+          </tr>
+          <tr>
+            <td>📊 <strong>DAM System Marginal Price (SMP)</strong><br><small>SAWEM market clearing</small></td>
+            <td><strong>~R 1.20–3.50 / kWh</strong><br><small>est. from Eskom coal costs</small></td>
+            <td>The price determined by the <strong>marginal unit in the Day-Ahead Market</strong>. All dispatched generators receive the SMP (pay-as-clear). Set by the most expensive generator needed to meet demand in each hour — typically an Eskom coal plant running part-loaded, or an OCGT at peak. <em>Not a retail price.</em> It covers only the marginal energy cost, not the bundled fixed/legacy costs in the regulated tariff.</td>
+          </tr>
+          <tr>
+            <td>🌱 <strong>IPP PPA Strike Prices</strong><br><small>REIPPP contract prices</small></td>
+            <td><strong>Wind: ~R 0.50–0.80 / kWh</strong><br><strong>Solar PV: ~R 0.40–0.70 / kWh</strong></td>
+            <td>Fixed-price, 20-year Power Purchase Agreements awarded through competitive REIPPP auctions. These are <strong>contract prices</strong>, not market prices. A wind farm with a strike price of R 0.70/kWh gets paid R 0.70/kWh regardless of what the SMP is. The CPA (as counterparty) takes the <strong>volumetric and price risk</strong> — if the SMP is below the strike, the CPA pays the difference; if above, the IPP pays the CPA (via a CfD settled through the legacy charge). The IPP's marginal cost is near-zero (wind/sun are free), but its PPA price reflects the full cost of capital, construction, 20-year O&M, and a return.</td>
+          </tr>
+          <tr>
+            <td>💼 <strong>Eskom Vesting Contract Price</strong><br><small>Transition hedge</small></td>
+            <td><strong>Year 1: fixed reference price<br>→ Year 5: 100% SMP</strong></td>
+            <td>A transitional mechanism preventing Eskom Generation from exercising market power. Each Eskom station signs a vesting contract with the CPA that includes a <strong>declining energy hedge</strong>: in Year 1, the station receives a fixed reference price for 100% of its output (hedging against the risk of bidding its true marginal cost into the DAM). By Year 5, the hedge declines to 0%, and the station is fully exposed to the SMP. The hedge percentage declines by 20% per year. This is the core <strong>market power mitigation</strong> mechanism.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="quote-block mt-3">
+        <strong>The critical insight:</strong> The SMP is not the price Eskom's customers pay. It's the <em>wholesale energy-only</em> price in the DAM. The regulated tariff bundles <strong>generation capacity, transmission, distribution, legacy costs, electrification subsidies, environmental levies, and a regulated return on assets</strong> on top of energy costs. When you see "electricity costs R 6.85/kWh" and "the DAM SMP is R 1.50/kWh", both numbers are correct for what they measure.
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CENTRAL PROBLEM -->
+  <div class="card shadow-sm mb-4" style="border-left: 5px solid #E03C31;">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">⚠️ The Central Problem: Eskom Sets the Marginal Price</h2>
+      <p class="lead">South Africa faces a unique structural challenge: the <strong>same company that owns 90% of generation capacity</strong> will also be the <strong>de facto price setter</strong> in the market.</p>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">🏭</div>
+            <h5 class="fw-bold">Eskom's Dominance in the Merit Order</h5>
+            <p class="text-muted small">Eskom Generation controls ~44 GW of coal, nuclear, pumped storage, and OCGT capacity — roughly <strong>90% of system generation</strong>.</p>
+            <p class="text-muted small mb-0">In a competitive DAM, generators bid their marginal cost. Eskom's coal fleet has marginal costs ranging from ~R 0.40/kWh (Matimba, efficient) to ~R 2.50/kWh (older, inefficient stations like Camden or Grootvlei). OCGTs (Ankerlig, Gourikwa) bid at ~R 3.50/kWh+ (diesel).</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">📈</div>
+            <h5 class="fw-bold">The Marginal Unit Sets Everyone's Price</h5>
+            <p class="text-muted small">Under SAWEM's <strong>pay-as-clear</strong> mechanism (standard for wholesale markets), every dispatched generator receives the SMP — not its own bid price. If Eskom's most expensive coal unit is the marginal plant setting the SMP at R 1.50/kWh, then:</p>
+            <ul class="text-muted small mb-0">
+              <li>Cheap coal plants (marginal cost R 0.40) get <strong>inframarginal rent</strong> of R 1.10/kWh</li>
+              <li>Wind IPPs (PPA strike R 0.70) get SMP + a CfD top-up from the CPA</li>
+              <li>Solar PV (marginal cost ~R 0.00) gets the full R 1.50/kWh SMP</li>
+              <li>The CPA collects/bears the difference between SMP and PPA strike prices</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">🔴</div>
+            <h5 class="fw-bold">Market Power Risk: Economic Withholding</h5>
+            <p class="text-muted small">A dominant generator can raise the SMP by <strong>economic withholding</strong> — bidding some capacity above its true marginal cost. If Eskom bids 2 GW of its fleet at R 5.00/kWh instead of R 0.80/kWh, and those units end up marginal, the SMP rises from R 0.80 to R 5.00 for <em>everyone</em>.</p>
+            <p class="text-muted small mb-0">The <strong>Market Conduct Rules</strong> (Section 2.1(4)) prohibit this: "it is not necessary to prove that the manipulation had an actual effect on prices; it is sufficient that the conduct was intended or likely to affect prices." Eskom Generation is explicitly recognised as dominant (Section 2.8(6)). But detection is difficult — distinguishing "strategic bidding" from "genuine cost-reflective bidding" requires detailed plant-level heat-rate and fuel-cost data.</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">🛡️</div>
+            <h5 class="fw-bold">The Vesting Hedge: Market Power Mitigation</h5>
+            <p class="text-muted small">The vesting contract's <strong>declining hedge</strong> is the primary mitigation tool. The CPA document (Section 2.1) specifies: each vesting contract includes <em>"an Energy Hedge — a financial hedge starting at 100% of a reference price in Year 1 and reducing by 20% per year to 0% in Year 5."</em></p>
+            <p class="text-muted small mb-0">This means: in Year 1, Eskom receives a fixed price for all its output — it has <em>no incentive</em> to bid high to manipulate the SMP, because its revenue is fixed regardless. As the hedge declines, Eskom gradually gains exposure to the SMP, but by Year 5, the market is expected to have sufficient non-Eskom competition (IPPs, imports, demand response) to discipline pricing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block mt-3">
+        <p class="mb-1"><strong>Source: SAWEM Specification, p. 7</strong></p>
+        <p class="mb-0"><em>"Eskom Generation's market power and the honoring of the contractual terms of the PPAs negotiated with IPPs as part of the transition to a market environment"</em> are the two central challenges the CPA and vesting contracts are designed to address.</p>
+        <div class="attribution">— SAWEM Market Specification, Chapter 2: ESI Structure</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW THE VESTING CONTRACT WORKS -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">🔧 How the Vesting Contract Mechanism Works</h2>
+
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div>
+          <strong>Step 1: Eskom Generation signs a Vesting Contract with the CPA</strong>
+          <p class="text-muted small mb-0">Per the Market Code definition (Section 1, "Vesting Contract"): <em>"a contract or other financial arrangement between the NTCSA and an Eskom generator for the sale of a specified amount of electricity at a price determined by the Regulator as a mechanism to facilitate the transition to a competitive market."</em></p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div>
+          <strong>Step 2: The CPA receives Availability Payments</strong>
+          <p class="text-muted small mb-0">The CPA pays each Eskom station a fixed <strong>Availability Payment</strong> covering capital costs, fixed O&M, and a regulated return on assets. This is the "capacity" component — it keeps the plant available even if it never runs. Plus a <strong>Generation Capacity Charge</strong> for reserving plant capacity.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div>
+          <strong>Step 3: The CPA applies the Energy Hedge</strong>
+          <p class="text-muted small mb-0">The CPA determines the hedged portion of generation. In Year 1: 100% of output at a fixed reference price. The hedge declines by 20% per year. The unhedged portion is exposed to the DAM SMP: if the SMP is above the station's marginal cost, the station profits; if below, the station loses money and has an incentive to improve efficiency.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div>
+          <strong>Step 4: Eskom bids into the DAM as a normal BRP</strong>
+          <p class="text-muted small mb-0">Eskom Generation bids its plant's marginal costs into the Day-Ahead Market like any other participant. The CPA registers as a BRP for all Eskom stations. The Market Operator runs the co-optimised SCUC/SCED algorithm, determines the SMP, and dispatches units in merit order.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div>
+          <strong>Step 5: Settlement — the CPA nets everything</strong>
+          <p class="text-muted small mb-0">The CPA pays Eskom the Availability Payment + the hedge settlement + the actual SMP revenue from the DAM. The CPA also pays IPPs their PPA strike prices and sells the energy into the DAM. Any net deficit (or surplus) flows through the <strong>Legacy Charge Mechanism</strong> to all transmission-connected consumers, approved by NERSA.</p>
+        </div>
+      </div>
+
+      <div class="quote-block mt-3">
+        <p class="mb-1"><strong>Source: SAWEM Specification, Chapter 5 — Central Purchasing Agency</strong></p>
+        <p class="mb-0"><em>"Each vesting contract specifies: (a) the Availability Payment — a fixed monthly payment covering capital costs, fixed O&M, and a regulated return on assets; (b) the Capacity Payment — a payment per MW of available capacity; (c) the Energy Hedge — a financial hedge starting at 100% of a reference price in Year 1 and reducing by 20% per year to 0% in Year 5."</em></p>
+        <div class="attribution">— SAWEM CPA Document, Section 2.1: Vesting Contracts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE WIND/SOLAR PPA PARADOX -->
+  <div class="card shadow-sm mb-4" style="border-left: 5px solid #f0ad4e;">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">🌬️ The Wind & Solar Paradox: $0 Marginal Cost, Paid R 0.70/kWh</h2>
+      
+      <p class="lead">Your intuition is correct: a wind turbine's marginal cost is effectively zero (the wind is free). Yet REIPPPP PPAs pay R 0.50–0.80/kWh. How does this work, and where does the money come from?</p>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">💸</div>
+            <h5 class="fw-bold">The PPA Price ≠ Marginal Cost</h5>
+            <p class="text-muted small">A PPA strike price covers the <em>full levelised cost</em> of the project over 20 years:</p>
+            <ul class="text-muted small">
+              <li><strong>Capital cost recovery</strong> — building a wind farm costs ~R 15–20 million/MW upfront</li>
+              <li><strong>Financing costs</strong> — debt service at SA interest rates (12%+)</li>
+              <li><strong>O&M over 20 years</strong> —  turbine maintenance, land leases, staff, insurance</li>
+              <li><strong>Return on equity</strong> — typical 12–15% IRR for infrastructure</li>
+              <li><strong>Decommissioning</strong> — end-of-life removal costs</li>
+            </ul>
+            <div class="quote-block-idea mb-0">
+              <strong>Analogy:</strong> Your house's "marginal cost" of heating on a cold day is zero once it's built. But the price you pay on your bond includes construction, financing, and maintenance. Same logic applies to a wind farm.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">🏦</div>
+            <h5 class="fw-bold">Who Pays the Difference?</h5>
+            <p class="text-muted small">The difference between the PPA strike price and the SMP is settled through the <strong>Legacy Charge</strong> mechanism. Here's the flow in two scenarios:</p>
+
+            <div class="mb-2">
+              <strong>When SMP < PPA Strike (most likely):</strong><br>
+              <small class="text-muted">Wind PPA = R 0.70/kWh, SMP = R 0.60/kWh<br>
+              The CPA pays the IPP R 0.70/kWh. It sells into the DAM at R 0.60/kWh. <strong>Loss: R 0.10/kWh</strong>, recovered through the Legacy Charge on consumers.</small>
+            </div>
+            <div>
+              <strong>When SMP > PPA Strike (possible in future):</strong><br>
+              <small class="text-muted">Same wind PPA = R 0.70/kWh, SMP = R 1.50/kWh (OCGT on the margin)<br>
+              The CPA pays the IPP R 0.70/kWh. It sells into the DAM at R 1.50/kWh. <strong>Profit: R 0.80/kWh</strong>, credited back through the Legacy Charge.</small>
+            </div>
+
+            <div class="quote-block-warn mt-2 mb-0">
+              <strong>The CPA absorbs all volumetric and price risk.</strong> It is legally obliged to take-or-pay the entire output of each IPP at the strike price, regardless of whether the energy is needed or what the SMP is. This is the <strong>volumetric exposure</strong> you identified — Eskom (via the CPA) bears the risk that wind doesn't blow or that the SMP collapses. The PPA counterparty (the bank lending to the IPP) requires this certainty: they won't finance a project whose revenue depends on an hourly wholesale price that didn't exist when the PPA was signed.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">📉</div>
+            <h5 class="fw-bold">The Merit Order Effect: Renewables Lower the SMP</h5>
+            <p class="text-muted small">When wind or solar is generating, they bid at near-zero marginal cost into the DAM. In the merit order stack, they displace the most expensive coal or OCGT plants. This pushes the SMP <em>down</em> — which is good for consumers buying at the SMP, but bad for baseload coal plants and for the CPA's legacy charge position (because a lower SMP means a bigger gap between PPA strike prices and the SMP).</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mechanism-card">
+            <div class="card-icon">🔗</div>
+            <h5 class="fw-bold">CfD Structure vs. Physical PPA</h5>
+            <p class="text-muted small">The SAWEM Specification (Chapter 7) proposes moving from physical PPAs to <strong>Contracts for Difference (CfDs)</strong> for future procurement. Under a CfD:</p>
+            <ul class="text-muted small mb-0">
+              <li>The IPP sells its energy <em>directly into the DAM</em> at the SMP</li>
+              <li>The CPA settles the financial difference: if SMP < Strike, the CPA pays the IPP the difference; if SMP > Strike, the IPP pays the CPA</li>
+              <li>The IPP is exposed to <strong>basis risk</strong> (its actual output vs. the CfD reference volume) — it must manage its own volumetric risk through the Balancing Mechanism</li>
+              <li>This aligns incentives: the IPP has an incentive to generate when the SMP is high (valuable energy) and can be curtailed when the SMP is low (not valuable)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE CONFUSION: VISUAL EXPLANATION -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">📊 Price Formation: Merit Order & SMP Determination</h2>
+      <p class="text-muted">Interactive illustration of how the SMP is set and how different generators get paid.</p>
+
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="chart-container-lg">
+            <canvas id="meritOrderChart"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="d-flex flex-column gap-2 mb-3" id="demandControls">
+            <label class="form-label fw-bold small">Demand Level (MW)</label>
+            <input type="range" id="demandSlider" class="form-range" min="20000" max="40000" step="1000" value="28000">
+            <div class="d-flex justify-content-between">
+              <small class="text-muted">20,000 MW (low)</small>
+              <small class="text-muted" id="demandDisplay">28,000 MW</small>
+              <small class="text-muted">40,000 MW (peak)</small>
+            </div>
+          </div>
+          <div class="alert alert-info small" id="smpDisplay">
+            <strong>Current SMP: R 0.00/kWh</strong><br>
+            Set by the marginal unit at the demand level.
+          </div>
+          <div class="alert alert-light border small" id="ppaExposure">
+            <strong>💸 Legacy Charge Impact:</strong><br>
+            <span id="legacyChargeAmount">R 0.00/kWh</span> shortfall on IPP PPAs to recover.
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-lg-3 col-6">
+          <div class="p-2 rounded bg-light border text-center">
+            <div class="small text-muted">Wind/Solar (total)</div>
+            <div class="fw-bold">9,500 MW</div>
+            <div class="small text-muted">Bid: ~R 0.00–0.05/kWh</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="p-2 rounded bg-light border text-center">
+            <div class="small text-muted">Eskom Coal (base)</div>
+            <div class="fw-bold">15,000 MW</div>
+            <div class="small text-muted">Bid: R 0.40–1.20/kWh</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="p-2 rounded bg-light border text-center">
+            <div class="small text-muted">Eskom Coal (mid)</div>
+            <div class="fw-bold">10,000 MW</div>
+            <div class="small text-muted">Bid: R 1.20–2.50/kWh</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="p-2 rounded bg-light border text-center">
+            <div class="small text-muted">OCGT / Diesel</div>
+            <div class="fw-bold">5,000 MW</div>
+            <div class="small text-muted">Bid: R 2.50–4.50/kWh</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE LEGACY CHARGE MECHANISM -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">🏦 The Legacy Charge: Who Foots the Bill?</h2>
+
+      <div class="quote-block">
+        <p class="mb-0"><em>"The CPA's costs and revenues are ring-fenced in a Legacy Account within the NTCSA. The net balance (deficit or surplus) is adjusted annually through the legacy charge — a charge levied on all transmission-connected consumers approved by NERSA."</em></p>
+        <div class="attribution">— SAWEM CPA Document, Section 4: Legacy Charge Mechanism</div>
+      </div>
+
+      <div class="row g-4 mt-2">
+        <div class="col-lg-6">
+          <h5 class="fw-bold">What flows through the Legacy Account:</h5>
+          <table class="table table-sm table-bordered mt-2">
+            <thead class="table-dark">
+              <tr><th>Inflows (Credits)</th><th>Outflows (Debits)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SMP revenue from selling Eskom + IPP output into the DAM</td>
+                <td>Availability Payments to Eskom Generation (vesting contracts)</td>
+              </tr>
+              <tr>
+                <td>CfD settlement receipts from IPPs (when SMP > strike)</td>
+                <td>PPA payments to IPPs at contracted strike prices</td>
+              </tr>
+              <tr>
+                <td>Ancillary service charge revenue</td>
+                <td>Ancillary service procurement costs</td>
+              </tr>
+              <tr>
+                <td>Legacy charge collected from consumers</td>
+                <td>Legacy charge refunds to consumers (if surplus)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-6">
+          <h5 class="fw-bold">The scale of the exposure:</h5>
+          <p class="text-muted small">As of 2025, REIPPPP has allocated ~6,200 MW of renewable capacity. At a weighted average PPA strike of ~R 0.90/kWh and assuming a DAM SMP of ~R 1.20/kWh, the CPA would be <strong>in surplus</strong> on the energy component (selling above the PPA price). However:</p>
+          <ul class="text-muted small">
+            <li>The Availability Payments to Eskom's coal fleet (44 GW × R 200–400/kW/year) will dominate the Legacy Account — these are the fixed costs of keeping coal plants available, whether they run or not</li>
+            <li>When renewable penetration rises and the SMP falls (merit order effect), the CPA's SMP revenue declines, potentially swinging the Legacy Account into deficit even as physical electricity becomes cheaper</li>
+            <li>The Legacy Charge thus becomes a <strong>de facto carbon transition tax</strong> — consumers pay for the fixed costs of coal capacity that runs less frequently, plus the premium for renewable PPAs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="quote-block-warn mt-3">
+        <p class="mb-0"><strong>⚠️ This is the fundamental tension:</strong> The SMP may fall as renewables enter (good for short-term energy costs), but the Legacy Charge must rise to cover the fixed costs of coal plants that are no longer running (bad for total system costs). The <em>total cost of electricity</em> (SMP + Legacy Charge + network charges) may not fall — it may even rise during the transition, even though the "headline" SMP is lower.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">📚 Document Sources</h2>
+      <p class="text-muted">All quotes and data sourced from the following official SAWEM documents, available in the <code>data/</code> directory:</p>
+      <table class="table table-sm">
+        <thead>
+          <tr><th>Document</th><th>Key Sections Used</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="data/power/SAWEM%20Specification.pdf" target="_blank">SAWEM Market Specification</a> <span class="source-tag source-spec">Spec</span></td>
+            <td>Chapter 2 (ESI Structure), Chapter 4 (Market Concepts), Chapter 5 (CPA), Chapter 7 (CfDs & CRM)</td>
+          </tr>
+          <tr>
+            <td><a href="data/power/SAWEM%20Market%20Code.pdf" target="_blank">SAWEM Market Code Rev 2.3</a> <span class="source-tag source-code">Code</span></td>
+            <td>Section 1 (Definitions: Vesting Contract, SMP, Unconstrained Schedule), Section 3 (DAM), Section 6 (Settlement)</td>
+          </tr>
+          <tr>
+            <td><a href="data/power/SAWEM%20CPA.pdf" target="_blank">SAWEM CPA Document</a> <span class="source-tag source-cpa">CPA</span></td>
+            <td>Section 2 (Vesting Contracts), Section 4 (Legacy Charge Mechanism), Section 5 (Pricing Areas)</td>
+          </tr>
+          <tr>
+            <td><a href="data/power/SAWEM%20Market%20Conduct%20Rules.pdf" target="_blank">Market Conduct Rules</a> <span class="source-tag source-ner">Rules</span></td>
+            <td>Part 2 (Prohibited Conduct: market manipulation, abuse of dominance), Part 3 (Market Surveillance Unit)</td>
+          </tr>
+          <tr>
+            <td><a href="data/power/ERAA%202024.pdf" target="_blank">Electricity Regulation Amendment Act 38/2024</a> <span class="source-tag source-ner">Act</span></td>
+            <td>Section 14A–14G (NTCSA establishment), Section 14H (Market Code provisions)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BOTTOM LINE -->
+  <div class="card shadow-sm mb-4" style="border-left: 5px solid #002395;">
+    <div class="card-body">
+      <h2 class="fw-bold mb-3">🔑 The Bottom Line</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="d-flex gap-3">
+            <span style="font-size: 1.5rem;">1️⃣</span>
+            <div>
+              <strong>Eskom's regulated tariff</strong> (R 6.85/kWh peak) is a bundled average-cost price — it covers everything: generation, grid, legacy costs, subsidies, returns. It is <em>not</em> a market price.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-3">
+            <span style="font-size: 1.5rem;">2️⃣</span>
+            <div>
+              <strong>The DAM SMP</strong> will be set by Eskom's coal fleet marginal costs because Eskom controls ~90% of generation. The vesting hedge mitigates (but does not eliminate) the market power risk.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-3">
+            <span style="font-size: 1.5rem;">3️⃣</span>
+            <div>
+              <strong>IPP PPA strike prices</strong> (R 0.40–0.80/kWh) are levelised-cost prices, not marginal-cost prices. The CPA absorbs the difference between these and the SMP through the Legacy Charge.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-3">
+            <span style="font-size: 1.5rem;">4️⃣</span>
+            <div>
+              <strong>The Legacy Charge</strong> ensures that the total cost of the system (fixed coal costs + IPP premiums + SMP revenue) is recovered from consumers. The headline SMP may fall, but the all-in cost to consumers may not.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// MERIT ORDER CHART
+// ============================================================
+const meritCfg = [
+  { label: 'Wind/Solar', capacity: 9500, bid: 0.02, color: '#10b981' },
+  { label: 'Coal (Cheap)', capacity: 15000, bid: 0.80, color: '#f59e0b' },
+  { label: 'Coal (Mid)', capacity: 10000, bid: 1.80, color: '#ef4444' },
+  { label: 'OCGT / Diesel', capacity: 5000, bid: 3.50, color: '#1e293b' },
+];
+
+function buildMeritData(demandMw) {
+  const steps = [];
+  let cum = 0;
+  let smp = 0;
+  let marginalIdx = -1;
+  
+  for (let i = 0; i < meritCfg.length; i++) {
+    const c = meritCfg[i];
+    const start = cum;
+    const end = cum + c.capacity;
+    const included = Math.min(Math.max(0, demandMw - cum), c.capacity);
+    cum += c.capacity;
+    
+    steps.push({ label: c.label, xStart: start, xEnd: end, bid: c.bid, color: c.color });
+    
+    if (included > 0 && smp === 0) {
+      smp = c.bid;
+      marginalIdx = i;
+    }
+  }
+  
+  return { steps, smp, marginalIdx };
+}
+
+let meritChart = null;
+
+function renderMeritChart(demandMw) {
+  const ctx = document.getElementById('meritOrderChart').getContext('2d');
+  if (meritChart) meritChart.destroy();
+  
+  const { steps, smp, marginalIdx } = buildMeritData(demandMw);
+  
+  // Build waterfall-style bar segments using a horizontal stacked approach
+  // Each technology gets a colored segment proportional to its capacity
+  
+  // Build cumulative bar using a faux stacked bar chart
+  const labels = ['Generation Stack'];
+  const datasets = [];
+  let cumCap = 0;
+  
+  for (let i = 0; i < steps.length; i++) {
+    const s = steps[i];
+    // Stack data: only push the segment's capacity for this technology
+    const segCap = s.xEnd - s.xStart;
+    datasets.push({
+      label: s.label,
+      data: [segCap],
+      backgroundColor: s.color,
+      borderColor: '#fff',
+      borderWidth: 1,
+    });
+  }
+  
+  meritChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: datasets,
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      scales: {
+        x: {
+          stacked: true,
+          title: { display: true, text: 'Capacity (MW)' },
+          min: 0,
+          max: 40000,
+        },
+        y: {
+          stacked: true,
+          display: false,
+        }
+      },
+      plugins: {
+        legend: { 
+          position: 'bottom',
+          labels: { usePointStyle: true, padding: 16 }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const cap = ctx.parsed.x;
+              const techIdx = ctx.datasetIndex;
+              const tech = meritCfg[techIdx];
+              return `${tech.label}: ${cap.toLocaleString()} MW at R ${tech.bid.toFixed(2)}/kWh`;
+            },
+            afterBody: () => {
+              return `Marginal Price (SMP): R ${smp.toFixed(2)}/kWh`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// DEMAND SLIDER
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('demandSlider');
+  const display = document.getElementById('demandDisplay');
+  const smpDisplay = document.getElementById('smpDisplay');
+  const legacyCharge = document.getElementById('legacyChargeAmount');
+  
+  function update() {
+    const demandMw = parseInt(slider.value);
+    display.textContent = demandMw.toLocaleString() + ' MW';
+    
+    const { smp, marginalIdx } = buildMeritData(demandMw);
+    
+    // Estimate blended IPP PPA cost
+    const windSolarMw = Math.min(demandMw, 9500);
+    const avgPpaStrike = 0.65; // weighted avg R/kWh
+    const legacyShortfall = Math.max(0, (avgPpaStrike - smp) * windSolarMw);
+    const totalRenewableOutput = windSolarMw * 0.25; // 25% capacity factor
+    const shortfallPerKwh = demandMw > 0 ? legacyShortfall / demandMw : 0;
+    
+    smpDisplay.innerHTML = `
+      <strong>Current SMP: R ${smp.toFixed(2)}/kWh</strong><br>
+      Marginal unit: ${meritCfg[marginalIdx]?.label || 'None'}<br>
+      Demand: ${demandMw.toLocaleString()} MW
+    `;
+    
+    legacyCharge.textContent = `R ${(shortfallPerKwh * 100).toFixed(2)} c/kWh`;
+  }
+  
+  slider.addEventListener('input', update);
+  update();
+});
+</script>
+</body>
+</html>

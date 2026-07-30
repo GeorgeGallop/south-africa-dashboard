@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trash & WTE • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <a href="../index.html" class="btn btn-light btn-sm">← Back</a>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-sa-green mb-2">♻️ Trash & Waste-to-Energy (WTE)</h1>
+      <p class="text-muted mb-0">Tonnage data (2022 vs 2050) + a simple WTE cost/energy/marginal-cost calculator.</p>
+    </header>
+
+    <!-- Trash data -->
+    <section class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-3 p-md-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+          <div>
+            <h2 class="h5 fw-bold mb-1 text-sa-green">Trash tonnage (per year & per day)</h2>
+            <div class="text-muted small">Source: <code>data/power/Trash.csv</code></div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <div class="input-group input-group-sm" style="min-width: 220px;">
+              <span class="input-group-text">Country</span>
+              <select id="trashCountrySelect" class="form-select" aria-label="Select country"></select>
+            </div>
+            <div class="input-group input-group-sm" style="min-width: 160px;">
+              <span class="input-group-text">Scenario</span>
+              <select id="trashScenarioSelect" class="form-select" aria-label="Select scenario">
+                <option value="2022" selected>2022</option>
+                <option value="2050">2050</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-12 col-lg-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <div class="fw-semibold text-muted">Selected country / scenario</div>
+              <div class="fw-bold fs-4 mb-1" id="trashSelectedTitle">South Africa • 2022</div>
+
+              <div class="row g-3 mt-1">
+                <div class="col-6">
+                  <div class="text-muted small">Tonnage per year (t/y)</div>
+                  <div class="fw-bold" id="trashTpy">—</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-muted small">Tonnage per day (t/d)</div>
+                  <div class="fw-bold" id="trashTpd">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <div class="fw-semibold text-muted">Quick comparison (all countries total)</div>
+              <div class="row g-3 mt-1">
+                <div class="col-6">
+                  <div class="text-muted small">Total 2022 (t/y)</div>
+                  <div class="fw-bold" id="trashTotal2022y">—</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-muted small">Total 2022 (t/d)</div>
+                  <div class="fw-bold" id="trashTotal2022d">—</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-muted small">Total 2050 (t/y)</div>
+                  <div class="fw-bold" id="trashTotal2050y">—</div>
+                </div>
+                <div class="col-6">
+                  <div class="text-muted small">Total 2050 (t/d)</div>
+                  <div class="fw-bold" id="trashTotal2050d">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0" style="min-width: 860px;">
+            <thead>
+              <tr class="bg-light">
+                <th scope="col" class="text-muted">Country</th>
+                <th scope="col" class="text-muted text-end">2022 (t/y)</th>
+                <th scope="col" class="text-muted text-end">2022 (t/d)</th>
+                <th scope="col" class="text-muted text-end">2050 (t/y)</th>
+                <th scope="col" class="text-muted text-end">2050 (t/d)</th>
+              </tr>
+            </thead>
+            <tbody id="trashTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- WTE calculator -->
+    <section class="card border-0 shadow-sm">
+      <div class="card-body p-3 p-md-4">
+        <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+          <div>
+            <h2 class="h5 fw-bold mb-1 text-sa-green">Custom WTE calculator (back-of-hand math)</h2>
+            <div class="text-muted small">Compute build cost, energy output, and marginal cost from inputs.</div>
+          </div>
+          <div class="text-muted small">
+            Assumptions are intentionally simple; tune parameters for your case.
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-lg-7">
+            <div class="p-3 rounded-3 bg-light border">
+              <h3 class="h6 fw-bold mb-3">Inputs</h3>
+
+              <div class="row g-3">
+                <div class="col-6">
+                  <label class="form-label small text-muted">Waste feed (t/d)</label>
+                  <input id="wteTpd" type="number" class="form-control" step="0.1" min="0">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted">Waste feed (t/y)</label>
+                  <input id="wteTpy" type="number" class="form-control" step="1" min="0">
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label small text-muted">Plant efficiency (electric) η (0–1)</label>
+                  <input id="wteEfficiency" type="number" class="form-control" step="0.01" min="0" max="1" value="0.25">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted">Waste LHV (MJ/kg)</label>
+                  <input id="wteLhv" type="number" class="form-control" step="0.1" min="0" value="12">
+                </div>
+
+                <div class="col-12">
+                  <div class="alert alert-info py-2 mb-0" role="alert">
+                    <strong>Back-hand math</strong><br>
+                    Waste energy (annual): <code>E_waste</code> = t/y · 1000 kg/t · LHV (MJ/kg)<br>
+                    Electricity (annual): <code>E_elec</code> = E_waste · η · 0.277777… (kWh per MJ)<br>
+                    Capacity (avg): <code>P</code> ≈ E_elec / (8760 h)
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label small text-muted">CAPEX intensity (currency / (t/y))</label>
+                  <input id="wteCapexPerTpy" type="number" class="form-control" step="1" min="0" value="2500">
+                  <div class="form-text">Example default: 2,500 per (t/y) — adjust.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted">Lifetime (years)</label>
+                  <input id="wteLifetime" type="number" class="form-control" step="1" min="1" value="25">
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label small text-muted">Discount rate r (0–1)</label>
+                  <input id="wteDiscountRate" type="number" class="form-control" step="0.01" min="0" max="1" value="0.10">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted">Fixed OPEX per year</label>
+                  <input id="wteFixedOpex" type="number" class="form-control" step="1" min="0" value="500000">
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label small text-muted">Variable OPEX per ton</label>
+                  <input id="wteVarOpexPerTon" type="number" class="form-control" step="0.01" min="0" value="15">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small text-muted">Currency symbol (display only)</label>
+                  <input id="wteCurrency" type="text" class="form-control" value="R">
+                </div>
+
+                <div class="col-12 d-flex gap-2 flex-wrap">
+                  <button type="button" class="btn btn-success" onclick="computeWte()">Compute</button>
+                  <button type="button" class="btn btn-outline-success" onclick="syncWasteInputsFromSelection()">Sync inputs from selection</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="p-3 rounded-3 bg-light border">
+              <h3 class="h6 fw-bold mb-3">Outputs</h3>
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="text-muted small">Build cost (CAPEX, all-in)</div>
+                  <div class="fw-bold fs-4" id="outCapex">—</div>
+                </div>
+
+                <div class="col-12">
+                  <div class="text-muted small">Annual electricity produced</div>
+                  <div class="fw-bold fs-4" id="outEnergy">—</div>
+                  <div class="text-muted small" id="outEnergyMwhSub"></div>
+                </div>
+
+                <div class="col-12">
+                  <div class="text-muted small">Average electrical capacity</div>
+                  <div class="fw-bold fs-4" id="outCapacity">—</div>
+                </div>
+
+                <div class="col-12">
+                  <hr class="my-2">
+                  <div class="text-muted small">Annualized total cost</div>
+                  <div class="fw-bold" id="outAnnualCost">—</div>
+                </div>
+
+                <div class="col-12">
+                  <div class="text-muted small">Marginal cost (all-in) $/MWh</div>
+                  <div class="fw-bold fs-4" id="outMarginalCost">—</div>
+                </div>
+
+                <div class="col-12">
+                  <div class="alert alert-secondary py-2 mb-0">
+                    Marginal cost here = (annualized CAPEX + annual OPEX) / (annual electricity).
+                    It’s “levelized-like” and assumes the plant burns the selected throughput.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const NUM = (v) => {
+      if (v === null || v === undefined) return null;
+      const s = String(v).replace(/,/g, '').trim();
+      if (!s) return null;
+      const n = Number(s);
+      return Number.isFinite(n) ? n : null;
+    };
+
+    let trashRows = [];
+    let trashTotals = null;
+
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function setSelectedCountryAndScenario(country, scenario) {
+      const row = trashRows.find(r => r["Country Name"] === country);
+      if (!row) return;
+
+      const tpy = NUM(row[scenario === "2022" ? "2022 (t/y)" : "2050 (t/y)"]);
+      const tpd = NUM(row[scenario === "2022" ? "2022 (t/d)" : "2050 (t/d)"]);
+
+      setText("trashSelectedTitle", `${country} • ${scenario}`);
+      setText("trashTpy", tpy !== null ? `${Math.round(tpy).toLocaleString()}` : "—");
+      setText("trashTpd", tpd !== null ? `${(tpd).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : "—");
+
+      document.getElementById("wteTpd").value = (tpd !== null ? tpd : "");
+      document.getElementById("wteTpy").value = (tpy !== null ? tpy : "");
+    }
+
+    function syncWasteInputsFromSelection() {
+      const country = document.getElementById("trashCountrySelect").value;
+      const scenario = document.getElementById("trashScenarioSelect").value;
+      setSelectedCountryAndScenario(country, scenario);
+    }
+
+    function formatCurrency(value, currencySymbol) {
+      if (value === null || value === undefined || !Number.isFinite(value)) return "—";
+      const n = value;
+      return `${currencySymbol}${Math.round(n).toLocaleString()}`;
+    }
+
+    function formatNumber(value, digits=0) {
+      if (value === null || value === undefined || !Number.isFinite(value)) return "—";
+      return value.toLocaleString(undefined, { maximumFractionDigits: digits });
+    }
+
+    function computeCapitalRecoveryFactor(r, nYears) {
+      // CRF = r(1+r)^n / ((1+r)^n - 1)
+      if (!Number.isFinite(r) || !Number.isFinite(nYears) || nYears <= 0) return null;
+      if (r === 0) return 1 / nYears;
+      const pow = Math.pow(1 + r, nYears);
+      return (r * pow) / (pow - 1);
+    }
+
+    function computeWte() {
+      const tpd = NUM(document.getElementById("wteTpd").value);
+      const tpy = NUM(document.getElementById("wteTpy").value);
+      const eta = NUM(document.getElementById("wteEfficiency").value);
+      const lhv = NUM(document.getElementById("wteLhv").value);
+
+      const capexPerTpy = NUM(document.getElementById("wteCapexPerTpy").value);
+      const fixedOpex = NUM(document.getElementById("wteFixedOpex").value);
+      const varOpexPerTon = NUM(document.getElementById("wteVarOpexPerTon").value);
+
+      const r = NUM(document.getElementById("wteDiscountRate").value);
+      const lifetimeYears = NUM(document.getElementById("wteLifetime").value);
+      const currencySymbol = document.getElementById("wteCurrency").value || "R";
+
+      if (tpd === null || tpy === null || eta === null || lhv === null || capexPerTpy === null) return;
+
+      const mjPerTon = 1000 * lhv; // (kg/ton)* (MJ/kg) => MJ/ton
+      const annualWasteTons = tpy;
+      const annualWasteMj = annualWasteTons * mjPerTon;
+
+      // kWh/year = MJ/year * 0.277777...
+      const kwhYear = annualWasteMj * 0.2777777778;
+      const mwhYear = kwhYear / 1000;
+      const gwhYear = mwhYear / 1000;
+
+      // avg MW = (MWh/year)/8760 hours
+      const avgMw = mwhYear / 8760;
+
+      // CAPEX all-in
+      const capex = capexPerTpy * annualWasteTons;
+
+      // annualized capex via CRF
+      const crf = computeCapitalRecoveryFactor(r, lifetimeYears);
+      const annualizedCapex = crf !== null ? capex * crf : null;
+
+      const annualOpex = (fixedOpex || 0) + (varOpexPerTon || 0) * annualWasteTons;
+
+      const totalAnnualCost = (annualizedCapex !== null ? annualizedCapex : 0) + annualOpex;
+
+      // marginal cost all-in ($/MWh)
+      const marginalCostPerMwh = mwhYear > 0 ? (totalAnnualCost / mwhYear) : null;
+
+      // Apply efficiency to electricity output (already handled implicitly by scaling energy)
+      const elecMwhYear = mwhYear * eta;
+      const elecAvgMw = (elecMwhYear / 8760);
+
+      const marginalCostPerMwhAdj = elecMwhYear > 0 ? (totalAnnualCost / elecMwhYear) : null;
+
+      setText("outCapex", formatCurrency(capex, currencySymbol));
+      setText("outEnergy", `${formatNumber(elecMwhYear, 0)} MWh`);
+      setText("outEnergyMwhSub", `${formatNumber(gwhYear * eta, 2)} GWh`);
+
+      setText("outCapacity", `${formatNumber(elecAvgMw, 2)} MW`);
+
+      setText("outAnnualCost", formatCurrency(totalAnnualCost, currencySymbol));
+      setText("outMarginalCost", marginalCostPerMwhAdj !== null ? `${currencySymbol}${formatNumber(marginalCostPerMwhAdj, 2)}` : "—");
+    }
+
+    async function loadTrashCSV() {
+      const res = await fetch('../data/power/Trash.csv');
+      const text = await res.text();
+
+      const parsed = Papa.parse(text, {
+        header: true,
+        dynamicTyping: false,
+        skipEmptyLines: true
+      });
+
+      // Keep rows except Total for dropdown (we'll also show Total in the table)
+      trashRows = parsed.data.filter(r => r && r["Country Name"]);
+
+      // Extract totals
+      trashTotals = trashRows.find(r => r["Country Name"] === "Total") || null;
+
+      // Build dropdown (exclude Total)
+      const select = document.getElementById("trashCountrySelect");
+      const countries = trashRows
+        .map(r => r["Country Name"])
+        .filter(c => c && c !== "Total");
+
+      countries.sort((a, b) => a.localeCompare(b));
+      select.innerHTML = countries.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      // Set defaults
+      const defaultCountry = "South Africa";
+      if (countries.includes(defaultCountry)) select.value = defaultCountry;
+      document.getElementById("trashScenarioSelect").value = "2022";
+
+      // Populate summary totals
+      if (trashTotals) {
+        const t2022y = NUM(trashTotals["2022 (t/y)"]);
+        const t2022d = NUM(trashTotals["2022 (t/d)"]);
+        const t2050y = NUM(trashTotals["2050 (t/y)"]);
+        const t2050d = NUM(trashTotals["2050 (t/d)"]);
+
+        setText("trashTotal2022y", t2022y !== null ? `${Math.round(t2022y).toLocaleString()}` : "—");
+        setText("trashTotal2022d", t2022d !== null ? `${Math.round(t2022d).toLocaleString()}` : "—");
+        setText("trashTotal2050y", t2050y !== null ? `${Math.round(t2050y).toLocaleString()}` : "—");
+        setText("trashTotal2050d", t2050d !== null ? `${Math.round(t2050d).toLocaleString()}` : "—");
+      }
+
+      // Populate table with all rows (including Total)
+      const body = document.getElementById("trashTableBody");
+      body.innerHTML = trashRows
+        .slice()
+        .sort((a, b) => {
+          if (a["Country Name"] === "Total") return 1;
+          if (b["Country Name"] === "Total") return -1;
+          return a["Country Name"].localeCompare(b["Country Name"]);
+        })
+        .map(r => {
+          const c = r["Country Name"];
+          const a22y = NUM(r["2022 (t/y)"]);
+          const a22d = NUM(r["2022 (t/d)"]);
+          const a50y = NUM(r["2050 (t/y)"]);
+          const a50d = NUM(r["2050 (t/d)"]);
+
+          return `
+            <tr>
+              <td style="font-weight:${c === "Total" ? 800 : 600};">${c}</td>
+              <td class="text-end">${a22y !== null ? Math.round(a22y).toLocaleString() : "—"}</td>
+              <td class="text-end">${a22d !== null ? Math.round(a22d).toLocaleString() : "—"}</td>
+              <td class="text-end">${a50y !== null ? Math.round(a50y).toLocaleString() : "—"}</td>
+              <td class="text-end">${a50d !== null ? Math.round(a50d).toLocaleString() : "—"}</td>
+            </tr>
+          `;
+        }).join('');
+
+      // Sync selection and calculator inputs
+      syncWasteInputsFromSelection();
+      computeWte();
+    }
+
+    window.onload = async () => {
+      try {
+        await loadTrashCSV();
+      } catch (e) {
+        document.getElementById("trashTableBody").innerHTML = `<tr><td colspan="5" class="text-muted py-3">Failed to load Trash.csv</td></tr>`;
+      }
+
+      document.getElementById("trashCountrySelect").addEventListener("change", () => {
+        syncWasteInputsFromSelection();
+        computeWte();
+      });
+      document.getElementById("trashScenarioSelect").addEventListener("change", () => {
+        syncWasteInputsFromSelection();
+        computeWte();
+      });
+
+      // live compute on input changes (light debounce)
+      const ids = ["wteTpd","wteTpy","wteEfficiency","wteLhv","wteCapexPerTpy","wteFixedOpex","wteVarOpexPerTon","wteDiscountRate","wteLifetime","wteCurrency"];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", () => computeWte());
+      });
+    };
+  </script>
+</body>
+</html>

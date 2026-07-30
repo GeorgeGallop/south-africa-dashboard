@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>News • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid px-3 px-xl-4 mt-3">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+      <h1 class="display-5 fw-bold text-sa-green mb-0">📰 Africa News Brief</h1>
+      <div class="d-flex align-items-center gap-3">
+        <span id="last-updated" class="text-muted small"></span>
+        <button onclick="loadNews()" class="btn btn-success btn-lg">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <!-- ACTIVE SEARCH BANNER -->
+    <div id="active-search-banner" class="alert alert-info py-2 px-3 mb-3" style="display:none; background: #e8f4fd; border-color: #009fe3;">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <strong>🔍 Active Search:</strong>
+        <span id="banner-keywords" class="badge bg-primary"></span>
+        <span class="text-muted">•</span>
+        <span id="banner-count" class="text-muted small"></span>
+        <span class="text-muted">•</span>
+        <span id="banner-sources" class="text-muted small"></span>
+      </div>
+    </div>
+
+    <!-- FILTERS BAR -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-body py-2 px-3">
+        <div class="row g-2 align-items-end">
+          <div class="col-12 col-md">
+            <small class="text-muted fw-bold d-block mb-1">Keywords (comma-separated)</small>
+            <input id="keyword-input" type="text" class="form-control form-control-sm"
+              placeholder="eskom, mining, energy, ramaphosa, load shedding"
+              onkeydown="if(event.key==='Enter') loadNews()">
+          </div>
+          <div class="col-6 col-md-auto" style="min-width:110px">
+            <small class="text-muted fw-bold d-block mb-1">Stories</small>
+            <input id="story-count" type="number" class="form-control form-control-sm" value="75" min="10" max="500" step="5">
+          </div>
+          <div class="col-6 col-md-auto d-flex align-items-end">
+            <button id="applyBtn" onclick="loadNews()" class="btn btn-success w-100 fw-bold">⚡ Apply</button>
+          </div>
+          <div class="col-6 col-md-auto d-flex align-items-end">
+            <button onclick="clearFilters()" class="btn btn-outline-secondary w-100">Clear</button>
+          </div>
+        </div>
+        <!-- Keyword Presets -->
+        <div class="mt-2 pt-2 border-top">
+          <small class="text-muted fw-bold d-inline-block me-2">Presets:</small>
+          <button class="btn btn-outline-primary btn-sm me-1 mb-1" onclick="setKeywords('eskom, energy, electricity, renewables, load shedding, power, IPP, coal, gas, nuclear, grid')">⚡ Energy</button>
+          <button class="btn btn-outline-warning btn-sm me-1 mb-1" onclick="setKeywords('mining, gold, platinum, coal, diamonds, iron ore, manganese, chrome, commodities, PGM')">⛏️ Mining</button>
+          <button class="btn btn-outline-danger btn-sm me-1 mb-1" onclick="setKeywords('ramaphosa, ANC, DA, EFF, parliament, election, corruption, state capture, cabinet, policy')">🏛️ Politics</button>
+          <button class="btn btn-outline-success btn-sm me-1 mb-1" onclick="setKeywords('GDP, economy, inflation, rand, SARB, budget, debt, investment, trade, manufacturing')">📈 Economy</button>
+          <button class="btn btn-outline-info btn-sm me-1 mb-1" onclick="setKeywords('gas, LNG, offshore, exploration, pipeline, TotalEnergies, Sasol, Mozambique, Rovuma')">🔥 Gas & LNG</button>
+          <button class="btn btn-outline-dark btn-sm mb-1" onclick="setKeywords('South Africa, Africa')">🌍 All Africa</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCES BAR -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <small class="text-muted fw-bold">Sources (<span id="active-source-count">0</span> active)</small>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-success btn-sm" onclick="selectWorkingSources()">✅ Working Only</button>
+            <button class="btn btn-outline-dark btn-sm" onclick="selectAllSources()">Select All</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="deselectAllSources()">Deselect All</button>
+          </div>
+        </div>
+        <div id="sources-list" class="mt-2 d-flex flex-wrap gap-1"></div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div id="status-bar" class="mb-3" style="display:none;">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <span id="story-count-display" class="badge bg-dark fs-6"></span>
+        <span id="active-filters-display" class="text-muted small"></span>
+        <span id="error-summary" class="text-danger small"></span>
+      </div>
+    </div>
+
+    <!-- HEADLINE LIST -->
+    <div id="summary-content">
+      <div class="text-center py-5">
+        <div class="spinner-border text-success"></div>
+        <div class="mt-3">Loading top Africa headlines…</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const FETCH_TIMEOUT_MS = 10000;
+    const DEFAULT_KEYWORDS = "eskom, energy, mining, ramaphosa, electricity, renewables, coal, gas, economy, loadshedding, IPP, platinum, gold, South Africa, Africa";
+
+    const availableSources = [
+      // Working sources
+      { name: "BBC Africa",        url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",    credibility: 5, status: "working", tags: ["general", "africa"] },
+      { name: "Africanews",        url: "https://www.africanews.com/feed/rss",                    credibility: 4, status: "working", tags: ["general", "africa"] },
+      { name: "Al Jazeera English",url: "https://www.aljazeera.com/xml/rss/all.xml",              credibility: 4, status: "working", tags: ["general", "world"] },
+      { name: "France 24 Africa",  url: "https://www.france24.com/en/africa/rss",                 credibility: 4, status: "working", tags: ["general", "africa"] },
+      { name: "Mining Weekly",     url: "https://www.miningweekly.com/page/feed",                 credibility: 5, status: "working", tags: ["mining", "commodities"] },
+      { name: "ESI Africa",        url: "https://www.esi-africa.com/feed/",                       credibility: 4, status: "working", tags: ["energy", "power"] },
+      { name: "Mail & Guardian",   url: "https://mg.co.za/feed/",                                 credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
+      { name: "Daily Maverick",    url: "https://www.dailymaverick.co.za/feed/",                  credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
+      { name: "Moneyweb",          url: "https://www.moneyweb.co.za/feed/",                       credibility: 4, status: "working", tags: ["economy", "business", "south-africa"] },
+      { name: "The Africa Report", url: "https://www.theafricareport.com/feed/",                  credibility: 4, status: "working", tags: ["general", "africa", "business"] },
+      { name: "TechCentral",       url: "https://techcentral.co.za/feed/",                        credibility: 3, status: "working", tags: ["tech", "south-africa"] },
+      { name: "Power Engineering", url: "https://www.powerengineeringint.com/feed/",              credibility: 4, status: "working", tags: ["energy", "power", "global"] },
+
+      // Failing sources (kept for reference, may work with proxy)
+      { name: "CNBC Africa",       url: "https://www.cnbcafrica.com/feed/",                       credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["business", "africa"] },
+      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/feed/",                 credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["engineering", "mining", "south-africa"] },
+      { name: "Business Day",      url: "https://www.businesslive.co.za/rss/",                     credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["business", "south-africa"] },
+      { name: "eNCA",              url: "https://www.enca.com/rss",                               credibility: 3, status: "failing", failReason: "rss2json HTTP 500", tags: ["news", "south-africa"] },
+      { name: "News24",            url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", credibility: 3, status: "failing", failReason: "HTTP blocked", tags: ["news", "south-africa"] },
+      { name: "Reuters Africa",    url: "https://www.reuters.com/world/africa/", type: "reuters-html", credibility: 5, status: "failing", failReason: "CORS proxy down", tags: ["general", "africa"] },
+      { name: "Bloomberg Africa",  url: "https://www.bloomberg.com/feeds/site/africa.xml",        credibility: 5, status: "failing", failReason: "Paywalled", tags: ["business", "africa"] },
+      { name: "Semafor Africa",    url: "https://www.semafor.com/vertical/africa", type: "semafor", credibility: 4, status: "failing", failReason: "CORS proxy down", tags: ["general", "africa"] }
+    ];
+
+    let selectedSources = availableSources.filter(s => s.status === "working").map(s => s.name);
+    let isLoading = false;
+
+    // ---- HELPERS ----
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const dt = new Date(dateString);
+      if (isNaN(dt.getTime())) return "";
+      return dt.toLocaleString('en-ZA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function calculateImportanceScore(item) {
+      const text = (item.title + ' ' + (item.description || '') + ' ' + (item.source || '')).toLowerCase();
+      const ageHours = (Date.now() - new Date(item.pubDate)) / (1000 * 60 * 60);
+      let score = Math.max(0, 120 - ageHours * 3);
+
+      // Source credibility boost
+      const source = availableSources.find(src => src.name === item.source);
+      if (source) score += source.credibility * 10;
+
+      // Source tags boost (if source is Mining Weekly, mining keywords get a boost)
+      if (source && source.tags) {
+        const sourceTags = source.tags.join(' ');
+        if (/\b(mining|commodities|gold|platinum|coal)\b/.test(sourceTags)) score += 15;
+        if (/\b(energy|power|electricity|renewable)\b/.test(sourceTags)) score += 15;
+        if (/\b(politics|government|policy)\b/.test(sourceTags)) score += 10;
+        if (/\b(economy|business|finance)\b/.test(sourceTags)) score += 10;
+      }
+
+      // High-value keywords (Africa/South Africa specific)
+      if (/\b(africa|south africa|eskom|load shedding|ramaphosa|mining|commodities|inflation|debt|power|electricity|renewable|hydrogen|investor|rating|policy|platinum|gold|coal|gas|lng|anc|da|eff|parliament|cabinet|sarb|budget|gdp)\b/.test(text)) score += 25;
+      if (/\b(south africa|eskom|load shedding)\b/.test(text)) score += 15; // Extra boost for SA-specific
+      if (/\b(mining|platinum|gold|coal|commodities)\b/.test(text)) score += 10; // Mining boost
+
+      // Downrank irrelevant
+      if (/\b(celebrity|match|entertainment|festival|recipe|birthday|viral|sports|movie|fashion)\b/.test(text)) score -= 40;
+
+      return Math.max(0, score);
+    }
+
+    function sanitizeId(value) {
+      return value.replace(/[^a-zA-Z0-9_-]/g, '-');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ---- KEYWORD PRESETS ----
+    window.setKeywords = function(keywords) {
+      document.getElementById('keyword-input').value = keywords;
+      loadNews();
+    };
+
+    window.clearFilters = function() {
+      document.getElementById('keyword-input').value = '';
+      document.getElementById('story-count').value = '75';
+      loadNews();
+    };
+
+    // ---- SOURCE CHECKBOXES ----
+    function renderSourceCheckboxes() {
+      const container = document.getElementById('sources-list');
+      let html = '';
+      const workingCount = availableSources.filter(s => s.status === "working").length;
+      const activeCount = selectedSources.length;
+      document.getElementById('active-source-count').textContent = `${activeCount}/${availableSources.length}`;
+
+      availableSources.forEach(src => {
+        const checked = selectedSources.includes(src.name) ? 'checked' : '';
+        const safeId = sanitizeId(src.name);
+        const badgeClass = src.status === 'failing' ? 'source-badge-failing' : 'source-badge-working';
+        const statusLabel = src.status === 'failing' ? '⚠️' : '✅';
+        const titleAttr = src.failReason ? ` title="${escapeHtml(src.failReason)}"` : '';
+
+        html += `<div class="form-check form-check-inline source-chip ${badgeClass} me-1 mb-1"${titleAttr}>
+          <input class="form-check-input" type="checkbox" id="src-${safeId}" value="${src.name}" ${checked} onchange="toggleSource('${escapeHtml(src.name)}')">
+          <label class="form-check-label small" for="src-${safeId}">${statusLabel} ${src.name} <span class="badge bg-dark text-white">${src.credibility}</span></label>
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    window.toggleSource = function(name) {
+      if (selectedSources.includes(name)) {
+        selectedSources = selectedSources.filter(s => s !== name);
+      } else {
+        selectedSources.push(name);
+      }
+      renderSourceCheckboxes();
+    };
+
+    window.selectWorkingSources = function() {
+      selectedSources = availableSources.filter(s => s.status === "working").map(s => s.name);
+      renderSourceCheckboxes();
+    };
+
+    window.selectAllSources = function() {
+      selectedSources = availableSources.map(s => s.name);
+      renderSourceCheckboxes();
+    };
+
+    window.deselectAllSources = function() {
+      selectedSources = [];
+      renderSourceCheckboxes();
+    };
+
+    // ---- DISPLAY ----
+    function truncateTitleForLine(title, metaText) {
+      if (!title) return title;
+      const raw = title.trim().replace(/\s+/g, ' ');
+      const maxTotal = 130;
+      const reserved = Math.min(metaText.length + 3, 60);
+      const allowed = Math.max(30, maxTotal - reserved);
+      if (raw.length <= allowed) return raw;
+      const words = raw.split(' ');
+      let shortened = '';
+      for (const word of words) {
+        if ((shortened + (shortened ? ' ' : '') + word).length > allowed) break;
+        shortened += (shortened ? ' ' : '') + word;
+      }
+      return shortened || raw.slice(0, allowed);
+    }
+
+    function buildNewsList(items) {
+      if (items.length === 0) {
+        return '<div class="text-center py-5 text-muted">No stories match your filters. Try different keywords or select more sources.</div>';
+      }
+      const links = items.map(item => {
+        const date = formatDate(item.pubDate);
+        const sourceName = item.source || '';
+        const metaText = `${sourceName} · ${date}`;
+        const titleText = truncateTitleForLine(item.title, metaText);
+        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link"><span class="headline-title">${escapeHtml(titleText)}</span><span class="headline-meta">${metaText}</span></a>`;
+      }).join('');
+      return `<div class="headline-list">${links}</div>`;
+    }
+
+    function updateSearchBanner(keywords, count, sources) {
+      const banner = document.getElementById('active-search-banner');
+      if (keywords.length > 0) {
+        banner.style.display = 'block';
+        document.getElementById('banner-keywords').textContent = keywords.join(', ');
+        document.getElementById('banner-count').textContent = `${count} stories requested from ${sources} sources`;
+        document.getElementById('banner-sources').textContent = '';
+      } else {
+        banner.style.display = 'block';
+        document.getElementById('banner-keywords').textContent = '(no keywords — showing all)';
+        document.getElementById('banner-count').textContent = `${count} stories from ${sources} sources`;
+      }
+    }
+
+    // ---- FETCHING ----
+    async function fetchTextWithTimeout(url, timeoutMs) {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const r = await fetch(url, { signal: controller.signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.text();
+      } finally { clearTimeout(t); }
+    }
+
+    async function fetchJsonWithTimeout(url, timeoutMs) {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const r = await fetch(url, { signal: controller.signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.json();
+      } finally { clearTimeout(t); }
+    }
+
+    // ---- MAIN LOAD ----
+    async function loadNews() {
+      if (isLoading) return;
+      isLoading = true;
+
+      const summaryEl = document.getElementById('summary-content');
+      const lastUpdatedEl = document.getElementById('last-updated');
+      const statusBar = document.getElementById('status-bar');
+      const storyCountDisplay = document.getElementById('story-count-display');
+      const activeFiltersDisplay = document.getElementById('active-filters-display');
+      const errorSummary = document.getElementById('error-summary');
+      const applyBtn = document.getElementById('applyBtn');
+
+      // Immediate visual feedback
+      summaryEl.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success" style="width:3rem;height:3rem"></div><div class="mt-3 fw-bold">Searching for stories...</div><div class="text-muted small mt-1" id="loading-status">Contacting sources...</div></div>';
+      statusBar.style.display = 'none';
+      applyBtn.disabled = true;
+      applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Searching...';
+
+      let loadingTimer = window.setTimeout(() => {
+        document.getElementById('loading-status').textContent = 'Still fetching — some sources may be slow...';
+      }, 5000);
+
+      try {
+        const keywordText = document.getElementById('keyword-input').value.trim();
+        const rawStoryCount = parseInt(document.getElementById('story-count').value, 10);
+        const requestedCount = Number.isInteger(rawStoryCount) && rawStoryCount >= 10 ? rawStoryCount : 75;
+        const perSourceFetchCount = 150;
+
+        let allItems = [];
+        let totalFetched = 0;
+        let errorsBySource = {};
+        let countsBySource = {};
+
+        const selected = availableSources.filter(s => selectedSources.includes(s.name));
+
+        if (selected.length === 0) {
+          window.clearTimeout(loadingTimer);
+          summaryEl.innerHTML = '<div class="alert alert-warning text-center">No sources selected. Check at least one source above.</div>';
+          applyBtn.disabled = false;
+          applyBtn.innerHTML = '⚡ Apply';
+          isLoading = false;
+          return;
+        }
+
+        // Update banner immediately
+        const keywords = keywordText.toLowerCase().split(/[,;\s]+/).map(k => k.trim()).filter(Boolean);
+        updateSearchBanner(keywords, requestedCount, selected.length);
+
+        const fetchPromises = selected.map(async (source) => {
+          try {
+            let data;
+            if (source.type === 'semafor') {
+              // Semafor HTML scraping (fallback)
+              data = [];
+            } else if (source.type === 'reuters-html') {
+              // Reuters HTML scraping (fallback)
+              data = [];
+            } else {
+              // Cache-bust on the RSS2JSON API, not the feed URL itself
+              const cacheBuster = '&_=' + Date.now();
+              const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}${cacheBuster}`;
+              const json = await fetchJsonWithTimeout(proxy, FETCH_TIMEOUT_MS);
+              data = json.items ? json.items.slice(0, Math.max(requestedCount * 2, 50)) : [];
+            }
+            const count = Array.isArray(data) ? data.length : 0;
+            return { sourceName: source.name, items: Array.isArray(data) ? data : [], count, error: null };
+          } catch (error) {
+            console.warn(`[${source.name}] ${error.message}`);
+            return { sourceName: source.name, items: [], count: 0, error: error.message || 'Unknown error' };
+          }
+        });
+
+        const results = await Promise.all(fetchPromises);
+
+        results.forEach(result => {
+          countsBySource[result.sourceName] = result.count;
+          if (result.error) errorsBySource[result.sourceName] = result.error;
+          totalFetched += result.count;
+          result.items.forEach(item => {
+            item.source = result.sourceName;
+            allItems.push(item);
+          });
+        });
+
+        // ---- DEDUPLICATE ----
+        const deduped = [];
+        const seenTitles = new Set();
+        for (const item of allItems) {
+          const normalized = item.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 80);
+          if (seenTitles.has(normalized)) continue;
+          seenTitles.add(normalized);
+          deduped.push(item);
+        }
+        allItems = deduped;
+
+        // ---- KEYWORD FILTERING (searches title + description + content + source) ----
+        let keywordFilteredCount = 0;
+        if (keywords.length > 0) {
+          const before = allItems.length;
+          allItems = allItems.filter(item => {
+            const text = [item.title, item.description, item.content, item.source, item.categories].filter(Boolean).join(' ').toLowerCase();
+            return keywords.some(kw => {
+              // For short keywords (≤4 chars), match as whole words only to avoid false positives
+              // e.g., "usa" should not match "thousands", "gas" should not match "Madagascar"
+              if (kw.length <= 4) {
+                const wordBoundaryRegex = new RegExp('\\b' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+                return wordBoundaryRegex.test(text);
+              }
+              return text.includes(kw);
+            });
+          });
+          keywordFilteredCount = before - allItems.length;
+        }
+
+        // ---- SCORE & SORT ----
+        allItems = allItems.map(item => ({ ...item, importanceScore: calculateImportanceScore(item) }));
+        allItems.sort((a, b) => b.importanceScore - a.importanceScore);
+
+        // ---- STORY COUNT ----
+        const showCount = Math.min(requestedCount, allItems.length);
+        const topItems = allItems.slice(0, showCount);
+
+        // ---- RENDER ----
+        summaryEl.innerHTML = buildNewsList(topItems);
+        window.clearTimeout(loadingTimer);
+
+        // ---- STATUS BAR ----
+        statusBar.style.display = 'block';
+        storyCountDisplay.textContent = `📊 ${topItems.length} stories shown (${allItems.length} matched, ${totalFetched} fetched)`;
+
+        const filterParts = [];
+        if (keywords.length > 0) filterParts.push(`🔍 Keywords: ${keywords.join(', ')}`);
+        if (keywordFilteredCount > 0) filterParts.push(`(${keywordFilteredCount} filtered out)`);
+        activeFiltersDisplay.textContent = filterParts.join(' | ');
+
+        const errorSources = Object.keys(errorsBySource);
+        if (errorSources.length > 0) {
+          errorSummary.innerHTML = `⚠️ Failed: ${errorSources.map(s => `${s} (${errorsBySource[s]})`).join('; ')}`;
+        } else {
+          errorSummary.innerHTML = '';
+        }
+
+        updateSourceLiveCounts(countsBySource, errorsBySource);
+        lastUpdatedEl.textContent = `Updated ${new Date().toLocaleTimeString('en-ZA')}`;
+
+      } catch (error) {
+        window.clearTimeout(loadingTimer);
+        console.error(error);
+        summaryEl.innerHTML = '<div class="text-center py-5 text-danger"><strong>Failed to load news.</strong><br><small>Check console for details.</small><br><button class="btn btn-outline-danger btn-sm mt-3" onclick="loadNews()">Retry</button></div>';
+      } finally {
+        applyBtn.disabled = false;
+        applyBtn.innerHTML = '⚡ Apply';
+        isLoading = false;
+      }
+    }
+
+    function updateSourceLiveCounts(countsBySource, errorsBySource) {
+      availableSources.forEach(src => {
+        const safeId = sanitizeId(src.name);
+        const label = document.querySelector(`label[for="src-${safeId}"]`);
+        if (!label) return;
+        const existing = label.querySelector('.live-count');
+        if (existing) existing.remove();
+        const count = countsBySource[src.name];
+        const err = errorsBySource[src.name];
+        let html = '';
+        if (err) {
+          html = ` <span class="live-count text-danger small">(❌)</span>`;
+        } else if (count !== undefined && count >= 0) {
+          html = ` <span class="live-count text-success small">(${count})</span>`;
+        }
+        label.insertAdjacentHTML('beforeend', html);
+      });
+    }
+
+    window.onload = function() {
+      // Pre-fill with default keywords
+      document.getElementById('keyword-input').value = DEFAULT_KEYWORDS;
+      renderSourceCheckboxes();
+      loadNews();
+    };
+  </script>
+
+  <style>
+    .container-fluid { max-width: 100%; }
+
+    .source-chip {
+      padding: 2px 8px; border-radius: 20px; background: #f1f3f5;
+      border: 1px solid #dee2e6; cursor: pointer; transition: all 0.15s ease; font-size: 0.82rem;
+    }
+    .source-chip:hover { background: #e9ecef; }
+    .source-badge-failing { background: #fff3cd; border-color: #ffc107; }
+    .source-badge-working { background: #d1e7dd; border-color: #198754; }
+    .source-chip .form-check-input { margin-top: 0.15rem; margin-right: 0.25rem; }
+    .source-chip .form-check-label { cursor: pointer; }
+
+    .headline-list { border-top: 2px solid #212529; }
+    .headline-link {
+      display: flex; flex-wrap: nowrap; align-items: baseline; font-size: 0.92rem;
+      line-height: 1.3; padding: 8px 4px; text-decoration: none; color: #212529;
+      border-bottom: 1px solid #dee2e6; overflow: hidden; white-space: nowrap; transition: background 0.1s;
+    }
+    .headline-link:hover { background: #f8f9fa; color: #007A4D; }
+    .headline-title { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+    .headline-meta { flex-shrink: 0; color: #6c757d; font-size: 0.78rem; font-weight: 400; margin-left: 0.75rem; white-space: nowrap; }
+
+    #applyBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    @media (max-width: 768px) {
+      .headline-link { font-size: 0.84rem; }
+      .headline-meta { font-size: 0.72rem; margin-left: 0.4rem; }
+      .source-chip { font-size: 0.75rem; }
+    }
+  </style>
+</body>
+</html>

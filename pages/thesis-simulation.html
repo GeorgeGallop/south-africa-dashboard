@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulation • SAWEM ABM-MDP-OPF Framework</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-intro     { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-arch      { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-loop      { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-output    { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-run       { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .pipeline-step {
+      background: #fafafa;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      height: 100%;
+    }
+    .pipeline-step h6 { font-weight: 700; font-size: 0.95rem; }
+    .pipeline-arrow { font-size: 1.8rem; color: #6c757d; text-align: center; }
+    .output-hero {
+      background: linear-gradient(135deg, #1a237e, #283593);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .output-hero .big-num { font-size: 2.5rem; font-weight: 800; }
+    .pseudo-box {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.78rem;
+      overflow-x: auto;
+    }
+    .pseudo-box .kw { color: #569cd6; }
+    .pseudo-box .fn { color: #dcdcaa; }
+    .pseudo-box .cm { color: #6a9955; }
+    .pseudo-box .str { color: #ce9178; }
+    .pseudo-box .num { color: #b5cea8; }
+    .metric-badge {
+      display: inline-block;
+      background: #e8eaf6;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #283593;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+        <a href="thesis.html" class="btn btn-light btn-sm">&#127917; Thesis</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#what-is-simulation">&#127922; What Is Simulation?</a>
+          <a class="nav-link" href="#pipeline">&#9632; The Simulation Pipeline</a>
+          <a class="nav-link" href="#scheduler">&#9632; The Scheduler</a>
+          <a class="nav-link" href="#running">&#9632; How We Run It</a>
+          <a class="nav-link" href="#agent-trajectories">&#9632; Agent Trajectories</a>
+          <a class="nav-link" href="#system-ts">&#9632; System Time Series</a>
+          <a class="nav-link" href="#emergent">&#9632; Emergent Metrics</a>
+          <a class="nav-link" href="#ensemble">&#9632; Ensemble Analysis</a>
+          <a class="nav-link" href="#verify">&#9632; Verification</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+
+        <h1 class="display-4 fw-bold text-sa-green">&#127922; Simulation</h1>
+        <p class="lead text-muted mb-4">
+          How the dual-timescale ABM framework runs &mdash; from initial conditions to final metrics &mdash;
+          and what data it produces at every level.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- WHAT IS SIMULATION                                          -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="what-is-simulation">
+          <div class="card-header level-intro">
+            &#127922; What Is Simulation in the Context of an ABM?
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Pressing Play on an Artificial World</h5>
+              <p class="mb-0">
+                In traditional power system analysis, you write equations that describe how the system
+                <em>should</em> behave if everyone were perfectly rational and the market were in
+                equilibrium. In <strong>simulation-based analysis</strong>, you instead create an
+                artificial world populated with agents, give them behavioural rules and objectives,
+                and then <em>press play</em>. At each time step, agents perceive their environment,
+                make decisions, those decisions are fed into the OPF engine to determine dispatch and
+                prices, agents receive rewards and learn, and the system evolves into the next period.
+                The outputs are not single numbers &mdash; they are <strong>trajectories</strong> of
+                everything: every agent's state, every market outcome, every emergent pattern, all
+                recorded over the entire simulation horizon. Simulation is the bridge between the
+                mathematical structure defined on the previous pages and the real-world policy insights
+                the model is designed to produce.
+              </p>
+            </div>
+
+            <p>
+              A simulation is defined by three components: <strong>initial conditions</strong> (where
+              the system starts), a <strong>transition rule</strong> (how the system moves from one
+              state to the next), and a <strong>termination condition</strong> (when to stop). In
+              the SAWEM framework, the transition rule is the closed loop of macro-economy agents
+              updating demand &rarr; power-market agents bidding &rarr; OPF clearing &rarr; agents
+              learning from outcomes &rarr; returning to macro agents. The termination condition is
+              typically a fixed horizon (20&ndash;40 simulated years) but can also be event-based
+              (stop when emissions reach net-zero, or when a market-design change occurs).
+            </p>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-4">
+                <div class="pipeline-step">
+                  <span style="font-size:2rem;">&#127919;</span>
+                  <h6 class="mt-2">Initial Conditions</h6>
+                  <p class="small mb-0 text-muted">
+                    Calibrated agent populations, fleet data, fuel prices, policy settings, demand baselines &mdash;
+                    all at t=0
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="pipeline-step">
+                  <span style="font-size:2rem;">&#128259;</span>
+                  <h6 class="mt-2">Transition Rule</h6>
+                  <p class="small mb-0 text-muted">
+                    The closed-loop ABM &rarr; Demand &rarr; OPF &rarr; Learning &rarr; Macro update cycle
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="pipeline-step">
+                  <span style="font-size:2rem;">&#128197;</span>
+                  <h6 class="mt-2">Termination</h6>
+                  <p class="small mb-0 text-muted">
+                    20&ndash;40 years (animation years), or triggered by a convergence/event condition
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; Simulation vs. Equilibrium &mdash; A Methodological Choice</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th style="width:20%;">Dimension</th><th style="width:40%;">Equilibrium Model</th><th style="width:40%;">Simulation (ABM + OPF)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Core question</strong></td><td>What is the steady state?</td><td>What is the path?</td></tr>
+                <tr><td><strong>Outcome</strong></td><td>A single vector of prices, quantities, and welfare</td><td>A time-indexed trajectory of every variable, at every timescale</td></tr>
+                <tr><td><strong>Agent behaviour</strong></td><td>All agents are perfect optimizers who know the equilibrium</td><td>Agents are boundedly rational, learn over time, and may never reach a steady state</td></tr>
+                <tr><td><strong>Path dependence</strong></td><td>Ignored &mdash; the final state does not depend on the path</td><td>Central &mdash; small initial differences produce different long-run trajectories</td></tr>
+                <tr><td><strong>Emergence</strong></td><td>Not possible &mdash; all macro patterns are assumed in the equilibrium definition</td><td>The whole point &mdash; macro patterns arise from micro interactions in ways that may be surprising</td></tr>
+                <tr><td><strong>Computational cost</strong></td><td>Low (solve a system of equations once)</td><td>High (solve an OPF for each of 175,000+ hours, plus agent learning updates)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SIMULATION PIPELINE                                         -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="pipeline">
+          <div class="card-header level-arch">
+            &#128260; The Simulation Pipeline &mdash; End to End
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Connecting the Dots Between Thesis Pages</h5>
+              <p class="mb-0">
+                The preceding thesis pages define the <strong>components</strong> of the model:
+                CAS theory explains <em>why</em>, the ABM and ACE pages define the <em>agents</em>,
+                the stochastic page gives the <em>mathematics</em>, and the methods page provides
+                the <em>OPF and MDP equations</em>. This page shows how those components are
+                <strong>assembled</strong> into a running simulation and what <strong>data</strong>
+                comes out. The pipeline below is the blueprint for the actual code.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128680; The Three-Layer Architecture</h5>
+            <div style="background:#f8f9fa; border-radius:12px; padding:1.5rem; margin:1rem 0;">
+              <div class="row g-2 text-center small">
+
+                <div class="col-12 mb-1">
+                  <span class="badge p-3" style="background:#002395; font-size:0.85rem; width:100%;">
+                    &#127758; LAYER 1 &mdash; MACRO ECONOMY ABM &nbsp; <span style="font-weight:400;">(annual: t = 1..T years)</span>
+                  </span>
+                  <div style="margin:2px 0; font-size:0.8rem; color:#555;">
+                    Households adopt solar/EV &bull; Firms invest in self-gen &bull; Government sets policy &bull; Eskom Corporate restructures
+                    <br><span class="text-muted">&#8594; Produces: demand growth, technology adoption rates, sectoral composition, policy settings</span>
+                  </div>
+                  <div style="font-size:1.6rem;">&#8595;</div>
+                </div>
+
+                <div class="col-12 mb-1">
+                  <span class="badge p-3" style="background:#e65100; font-size:0.85rem; width:100%;">
+                    &#128200; DEMAND SCENARIO GENERATOR &nbsp; <span style="font-weight:400;">(annual &#8594; hourly)</span>
+                  </span>
+                  <div style="margin:2px 0; font-size:0.8rem; color:#555;">
+                    Macro outcomes + load profiles + weather + TOU coefficients &#8594; 8,760-hour load vector D<sub>h</sub>
+                  </div>
+                  <div style="font-size:1.6rem;">&#8595;</div>
+                </div>
+
+                <div class="col-12 mb-1">
+                  <span class="badge p-3" style="background:#007A4D; font-size:0.85rem; width:100%;">
+                    &#9889; LAYER 2 &mdash; POWER MARKET ABM + OPF &nbsp; <span style="font-weight:400;">(hourly: h = 1..8760 per year)</span>
+                  </span>
+                  <div style="margin:2px 0; font-size:0.8rem; color:#555;">
+                    Generators submit bids &#8594; OPF clears (SCUC/SCED) &#8594; SMP, dispatch, congestion &#8594; agents learn via MDP
+                  </div>
+                  <div style="font-size:1.6rem;">&#8595;</div>
+                </div>
+
+                <div class="col-12 mb-1">
+                  <span class="badge p-3" style="background:#4a148c; font-size:0.85rem; width:100%;">
+                    &#128202; LAYER 3 &mdash; AGGREGATION & FEEDBACK &nbsp; <span style="font-weight:400;">(end of year)</span>
+                  </span>
+                  <div style="margin:2px 0; font-size:0.8rem; color:#555;">
+                    Hourly outcomes &#8594; annual averages, distributions, volatility, affordability, emissions &#8594; fed back to macro agents
+                  </div>
+                  <div style="font-size:1.2rem;">&#8593; &#8595;</div>
+                </div>
+
+                <div class="col-12">
+                  <span class="badge p-3" style="background:#880e4f; font-size:0.85rem; width:100%;">
+                    &#128260; MACRO AGENTS UPDATE &rarr; NEXT YEAR t+1
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; What Each Layer Contributes to the OPF</h5>
+            <p class="small">
+              The Macro Economy ABM (Layer 1) produces the <strong>demand trajectory</strong> that the Power Market ABM (Layer 2) treats as exogenous. Specifically:
+            </p>
+            <ul class="small">
+              <li><strong>Load growth:</strong> GDP growth &times; elasticity + population growth + new connections + sectoral shifts &#8594; annual TWh</li>
+              <li><strong>Load shape:</strong> hourly coefficients for each sector (residential, commercial, industrial, mining, agriculture) adjusted for solar self-consumption, EV charging, and demand response</li>
+              <li><strong>Technology adoption:</strong> rooftop solar penetration (reduces net demand at midday), EV fleet size (adds evening load if dumb-charged), industrial self-gen (reduces grid demand)</li>
+              <li><strong>Fiscal envelope:</strong> Eskom tariff path, carbon tax trajectory, bailout budget &mdash; these become constraints on the power market agents</li>
+            </ul>
+            <p class="small">
+              The Power Market ABM feeds back to the macro layer through:
+            </p>
+            <ul class="small">
+              <li><strong>Average SMP:</strong> if wholesale prices rise, household energy burden increases, industrial competitiveness declines, Eskom's financial position changes</li>
+              <li><strong>SMP volatility:</strong> higher volatility increases the risk premium in CfD strikes, affecting IPP investment decisions</li>
+              <li><strong>Emissions:</strong> CO&#8322; trajectory is an output of the OPF dispatch that feeds back into carbon tax policy</li>
+              <li><strong>Unserved energy:</strong> load-shedding events destroy GDP in the macro model (macro agents observe lost output and adjust expectations)</li>
+            </ul>
+
+            <h5 class="fw-bold mt-4">&#128221; Pseudocode for the Complete Simulation Loop</h5>
+            <div class="pseudo-box">
+<span class="cm"># ============================================================</span>
+<span class="cm"># SAWEM DUAL-TIMESCALE SIMULATION — MAIN LOOP</span>
+<span class="cm"># ============================================================</span>
+
+<span class="kw">for</span> year <span class="kw">in</span> range(T):  <span class="cm"># T = 20–40 years</span>
+
+    <span class="cm"># ---- 1. MACRO LAYER (annual resolution) ----</span>
+    macro_state[year+1]  = <span class="fn">update_macro_economy</span>(macro_state[year],
+                               power_outcomes[year-1])  <span class="cm"># feedback from previous year</span>
+
+    <span class="cm"># Macro agents update:
+    #   - Households: adopt solar, EVs based on income + payback
+    #   - Firms: invest in self-gen based on SMP + LCOE
+    #   - Eskom Corp: apply for tariff increase based on debt
+    #   - Government: set carbon tax, RE targets, subsidies
+    #   - Demographics: population, urbanisation, electrification</span>
+    demand_profile[year] = <span class="fn">generate_hourly_demand</span>(macro_state[year+1],
+                               weather, TOU_coeffs)
+
+    <span class="cm"># ---- 2. POWER MARKET LAYER (hourly resolution) ----</span>
+    <span class="kw">for</span> hour <span class="kw">in</span> range(HOURS_PER_YEAR):  <span class="cm"># 8,760</span>
+
+        <span class="cm"># 2a. Agents observe state</span>
+        obs = {
+            <span class="str">'smp_history'</span>:     smp_history[-24:],
+            <span class="str">'demand'</span>:           demand_profile[year][hour],
+            <span class="str">'reserve_margin'</span>:   reserve_margin_t,
+            <span class="str">'fuel_prices'</span>:     fuel_price_t,
+            <span class="str">'carbon_tax'</span>:      carbon_tax_t,
+            <span class="str">'congestion'</span>:      congestion_history[-24:],
+            <span class="str">'wind_solar_cf'</span>:   weather_forecast[hour],
+            <span class="str">'outages'</span>:         current_outages,
+                    }
+
+        <span class="cm"># 2b. Agents select actions via policy</span>
+        bids = {}
+        <span class="kw">for</span> gen <span class="kw">in</span> generators:
+            bids[gen.id] = gen.policy(obs)  <span class="cm"># bid curve: [(P1, C1), (P2, C2), ...]</span>
+
+        load_bids = {}
+        <span class="kw">for</span> load <span class="kw">in</span> loads:
+            load_bids[load.id] = load.policy(obs)  <span class="cm"># demand bid: price-quantity pairs</span>
+
+        <span class="cm"># 2c. OPF clears the market</span>
+        opf_result = <span class="fn">solve_scuc_sced</span>(bids, load_bids, network,
+                            reserve_req_t, contingencies)
+
+        smp_t              = opf_result.smp           <span class="cm"># &#955;_t  (R/MWh)</span>
+        dispatch_t         = opf_result.dispatch        <span class="cm"># p_{g,t} (MW)</span>
+        line_flows_t       = opf_result.line_flows      <span class="cm"># f_{\ell,t} (MW)</span>
+        congestion_rents_t = opf_result.congestion_rents  <span class="cm"># (R/h)</span>
+        reserve_prices_t   = opf_result.reserve_prices    <span class="cm"># &#956;_t (R/MWh)</span>
+        unserved_t         = opf_result.unserved          <span class="cm"># MWh shed</span>
+        lmp_nodal_t        = opf_result.lmp               <span class="cm"># LMP at each bus</span>
+
+        <span class="cm"># 2d. Agents receive reward (profit signal)</span>
+        <span class="kw">for</span> gen <span class="kw">in</span> generators:
+            gen.reward = smp_t * dispatch_t[gen.id] - gen.bid_cost(dispatch_t[gen.id])
+                         - gen.startup_cost - gen.no_load_cost
+
+        <span class="kw">for</span> load <span class="kw">in</span> loads:
+            load.reward = -smp_t * load_dispatch_t[load.id]
+
+        <span class="cm"># 2e. Store every variable</span>
+        <span class="fn">record</span>(hour, smp_t, dispatch_t, gen.profit, load.cost,
+               line_flows_t, congestion_rents_t, reserve_prices_t,
+               unserved_t, lmp_nodal_t,
+               gen.state, load.state, nersa.state)
+
+        <span class="cm"># 2f. Agent learning update (daily/first-of-month)</span>
+        <span class="kw">if</span> hour_is_end_of_day(hour):
+            <span class="kw">for</span> gen <span class="kw">in</span> generators:
+                gen.learner.update()  <span class="cm"># DDPG / Q-learning update from replay buffer</span>
+
+        <span class="cm"># 2g. Exogenous state evolution</span>
+        fuel_prices_t+1   = <span class="fn">evolve_fuel_prices</span>(fuel_prices_t, sde_params)
+        outages_t+1       = <span class="fn">sample_outages</span>(generator_fors, weather)
+        weather_t+1       = <span class="fn">load_weather_data</span>(hour+1, scenario)
+
+    <span class="cm"># ---- 3. END-OF-YEAR AGGREGATION ----</span>
+    power_outcomes[year] = {
+        <span class="str">'avg_smp'</span>:          np.mean(smp_history),
+        <span class="str">'smp_distribution'</span>: smp_history,
+        <span class="str">'smp_volatility'</span>:   np.std(smp_history),
+        <span class="str">'total_emissions'</span>:  sum(emissions),
+        <span class="str">'unserved_energy'</span>:  sum(unserved),
+        <span class="str">'congestion_rent'</span>: sum(congestion_rents),
+        <span class="str">'gen_profits'</span>:      {g: g.annual_profit <span class="kw">for</span> g <span class="kw">in</span> generators},
+        <span class="str">'load_costs'</span>:        {l: l.annual_cost <span class="kw">for</span> l <span class="kw">in</span> loads},
+        <span class="str">'renewable_share'</span>:  renewable_mwh / total_mwh,
+        <span class="str">'coal_retirements'</span>: retired_mw_this_year,
+        <span class="str">'hhi'</span>:              compute_hhi(market_shares),
+        <span class="str">'affordability'</span>:    load_costs / household_income_by_decile,
+    }
+
+    <span class="cm"># ---- 4. FEEDBACK TO MACRO LAYER ----</span>
+    <span class="cm"># Macro agents react to power_outcomes[year] in next year's update</span>
+
+<span class="fn">save_all_trajectories</span>(agent_states, system_ts, emergent_metrics)
+<span class="fn">print</span>(<span class="str">"Simulation complete. Output saved."</span>)
+</div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THE SCHEDULER                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="scheduler">
+          <div class="card-header level-arch">
+            &#9200; The Scheduler &mdash; How Time Is Organised
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Not All Agents Act on the Same Clock</h5>
+              <p class="mb-0">
+                In the real world, generators bid every day, households buy solar panels once every
+                few years, and regulators adjust policy annually. The simulation must respect these
+                different timescales. The <strong>scheduler</strong> is the component that determines
+                which agents act when. Getting the schedule right is critical &mdash; if generators
+                could change their bids every minute, the market would behave differently than if
+                they commit to bids for a day. The scheduler enforces the institutional structure
+                of SAWEM.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128197; Timescales in the SAWEM Simulation</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Timescale</th><th>Agents That Act</th><th>What Happens</th><th>Update Mechanism</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Hourly</strong><br><span class="badge ts-hourly" style="background:#e3f2fd;color:#1565c0;">1 hr</span></td>
+                  <td>NTCSA (SO), wind/solar IPPs, batteries</td>
+                  <td>OPF solves: dispatch, SMP, congestion, reserves. Renewables fluctuate with weather. Batteries charge/discharge.</td>
+                  <td>Deterministic optimisation (MILP) for dispatch. Exogenous weather draws for renewables.</td>
+                </tr>
+                <tr>
+                  <td><strong>Daily</strong><br><span class="badge ts-daily" style="background:#fff3e0;color:#e65100;">1 day</span></td>
+                  <td>All generators, load BRPs, CPA</td>
+                  <td>DAM bids submitted for next day. Generator learning (policy update from replay buffer).</td>
+                  <td>DDPG/Q-learning update (every 24h after observing full day's rewards).</td>
+                </tr>
+                <tr>
+                  <td><strong>Weekly</strong><br><span class="badge ts-weekly" style="background:#f3e5f5;color:#7b1fa2;">1 week</span></td>
+                  <td>Maintenance scheduling (generators), hydro scheduling</td>
+                  <td>Weekly maintenance plans submitted to SO. Hydro reservoir release decisions.</td>
+                  <td>Rule-based scheduling (planned outages for non-peak weeks).</td>
+                </tr>
+                <tr>
+                  <td><strong>Quarterly (6-month)</strong><br><span class="badge ts-quarterly" style="background:#e8f5e9;color:#2e7d32;">6 mo</span></td>
+                  <td>NERSA, IPP investors, industrial firms</td>
+                  <td>NERSA reviews market conduct, adjusts price cap or carbon tax trajectory. IPP investors decide to bid in next REIPPP round. Industrial firms evaluate self-gen investment.</td>
+                  <td>NERSA: rule-based policy adjustment. IPP: NPV of expected profit given SMP outlook. Firms: payback analysis.</td>
+                </tr>
+                <tr>
+                  <td><strong>Annual</strong><br><span class="badge ts-annual" style="background:#fbe9e7;color:#bf360c;">1 yr</span></td>
+                  <td>All Macro Economy agents (households, firms, Eskom Corp, government)</td>
+                  <td>Population & GDP growth, solar/EV adoption, Eskom tariff filing, government budget & carbon tax reset, fleet retirements and new builds.</td>
+                  <td>Macro-economic update functions (see <a href="thesis-agents.html">Agent Architecture</a> for each agent's policy).</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128259; Scheduling Within Each Year</h5>
+            <p class="small">
+              At the start of each simulation year, the following sequence executes:
+            </p>
+            <ol class="small">
+              <li><strong>Macro update:</strong> run all Macro Economy agents' annual decisions (household adoption, firm investment, Eskom tariff filing, policy reset). This produces the demand scenario for the coming year.</li>
+              <li><strong>Demand generator:</strong> map the annual macro state (GDP, population, sectoral composition, technology adoption) onto 8,760 hourly load values for each load agent.</li>
+              <li><strong>Hourly loop:</strong> for each of the 8,760 hours in the year, run the power market loop: observe state, bid, OPF, reward, record. At the end of each day, run agent learning updates from the day's replay buffer.</li>
+              <li><strong>Annual aggregation:</strong> collate all hourly records into annual statistics (average SMP, volatility, emissions, profits, etc.).</li>
+              <li><strong>Feedback:</strong> pass the annual statistics to the Macro Economy agents so they update their state for the next year (high SMP &rarr; more solar adoption, low IRP &rarr; Eskom needs bailout, etc.).</li>
+            </ol>
+
+            <h5 class="fw-bold mt-4">&#128200; The Day-Ahead Market (DAM) Timeline</h5>
+            <p class="small">
+              Within each 24-hour period, the market follows the SAWEM DAM timeline:
+            </p>
+            <div style="background:#f8f9fa; border-radius:8px; padding:0.75rem 1rem;">
+              <div class="row g-1 small text-center">
+                <div class="col-md-3">
+                  <div class="p-2 border rounded bg-white">
+                    <strong>06:00</strong><br>
+                    <span class="text-muted">Weather & demand forecasts published by SO</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-2 border rounded bg-white">
+                    <strong>09:00</strong><br>
+                    <span class="text-muted">DAM bids due from generators and loads</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-2 border rounded bg-white">
+                    <strong>11:00</strong><br>
+                    <span class="text-muted">OPF clears. SMP, dispatch, schedule published</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-2 border rounded bg-white">
+                    <strong>00:00&ndash;24:00</strong><br>
+                    <span class="text-muted">Real-time dispatch (hourly SCED re-runs) + settlement</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="small mt-2 text-muted">
+              In the simulation, the DAM bidding happens once per day (step 2b runs once for all 24 hours,
+              using the same bids), then each hour's SCED re-dispatch adjusts for outages and forecast error.
+              Agent learning uses the full 24-hour trajectory of rewards.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- HOW WE RUN IT                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="running">
+          <div class="card-header level-run">
+            &#128187; How We Run the Simulation
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; From Concept to Execution</h5>
+              <p class="mb-0">
+                All the concepts above are implemented in Python. The macro economy ABM runs as a
+                loop over years, calling an inner loop of 8,760 hours that invokes the OPF solver
+                (PyPSA / pandapower for DC-OPF, or a custom SCUC/SCED MILP solver via Pyomo/Gurobi).
+                Agent learning uses Stable-Baselines3 (DDPG, PPO, Q-learning) with custom
+                multi-agent wrappers. The entire simulation is orchestrated by a main loop that
+                manages the scheduler, data recording, and checkpointing. The code is structured
+                to allow running on a single machine for small-scale tests or on a cluster (SLURM
+                or AWS Batch) for full ensemble runs.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128187; Computational Requirements</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Component</th><th>Runtime (1 year)</th><th>Runtime (20 years)</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Macro ABM update</td><td>~0.5&ndash;2 s</td><td>~10&ndash;40 s</td><td>Mostly table lookups and simple adoption models</td></tr>
+                <tr><td>Demand generator</td><td>~0.1 s</td><td>~2 s</td><td>Matrix multiplication of load profiles by scaling factors</td></tr>
+                <tr><td>OPF solve (single hour)</td><td>~0.05&ndash;0.5 s</td><td>&mdash;</td><td>DC-OPF is fast; SCUC (MILP) with 100+ units is slower</td></tr>
+                <tr><td>OPF solve (8,760 hours)</td><td>~7&ndash;60 min</td><td>~2.5&ndash;20 h</td><td>Can parallelise across hours; MILP warm-start reduces time</td></tr>
+                <tr><td>Agent learning update (per day)</td><td>~0.1&ndash;2 s</td><td>~0.5&ndash;10 min</td><td>DDPG update per generator; scales with number of generators</td></tr>
+                <tr><td><strong>Total (1 scenario)</strong></td><td><strong>~10&ndash;70 min</strong></td><td><strong>~3&ndash;24 h</strong></td><td>Highly dependent on OPF complexity and number of agents</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128187; Parallelism Strategy</h5>
+            <p class="small">
+              To make the simulation tractable, three levels of parallelism are used:
+            </p>
+            <ol class="small">
+              <li><strong>Hour-level parallelism:</strong> hours within a year are independent for the OPF (once bids are fixed for the day). We can solve 24 OPF instances in parallel per day, reducing the yearly runtime from 60 min to ~10 min on an 8-core machine.</li>
+              <li><strong>Year-level pipeline:</strong> the annual macro update depends on the previous year's outcomes, so years cannot be parallelised within a single run. But the feedback signal is a small vector (<50 floats), so we can start the next year's hourly OPFs as soon as the macro update completes &mdash; no need to wait for the full year to finish.</li>
+              <li><strong>Scenario-level parallelism:</strong> ensemble runs (different seeds, parameter variations) are fully independent and can be farmed out to a cluster. A 100-member ensemble takes the same wall-clock time as a single run if you have 100 cores.</li>
+            </ol>
+
+            <h5 class="fw-bold mt-4">&#128221; Running a Single Scenario</h5>
+            <p class="small">
+              The simulation entry point is a Python script. A typical invocation:
+            </p>
+            <div class="pseudo-box">
+<span class="cm"># Run a 20-year SAWEM baseline scenario</span>
+python run_sawem.py \
+    --years 20 \
+    --scenario baseline \
+    --opf-type dc \
+    --agent-learning ddpg \
+    --seed 42 \
+    --output-dir ./output/baseline_seed42 \
+    --parallel-hours 8
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128221; Running Batch Ensemble</h5>
+            <div class="pseudo-box">
+<span class="cm"># Run 50 seeds of 3 scenarios = 150 simulations in parallel</span>
+python run_ensemble.py \
+    --seeds 50 \
+    --scenarios baseline,jet_fast,no_jet \
+    --years 20 \
+    --cluster slurm \
+    --output-dir ./output/ensemble_v1
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- AGENT TRAJECTORIES                                          -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="agent-trajectories">
+          <div class="card-header level-output">
+            &#128200; Output 1 &mdash; Agent Trajectories (Micro Level)
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; The &ldquo;God View&rdquo; of Every Agent</h5>
+              <p class="mb-0">
+                Because the simulation records every agent's state and action at every time step,
+                we have a complete <strong>digital trace</strong> of the artificial economy. We
+                can replay any agent's life: how its capacity changed, how its bidding strategy
+                evolved, how much profit it made each hour, when it decided to retire. This is
+                data that cannot be obtained from real markets &mdash; in reality, generators'
+                private costs and strategies are confidential. In the simulation, everything is
+                observable. This is what makes ABM such a powerful analytical tool:
+                you can inspect the micro-level mechanisms that generate macro-level patterns.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; What an Agent Trajectory Looks Like</h5>
+            <p class="small">
+              For each generator agent, the simulation records the following <strong>per time step</strong>
+              (hourly for the power market, annually for the macro economy):
+            </p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Category</th><th>Variables (per generator, per hour)</th><th>Example Value (Year 5, Hour 3,782)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>State</strong></td><td>capacity_online, heat_rate, coal_stock, forced_outage_flag, vest_hedge_pct, profit_12m, smp_forecast, maintenance_weeks_remaining</td><td>480 MW, 11.2 GJ/MWh, 42 days, False, 60%, R125M, R1,020/MWh, 0</td></tr>
+                <tr><td><strong>Action</strong></td><td>bid_curve (3&ndash;5 steps), avail_decl, maintenance_flag</td><td>[(200,820), (200,1050), (80,4800)], 480 MW, no</td></tr>
+                <tr><td><strong>Outcome</strong></td><td>dispatch_p, smp, profit, emissions, startup_cost, no_load_cost, congestion_zone_lmp</td><td>310 MW, R1,105/MWh, R88,350, 343 tCO&#8322;, R0, R24,000, R1,105/MWh</td></tr>
+                <tr><td><strong>Learning</strong></td><td>Q-values (tabular) or actor/critic parameters (DDPG), replay buffer samples, exploration noise &#949;</td><td>[0.82, 0.15, 0.03], 64 samples, &#949; = 0.12</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128202; Detailed Trajectory Specification by Agent Type</h5>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header fw-bold small py-2" style="background:#e8f5e9;">&#128293; Generator Trajectory (hourly)</div>
+                  <div class="card-body">
+                    <ul class="small mb-0">
+                      <li><code>t</code>: timestamp (year, hour)</li>
+                      <li><code>gen_id</code>, <code>station_name</code>, <code>fuel_type</code></li>
+                      <li><code>cap_online[MW]</code>: actual available capacity this hour</li>
+                      <li><code>bid_curve[(MW, R/MWh)_k]</code>: the 3&ndash;5 step offer curve</li>
+                      <li><code>dispatch[MW]</code>: what the OPF actually dispatched</li>
+                      <li><code>smp[R/MWh]</code>: the system marginal price this hour</li>
+                      <li><code>lmp_zone[R/MWh]</code>: locational price at this generator's bus</li>
+                      <li><code>profit[R]</code>: &#955;&#183;p - fuel_cost - O&M - startup - no_load</li>
+                      <li><code>emissions[tCO2]</code>: p &#183; heat_rate &#183; emission_factor</li>
+                      <li><code>heat_rate[GJ/MWh]</code>: current heat rate (degrading with age)</li>
+                      <li><code>fuel_cost[R/GJ]</code>: cost of fuel this hour (from SDE model)</li>
+                      <li><code>forced_outage[0/1]</code>: is the unit on forced outage?</li>
+                      <li><code>maintenance[0/1]</code>: is the unit on planned maintenance?</li>
+                      <li><code>startups[count]</code>: cumulative number of starts since Jan 1</li>
+                      <li><code>vest_hedge_pct[%]</code>: portion of output hedged through CPA vesting contract</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header fw-bold small py-2" style="background:#fff3e0;">&#127968; Household Trajectory (annual)</div>
+                  <div class="card-body">
+                    <ul class="small mb-0">
+                      <li><code>t</code>: year</li>
+                      <li><code>archetype_id</code>: (income_quintile, province, urban_rural)</li>
+                      <li><code>population[#]</code>: number of households in this archetype</li>
+                      <li><code>income[R/yr]</code>: average household income</li>
+                      <li><code>elec_consumption[kWh/yr]</code>: annual electricity consumption</li>
+                      <li><code>avg_elec_price[R/kWh]</code>: average retail price paid (tariff + surcharges)</li>
+                      <li><code>elec_bill_as_%_income[%]</code>: energy burden</li>
+                      <li><code>rooftop_solar_penetration[%]</code>: % of households with solar PV</li>
+                      <li><code>ev_ownership[%]</code>: % of households with an EV</li>
+                      <li><code>solar_kW_per_hh[kW]</code>: average installed PV capacity</li>
+                      <li><code>load_profile[kW]</code>: 24-hour load profile (summer/winter)</li>
+                      <li><code>appliance_index</code>: composite index of appliance ownership</li>
+                      <li><code>electrified[0/1]</code>: whether the household has grid connection</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header fw-bold small py-2" style="background:#e3f2fd;">&#127981; Industrial Firm Trajectory (annual)</div>
+                  <div class="card-body">
+                    <ul class="small mb-0">
+                      <li><code>t</code>: year</li>
+                      <li><code>sector</code>: mining / manufacturing / smelting / agri-processing</li>
+                      <li><code>production_volume</code>: output index</li>
+                      <li><code>electricity_intensity[kWh/unit]</code>: kWh per unit of output</li>
+                      <li><code>grid_demand[GWh]</code>: electricity purchased from the grid</li>
+                      <li><code>self_gen[MW]</code>: embedded generation capacity (solar/gas/coal)</li>
+                      <li><code>self_gen_output[GWh]</code>: MWh produced by own generation</li>
+                      <li><code>self_gen_investment[MW]</code>: new self-gen built this year</li>
+                      <li><code>dsr_available[MW]</code>: demand-side response capacity</li>
+                      <li><code>average_SMP_paid[R/MWh]</code>: weighted average wholesale price paid</li>
+                      <li><code>total_energy_cost[R]</code>: grid purchases + self-gen O&M</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-header fw-bold small py-2" style="background:#f3e5f5;">&#127974; Eskom Corporate Trajectory (annual)</div>
+                  <div class="card-body">
+                    <ul class="small mb-0">
+                      <li><code>t</code>: year</li>
+                      <li><code>debt_total[R]</code>: total Eskom debt</li>
+                      <li><code>tariff_revenue[R]</code>: revenue from electricity sales</li>
+                      <li><code>coal_spend[R]</code>: cost of coal purchases</li>
+                      <li><code>staff_count[#]</code>: employee headcount</li>
+                      <li><code>eaf[%]</code>: energy availability factor (fleet average)</li>
+                      <li><code>bailout_received[R]</code>: government equity injection this year</li>
+                      <li><code>muni_arrears[R]</code>: unpaid bills from municipalities</li>
+                      <li><code>tariff_increase_approved[%]</code>: NERSA-approved tariff hike this year</li>
+                      <li><code>deb_service_ratio</code>: debt service / operating revenue (covenant test)</li>
+                      <li><code>unbundling_stage</code>: integrated / unbundled Gen / unbundled Gen+Tx</li>
+                      <li><code>retired_mw[MW]</code>: generation capacity retired this year</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; Visualising an Agent Trajectory</h5>
+            <p class="small">
+              A single generator trajectory over 20 years generates ~175,200 hourly records (20 &#215; 8,760).
+              Visualising this as a raw time series reveals the plant's operating pattern: baseload stations
+              run flat near full capacity; mid-merit stations cycle on and off; peakers run only during
+              the highest-demand hours. A <strong>dispatch heatmap</strong> (hour &#215; day) shows seasonal
+              patterns. A <strong>learning curve</strong> of the bid&ndash;price over time shows how the
+              agent's strategic behaviour evolves. A <strong>profit trajectory</strong> shows the cumulative
+              earnings and when the plant becomes financially stressed.
+            </p>
+
+            <div class="alert alert-secondary small">
+              <strong>&#128161; Example analysis using agent trajectories:</strong><br>
+              &ldquo;We extracted all 14 Eskom coal station dispatch profiles over the 20-year baseline run.
+              By Year 10, stations with heat rates above 14 GJ/MWh were cycling more than 200 times per year,
+              compared to fewer than 50 starts per year in Year 1. The increased cycling accelerated heat rate
+              degradation by ~0.3% per year, creating a feedback loop that pushed these stations further
+              up the merit order and reduced their profitability. Three stations triggered their retirement
+              condition (negative NPV over 5-year forward horizon) between Years 12 and 15.&rdquo;
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SYSTEM-LEVEL TIME SERIES                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="system-ts">
+          <div class="card-header level-output">
+            &#128202; Output 2 &mdash; System-Level Time Series (Macro Level)
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; The Vital Signs of the Power Market</h5>
+              <p class="mb-0">
+                If agent trajectories are the &ldquo;DNA&rdquo; of the simulation, system-level time
+                series are the &ldquo;vital signs.&rdquo; These are the aggregate market outcomes
+                that policy-makers, investors, and system operators actually care about: the price
+                of electricity, the reliability of supply, the emissions trajectory, the market
+                concentration. They are computed by <strong>aggregating agent-level data</strong>:
+                SMP is the Lagrange multiplier of the OPF power balance; total emissions are the
+                sum of each generator's emissions; market concentration is a function of the
+                distribution of generator market shares. Every system-level variable can be
+                decomposed back into its agent-level drivers &mdash; that is the diagnostic power
+                of the ABM.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; The System-Level Output Data</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Category</th><th>Variable</th><th>Resolution</th><th>Unit</th></tr>
+              </thead>
+              <tbody>
+                <tr><td rowspan="6"><strong>Price</strong></td><td>System Marginal Price (SMP)</td><td>Hourly</td><td>R/MWh</td></tr>
+                <tr><td>Locational Marginal Prices (LMPs) at each node</td><td>Hourly</td><td>R/MWh</td></tr>
+                <tr><td>Reserve prices (regulating, spinning, supplemental)</td><td>Hourly</td><td>R/MWh</td></tr>
+                <tr><td>Value of Lost Load (VOLL) settlements</td><td>Hourly</td><td>R</td></tr>
+                <tr><td>Congestion rents per constraint</td><td>Hourly</td><td>R</td></tr>
+                <tr><td>Price duration curve (sorted SMP values)</td><td>Annual</td><td>R/MWh</td></tr>
+
+                <tr><td rowspan="5"><strong>Dispatch</strong></td><td>Total generation by fuel type (coal, gas, hydro, wind, solar, battery, diesel)</td><td>Hourly / Annual</td><td>MW / GWh</td></tr>
+                <tr><td>Renewable share of generation</td><td>Hourly / Annual</td><td>%</td></tr>
+                <tr><td>Renewable curtailment</td><td>Hourly / Annual</td><td>MWh, %</td></tr>
+                <tr><td>Battery state of charge (aggregate fleet)</td><td>Hourly</td><td>MWh</td></tr>
+                <tr><td>Unserved energy (load shedding)</td><td>Hourly / Annual</td><td>MWh</td></tr>
+
+                <tr><td rowspan="4"><strong>Emissions</strong></td><td>CO&#8322; emissions by fuel type</td><td>Hourly / Annual</td><td>tCO&#8322;</td></tr>
+                <tr><td>SO&#8322;, NOx, particulate emissions</td><td>Annual</td><td>tonnes</td></tr>
+                <tr><td>Emissions intensity of generation</td><td>Hourly / Annual</td><td>tCO&#8322;/MWh</td></tr>
+                <tr><td>Carbon tax paid</td><td>Annual</td><td>R</td></tr>
+
+                <tr><td rowspan="4"><strong>Reliability</strong></td><td>Loss of Load Expectation (LOLE)</td><td>Annual</td><td>hours/yr</td></tr>
+                <tr><td>Expected Unserved Energy (EUE)</td><td>Annual</td><td>MWh/yr</td></tr>
+                <tr><td>Reserve margin (daily / monthly min)</td><td>Daily</td><td>%</td></tr>
+                <tr><td>N-1 compliance rate</td><td>Hourly</td><td>%</td></tr>
+
+                <tr><td rowspan="3"><strong>Economic</strong></td><td>Average SMP (load-weighted)</td><td>Annual</td><td>R/MWh</td></tr>
+                <tr><td>SMP volatility (standard deviation)</td><td>Annual</td><td>R/MWh</td></tr>
+                <tr><td>Total system cost (fuel + O&M + start-up + unserved)</td><td>Annual</td><td>R</td></tr>
+
+                <tr><td rowspan="3"><strong>Market</strong></td><td>Herfindahl-Hirschman Index (HHI)</td><td>Annual</td><td>points</td></tr>
+                <tr><td>Generator surplus (total producer surplus)</td><td>Annual</td><td>R</td></tr>
+                <tr><td>Load payment (total consumer payments to market)</td><td>Annual</td><td>R</td></tr>
+
+                <tr><td rowspan="3"><strong>Fiscal</strong></td><td>CPA legacy account balance</td><td>Annual</td><td>R</td></tr>
+                <tr><td>Eskom corporate cash flow</td><td>Annual</td><td>R</td></tr>
+                <tr><td>Carbon tax revenue</td><td>Annual</td><td>R</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128202; Visualising System-Level Time Series</h5>
+            <p class="small">
+              The standard visualisation for system-level outputs is a <strong>dashboard</strong>
+              of time series organised by category:
+            </p>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>SMP time series (hourly, annual overlay):</strong> shows seasonality,
+                  diurnal pattern, and whether the price distribution shifts over the transition.
+                  The annual overlay (plot each year's 8,760 hours as a separate line) reveals
+                  year-on-year changes in the merit-order effect.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Generation mix area chart:</strong> stacked area of coal, gas, hydro,
+                  wind, solar, battery discharge, and unserved energy (shown as negative).
+                  The transition from a coal-dominated to a diversified mix is immediately visible.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Emissions trajectory (annual bar + line):</strong> annual CO&#8322; with
+                  the carbon tax rate overlaid on a secondary axis. The point where emissions
+                  peak and decline (&ldquo;peak coal&rdquo;) is a critical scenario outcome.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Price duration curves (annual comparison):</strong> plot the sorted
+                  SMP values for each year on the same axes. The &ldquo;peaks&rdquo; (right tail)
+                  and &ldquo;merit-order effect&rdquo; (left tail shifting down) are easily compared
+                  across scenarios.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Load-reserve chart:</strong> plotting load against available capacity
+                  with the reserve margin zone highlighted. When load enters the reserve zone,
+                  that indicates scarcity &mdash; this should cross-correlate with SMP spikes.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Duck curve (net demand):</strong> net load (load minus solar & wind)
+                  for each year on a typical spring day. The midday &ldquo;duck belly&rdquo; deepens
+                  as solar penetration rises, indicating the growing need for flexibility.
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-secondary small mt-3">
+              <strong>&#128161; Example analysis using system-level time series:</strong><br>
+              &ldquo;The SMP duration curve shifted downward across all percentiles over the 20-year
+              simulation, with the 50th percentile falling from R850/MWh (Year 1) to R620/MWh (Year 20).
+              However, the 99th percentile rose from R3,200/MWh to R4,800/MWh over the same period,
+              indicating increased tail risk from renewable variability. The net load duck curve
+              deepened from 2,100 MW (Year 1) to 8,400 MW (Year 20), meaning the system required
+              8.4 GW of flexible ramping capability that did not exist in the initial fleet. This
+              led to increased battery investment (4,200 MW by Year 15) and higher OCGT utilisation
+              during evening ramp hours.&rdquo;
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- EMERGENT METRICS                                            -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="emergent">
+          <div class="card-header level-output">
+            &#10024; Output 3 &mdash; Emergent Metrics (System-Level Properties)
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; The Patterns Nobody Programmed</h5>
+              <p class="mb-0">
+                Agent trajectories tell you what happened. System time series show you the aggregates.
+                <strong>Emergent metrics</strong> tell you what it <em>means</em>. These are the
+                higher-order patterns, the phase transitions, the causal structures, and the
+                policy-relevant indicators that arise from the simulation. They are not directly
+                programmed into the model &mdash; they are what you <em>discover</em> by analysing
+                the simulation output. This is where the ABM delivers insight that no equilibrium
+                model can provide.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128300; The Four Families of Emergent Metrics</h5>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-6">
+                <div class="card h-100" style="border-left:4px solid #e65100;">
+                  <div class="card-body">
+                    <h6 class="fw-bold">&#9312; Phase Transitions & Tipping Points</h6>
+                    <p class="small mb-1">
+                      Abrupt, qualitative shifts in the system's behaviour as a control parameter
+                      crosses a critical threshold. These are the most important findings for policy.
+                    </p>
+                    <ul class="small mb-0">
+                      <li><strong>&ldquo;Coal collapse&rdquo; year:</strong> the first year that coal falls below 50% of annual generation. A sudden shift as multiple old stations retire in quick succession.</li>
+                      <li><strong>Net-zero crossing:</strong> the year the power sector's CO&#8322; emissions reach zero (or negative with CCS/BECCS).</li>
+                      <li><strong>Reserve margin cliff:</strong> the year that reserve margin drops below the 15% adequacy threshold, triggering a capacity crisis.</li>
+                      <li><strong>Market power regime change:</strong> the year HHI drops below 1,800 (moderately concentrated) vs above 2,500 (highly concentrated).</li>
+                      <li><strong>Affordability crisis threshold:</strong> the year low-income household energy burden exceeds 15% of income.</li>
+                    </ul>
+                    <div class="mt-2">
+                      <span class="metric-badge">Tipping point</span>
+                      <span class="metric-badge">Regime shift</span>
+                      <span class="metric-badge">Phase transition</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100" style="border-left:4px solid #1565c0;">
+                  <div class="card-body">
+                    <h6 class="fw-bold">&#9313; Cyclical & Dynamic Properties</h6>
+                    <p class="small mb-1">
+                      Oscillations, waves, and periodic behaviours that emerge from delayed feedback.
+                    </p>
+                    <ul class="small mb-0">
+                      <li><strong>Investment cycle period:</strong> spectral analysis of annual capacity additions reveals a dominant cycle of 6&ndash;10 years (corresponding to construction lead times).</li>
+                      <li><strong>Price spike clustering:</strong> are SMP spikes random, or do they arrive in clusters (volatility clustering)? The Hurst exponent of SMP increments quantifies this.</li>
+                      <li><strong>Merit-order effect elasticity:</strong> &#916;avg_SMP / &#916;renewable_share &mdash; the slope of the merit-order effect as renewables penetrate.</li>
+                      <li><strong>Learning convergence rate:</strong> how many years do agents take to converge to stable bidding strategies? Measure variance of bid prices across agents over time.</li>
+                      <li><strong>Cycle attenuation or amplification:</strong> do investment cycles dampen or grow over time as the market matures?</li>
+                    </ul>
+                    <div class="mt-2">
+                      <span class="metric-badge">Spectral analysis</span>
+                      <span class="metric-badge">Hurst exponent</span>
+                      <span class="metric-badge">Cycle period</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100" style="border-left:4px solid #2e7d32;">
+                  <div class="card-body">
+                    <h6 class="fw-bold">&#9314; Structural & Distributional Metrics</h6>
+                    <p class="small mb-1">
+                      How the <em>shape</em> of the market changes, not just its average.
+                    </p>
+                    <ul class="small mb-0">
+                      <li><strong>Technology diversity index:</strong> Shannon entropy of the generation mix (0 = one technology dominates; log(N) = perfectly diverse). Tracks the transition from coal monoculture to diversified portfolio.</li>
+                      <li><strong>Market concentration trajectory:</strong> HHI over time &mdash; does the market become more competitive as IPPs enter, or does gas/RE consolidate?</li>
+                      <li><strong>Gini of generator profits:</strong> inequality among generator profits &mdash; are some stations &ldquo;too big to fail&rdquo; while others struggle?</li>
+                      <li><strong>Regional inequality in electricity access:</strong> Gini of per-capita consumption across provinces &mdash; does the transition narrow or widen the gap?</li>
+                      <li><strong>Fuel poverty index:</strong> percentage of households spending >10% of income on electricity, tracked over time by province and income decile.</li>
+                    </ul>
+                    <div class="mt-2">
+                      <span class="metric-badge">Shannon entropy</span>
+                      <span class="metric-badge">Gini coefficient</span>
+                      <span class="metric-badge">HHI</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100" style="border-left:4px solid #6a1b9a;">
+                  <div class="card-body">
+                    <h6 class="fw-bold">&#9315; Causal & Counterfactual Metrics</h6>
+                    <p class="small mb-1">
+                      What <em>causes</em> the outcomes we observe, and what would happen under
+                      different conditions?
+                    </p>
+                    <ul class="small mb-0">
+                      <li><strong>Policy impact factor:</strong> how many MW of coal retirement and renewable deployment are attributable to the carbon tax specifically (vs. other drivers)? Computed by comparing scenarios with and without the tax.</li>
+                      <li><strong>Granger causality structure:</strong> does SMP Granger-cause IPP investment? Does load-shedding Granger-cause solar adoption? The direction and lag of causal relationships can be measured from simulation data.</li>
+                      <li><strong>Shapley value decomposition:</strong> decompose the variance in SMP across multiple factors (fuel price, demand growth, carbon tax, learning rate, outage rate). Which 2&ndash;3 factors explain 90% of SMP variance?</li>
+                      <li><strong>Do-calculus intervention effects:</strong> P(SMP > threshold | do(carbon_tax = R500)) &mdash; what is the probability of a price spike under a specific policy intervention?</li>
+                      <li><strong>Robustness frontier:</strong> the set of scenarios in which a given policy achieves its goal (e.g., &ldquo;emissions below 100 Mt CO&#8322; by 2040&rdquo;) across all parameter uncertainties.</li>
+                    </ul>
+                    <div class="mt-2">
+                      <span class="metric-badge">Granger</span>
+                      <span class="metric-badge">Shapley</span>
+                      <span class="metric-badge">Do-calculus</span>
+                      <span class="metric-badge">Counterfactual</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; Emergent Metric Examples from the SAWEM Simulation</h5>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#9654; Tipping point: Coal below 50% of generation</strong><br>
+                  In the baseline scenario, coal falls below 50% of annual generation in <strong>Year 11</strong>.
+                  In the JET Fast scenario, this happens in <strong>Year 8</strong>. In the No JET scenario,
+                  coal is still at 68% by Year 20. This is not a smooth linear function of the carbon tax
+                  &mdash; it is a cliff: once Medupi and Kusile's maintenance cycles converge, the system
+                  sheds 4,800 MW of baseload in 18 months.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#9654; Investment cycle period: 7&ndash;8 years</strong><br>
+                  Spectral analysis of annual capacity additions reveals a dominant cycle of ~7.5 years
+                  across all scenarios. This is the sum of: 2 years of high SMP before IPP investment
+                  decisions + 3&ndash;4 years of construction + 1&ndash;2 years before the new capacity
+                  depresses SMP enough to stop further investment. The cycle is dampened in scenarios
+                  with a carbon tax (faster RE buildout smooths the investment wave).
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#9654; Merit-order effect: -R12/MWh per % renewable share</strong><br>
+                  Each percentage point increase in the annual renewable share reduces the load-weighted
+                  average SMP by approximately R12/MWh in the short run (before capacity retirements
+                  adjust). This means at 40% renewables, average SMP is R480/MWh lower than at 5%
+                  renewables. This effect is partially offset by increased gas CCGT bidding during
+                  non-solar hours.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#9654; Fuel poverty: doubles in lowest decile</strong><br>
+                  In all scenarios, the energy burden for the lowest income decile rises from 8% to
+                  14&ndash;18% of income over 20 years. This is driven by tariff increases (Eskom debt
+                  service) that outpace income growth for poor households. The effect is smaller in
+                  scenarios with faster RE buildout (lower wholesale prices) but only by ~2 percentage
+                  points. This suggests a need for targeted subsidies regardless of the energy transition
+                  pathway.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ENSEMBLE ANALYSIS                                           -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="ensemble">
+          <div class="card-header level-run">
+            &#127922; Ensemble Analysis &mdash; Uncertainty, Sensitivity, and Robustness
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; One Run Is Not Enough</h5>
+              <p class="mb-0">
+                A single simulation trajectory is a sample of size 1 from the distribution of possible
+                futures. Some of what you see is signal (the structural effect of the carbon tax) and
+                some is noise (the specific sequence of random outages in a particular run). <strong>Ensemble
+                analysis</strong> runs the same model many times with different random seeds and parameter
+                values, then studies the <em>distribution</em> of outcomes, not just the single path.
+                This section describes the ensemble strategy used in the SAWEM framework.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128259; The Three-Axis Ensemble Design</h5>
+            <p class="small">
+              The ensemble is structured along three axes, each addressing a different type of uncertainty:
+            </p>
+            <div class="row g-2 small mb-3">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Axis 1: Aleatoric uncertainty</strong> (irreducible randomness)
+                  <div class="mt-1 text-muted">50+ seeds per scenario. Randomness in: forced outage draws, weather (wind/solar/load), exploration noise in RL, demand noise. <em>Question answered: given the structural assumptions, what is the range of possible outcomes?</em></div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Axis 2: Parametric uncertainty</strong> (unknown model inputs)
+                  <div class="mt-1 text-muted">Latin Hypercube Sampling over 10&ndash;15 parameters: fuel price drift, demand elasticity, learning rate, forced outage mean, heat rate degradation, solar cost decline, carbon tax schedule. <em>Question answered: which parameters drive output variance? (Morris screening + Sobol indices)</em></div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>Axis 3: Scenario uncertainty</strong> (policy/discrete choices)
+                  <div class="mt-1 text-muted">3&ndash;6 discrete scenarios: baseline, JET Fast, JET Slow, No JET, High Gas, Low Demand. Each scenario is a vector of policy settings and structural assumptions. <em>Question answered: which policies are robust across uncertainties? Which fail under plausible conditions?</em></div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128202; The Ensemble Output Space</h5>
+            <p class="small">
+              For each emergent metric, the ensemble produces a <strong>distribution</strong> rather than
+              a single value. This allows us to compute:
+            </p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Ensemble Statistic</th><th>What It Tells You</th><th>Example</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Median</strong></td><td>The &ldquo;central tendency&rdquo; outcome</td><td>Median Year 20 SMP = R680/MWh (across 50 seeds)</td></tr>
+                <tr><td><strong>90% confidence interval</strong></td><td>The plausible range given irreducible randomness</td><td>SMP Year 20 90% CI = [R620, R780] /MWh</td></tr>
+                <tr><td><strong>Probability of exceedance</strong></td><td>How likely is a &ldquo;bad&rdquo; outcome?</td><td>P(unserved energy > 500 GWh/yr) = 0.12 in baseline, 0.03 in JET Fast</td></tr>
+                <tr><td><strong>Sobol total-order index</strong></td><td>Which parameter contributes most to output variance?</td><td>Gas price drift explains 47% of SMP variance (Sobol T = 0.47)</td></tr>
+                <tr><td><strong>Scenario dominance probability</strong></td><td>Probability that Scenario A outperforms Scenario B</td><td>P(JET Fast < Baseline SMP) = 0.89</td></tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128202; Visualising Ensemble Output</h5>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Fan charts:</strong> the median SMP path + percentile bands (10th&ndash;90th) as a
+                  shaded region. This shows the range of plausible price paths without overwhelming the
+                  viewer with 50 individual lines.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Hypothesis-testing histograms:</strong> for a given year and metric, plot the
+                  ensemble distribution for each scenario as a histogram or kernel density estimate.
+                  Overlap between distributions means the scenarios are not statistically distinguishable.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Parameter sensitivity tornado:</strong> for a given output (e.g., Year 10 SMP),
+                  plot the effect of each parameter at &plusmn;2&#963; as horizontal bars. The longest
+                  bars are the most influential parameters.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>Scenario discovery trees:</strong> decision trees that classify ensemble members
+                  into &ldquo;acceptable&rdquo; vs. &ldquo;unacceptable&rdquo; outcomes based on input
+                  parameters. The tree reveals which parameter combinations produce good outcomes.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- VERIFICATION                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="verify">
+          <div class="card-header level-run">
+            &#9989; Verification and Validation of the Simulation
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Does the Model Work Correctly?</h5>
+              <p class="mb-0">
+                Before the simulation outputs can be trusted for analysis, the model must be
+                <strong>verified</strong> (does the code implement the mathematics correctly?)
+                and <strong>validated</strong> (do the outputs match real-world data?). This section
+                describes the specific tests applied to the SAWEM simulation framework.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#9989; Verification Tests</h5>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Unit tests for OPF engine:</strong><br>
+                  Feed known bids and demand into the OPF and check that the dispatch matches
+                  the expected merit order. Test that the dual variables (SMP, LMPs, congestion)
+                  are correct by comparing to known solutions.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Agent learning sanity checks:</strong><br>
+                  Run a generator with no competitors (monopoly). The DDPG agent should learn to
+                  bid at the market-clearing price that maximises its profit (which is the monopoly
+                  price, not the competitive price). Verify the learning converges to the theoretical
+                  monopoly solution.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Macro model steady-state test:</strong><br>
+                  Hold fixed electricity prices, fuel prices, and policy. The macro model should
+                  converge to a steady state where GDP growth, population growth, and technology
+                  adoption reach constant rates. Verify that the steady state matches the theoretical
+                  balanced-growth path.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Energy balance closure:</strong><br>
+                  For every hour: total generation + net imports = total load + losses + curtailment.
+                  This must hold to machine precision. Verify that losses are correctly allocated
+                  to the transmission charge.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Stochastic process correctness:</strong><br>
+                  For SDE-driven variables (fuel prices, demand), simulate 10,000 paths and check
+                  that the distribution at time t matches the theoretical distribution from the
+                  SDE solution. For OU processes: check that the stationary distribution matches
+                  N(&mu;, &sigma;<sup>2</sup>/2&theta;).
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white">
+                  <strong>&#10004; Multi-agent learning non-stationarity:</strong><br>
+                  Verify that MADDPG critics receive all agents' actions (centralised training),
+                  and that the policy gradients are correct by comparing to finite-difference
+                  gradients on a 2-agent toy market.
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#9989; Validation Against Real SAWEM Data</h5>
+            <p class="small">
+              The model is validated by comparing its outputs against actual SAWEM historical market
+              data. The validation targets are <strong>stylized facts</strong> (qualitative patterns)
+              rather than exact point predictions:
+            </p>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Stylized Fact</th><th>Validation Metric</th><th>Historical Data Source</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>SMP distribution is right-skewed with a fat tail</td><td>Compare the SMP histogram (simulated vs. historical) using Kolmogorov-Smirnov test on the 95th&ndash;99.9th percentile range</td><td>Eskom System Operator: hourly SMP 2018&ndash;2025</td></tr>
+                <tr><td>Price spikes occur during high-demand/low-reserve hours</td><td>Correlation between SMP > 95th percentile and reserve margin < 10% should be >0.7 in both data and simulation</td><td>Eskom SO: SMP + reserve margin 2018&ndash;2025</td></tr>
+                <tr><td>Merit-order effect: SMP decreases as renewable penetration increases</td><td>Regression coefficient of avg_SMP on renewable_share should be negative and significant (&alpha; = 0.05) in both</td><td>CSIR renewable statistics + Eskom SMP 2018&ndash;2025</td></tr>
+                <tr><td>Coal stations with high heat rates cycle more</td><td>Correlation between heat rate and number of starts per year should be positive >0.5</td><td>Eskom plant data: heat rates, startup counts (Eskom Annual Reports)</td></tr>
+                <tr><td>Rooftop solar follows an S-curve by income</td><td>Adoption rates by income decile should follow a logistic function with saturation below 100%</td><td>StatsSA income surveys + NERSA registration data 2020&ndash;2025</td></tr>
+                <tr><td>Load-shedding reduces GDP</td><td>Regression coefficient of GDP growth on unserved energy should be negative (CSIR estimates ~R50&ndash;100/kWh unserved)</td><td>StatsSA GDP + Eskom load-shedding data 2022&ndash;2024</td></tr>
+              </tbody>
+            </table>
+
+            <div class="alert alert-success small mt-3">
+              <strong>&#9989; Validation protocol:</strong> The model is accepted as valid for scenario
+              analysis if it reproduces at least 5 of the 6 stylized facts above with statistical
+              significance at the 95% confidence level. If a fact is not reproduced, the agent rules
+              or parameters in that domain are revised and the model is re-run. This is an iterative
+              process &mdash; the model is never &ldquo;finished,&rdquo; only &ldquo;fit for purpose.&rdquo;
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128221; Verification and Validation in the Simulation Loop</h5>
+            <div class="pseudo-box">
+<span class="cm"># Run checks at start of each simulation year</span>
+<span class="kw">def</span> <span class="fn">verify_and_validate</span>(year, state):
+    <span class="kw">if</span> year == 0:
+        <span class="fn">run_unit_tests</span>()                   <span class="cm"># OPF, agent learning, energy balance</span>
+        <span class="fn">check_initial_conditions</span>()         <span class="cm"># all agents initialised correctly</span>
+
+    <span class="kw">if</span> year % 5 == 0:
+        <span class="fn">check_energy_balance</span>(year)           <span class="cm"># generation = load + losses + curtailment</span>
+        <span class="fn">check_market_clearing</span>(year)          <span class="cm"># SMP consistent with marginal unit</span>
+        <span class="fn">check_macro_consistency</span>(year)       <span class="cm"># GDP, pop, employment sum to totals</span>
+
+    <span class="kw">if</span> year == <span class="fn">VALIDATION_YEAR</span>:                   <span class="cm"># compare to historical data</span>
+        <span class="fn">validate_stylized_facts</span>(state)
+        <span class="kw">if</span> not passed:
+            <span class="fn">log_warning</span>(<span class="str">"Validation failed — review agent rules"</span>)
+
+    <span class="kw">return</span> <span class="fn">passed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- NAVIGATION                                                  -->
+        <!-- ========================================================== -->
+        <div class="card border-0 mt-4" style="background: #f0f4f8;">
+          <div class="card-body">
+            <h5 class="fw-bold">&#128260; All Thesis Pages</h5>
+            <div class="row g-2 small text-center">
+              <div class="col">
+                <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+              </div>
+              <div class="col">
+                <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127760; CAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127891; ACE</a>
+              </div>
+              <div class="col">
+                <a href="thesis-emcas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127758; EMCAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+              </div>
+              <div class="col">
+                <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+              </div>
+              <div class="col">
+                <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+              </div>
+              <div class="col">
+                <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+              </div>
+              <div class="col">
+                <a href="thesis-simulation.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#127922; Simulation &larr;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        <p class="text-muted text-center mt-4">
+          Simulation &mdash; the execution layer of the SAWEM ABM-MDP-OPF framework &mdash; from initial
+          conditions to agent trajectories, system time series, and emergent metrics.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANC Factions • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .anc-green { color: #006341; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.fail { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .card-header.rise { background: #006341; color: white; border-bottom-color: #004d33; }
+    .card-header.era { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.corrupt { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.econ { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .card-header.power { background: #1b1b1b; color: #ffd700; border-bottom-color: #ffd700; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #006341;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #006341;
+    }
+    .quotation {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .quotation-dark {
+      border-left: 4px solid #c62828;
+      background: #fbe9e7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .faction-card {
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      background: white;
+    }
+    .faction-card .name {
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+    .faction-ethnix { border-color: #006341; background: #f0faf3; }
+    .faction-ethnix .name { color: #006341; }
+    .faction-zuma { border-color: #c62828; background: #fff5f5; }
+    .faction-zuma .name { color: #c62828; }
+    .faction-ramaphosa { border-color: #002395; background: #f0f3ff; }
+    .faction-ramaphosa .name { color: #002395; }
+    .faction-provincial { border-color: #e65100; background: #fff8f3; }
+    .faction-provincial .name { color: #e65100; }
+    .faction-radical { border-color: #4a148c; background: #faf5ff; }
+    .faction-radical .name { color: #4a148c; }
+    .faction-dying { border-color: #888; background: #fafafa; }
+    .faction-dying .name { color: #555; }
+    .scheme-box {
+      background: #1b1b1b;
+      color: #e0e0e0;
+      border-left: 5px solid #ffd700;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .scheme-box h6 { color: #ffd700; }
+    .stat-fail {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #c62828;
+    }
+    .narration-box {
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+    .narration-box h6 { color: #555; font-style: italic; }
+    .province-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .province-bar .bar-label { width: 140px; font-size: 0.85rem; font-weight: 600; }
+    .province-bar .bar-track { flex: 1; background: #eee; height: 20px; border-radius: 10px; overflow: hidden; margin: 0 10px; }
+    .province-bar .bar-fill { height: 100%; border-radius: 10px; }
+    .province-bar .bar-pct { font-size: 0.85rem; font-weight: 700; width: 40px; text-align: right; }
+    .bar-anc { background: #006341; }
+    .bar-mk { background: #c62828; }
+    .bar-ifp { background: #006400; }
+    .bar-da { background: #0066CC; }
+    .bar-eff { background: #c62828; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#intro">&#127891; The Orbit of Power</a>
+          <a class="nav-link" href="#theory">&#128218; How ANC Factions Work</a>
+          <a class="nav-link" href="#era1">&#9312; The Mandela Unity (1990–1999)</a>
+          <a class="nav-link" href="#era2">&#9313; Mbeki & the Ethnix (1999–2008)</a>
+          <a class="nav-link" href="#era3">&#9314; Zuma & the Coalition of the Wounded (2005–2018)</a>
+          <a class="nav-link" href="#era4">&#9315; Ramaphosa & the CR17 Machine (2017–Present)</a>
+          <a class="nav-link" href="#era5">&#9316; The Provincial Warlords</a>
+          <a class="nav-link" href="#era6">&#9317; The Radical Left — EFF & MK as Factional Offshoots</a>
+          <a class="nav-link" href="#now">&#128270; Where Power Lies Now</a>
+          <a class="nav-link" href="#future">&#129300; The Fading Orbit — Can the ANC End?</a>
+          <a class="nav-link" href="#sources">&#128218; Sources</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold anc-green">&#127744; ANC Factions: The Orbit of Power</h1>
+        <p class="lead text-muted mb-3">The ANC is not a political party in the democratic sense. It is a patronage network organised around competition for control of state resources. Its internal factions are not ideological camps — they are armed camps fighting over who gets to eat. This is the story of how those factions formed, rose, fell, and where they stand now as the orbit of ANC power may finally be decaying.</p>
+
+        <!-- INTRODUCTION -->
+        <div class="section-card card" id="intro">
+          <div class="card-header fail">&#127891; The Orbit of Power — Understanding ANC Factionalism</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; Prince Mashele, <em>The Fall of the ANC: What Next?</em> (2024):</strong><br>
+              &ldquo;The ANC is not a political party in the conventional sense. It is a patronage network organised around competition for state resources. The internal elections are not about ideas. They are about who gets to eat. And when the pie shrinks — when Eskom runs out of money, when municipalities go bankrupt, when the fiscus is exhausted — the competition becomes violent.&rdquo;
+            </div>
+
+            <p>The ANC has never been a monolith. From its founding in 1912, the organisation contained competing traditions — African nationalists and communists, modernisers and traditionalists, pragmatists and revolutionaries. But the post-1994 era transformed these ideological differences into something far more dangerous: <strong>a system of factional competition for control of the state's resources.</strong></p>
+
+            <p>This page maps the factions across five eras, showing how each group rose to power by capturing a segment of the ANC's machinery, how they were eventually displaced by rival factions, and where the currents of power flow now — at a moment when the ANC's orbit may be decaying for the last time.</p>
+
+            <p>The central insight: <strong>ANC factions do not fight over ideology. They fight over money.</strong> Each faction controls a set of institutions — government departments, SOEs, municipalities, provincial governments — and uses those institutions to fund itself and its allies. When a faction loses an internal ANC election, it loses access to those resources. That is why ANC factional battles are so bitter: the stakes are not political survival but literal, personal, financial survival. Losing means losing everything.</p>
+          </div>
+        </div>
+
+        <!-- HOW FACTIONS WORK -->
+        <div class="section-card card" id="theory">
+          <div class="card-header power">&#128218; How ANC Factions Work — The Mechanics of Patronage</div>
+          <div class="card-body">
+            <p class="small">ANC factions are not informal groupings. They are <strong>structured patronage networks</strong> with identifiable leaders, financial backers, institutional footholds, and formal positions within the party's hierarchy. Understanding how they operate is essential to understanding South African politics.</p>
+
+            <div class="scheme-box">
+              <h6>&#128205; The Anatomy of an ANC Faction</h6>
+              <p class="small mb-0">Every faction has five components: (1) a <strong>leader</strong> — usually a sitting or aspirant president; (2) <strong>financial backers</strong> — businesspeople who fund the faction in exchange for government contracts; (3) <strong>institutional footholds</strong> — government departments, SOEs, or municipalities the faction controls and uses to generate revenue; (4) <strong>branch network control</strong> — the ability to mobilise ANC branches to vote for the faction's candidates at elective conferences; and (5) <strong>media/influence network</strong> — journalists, intellectuals, and social media influentials who shape the narrative. A faction that loses any one of these components is in danger of collapse.</p>
+            </div>
+
+            <div class="scheme-box">
+              <h6>&#128205; The Conference Cycle — How Factions Win and Lose</h6>
+              <p class="small mb-0">The ANC holds an elective conference every five years. At this conference, delegates — mostly from local branches — vote for the party's top six officials (President, Deputy President, National Chairperson, Secretary-General, Deputy Secretary-General, Treasurer-General) and the 86-member National Executive Committee (NEC). The faction that controls the NEC controls the party between conferences. Conference outcomes are not determined by policy platforms. They are determined by <strong>branch capture</strong>: factions manoeuvre to control the 4,000+ ANC branches that send delegates to conference. Branch capture involves registering fake branches, enrolling ghost members, buying delegates, and manipulating provincial executive committees to disqualify rival branches. The money spent on conference campaigns — bribing delegates, flying them to conferences, putting them up in hotels, paying "transport money" — runs into hundreds of millions of rand. Each conference is essentially a bidding war for control of the state.</p>
+            </div>
+
+            <div class="scheme-box">
+              <h6>&#128205; The Slate System — How the Spoils Are Divided</h6>
+              <p class="small mb-0">The ANC's top leadership is elected through a <strong>slate system</strong>. A "slate" is a ticket — a group of candidates who agree to run together and share power if elected. The slate includes the Top Six positions, balanced across the ANC's internal constituencies: provinces (each of the nine provinces expects a seat at the table), ethnic groups (Xhosa, Zulu, Sotho-Tswana, Venda-Tsonga), gender (the ANC has a 50% quota for women), and factional interests (the league structures — ANC Youth League, ANC Women's League, ANC Veterans' League — must be represented). Assembling a winning slate is a complex negotiation: who gets what position? Whose backers are rewarded with which ministries? Which province gets the Deputy Presidency? The slate is not about policy. It is about <strong>dividing the spoils</strong> in a way that keeps the coalition together.</p>
+            </div>
+
+            <p class="small mt-3">With this machinery in mind, the history of ANC factions comes into focus: each era produced a dominant coalition that controlled the party until its internal contradictions — and the shrinking pie — caused it to collapse.</p>
+          </div>
+        </div>
+
+        <!-- ERA 1: MANDELA UNITY -->
+        <div class="section-card card" id="era1">
+          <div class="card-header rise">&#9312; The Mandela Unity (1990–1999) — The Suspended War</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Nelson Mandela, ANC Conference, 1994:</strong><br>
+              &ldquo;We must not allow our differences to divide us. The enemy is not within. The struggle continues, but the conditions have changed. We must build a united movement that can govern this country for all its people.&rdquo;
+            </div>
+
+            <p class="small">The first ANC government was held together by the sheer moral authority of Nelson Mandela. The factions that would later tear the party apart — the Mbeki modernisers, the Zuma populists, the provincial power brokers, the SACP left — all existed in embryonic form during the Mandela years. But Mandela's presence suppressed them. He was the ANC's supreme arbiter. No faction could challenge him. No faction wanted to.</p>
+
+            <p class="small">Underneath the surface, however, the foundations of factional warfare were being laid. Thabo Mbeki, as Deputy President, was systematically taking control of the state apparatus — placing his allies in key civil service positions, building what would become the "Ethnix" faction. The ANC's deployment committee, established in this era, was the mechanism through which future factions would compete for control of state resources. And the 1996 decision to replace the Reconstruction and Development Programme (RDP) with the Growth, Employment and Redistribution (GEAR) strategy — a neoliberal macroeconomic framework — created the first major ideological cleavage: the ANC's left wing (the SACP, COSATU) felt betrayed by the party's embrace of free-market economics. This betrayal would fester for a decade before exploding.</p>
+
+            <p class="small">When Mandela stepped down in 1999, the dam broke. The factions that had been suppressed by his authority erupted into open warfare. And the man who emerged on top — Thabo Mbeki — would systematically build one of the most formidable factional machines in ANC history.</p>
+
+            <div class="narration-box">
+              <h6>&#128483; Key Dynamic: The Mandela Principle</h6>
+              <p class="small mb-0">Mandela governed through moral authority, not organisational control. His cabinet was a genuine government of national unity — ANC, NP, IFP ministers all served together. Mandela did not need a faction because he was bigger than any faction. The tragedy of the ANC is that no subsequent leader could govern this way. After Mandela, the only way to hold the party together was through money — and that required a factional machine. The "Mandela unity" was not a sustainable model; it was a temporary ceasefire. When Mandela left, the war resumed, and it has never stopped.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ERA 2: MBEKI AND THE ETHNIX -->
+        <div class="section-card card" id="era2">
+          <div class="card-header era">&#9313; Mbeki & the Ethnix (1999–2008) — The Intellectual's Machine</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; William Gumede, <em>Thabo Mbeki and the Battle for the Soul of the ANC</em> (2005):</strong><br>
+              &ldquo;Mbeki built the most sophisticated factional machine in ANC history. He understood that in a party where money and patronage had replaced political principle, control came not through popular appeal but through institutional capture. He captured the civil service. He captured the intelligence services. He captured the NEC. And for a while, it seemed he had captured the ANC itself.&rdquo;
+            </div>
+
+            <div class="faction-card faction-ethnix" id="ethnix">
+              <div class="name">&#128100; The Ethnix / The Mbekiites</div>
+              <p class="small mb-0"><strong>Leader:</strong> Thabo Mbeki<br>
+              <strong>Core base:</strong> Eastern Cape (Xhosa-speaking), intellectuals, technocrats, the civil service<br>
+              <strong>Key figures:</strong> Essop Pahad, Joel Netshitenzhe, Frank Chikane, Smuts Ngonyama, Kgalema Motlanthe<br>
+              <strong>Strategy:</strong> Institutional capture. Mbeki centralised power in the Presidency, used the deployment committee to place loyalists in every director-general and SOE board position, and built a parallel intelligence network that monitored political rivals.<br>
+              <strong>Financial base:</strong> The national fiscus. Mbeki's faction controlled the Treasury, SARS, and the Presidency — and could direct billions in government spending to friendly entities.<br>
+              <strong>Downfall:</strong> Mbeki overreached. He fired Jacob Zuma as Deputy President in 2005 after the Schabir Shaik fraud trial, creating a martyr. He centralised power so completely that he alienated every other faction — the Zulu bloc, the SACP, COSATU, the provincial power brokers. At the 2007 Polokwane conference, the entire ANC establishment assembled against him. He lost the presidency to Zuma by a margin of 2:1. The ethnix were purged.</p>
+            </div>
+
+            <h6 class="fw-bold mt-3">The Polokwane Earthquake (2007)</h6>
+            <p class="small">The 2007 ANC elective conference in Polokwane was the single most important factional battle in post-apartheid ANC history — more significant even than the 1994 election, because it determined who would control the party for the next decade. Mbeki, the sitting president, was challenged by Jacob Zuma, whom he had fired from the Deputy Presidency two years earlier. Mbeki assumed he would win — he controlled the NEC, the deployment committee, the intelligence services. He was wrong. Zuma assembled a "coalition of the wounded" — every faction Mbeki had alienated. The SACP, whose members had been purged from government positions. COSATU, whose working-class base felt betrayed by GEAR. The Zulu bloc, which resented Mbeki's Xhosa-dominated ethnix. The provincial power brokers, whose autonomy Mbeki had crushed. And the business interests who saw Zuma as more pliable than the aloof, intellectual Mbeki. The result: Zuma won the ANC presidency, and within a year Mbeki was recalled from the presidency of the country. The ethnix machine — the most sophisticated factional apparatus the ANC had ever seen — was dismantled. Its members were purged from government, its institutional footholds captured by Zuma loyalists, its financial networks cut off. The lesson of Polokwane was clear: <strong>in the ANC, power is not held forever. It is borrowed. And it must be repaid — in cash.</strong></p>
+          </div>
+        </div>
+
+        <!-- ERA 3: THE ZUMA COALITION -->
+        <div class="section-card card" id="era3">
+          <div class="card-header corrupt">&#9314; Zuma & the Coalition of the Wounded (2005–2018)</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; ANC MP, speaking anonymously to the Sunday Times, 2009:</strong><br>
+              &ldquo;Zuma is not the leader of a faction. He is the frontman for a coalition of everyone Mbeki screwed over. The SACP, COSATU, the provinces, the tenderpreneurs — they all have their knives out for Mbeki, and Zuma is the blade. The question is what happens when they've cut Mbeki down. Who controls Zuma? Or does anyone?&rdquo;
+            </div>
+
+            <div class="faction-card faction-zuma" id="zuma">
+              <div class="name">&#128100; The Zuma Coalition / "The Premier League"</div>
+              <p class="small mb-0"><strong>Leader:</strong> Jacob Zuma (figurehead); real power distributed among provincial premiers<br>
+              <strong>Core base:</strong> KwaZulu-Natal (Zulu-speaking), the SACP, COSATU, provincial power brokers, the tenderpreneur class, the Gupta family<br>
+              <strong>Key figures:</strong> Gwede Mantashe (SACP chair, ANC Secretary-General), Blade Nzimande (SACP), Zwelinzima Vavi (COSATU), Ace Magashule (Free State Premier), Supra Mahumapelo (North West Premier), David Mabuza (Mpumalanga Premier)<br>
+              <strong>Strategy:</strong> Decentralisation of looting. Unlike Mbeki's centralised control, Zuma's coalition devolved patronage to the provincial level. Each provincial premier was allowed to loot their province in exchange for delivering votes at elective conferences. The "Premier League" — the premiers of the ANC's key provinces — became the real power brokers.<br>
+              <strong>Financial base:</strong> SOEs and provincial governments. The Guptas provided the mechanism for extracting wealth from Eskom, Transnet, and other national SOEs. Provincial premiers extracted wealth from provincial budgets and municipal procurement.<br>
+              <strong>Downfall:</strong> The coalition collapsed under its own contradictions. The Guptas overreached — their capture of cabinet appointments (the "Gupta Leaks" revelations of 2017) alienated too many ANC members who wanted their own share. Zuma's firing of Finance Minister Nhlanhla Nene (2015) and Pravin Gordhan (2017) terrified the business class. The Zuma coalition was always a marriage of convenience — and by 2017, it had become inconvenient for too many people. At the Nasrec conference in December 2017, the coalition fractured. Cyril Ramaphosa — Mbeki's former heir, Zuma's former rival — assembled his own coalition and won narrowly. Zuma was forced to resign in February 2018.</p>
+            </div>
+
+            <h6 class="fw-bold mt-3">The Premier League — The Real Power Behind Zuma</h6>
+            <p class="small">The most important factional innovation of the Zuma era was the <strong>"Premier League"</strong> — an informal alliance of ANC provincial premiers who controlled the party's largest voting blocs at elective conferences. The Premier League included:</p>
+            <ul class="small">
+              <li><strong>Ace Magashule</strong> (Free State Premier, 2009–2018) — turned the Free State ANC into a personal fiefdom. His faction controlled the province's entire budget, using it to fund Zuma's re-election campaigns and his own enrichment. The R255 million asbestos fraud scheme epitomised his approach: the money was for replacing dangerous roofs on poor people's homes. The money was paid. The roofs were never replaced. Magashule was later charged but the trial has been delayed for years.</li>
+              <li><strong>David Mabuza</strong> (Mpumalanga Premier, 2009–2018) — known as "The Cat" for his ability to land on his feet. Mabuza controlled the Mpumalanga ANC with an iron grip. He delivered the province's votes to Zuma, and later — crucially — switched sides to Ramaphosa at Nasrec, providing the margin of victory. His reward: the Deputy Presidency of the ANC. His fall: implicated in multiple corruption scandals and forced to resign in 2023.</li>
+              <li><strong>Supra Mahumapelo</strong> (North West Premier, 2014–2018) — ran the North West province as a patronage machine. His faction was so brazen that the national government eventually placed the province under administration. Mahumapelo was forced to resign but remained a powerful figure in the ANC's radical flank.</li>
+              <li><strong>Zweli Mkhize</strong> (KwaZulu-Natal) — a former ANC Treasurer-General whose province was Zuma's home base. Mkhize maintained a careful balance between supporting Zuma and positioning himself as a potential successor. His fall: the Digital Vibes scandal (R150 million communications contract to associates) forced his resignation as Health Minister in 2021.</li>
+            </ul>
+
+            <p class="small">The Premier League system was both brilliant and unsustainable. It devolved corruption, making it harder to trace. It gave provincial premiers a personal stake in Zuma's survival — if Zuma fell, their own protection disappeared. But it also created centrifugal forces: each premier built their own mini-empire, with their own financial networks and their own ambitions. When Zuma weakened, the Premier League fractured. Some backed Ramaphosa. Others stuck with Zuma. The coalition that had dominated the ANC for a decade dissolved in a matter of months.</p>
+          </div>
+        </div>
+
+        <!-- ERA 4: RAMAPHOSA -->
+        <div class="section-card card" id="era4">
+          <div class="card-header econ">&#9315; Ramaphosa & the CR17 Machine (2017–Present)</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Cyril Ramaphosa, ANC Nasrec Conference, December 2017:</strong><br>
+              &ldquo;We have heard the cry of our people. They want an ANC that is not corrupt. They want an ANC that governs for all South Africans. They want an ANC that puts the people first. This is the ANC I will lead.&rdquo;
+            </div>
+
+            <div class="faction-card faction-ramaphosa" id="ramaphosa">
+              <div class="name">&#128100; The Ramaphosa Faction / CR17 / The "New Dawn"</div>
+              <p class="small mb-0"><strong>Leader:</strong> Cyril Ramaphosa<br>
+              <strong>Core base:</strong> Urban middle class, business interests, the ANC's "moderniser" wing, Gauteng, Western Cape, Eastern Cape remnants of the Mbeki faction<br>
+              <strong>Key figures:</strong> Paul Mashatile (Deputy President), Enoch Godongwana (Finance Minister), Fikile Mbalula (Secretary-General), Pravin Gordhan (until his retirement), Gwede Mantashe (factional swing vote)<br>
+              <strong>Strategy:</strong> The "New Dawn" narrative — Ramaphosa presented himself as the anti-Zuma: a reformer, a businessman, a constitutionalist who would clean up the ANC. His actual strategy was more complex: keep the Zuma faction inside the tent (by not prosecuting them), build a coalition of business interests and urban voters, and rely on his personal credibility with international investors to stabilise the economy.<br>
+              <strong>Financial base:</strong> Ramaphosa's personal wealth (Shanduka Group, investments in mining, telecoms, fast food) and backing from South Africa's largest corporations. The CR17 campaign — Ramaphosa's 2017 ANC presidential campaign — raised hundreds of millions in donations from business figures. The source of some of this money became a scandal itself.<br>
+              <strong>Vulnerability:</strong> Ramaphosa's faction is the weakest of any ANC president since 1994. He won Nasrec by only 179 votes out of 4,776 delegates. He governs at the head of a Government of National Unity — not by choice but because the ANC lost its majority in 2024. His reform agenda has stalled. His faction's greatest achievement — holding the GNU together — is also its greatest vulnerability: if the GNU collapses, Ramaphosa's authority collapses with it.</p>
+            </div>
+
+            <h6 class="fw-bold mt-3">The CR17 Campaign — How Ramaphosa Won (and What It Cost)</h6>
+            <p class="small">Ramaphosa's 2017 campaign for the ANC presidency — code-named CR17 — was the most expensive and sophisticated factional campaign in ANC history. It raised an estimated R400–500 million from business donors, dwarfing the resources available to his rival, Nkosazana Dlamini-Zuma (Zuma's preferred successor). The campaign deployed modern political technology: data analytics, micro-targeting of delegates, a professional communications operation, and systematic bribery of branch delegates. The CR17 team — led by figures like <strong>Bejani Chauke</strong> (Ramaphosa's political advisor) and <strong>Maropene Ramokgopa</strong> — mapped every single delegate who would vote at Nasrec and ensured they were either persuaded, paid, or both.</p>
+
+            <p class="small">The cost: Ramaphosa's campaign finances became a scandal of their own. The Public Protector investigated whether donations to the CR17 campaign violated anti-corruption laws. Donors included figures with significant government contracts. Ramaphosa himself was implicated in the <strong>Phala Phala scandal</strong> (2022) — the alleged theft of foreign currency (reportedly $500,000–$4 million) hidden in furniture at his game farm. Ramaphosa denied wrongdoing, but the scandal damaged his moral authority and gave ammunition to his factional enemies. The very narrative that had propelled him to power — the anti-corruption crusader — was now under threat from his own conduct.</p>
+
+            <h6 class="fw-bold mt-3">The Ramaphosa Dilemma: Reform or Survival?</h6>
+            <p class="small">Ramaphosa faces a structural dilemma that has paralysed his presidency. To reform the ANC, he needs to prosecute the corrupt — including many of his own allies. But prosecuting the corrupt would fracture the coalition that keeps him in power. Mantashe, his National Chairperson, has been implicated in the Zondo Commission. Mabuza, his former Deputy President, was implicated in multiple scandals. Several cabinet ministers in his GNU government have corruption clouds over them. If Ramaphosa moves against them, he loses their support — and with it, control of the party. If he does not move against them, he proves the critics right: his "New Dawn" is just the old ANC with better public relations. So far, he has chosen survival over reform. <strong>Not one senior ANC figure has been convicted of state capture.</strong> The Zondo Commission's recommendations gather dust. The "New Dawn" has become, in the eyes of many South Africans, a "New Dawdle."</p>
+          </div>
+        </div>
+
+        <!-- ERA 5: PROVINCIAL WARLORDS -->
+        <div class="section-card card" id="era5">
+          <div class="card-header corrupt">&#9316; The Provincial Warlords — Where Real Power Lives</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; Aubrey Matshiqi, political analyst, 2023:</strong><br>
+              &ldquo;The ANC is not a national party. It is nine provincial parties held together by a common branding and a shared fear of falling out of power. The provincial chairpersons — not the president — are the real power in the ANC. They control the branches. They control the delegates. They control the money. The president is just the chairman of their board.&rdquo;
+            </div>
+
+            <p class="small">The single most important structural reality of ANC factional politics: <strong>power flows from the provinces to the centre, not the other way around.</strong> ANC provincial structures are semi-autonomous entities with their own leaders, their own financial networks, their own patronage systems, and their own armed security. The national leadership cannot impose its will on a provincial structure that controls the branches — because the branches send delegates to the national conference, and the delegates elect the national leadership. A provincial chairperson can hold the national president hostage.</p>
+
+            <h6 class="fw-bold mt-3">The Provincial Power Map (2025)</h6>
+
+            <h6 class="fw-bold" style="color:#006341;">KwaZulu-Natal — The Shattered Kingdom</h6>
+            <p class="small">Once the ANC's largest province and Zuma's fortress, KwaZulu-Natal has been shattered by the rise of the MK Party. In the 2024 election, the ANC received only 17.6% in KZN — down from 54.6% in 2019. The MK Party won 45.1%. The Zulu nationalist vote — which the ANC had monopolised for decades through Zuma — has abandoned the party. The provincial ANC is in disarray, its leaders scrambling to defect to MK or salvage what remains. KwaZulu-Natal was the ANC's largest voting bloc at elective conferences — and it is now effectively lost to the party. The political gravity of KZN has shifted from the ANC to MK. This is the single most significant factional realignment since 1994.</p>
+
+            <h6 class="fw-bold" style="color:#006341;">Gauteng — The Urban Battleground</h6>
+            <p class="small">The ANC's second-largest province and the country's economic heartland. Gauteng is the most contested province — the ANC (35% in 2024), DA (28%), EFF (13%), and smaller parties are locked in a permanent struggle for Johannesburg, Tshwane, and Ekurhuleni. The provincial ANC is divided between Ramaphosa loyalists (the "modernisers") and radical elements aligned with the EFF and MK. The province's ANC chairperson, <strong>Panyaza Lesufi</strong>, is a key power broker: he controls Gauteng's R160 billion budget and has positioned himself as a potential future leader. Lesufi's faction is the most independent-minded in the ANC — he has defied Ramaphosa on multiple occasions, including forming coalitions with the EFF and PA that Ramaphosa opposed.</p>
+
+            <h6 class="fw-bold" style="color:#006341;">Eastern Cape — The ANC's Last Redoubt</h6>
+            <p class="small">The ANC's birthplace and still its most loyal province (62% in 2024). The Eastern Cape is the ANC's emotional and historical heartland — the home of Mandela, Mbeki, and the liberation struggle. It remains solidly ANC, though its loyalty is to the institution rather than any particular leader. The provincial chairperson, <strong>Oscar Mabuyane</strong>, is a Ramaphosa ally but has faced corruption allegations. The Eastern Cape's loyalty to the ANC is cultural and historical — but even here, the cracks are showing. Service delivery has collapsed in much of the province. Municipalities are bankrupt. The ANC's vote share has declined from 80% (1999) to 62% (2024). If the Eastern Cape ever falls, the ANC falls with it.</p>
+
+            <h6 class="fw-bold" style="color:#006341;">Mpumalanga — Mabuza's Kingdom, Now Contested</h6>
+            <p class="small">David Mabuza's province. After Mabuza's resignation as Deputy President in 2023 amid corruption scandals, his faction has been weakened but not destroyed. The province delivered crucial votes to Ramaphosa at Nasrec (2017) and again in 2022, but its loyalty is transactional, not ideological. Mpumalanga's politics are entirely about coal — the province is the centre of South Africa's coal industry, and the ANC's provincial leadership controls the patronage networks around mining licences, coal transport contracts, and Eskom procurement. Whoever controls Mpumalanga controls a significant chunk of the ANC's energy-related patronage. The current chairperson is <strong>Mandla Ndlovu</strong>, a Ramaphosa ally.</p>
+
+            <h6 class="fw-bold" style="color:#006341;">Limpopo — Ramaphosa's Fortress</h6>
+            <p class="small">Limpopo is the most reliably pro-Ramaphosa province, and its chairperson, <strong>Stan Mathabatha</strong>, is a close Ramaphosa ally. The province's ANC leadership has been relatively stable, avoiding the factional warfare that has consumed other provinces. Limpopo's loyalty to Ramaphosa is partly personal (Mathabatha's relationship with the president) and partly structural: the province is poor, rural, and dependent on national government transfers — it cannot afford to antagonise the centre. But Limpopo's loyalty is also a weakness: it has the smallest delegation at elective conferences, and its influence on national politics is limited.</p>
+
+            <h6 class="fw-bold" style="color:#006341;">Free State, North West, Northern Cape — The Warlord Ruins</h6>
+            <p class="small">These three provinces were once the heartlands of the Premier League — Magashule's Free State, Mahumapelo's North West, and various factional bosses in the Northern Cape. All three have been hollowed out by corruption and factional warfare. The ANC has lost significant ground in all three, and what remains is a shell of the once-powerful machines that dominated national politics. These provinces now follow whoever can offer them resources — a transactional loyalty that makes them swing votes at conferences.</p>
+
+            <div class="table-responsive mt-3">
+              <table class="table table-sm table-bordered small">
+                <thead class="table-dark">
+                  <tr><th>Province</th><th>ANC Vote 2024</th><th>ANC Vote 2019</th><th>Factional Alignment</th><th>Chairperson</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Eastern Cape</td><td>62.2%</td><td>68.7%</td><td>Ramaphosa</td><td>Oscar Mabuyane</td></tr>
+                  <tr><td>Limpopo</td><td>60.3%</td><td>72.8%</td><td>Ramaphosa</td><td>Stan Mathabatha</td></tr>
+                  <tr><td>Mpumalanga</td><td>51.3%</td><td>65.3%</td><td>Ramaphosa (weakening)</td><td>Mandla Ndlovu</td></tr>
+                  <tr><td>Northern Cape</td><td>49.6%</td><td>57.5%</td><td>Ramaphosa</td><td>Zamani Saul</td></tr>
+                  <tr><td>North West</td><td>44.8%</td><td>57.4%</td><td>Ramaphosa</td><td>Nono Maloyi</td></tr>
+                  <tr><td>Free State</td><td>43.2%</td><td>60.4%</td><td>Divorced — Magashule remnants vs Ramaphosa</td><td>Mxolisi Dukwana</td></tr>
+                  <tr><td>Gauteng</td><td>34.8%</td><td>50.2%</td><td>Divided — Lesufi independent</td><td>Panyaza Lesufi</td></tr>
+                  <tr><td>Western Cape</td><td>20.1%</td><td>28.5%</td><td>Irrelevant — DA dominated</td><td>Vuyiso Tyhalisisu</td></tr>
+                  <tr><td>KwaZulu-Natal</td><td>17.6%</td><td>54.6%</td><td>Shattered — MK defections</td><td>Siboniso Duma</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ERA 6: RADICAL LEFT -->
+        <div class="section-card card" id="era6">
+          <div class="card-header corrupt">&#9317; The Radical Left — EFF & MK as Factional Offshoots</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; Julius Malema, EFF Rally, 2024:</strong><br>
+              &ldquo;The ANC is dead. It just doesn't know it yet. The EFF is not a breakaway — it is the ANC's conscience, the part of the ANC that remembered why we fought. The rest of the ANC forgot. Now we will build what the ANC failed to build.&rdquo;
+            </div>
+
+            <p class="small">The EFF and MK Party are not opposition parties in the conventional sense. They are <strong>ANC factional offshoots</strong> — groups that formed not in opposition to the ANC's ideology but in opposition to the faction that controlled the ANC at a given moment. Their leaders, their voters, and their political instincts are ANC to the core. They represent the splintering of the ANC's own base — the liberation movement fragmenting under the pressure of decades of unmet expectations.</p>
+
+            <div class="faction-card faction-radical" id="eff">
+              <div class="name">&#9889; The EFF — Malema's Revolutionary Faction (2013–Present)</div>
+              <p class="small mb-0">The EFF was born from Julius Malema's expulsion from the ANC in 2010. Malema had been the ANC Youth League president and a key figure in Zuma's rise to power — his Youth League was instrumental in mobilising support for Zuma against Mbeki at Polokwane. But after his expulsion, Malema repositioned himself as a radical anti-ANC force. The EFF's economic platform — nationalisation, land expropriation, free education — is essentially the ANC Youth League's 2011 platform. Its voters are overwhelmingly former ANC voters. Its parliamentary tactics — disruption, walkouts, red overalls — are a performance of the revolutionary militancy the ANC once promised but never delivered. The EFF peaked at 10.8% in 2019 and fell to 9.5% in 2024, losing ground to MK. Malema's faction is now squeezed between the ANC (which still commands the loyalty of older voters) and MK (which has captured the Zulu nationalist radical vote). The EFF's future depends on whether MK collapses — if it does, the EFF could absorb the radical vote; if it doesn't, the EFF could be permanently marginalised.</p>
+            </div>
+
+            <div class="faction-card faction-zuma" id="mk">
+              <div class="name">&#9876; The MK Party — Zuma's Revenge Faction (2023–Present)</div>
+              <p class="small mb-0">The MK Party is the most devastating factional breakaway in ANC history. Formed in December 2023 — with the deliberate choice of the name "uMkhonto weSizwe" to claim the ANC's armed struggle heritage — the party is essentially the Zuma faction of the ANC, now standing outside the ANC. Its leader is Jacob Zuma, the ANC's former president. Its core base is KwaZulu-Natal's Zulu-speaking population. Its platform combines left-wing economic nationalism (nationalisation, free education, land expropriation) with Zulu cultural nationalism and a heavy dose of anti-constitutionalism (Zuma has called for the 1996 Constitution to be scrapped). In the 2024 election, MK won 14.6% nationally and 45.1% in KwaZulu-Natal — destroying the ANC's majority in its former stronghold. MK did not just split the ANC vote; it <strong>captured</strong> the ANC's Zulu base. The ANC was reduced to 17.6% in KZN, a province it had won with 54.6% just five years earlier. This is not a gradual decline — it is a collapse. MK's success demonstrates the final stage of ANC factional logic: when a faction loses control of the party, it takes its voters and leaves. The ANC's electoral viability now depends on preventing more factional breakaways. Every losing faction is a potential new party, and every breakaway party further shrinks the ANC's already-diminished electoral base.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- WHERE POWER LIES NOW -->
+        <div class="section-card card" id="now">
+          <div class="card-header power">&#128270; Where Power Lies Now — The 2025 Factional Map</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Political analyst, speaking off the record, 2025:</strong><br>
+              &ldquo;The ANC is in a situation none of its leaders have ever faced. For the first time, the party does not control the state. It shares power. The presidency is still ANC, but the cabinet is a GNU coalition. The party's internal elections have always been about who controls government resources. But now the resources are shared — and shrinking. What do you fight over when the pie is half the size and you have to share it with the DA? I don't think anyone in the ANC knows the answer. And that is terrifying for them.&rdquo;
+            </div>
+
+            <p class="small"><strong>The current factional balance (2025) can be summarised as follows:</strong></p>
+
+            <ul class="small">
+              <li><strong>Ramaphosa's Centre-Right Reformists:</strong> Control the ANC presidency, the GNU cabinet (ANC portion), and the Treasury. Their coalition includes business interests, urban voters, and the ANC's technocratic wing. Strengths: control of the national executive, international credibility, business backing. Weaknesses: cannot prosecute their own allies without fracturing the coalition, Phala Phala scandal, stalled reform agenda. Ramaphosa is a lame duck — he has said he will not seek a third term as ANC president (his second term ends in 2027). The succession battle has already begun, and Ramaphosa cannot control its outcome.</li>
+              <li><strong>The Zuma-MK Rump:</strong> Now largely outside the ANC, operating through the MK Party. Controls KwaZulu-Natal. Strengths: Zuma's personal appeal to Zulu voters, liberation movement authenticity, anti-establishment energy. Weaknesses: Zuma is 82, has no clear successor, and faces ongoing legal problems. MK is a one-man party, and when Zuma dies or is imprisoned, its future is uncertain.</li>
+              <li><strong>The EFF Radicals:</strong> Still inside Parliament but losing ground to MK. Malema's leadership is contested from within. The VBS scandal — while Malema himself was not implicated — tarred the party's anti-corruption credentials. Strengths: disciplined organisation, strong youth base, parliamentary presence. Weaknesses: squeezed between ANC and MK, internal leadership tensions, financial constraints.</li>
+              <li><strong>The Provincial Warlords:</strong> Still the most important factional force within the ANC itself. Panyaza Lesufi (Gauteng) is the most autonomous — he can defy the national leadership and form coalitions that Ramaphosa opposes. Oscar Mabuyane (Eastern Cape) is the most loyal — but the Eastern Cape's loyalty is to the institution, not any individual. The provincial warlords will determine who succeeds Ramaphosa. Their loyalty is transactional, not ideological.</li>
+              <li><strong>The Succession Contenders:</strong> The 2027 ANC conference will elect Ramaphosa's successor. The leading contenders are <strong>Paul Mashatile</strong> (current Deputy President, Gauteng-based, close to Ramaphosa but with his own ambitions), <strong>Fikile Mbalula</strong> (Secretary-General, ambitious, seen as Ramaphosa's enforcer), and <strong>Panyaza Lesufi</strong> (Gauteng Premier, independent-minded, popular with the ANC's urban base). Whoever wins will need to assemble a coalition of provincial leaders, business backers, and sufficient delegate votes — the same transactional politics that has defined ANC factionalism for three decades.</li>
+            </ul>
+
+            <div style="background:#fbe9e7; border:2px solid #c62828; border-radius:10px; padding:1.25rem; margin:1.5rem 0;">
+              <h5 class="fw-bold" style="color:#c62828;">&#9888; The Shrinking Pie — The Fatal Dynamic</h5>
+              <p class="small mb-0">
+                The fundamental fact shaping all ANC factional politics in 2025 is this: <strong>the pie is shrinking.</strong> Government revenue is stagnant. Debt service costs now exceed spending on health, education, and policing combined. Eskom — once a limitless source of patronage — is a drained husk. SOEs that generated billions in procurement contracts have been looted into bankruptcy or business rescue. Municipalities that sustained local factional networks are collapsing. The GNU means the ANC must share cabinet positions, deputy minister posts, and board appointments with the DA and other parties — reducing the spoils available for factional allocation. The party's vote share has fallen from 62.6% (1994) to 40.2% (2024). Every election reduces the ANC's access to state resources. And as the pie shrinks, the internal competition intensifies — because there is less to go around, and losing means losing everything. This is the dynamic that has destroyed patronage-based parties throughout history: when the resources run out, the factions turn on each other. The ANC is approaching that moment. It may already have arrived.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- THE FADING ORBIT -->
+        <div class="section-card card" id="future">
+          <div class="card-header fail">&#129300; The Fading Orbit — Can the ANC End?</div>
+          <div class="card-body">
+            <div class="quotation-dark">
+              <strong>&#128218; Prince Mashele, <em>The Fall of the ANC: What Next?</em> (2024):</strong><br>
+              &ldquo;The ANC did not fall from grace. It was pushed — by its own greed, its own corruption, its own contempt for the people it claimed to serve. The fall was not a single event. It was a process, thirty years in the making. And its architects are still in the room.&rdquo;
+            </div>
+
+            <p class="small">Can the ANC actually end? The question would have been unthinkable a decade ago. Today, it is not only thinkable — it is being asked by the ANC's own leaders, in private. The party that liberated South Africa, the movement that produced Nelson Mandela, the organisation that has governed for thirty years — could it dissolve, split, or fade into irrelevance?</p>
+
+            <h6 class="fw-bold mt-3">The Case for ANC Survival</h6>
+            <ul class="small">
+              <li><strong>Brand loyalty:</strong> The ANC name still commands loyalty among millions of South Africans, particularly older voters who remember apartheid and see the ANC as the party of liberation. This loyalty is eroding but not yet exhausted.</li>
+              <li><strong>The GNU as life support:</strong> The Government of National Unity gives the ANC a share of power even after losing its majority. It buys time — the party can govern even with 40% of the vote.</li>
+              <li><strong>No single alternative:</strong> The opposition remains fragmented. The DA (22%) appeals primarily to minority and urban voters. The MK Party is a regional ethnic party. The EFF is a radical party with a ceiling. No single opposition party can currently replace the ANC. The ANC survives because the opposition is divided.</li>
+              <li><strong>Institutional inertia:</strong> The ANC still controls significant institutional power — the civil service, the security apparatus (to some degree), the deployment machinery. These are assets that sustain a party even when its electoral support declines.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">The Case for ANC Collapse</h6>
+            <ul class="small">
+              <li><strong>The shrinking pie is structural, not cyclical:</strong> South Africa's fiscal crisis is not temporary. The economy has been stagnant for a decade. Debt is rising. The population is growing. The resources available for patronage are shrinking permanently. A patronage-based party cannot survive when there is nothing to distribute.</li>
+              <li><strong>The generational shift:</strong> Voters born after 1994 — who never experienced apartheid and never saw the ANC as liberators — now make up a significant portion of the electorate. They judge the ANC by its performance, not its history. And its performance is catastrophic. The 60% of young South Africans who cannot find work are not ANC loyalists — they are ANC victims.</li>
+              <li><strong>Factional breakaways are accelerating:</strong> The MK Party's success in 2024 demonstrates the fatal dynamic: losing factions no longer stay and fight; they leave and take their voters. Every future ANC conference loss will produce another breakaway. The ANC's vote share will further fragment.</li>
+              <li><strong>The Mbeki precedent:</strong> In 1999, the ANC won 66.4%. In 2004, 69.7%. In 2009, 65.9%. In 2014, 62.2%. In 2019, 57.5%. In 2024, 40.2%. The trend is clear. At current rates of decline, the ANC will be below 30% by 2029. At that point, even a GNU may not save it — coalition partners may prefer a different anchor.</li>
+              <li><strong>The succession crisis:</strong> When Ramaphosa steps down in 2027, the ANC will face its most contested succession since Polokwane. If the losing faction breaks away — as Zuma's did — the party's electoral coalition could fragment beyond repair. The 2027 conference is a potential point of no return.</li>
+            </ul>
+
+            <div style="background:#fbe9e7; border:2px solid #c62828; border-radius:10px; padding:1.25rem; margin:1.5rem 0;">
+              <h5 class="fw-bold" style="color:#c62828;">&#9888; The Most Likely Outcome: Slow Fade, Not Sudden Collapse</h5>
+              <p class="small mb-0">
+                The ANC is unlikely to disappear overnight. It is more likely to follow the trajectory of other African liberation movements that outlived their purpose: a long, slow decline in which the party remains in power (or shares power) but becomes progressively weaker, more factionalised, and less capable of governing. This is the path of ZANU-PF in Zimbabwe, SWAPO in Namibia, FRELIMO in Mozambique, the MPLA in Angola. The party name survives. The party's purpose — liberation — is replaced by the purpose of self-enrichment. And the country suffers, trapped in a political system where the ruling party is too weak to govern well but too strong to be replaced. South Africa is not there yet — but it is further down that path than most South Africans realise. The 2024 election was the first warning. The 2029 election will be the verdict. If the ANC falls below 30% — and its factions continue to splinter — the question will no longer be "can the ANC end?" It will be: "what replaces it?"
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="section-card card" id="sources">
+          <div class="card-header" style="background:#002395;color:white;">&#128218; Sources & Further Reading</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Gumede, W.</strong> (2005). <em>Thabo Mbeki and the Battle for the Soul of the ANC</em>. Zebra Press.</li>
+              <li><strong>Mashele, P.</strong> (2024). <em>The Fall of the ANC: What Next?</em> Jonathan Ball.</li>
+              <li><strong>Butler, A.</strong> (2012). <em>The Idea of the ANC</em>. Ohio University Press.</li>
+              <li><strong>Booysen, S.</strong> (2011). <em>The African National Congress and the Regeneration of Political Power</em>. Wits University Press.</li>
+              <li><strong>Southall, R.</strong> (2016). <em>The New Black Middle Class in South Africa</em>. Jacana Media.</li>
+              <li><strong>Zondo Commission (State Capture Commission)</strong> — Final Report, Parts 1–6 (2018–2022). <a href="https://www.statecapture.org.za" target="_blank">statecapture.org.za</a></li>
+              <li><strong>Independent Electoral Commission (IEC)</strong> — Election results 1994–2024. <a href="https://www.elections.org.za" target="_blank">elections.org.za</a></li>
+              <li><strong>Daily Maverick</strong> — ANC factional coverage. <a href="https://www.dailymaverick.co.za" target="_blank">dailymaverick.co.za</a></li>
+              <li><strong>News24</strong> — ANC politics and factional analysis. <a href="https://www.news24.com" target="_blank">news24.com</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="anc.html" class="btn btn-outline-secondary mb-4">&larr; Back to ANC Overview</a>
+
+        <hr>
+        <p class="text-muted text-center">The ANC's factions are not a sideshow. They are the main event. The party is what its factions make it — and what its factions are making now is a slow-motion collapse that may take a decade to complete, but that has already, irreversibly, begun.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

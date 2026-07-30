@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NECOM • Energy Action Plan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .doc-card {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      transition: box-shadow 0.2s ease-in-out;
+    }
+    .doc-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.10); }
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+    .era-badge {
+      background: #007A4D; color: white; font-size: 0.7rem;
+      padding: 0.2rem 0.6rem; border-radius: 20px; margin-left: 0.5rem;
+    }
+    .pillar-card {
+      border-left: 5px solid #007A4D;
+      background: #f8f9fa;
+      border-radius: 0 12px 12px 0;
+      padding: 1.5rem;
+    }
+    .pillar-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .pillar-card p { font-size: 0.9rem; margin-bottom: 0; color: #555; }
+    .stat-card {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-card .num { font-size: 2rem; font-weight: 700; color: #007A4D; }
+    .stat-card .label { font-size: 0.85rem; color: #6c757d; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-sa-green mb-2">NECOM • National Energy Crisis Committee</h1>
+      <p class="text-muted mb-0">
+        The National Energy Crisis Committee (NECOM) was established in July 2022 to implement the
+        <strong>Energy Action Plan (EAP)</strong> — a five-pillar strategy to end load shedding,
+        fix Eskom's generation fleet, and restructure South Africa's electricity sector. NECOM
+        brings together government, Eskom, business, labour, and civil society under one coordinated
+        response. Reference: <a href="https://sona22-content.stage-v1.co.za/takechargesa/energy-action-plan" target="_blank" rel="noreferrer">Energy Action Plan</a>.
+      </p>
+    </header>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="num">July 2022</div>
+          <div class="label">NECOM established</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="num">5</div>
+          <div class="label">EAP pillars</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="num">14 000+</div>
+          <div class="label">MW procured from IPPs</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="num">12 GW</div>
+          <div class="label">transmission expansion by 2028</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What is NECOM -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">🔍 What is NECOM?</h2>
+          <p>
+            NECOM is the <strong>National Energy Crisis Committee</strong>, a multi-stakeholder body
+            chaired by the Minister of Electricity and reporting to the President. It was formed in
+            direct response to the worst load shedding in South Africa's history (over 200 days in
+            2022). Its mandate: coordinate, accelerate, and track the implementation of the
+            <strong>Energy Action Plan (EAP)</strong>, the government's primary strategy to resolve
+            the electricity crisis.
+          </p>
+          <p class="mb-0">
+            NECOM replaced the older National Energy Crisis Committee structure and operates with
+            dedicated workstreams covering: generation recovery, new capacity procurement, private
+            generation enablement, transmission expansion, sector reform, and energy efficiency.
+            The committee meets weekly and publishes Ministerial updates on generation performance,
+            key milestones, and load shedding outlook.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- The 5 Pillars -->
+    <section class="mb-5">
+      <h2 class="h4 fw-bold text-sa-green mb-3">🧱 The Five Pillars of the Energy Action Plan</h2>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="pillar-card">
+            <h3>1️⃣ Fix Eskom and improve existing supply</h3>
+            <p>
+              Eskom is fixing the six power stations that cause the most load shedding. Kusile's
+              SO<sub>2</sub> bypass stacks (units 1–3 restored in 2024, +2 000 MW capacity) and
+              Medupi recovery plans are prioritised. Government provided <strong>R254 billion debt
+              relief</strong> to Eskom so it can buy diesel for OCGTs, invest in maintenance, and
+              expand the transmission network. The Distribution Demand Management Programme (DDMP)
+              pays qualifying businesses to reduce usage. Target: +3 000 MW available capacity by 2024.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="pillar-card">
+            <h3>2️⃣ Buy as much new power as possible</h3>
+            <p>
+              An additional 400 MW has been imported from Cahora Bassa (Mozambique), with plans for
+              more from neighbouring countries. Government approved procurement of new wind, solar,
+              and battery storage totalling over 14 000 MW from IPPs — including REIPPPP BW6 (2 600 MW),
+              BW7 (5 000 MW), BESIPPPP (battery storage), and RMIPPPP (dispatchable capacity).
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="pillar-card">
+            <h3>3️⃣ Unleash businesses and households to invest in rooftop solar</h3>
+            <p>
+              Tax incentives: businesses can deduct 125% of the cost of solar PV (minimum 1 MW)
+              from taxable income in the first year; households get a rebate of 25% of the cost of
+              new solar panels (up to R15 000). The bounce-back loan scheme helps SMEs go solar.
+              Surplus power can now be sold back to the grid (net metering) in many areas.
+              Result: over 5 500 MW of rooftop solar installed by mid-2024.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="pillar-card">
+            <h3>4️⃣ Enable private investment in generation</h3>
+            <p>
+              Schedule 2 of the Electricity Regulation Act amended — generation projects up to
+              100 MW no longer require a generation licence (removed entirely in ERA Amendment Act),
+              unlocking a massive pipeline. Eskom's Standard Offer Programme buys power from
+              surplus generators for 3 years. Environmental permits for transmission infrastructure
+              waived in low-impact areas; permits issued in 57 days for Strategic Infrastructure
+              Projects; NERSA registration takes 19 days. Grid connections now take 6 months.
+              25 priority transmission projects will add 12 GW capacity by 2028.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="pillar-card">
+            <h3>5️⃣ Transform the electricity sector</h3>
+            <p>
+              The <strong>National Transmission Company of SA (NTCSA)</strong> has been established
+              as an independent TSO and Market Operator. The <strong>Electricity Regulation Amendment
+              Act 38 of 2024</strong> provides for a competitive wholesale market (SAWEM) with market
+              codes, rules, and a Central Purchasing Agency. In the future, consumers can choose
+              their electricity supplier. Eskom's unbundling into separate generation, transmission,
+              and distribution entities is the structural foundation for the new market.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- NECOM Structure & Ministerial Updates -->
+    <section class="mb-4">
+      <div class="row g-4">
+        <div class="col-12 col-lg-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <h2 class="h5 fw-bold text-sa-green mb-3">🏛️ NECOM Workstreams</h2>
+              <ul class="mb-0">
+                <li><strong>Generation Recovery</strong> — Eskom plant performance, maintenance optimisation, Kusile/Medupi recovery</li>
+                <li><strong>New Capacity Procurement</strong> — REIPPPP, BESIPPPP, RMIPPPP, gas-to-power, LNG</li>
+                <li><strong>Private Generation</strong> — Schedule II reform, Standard Offer, Emergency Generation Programme</li>
+                <li><strong>Transmission Expansion</strong> — 25 priority projects, grid connection queue reform, land-use authorisation</li>
+                <li><strong>Energy Efficiency & Demand Management</strong> — DDMP, rooftop solar incentives, public lighting efficiency</li>
+                <li><strong>Sector Reform</strong> — ERA Amendment Act implementation, NTCSA establishment, market code development</li>
+                <li><strong>Fuel Security</strong> — diesel supply for OCGTs, coal stockpile management, gas supply agreements</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <h2 class="h5 fw-bold text-sa-green mb-3">📰 Ministerial Updates</h2>
+              <p class="text-muted small">
+                The Minister of Electricity, Dr. Kgosientsho Ramokgopa, issues regular updates
+                on generation performance, load shedding outlook, and NECOM milestones.
+                Past updates available for download (via the Energy Action Plan portal):
+              </p>
+              <ul class="small mb-0">
+                <li>Ministerial Energy Action Plan briefing — 23 October 2023</li>
+                <li>Generation performance — every week since July 2023</li>
+                <li>Monthly NECOM progress reports to the President</li>
+              </ul>
+              <div class="mt-3">
+                <a href="https://sona22-content.stage-v1.co.za/takechargesa/energy-action-plan"
+                   target="_blank" rel="noreferrer"
+                   class="btn btn-outline-dark btn-sm w-100">
+                  🔗 View Energy Action Plan portal
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Key achievements timeline-style -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 fw-bold text-sa-green mb-3">📈 NECOM Key Achievements (2022–2025)</h2>
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <ul class="small mb-0">
+                <li><strong>R254 billion Eskom debt relief</strong> approved (2023)</li>
+                <li><strong>Kusile Units 1–3 SO₂ stacks</strong> completed, restoring ~2 000 MW</li>
+                <li><strong>Medupi Unit 4</strong> returned to service (2024)</li>
+                <li><strong>7 500 MW+ rooftop solar</strong> installed by households & businesses</li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-6">
+              <ul class="small mb-0">
+                <li><strong>ERA Amendment Act</strong> 38/2024 signed into law</li>
+                <li><strong>NTCSA</strong> established as independent TSO</li>
+                <li><strong>REIPPPP BW6 & BW7</strong> procured — 7 600+ MW of new wind/solar</li>
+                <li><strong>BESIPPPP BW1 & BW2</strong> — 976 MW / 2 144 MWh battery storage awarded</li>
+                <li><strong>400 MW more</strong> imported from Cahora Bassa (2023)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

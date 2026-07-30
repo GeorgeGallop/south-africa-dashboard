@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gas Master Plan • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.gas-main { background: #2a4a6b; color: white; border-bottom-color: #1a3a5b; }
+    .card-header.supply { background: #00695c; color: white; border-bottom-color: #004d40; }
+    .card-header.demand { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.infra { background: #37474f; color: white; border-bottom-color: #263238; }
+    .card-header.policy { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .card-header.scenarios { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .stat-fail { font-size: 2rem; font-weight: 800; color: #c62828; }
+    .stat-value { font-size: 1.8rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#overview">&#128200; Overview</a>
+          <a class="nav-link" href="#current-state">&#128200; Current State</a>
+          <a class="nav-link" href="#demand-nodes">&#127759; Demand Nodes</a>
+          <a class="nav-link" href="#supply">&#9200; Supply & Imports</a>
+          <a class="nav-link" href="#infrastructure">&#128668; Infrastructure</a>
+          <a class="nav-link" href="#scenarios">&#128202; Scenarios</a>
+          <a class="nav-link" href="#policy">&#128196; Policy & Regulation</a>
+          <a class="nav-link" href="#risk">&#9888;&#65039; Risks</a>
+          <a class="nav-link" href="#gmp-doc">&#128218; The Document</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold sa-green">&#128293; Gas Master Plan 2024</h1>
+        <p class="lead text-muted mb-3">The South African Gas Master Plan (GMP) is a strategic policy framework published by the Department of Mineral Resources and Energy (DMRE) in Government Gazette No. 50569 on 26 April 2024. Its purpose: ensure security of gas supply by diversifying sources and guiding the development of natural gas infrastructure, markets, and policy within the national energy mix.</p>
+
+        <div class="alert alert-info small mb-4">
+          <strong>Status:</strong> Draft published for public comment (deadline 15 June 2024). Not yet finalised. This page summarises its content with references to the document.
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- OVERVIEW                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="overview">
+          <div class="card-header gas-main">&#128200; Overview — What the GMP Does</div>
+          <div class="card-body">
+            <p>The GMP models the likely development of the gas sector based on projected demand as the country transitions away from coal. It is built around three core pillars:</p>
+            <ol class="small">
+              <li><strong>Security of Supply:</strong> diversify away from near-total dependence on Mozambique (ROMPCO pipeline) by developing LNG import terminals, domestic gas fields (both onshore and offshore), and regional pipeline interconnections.</li>
+              <li><strong>Infrastructure Planning:</strong> identify priority pipeline corridors, LNG regasification terminals, and storage facilities — sequenced so that infrastructure is built just ahead of demand, avoiding stranded assets.</li>
+              <li><strong>Market Development:</strong> create regulatory conditions for third-party access to pipelines, transparent gas tariffs, competitive gas trading, and private-sector participation in gas-to-power projects.</li>
+            </ol>
+            <p class="small mb-0">The plan covers the <strong>complete gas topology</strong>: upstream (exploration and production), midstream (transmission pipelines, LNG terminals, storage), and downstream (distribution networks, gas-to-power, industrial off-take, commercial and residential use). It explicitly ties gas development to South Africa's Just Transition framework and hydrogen strategy, positioning natural gas as a <strong>bridge fuel</strong> between coal-dominant electricity and a future low-carbon system.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CURRENT STATE                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="current-state">
+          <div class="card-header gas-main">&#128200; Current State of South Africa's Gas Sector</div>
+          <div class="card-body">
+            <p class="small">South Africa is a marginal gas producer and a net gas importer. The current gas economy is small relative to coal but strategically important for certain industrial users (Sasol, petrochemicals, refineries, fertiliser).</p>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#00695c;">< 1 bcm</div>
+                  <small class="text-muted">Domestic gas production (2022)</small>
+                  <div class="small text-muted">Mostly from offshore: F-O, FA, E-M fields</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#e65100;">~4.3 bcm/yr</div>
+                  <small class="text-muted">Imports from Mozambique (ROMPCO)</small>
+                  <div class="small text-muted">Pipeline at maximum capacity since ~2021</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#37474f;">~865 km</div>
+                  <small class="text-muted">ROMPCO pipeline length</small>
+                  <div class="small text-muted">From Temane (Moz) to Secunda (SA) via Sasol</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#4a148c;">~4%</div>
+                  <small class="text-muted">Gas in primary energy mix</small>
+                  <div class="small text-muted">vs ~70% coal, ~15% oil, ~6% renewables+nuclear</div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="fw-bold mt-4">Existing Gas Infrastructure</h6>
+            <ul class="small">
+              <li><strong>ROMPCO pipeline:</strong> 865 km, 36-inch, capacity ~4.3 bcm/yr. Operated by ROMPCO (Republic of Mozambique Pipeline Investments Company — a joint venture between Sasol, the Mozambican government, and South African investors). Delivers Mozambican gas to Sasol's Secunda plant and the Sasol-Gas network serving Gauteng, Mpumalanga, and KwaZulu-Natal.</li>
+              <li><strong>Sasol-Gas network:</strong> ~2,900 km of high-pressure steel pipeline. Serves ~1,600 industrial, commercial, and residential customers. Major off-takers: industrial parks, ferrochrome smelters, brick kilns, food processing.</li>
+              <li><strong>Domestic production:</strong> The F-O and FA gas fields offshore Mossel Bay (operated by PetroSA) supply the Mossel Bay Gas-to-Liquids (GTL) refinery. Production has been declining steadily and the fields are near depletion. The EM fields (offshore South Coast) and other small onshore accumulations provide minor volumes.</li>
+              <li><strong>LNG import terminals:</strong> None currently operational. The Coega (Ngqura) LNG terminal has been proposed since ~2010 but not built. Richards Bay has been identified as an alternative site for future FSRU-based (Floating Storage and Regasification Unit) LNG import.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- DEMAND NODES                                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="demand-nodes">
+          <div class="card-header demand">&#127759; Identified Gas Demand Nodes</div>
+          <div class="card-body">
+            <p class="small">The GMP identifies priority demand nodes across South Africa, clustered into three tiers based on existing industrial gas consumption, power generation potential, and proximity to planned import corridors:</p>
+
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Tier</th><th>Demand Node</th><th>Province</th><th>Primary Demand Drivers</th><th>Estimated Peak Demand (PJ/yr)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>1</strong></td><td>Gauteng Industrial Complex</td><td>Gauteng</td><td>Petrochemicals (Sasol), power generation, industrial heating, ferroalloys</td><td>150–200</td></tr>
+                <tr><td><strong>1</strong></td><td>Richards Bay</td><td>KwaZulu-Natal</td><td>LNG import terminal potential, smelters (BHP Billiton), industrial park, power gen</td><td>80–120</td></tr>
+                <tr><td><strong>1</strong></td><td>Coega / Ngqura (Port Elizabeth / Gqeberha)</td><td>Eastern Cape</td><td>LNG import terminal, Coega IDZ industrial users, gas-to-power, existing PetroSA link</td><td>70–100</td></tr>
+                <tr><td><strong>1</strong></td><td>Mossel Bay / Petrosa GTL</td><td>Western Cape</td><td>Gas-to-liquids refinery, declining domestic fields, potential LNG backfill</td><td>60–90</td></tr>
+                <tr><td><strong>2</strong></td><td>Durban / South Basin</td><td>KwaZulu-Natal</td><td>Industrial zone, refineries (Engen, Sapref), paper & pulp, chemical manufacturing</td><td>50–70</td></tr>
+                <tr><td><strong>2</strong></td><td>Vaal Triangle / Sasolburg</td><td>Free State</td><td>Petrochemicals, fertiliser, industrial heating</td><td>40–60</td></tr>
+                <tr><td><strong>2</strong></td><td>eMalahleni / Witbank</td><td>Mpumalanga</td><td>Gas-to-power replacing coal-fired stations, mining and industrial users</td><td>40–60</td></tr>
+                <tr><td><strong>2</strong></td><td>Steelpoort / Burgersfort (platinum belt)</td><td>Limpopo / Mpumalanga</td><td>PGM smelters, ferrochrome, platinum group metals processing</td><td>30–50</td></tr>
+                <tr><td><strong>3</strong></td><td>Western Cape (Cape Town / Saldanha)</td><td>Western Cape</td><td>Industrial users, gas-to-power potential, steel (Saldanha), manufacturing</td><td>30–50</td></tr>
+                <tr><td><strong>3</strong></td><td>Phalaborwa / Limpopo</td><td>Limpopo</td><td>Mining (Palabora), smelting, industrial heating</td><td>20–40</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-muted">Source: GMP Chapter 3 — Demand Analysis and Demand Node Identification. Peak demand estimates are indicative ranges from the plan's modelling scenarios.</p>
+
+            <div class="text-center mt-3">
+              <img src="../images/gas/Table_1_Identified_Gas_Demand_Nodes.png" class="img-fluid rounded border" style="max-height:400px;" alt="Gas Demand Nodes Table from GMP">
+              <div class="small text-muted mt-1">Figure 1: Identified gas demand nodes (source: GMP Table 1).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SUPPLY & IMPORTS                                              -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="supply">
+          <div class="card-header supply">&#9200; Supply Options — Domestic, Regional, and LNG</div>
+          <div class="card-body">
+            <p class="small">The GMP models a diversified supply portfolio across three categories, recognising that no single source can meet projected demand.</p>
+
+            <h6 class="fw-bold">Option 1: Domestic Gas Development (Onshore & Offshore)</h6>
+            <ul class="small">
+              <li><strong>Producing fields near depletion:</strong> PetroSA's F-O and FA fields offshore Mossel Bay are near end-of-life. The GMP notes that without new discoveries or substantial investment in enhanced recovery, domestic production will fall below 0.5 bcm/yr by 2030.</li>
+              <li><strong>Potential new domestic sources:</strong> The Karoo unconventional gas (shale gas) — a significant resource estimated at 13–390 TCF technically recoverable — but remains undeveloped due to hydraulic fracturing moratorium, environmental opposition, water scarcity, and infrastructure absence. The GMP acknowledges that Karoo gas is a long-term (post-2035) option at best.</li>
+              <li><strong>Offshore exploration:</strong> The O&G Exploration Strategy (2016) identified several offshore blocks. The Orange Basin (west coast) has seen significant recent discoveries by TotalEnergies (Brulpadda, Luiperd) and other operators. However, these are primarily oil/condensate with associated gas, and commercial development decisions are still pending.</li>
+              <li><strong>Coalbed methane (CBM):</strong> Minor production in KwaZulu-Natal and Limpopo, but volumes are small and unlikely to scale meaningfully.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">Option 2: Regional Imports (SADC Pipelines)</h6>
+            <ul class="small">
+              <li><strong>Mozambique (ROMPCO) — near ceiling:</strong> At ~4.3 bcm/yr, the existing pipeline is at max capacity. Expanding ROMPCO or building a second pipeline from the new Rovuma Basin (Area 1 and Area 4, operated by TotalEnergies and ExxonMobil) would require ~$2–3bn investment and political stability in Cabo Delgado, where an Islamist insurgency has delayed development since 2021.</li>
+              <li><strong>Potential new pipeline corridors:</strong> The GMP identifies a second Mozambique-South Africa pipeline (from the Rovuma Basin directly to Richards Bay or Gauteng) as the most cost-effective option for incremental supply after LNG.</li>
+              <li><strong>Botswana and Namibia:</strong> Minor wet gas (coalbed methane in Botswana, associated gas in Namibia) could supply regional border nodes but not major industrial demand.</li>
+              <li><strong>Other SADC:</strong> Tanzania has discovered substantial offshore gas (9 TCF at Mnazi Bay) but pipeline distance (~4,000 km) is prohibitive. Angola and Nigeria are potential LNG suppliers but not pipeline candidates.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">Option 3: LNG Imports</h6>
+            <ul class="small">
+              <li>The GMP treats LNG imports as the <strong>near-term anchor supply</strong> (2027+). Two sites are actively evaluated:</li>
+              <li><strong>Ngqura (Coega, Eastern Cape):</strong> The earliest-proposed LNG terminal. Offshore FSRU (Floating Storage and Regasification Unit) with a pipeline connection to the existing PetroSA-Mossgas network. Total cost estimated at ~R30–40bn for a 2–5 MTPA terminal and ~800 km of new pipeline to Gauteng.</li>
+              <li><strong>Richards Bay (KwaZulu-Natal):</strong> Alternative FSRU site closer to Gauteng industrial demand. Requires pipeline (~500 km to Johannesburg). Existing Richards Bay coal terminal infrastructure may be repurposed.</li>
+              <li><strong>Supply sources:</strong> The GMP models LNG supply from existing global markets (Qatar, Nigeria, Angola, Mozambique (new Rovuma LNG), US Gulf Coast, West African suppliers). Price sensitivity analysis shows that delivered LNG at $8–12/MMBtu is competitive with new coal generation and diesel OCGTs but more expensive than existing coal.</li>
+            </ul>
+
+            <div class="text-center mt-3">
+              <img src="../images/gas/Figure_1_Graph_Of_Demand_Nodes.png" class="img-fluid rounded border" style="max-height:350px;" alt="Gas demand nodes graph from GMP">
+              <div class="small text-muted mt-1">Figure 2: Gas demand nodes and corridor mapping (source: GMP).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- INFRASTRUCTURE                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="infrastructure">
+          <div class="card-header infra">&#128668; Infrastructure Corridors & Sequencing</div>
+          <div class="card-body">
+            <p class="small">The GMP proposes a phased corridor approach to infrastructure development to avoid building stranded assets. Infrastructure is sequenced so that the highest-demand, lowest-cost corridors are built first.</p>
+
+            <h6 class="fw-bold">Phase 1 (2025–2030) — Coastal Anchor & Initial Inland</h6>
+            <ul class="small">
+              <li><strong>Corridor A:</strong> Coega (Ngqura) LNG import terminal &rarr; Mossel Bay &rarr; existing PetroSA/Sasol pipeline network. This is the "fastest-to-market" route because it connects to existing infrastructure, supplies PetroSA's GTL refinery (which is running out of domestic gas), and can be extended northward.</li>
+              <li><strong>Corridor B:</strong> Richards Bay LNG (FSRU) &rarr; Empangeni (industrial zone) &rarr; Vryheid &rarr; Johannesburg/Gauteng. New pipeline corridor ~500 km.</li>
+              <li><strong>Priority:</strong> Corridor A is prioritised because the Coega IDZ is a designated Industrial Development Zone with existing port infrastructure, and the gas volumes can be partially absorbed immediately by PetroSA/Mossgas (preventing its shutdown and associated job losses).</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">Phase 2 (2030–2035) — Inland Expansion</h6>
+            <ul class="small">
+              <li><strong>Corridor C:</strong> Mozambique (Rovuma Basin) pipeline &rarr; Richards Bay &rarr; Gauteng. Requires Rovuma LNG FID (financial investment decision) — delayed by Mozambique insurgency.</li>
+              <li><strong>Corridor D:</strong> Extension of the inland network: Gauteng &rarr; Rustenburg (platinum belt) &rarr; Steelpoort/Burgersfort (ferrochrome/PGM smelters).</li>
+              <li><strong>Storage:</strong> The GMP identifies the need for gas storage facilities (depleted fields or salt cavern storage) to manage seasonal demand variation and supply disruption risk. No specific sites are designated.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">Phase 3 (2035–2050) — Full National Grid & Hydrogen Integration</h6>
+            <ul class="small">
+              <li><strong>Corridor E:</strong> Extend pipeline network to the Karoo (should shale gas development proceed).</li>
+              <li><strong>Corridor F:</strong> Western Cape &rarr; Saldanha &rarr; Cape Town. Smaller-scale LNG or pipeline spur.</li>
+              <li><strong>Hydrogen blending:</strong> Gas infrastructure designed for hydrogen-ready specifications from Phase 1, allowing progressive blending of green hydrogen produced from SA's abundant solar and wind resources.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-4">&#128176; Infrastructure Cost Estimates</h6>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Component</th><th>Estimated Cost (R billion)</th><th>Timeline</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ngqura LNG terminal (FSRU-based, 2 MTPA)</td><td>15–20</td><td>2025–2028</td></tr>
+                <tr><td>Richards Bay LNG terminal (FSRU-based, 2–3 MTPA)</td><td>15–25</td><td>2027–2030</td></tr>
+                <tr><td>Corridor A pipeline (Coega&rarr;Mossel Bay&rarr;Gauteng)</td><td>20–30</td><td>2025–2030</td></tr>
+                <tr><td>Corridor B pipeline (Richards Bay&rarr;Gauteng)</td><td>12–18</td><td>2027–2032</td></tr>
+                <tr><td>Mozambique second pipeline (Rovuma&rarr;SA)</td><td>35–50</td><td>2030–2035 (conditional)</td></tr>
+                <tr><td>Gas storage facilities (depleted field / salt cavern)</td><td>5–10</td><td>2030+</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-muted">Source: GMP Chapter 5 — Infrastructure Development Plan. Costs are 2024 estimates, not inflation-adjusted.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SCENARIOS                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="scenarios">
+          <div class="card-header scenarios">&#128202; Demand Scenarios & Modelling</div>
+          <div class="card-body">
+            <p class="small">The GMP models four demand scenarios for natural gas to 2050, driven by different assumptions about GDP growth, electrification, industrialisation, and decarbonisation ambition:</p>
+
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Scenario</th><th>Assumptions</th><th>Peak Gas Demand (PJ/yr)</th><th>Implied LNG Import (MTPA)</th><th>Gas-to-Power GW</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>High Growth / High Gas</strong></td><td>GDP +3%/yr, rapid industrialisation, gas replaces coal in power and industry, hydrogen exports develop</td><td>1,200–1,500</td><td>~20–25 MTPA</td><td>15–20 GW</td></tr>
+                <tr><td><strong>Moderate Base Case</strong></td><td>GDP +2%/yr, moderate industrial growth, gas gains share but coal remains significant to 2035</td><td>600–900</td><td>~10–15 MTPA</td><td>8–12 GW</td></tr>
+                <tr><td><strong>Low Demand</strong></td><td>GDP +1%/yr, limited industrialisation, rapid renewables deployment, low gas adoption</td><td>300–500</td><td>~5–8 MTPA</td><td>3–6 GW</td></tr>
+                <tr><td><strong>Accelerated Decarbonisation</strong></td><td>Rapid renewables + storage + green hydrogen, gas used only as backup/peaking, early coal phase-out</td><td>150–300</td><td>< 5 MTPA</td><td>1–3 GW (peaker)</td></tr>
+              </tbody>
+            </table>
+            <p class="small mt-2 mb-0">The plan's Base Case (considered most likely by the DMRE) projects <strong>600–900 PJ/yr of gas demand by 2040</strong>, requiring 10–15 MTPA of LNG and 8–12 GW of gas-to-power capacity. This is roughly a <strong>5–7x increase over current gas consumption</strong>.</p>
+            <p class="small mt-1 text-muted">Source: GMP Chapter 4 — Demand Modelling and Scenario Analysis. PJ = petajoules (1 PJ = ~0.028 bcm of natural gas). MTPA = million tonnes per annum of LNG.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- POLICY & REGULATION                                          -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="policy">
+          <div class="card-header policy">&#128196; Policy & Regulatory Proposals</div>
+          <div class="card-body">
+            <p class="small">The GMP identifies several regulatory reforms needed to enable private investment in the gas sector at the scale required.</p>
+
+            <h6 class="fw-bold">Key Regulatory Proposals</h6>
+            <ul class="small">
+              <li><strong>Third-Party Access (TPA) to pipelines:</strong> Currently, Sasol-Gas operates the majority of the transmission network as a vertically integrated monopolist. The GMP proposes regulated TPA to allow independent gas suppliers and traders to use the pipeline network on non-discriminatory terms. This is considered the single most important regulatory reform for market development.</li>
+              <li><strong>Gas Licensing Framework:</strong> The Gas Act (2001) and the Petroleum Pipelines Act (2003) provide the legal basis for gas licensing, but the GMP notes that implementation is fragmented across NERSA (tariffs and licensing) and DMRE (exploration and production rights). A harmonised licensing process is proposed.</li>
+              <li><strong>Transparent Tariff Methodology:</strong> Gas transportation tariffs must be cost-reflective and published transparently to enable third-party shippers. NERSA is directed to finalise the gas tariff methodology (currently in development since ~2018).</li>
+              <li><strong>Gas-to-Power Procurement:</strong> The GMP proposes that gas-to-power capacity be procured through a dedicated IPP programme (similar to REIPPPP but for gas, covering both baseload and flexible peaking capacity). DMRE to issue Ministerial Determinations under Section 34 of the Electricity Regulation Act.</li>
+              <li><strong>LNG Import Licensing:</strong> A dedicated LNG import licence category is proposed to cover offshore FSRUs, onshore storage, and regasification. DMRE would be the licensing authority, with NERSA responsible for associated tariff regulation.</li>
+              <li><strong>Hydrogen & Carbon Management Integration:</strong> The GMP explicitly links gas development to the Hydrogen Society Roadmap (2021) and the National Climate Change Adaptation Strategy. New gas infrastructure should be designed to be "hydrogen-ready" (able to blend 20%+ hydrogen) by 2030 and 100% by 2050.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">Key Institutions & Their Roles</h6>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Institution</th><th>Role in Gas Sector</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DMRE</td><td>Policy formulation, exploration & production rights, LNG import licensing, Ministerial Determinations for gas-to-power</td></tr>
+                <tr><td>NERSA</td><td>Pipeline tariff regulation, gas trading & licensing, dispute resolution for TPA, price regulation (if deemed necessary)</td></tr>
+                <tr><td>CCS (Competition Commission)</td><td>Competition oversight in gas markets, addressing Sasol-Gas vertical integration dominance</td></tr>
+                <tr><td>IPPO / DMRE IPP Office</td><td>Procurement of gas-to-power IPPs through bid windows (modelled on REIPPPP)</td></tr>
+                <tr><td>Eskom (gen / NTCSA)</td><td>Potential anchor off-taker for gas-to-power (replacement of decommissioned coal stations) and system operator for dispatchable gas generation</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RISKS                                                        -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="risk">
+          <div class="card-header" style="background:#c62828;color:white;border-bottom-color:#8e0000;">&#9888;&#65039; Key Risks & Challenges</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Mozambique security situation:</strong> TotalEnergies declared force majeure on its Rovuma LNG project in 2021 after an Islamist insurgency in Cabo Delgado. As of 2025, security is improving but the $20bn+ project remains significantly delayed. This removes the most cost-effective incremental pipeline import option.</li>
+              <li><strong>LNG price volatility & affordability:</strong> South Africa's LNG imports will be priced at global spot or benchmark rates (e.g., JKM, TTF, Brent linkage). Historically, LNG spot prices have ranged from $2/MMBtu (2020, COVID) to $70/MMBtu (2022, Russia-Ukraine crisis). At $10–12/MMBtu, gas-to-power costs ~R600–900/MWh, competitive with diesel OCGT (R3,000–5,000/MWh) but more expensive than existing coal (~R300–500/MWh) or new renewables + battery storage (~R500–700/MWh). The economics work only if LNG is consistently below ~$10/MMBtu and if carbon taxes/emissions penalties rise.</li>
+              <li><strong>Infrastructure financing gap:</strong> The total cost of Phase 1 infrastructure alone is estimated at R50–80bn. The GMP assumes private-sector led investment. However, without anchor off-taker commitments (e.g., Eskom gas-to-power contracts, Sasol or PetroSA offtake), developers will not reach FID. This is a chicken-and-egg problem: infrastructure cannot be built without committed demand, and demand will not materialise without infrastructure.</li>
+              <li><strong>Just Transition & stranded asset risk:</strong> Rapid global decarbonisation could render new gas infrastructure obsolete before it is fully depreciated (25–30 years). The World Bank, IFC, and European DFIs are increasingly reluctant to fund upstream gas projects. If South Africa builds a large gas system by 2035 but global policy pushes to net-zero by 2050, the infrastructure could become a stranded asset.</li>
+              <li><strong>Sasol-Gas market dominance:</strong> Sasol controls the pipeline network, has long-term ROMPCO contracts, and is the largest gas user. New entrants face both access barriers (TPA not yet implemented) and competition from an entrenched, vertically integrated player. The GMP acknowledges this market structure problem but offers limited solutions beyond "implement TPA."</li>
+              <li><strong>Gas vs coal vs renewables — the IRP alignment risk:</strong> The GMP is a standalone plan. It must be aligned with the Integrated Resource Plan (IRP, which determines the electricity generation mix) and the Integrated Energy Plan (IEP, which sets overall energy policy). If the IRP under-allocates gas-to-power capacity, the demand projections in the GMP will not materialise, and the infrastructure will be overbuilt.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THE DOCUMENT                                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="gmp-doc">
+          <div class="card-header" style="background:#00695c;color:white;border-bottom-color:#004d40;">&#128218; About This Document</div>
+          <div class="card-body">
+            <table class="table table-sm small">
+              <tr><th>Full title</th><td>Gas Master Plan 2024 (Draft)</td></tr>
+              <tr><th>Gazette number</th><td>Government Gazette No. 50569, 26 April 2024</td></tr>
+              <tr><th>Issued by</th><td>Department of Mineral Resources and Energy (DMRE)</td></tr>
+              <tr><th>Gazette notice</th><td>Notice 4760 of 2024</td></tr>
+              <tr><th>Public comment deadline</th><td>15 June 2024</td></tr>
+              <tr><th>Status</th><td>Draft — not yet finalised as of mid-2025</td></tr>
+              <tr><th>Download</th><td><a href="https://www.gov.za/sites/default/files/gcis_document/202404/50569gon4760.pdf" target="_blank">Official PDF (gov.za)</a> or <a href="gas_master_plan.pdf" target="_blank">local copy</a></td></tr>
+            </table>
+            <p class="small mb-0">Note: The GMP is a <em>strategic policy framework</em>, not a detailed project implementation plan. It identifies corridors, demand nodes, and regulatory reforms, but does not contain binding commitments, completed feasibility studies, or guaranteed timelines for specific projects. Individual projects will require separate feasibility studies, environmental impact assessments, FID, and procurement processes.</p>
+          </div>
+        </div>
+
+        <hr>
+        <div class="d-flex justify-content-between small text-muted mb-4">
+          <a href="gas.html" class="btn btn-outline-secondary btn-sm">&larr; Back to Gas Overview</a>
+          <a href="gas_lng.html" class="btn btn-outline-success btn-sm">LNG Overview &#8599;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

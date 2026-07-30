@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Policy Tracker • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .policy-card {
+      border: 2px solid #212529;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .policy-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+    }
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-open { background: #198754; color: #fff; }
+    .status-closed { background: #6c757d; color: #fff; }
+    .status-approved { background: #0d6efd; color: #fff; }
+    .status-consolidation { background: #ffc107; color: #212529; }
+    .sector-header {
+      background: #212529;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px 8px 0 0;
+      font-weight: 700;
+    }
+    .policy-item {
+      border-left: 4px solid #007A4D;
+      padding: 10px 14px;
+      background: #fff;
+      border-bottom: 1px solid #dee2e6;
+      transition: background 0.15s;
+    }
+    .policy-item:hover { background: #f0fdf4; }
+    .policy-item:last-child { border-bottom: none; }
+    .policy-meta {
+      font-size: 0.82rem;
+      color: #6c757d;
+    }
+    .policy-meta strong { color: #212529; }
+    .featured-pub {
+      border: 3px solid #007A4D;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .featured-pub .card-header {
+      background: #007A4D;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .count-badge {
+      background: #FFCD00;
+      color: #212529;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+    .filter-btn-group .btn {
+      border: 2px solid #212529;
+      font-weight: 600;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    .filter-btn-group .btn.active-filter {
+      background: #007A4D;
+      color: #fff;
+      border-color: #007A4D;
+    }
+    .methodology-link {
+      background: #f8f9fa;
+      border: 2px dashed #007A4D;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .methodology-link a {
+      font-weight: 700;
+      color: #007A4D;
+      text-decoration: none;
+    }
+    .methodology-link a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <header class="mb-4">
+      <h1 class="display-6 fw-bold text-sa-green mb-2">📋 Policy Tracker</h1>
+      <p class="text-muted mb-1">
+        Tracking South Africa's energy policies, regulations, and plans — inspired by the
+        <a href="https://energycouncil.org.za/policy-tracker/" target="_blank" rel="noreferrer">Energy Council Policy Tracker</a>.
+      </p>
+      <p class="text-muted mb-0">
+        This page maps the SAWEM creation lifecycle (wholesale electricity market design),
+        showing the stage each policy/regulation is at: <strong>Open</strong> → <strong>Input Consolidation</strong> → <strong>Approved</strong> → <strong>Closed</strong>.
+      </p>
+    </header>
+
+    <!-- === SAWEM Lifecycle Overview === -->
+    <section class="mb-4">
+      <div class="card policy-card">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h5 fw-bold text-sa-green mb-3">🔄 SAWEM Creation — Lifecycle Stages</h2>
+          <div class="row g-3 align-items-center">
+            <div class="col d-flex flex-column align-items-center text-center">
+              <span class="status-badge status-open mb-1">Open</span>
+              <small class="text-muted">Public comment period active</small>
+            </div>
+            <div class="col-auto fs-4">→</div>
+            <div class="col d-flex flex-column align-items-center text-center">
+              <span class="status-badge status-consolidation mb-1">Input Consolidation</span>
+              <small class="text-muted">Comments being reviewed</small>
+            </div>
+            <div class="col-auto fs-4">→</div>
+            <div class="col d-flex flex-column align-items-center text-center">
+              <span class="status-badge status-approved mb-1">Approved</span>
+              <small class="text-muted">Policy / regulation finalised</small>
+            </div>
+            <div class="col-auto fs-4">→</div>
+            <div class="col d-flex flex-column align-items-center text-center">
+              <span class="status-badge status-closed mb-1">Closed</span>
+              <small class="text-muted">No longer under review</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Latest Publications === -->
+    <section class="mb-4">
+      <h2 class="h5 fw-bold mb-3">📢 Latest Publications</h2>
+
+      <div class="featured-pub card mb-3">
+        <div class="card-header">
+          ⚡ Transitional Generation Pricing & Vesting Contract Framework
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <p class="mb-2">
+                <strong>Issuing Authority:</strong>
+                <a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a>
+              </p>
+              <p class="mb-2">
+                <strong>Status:</strong>
+                <span class="status-badge status-open">Open for comments</span>
+                <span class="ms-2 text-muted small">Members submit comments to Energy Council by <strong>30 July 2026</strong></span>
+              </p>
+              <p class="mb-2">
+                <strong>NERSA Due Date:</strong> 4 August 2026
+              </p>
+              <p class="mb-0">
+                <strong>Summary:</strong> NERSA's consultation on the transitional generation pricing and vesting contract framework — the mechanism that will govern pricing for Eskom Generation's output and the vesting contracts transitioning from regulated tariffs to market-based pricing under SAWEM. This is the foundational pricing document for the Central Purchasing Agency (CPA) transition.
+              </p>
+            </div>
+            <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+              <div class="methodology-link w-100 mb-2">
+                <a href="https://energycouncil.org.za/policy/transitional-generation-pricing-and-vesting-contract-framework/"
+                   target="_blank" rel="noreferrer">
+                  🔗 View on Energy Council<br>
+                  <small class="text-muted">Transitional Generation Pricing (External)</small>
+                </a>
+              </div>
+              <small class="text-muted">Issued 20 May 2026</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card policy-card">
+        <div class="card-body p-3">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr class="bg-light">
+                <th style="width:20%">Issuing Authority</th>
+                <th style="width:35%">Policy / Regulation</th>
+                <th style="width:15%">Status</th>
+                <th style="width:15%">Issued</th>
+                <th style="width:15%">Due Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/eskoms-fifth-multi-year-price-determination-regulatory-clearing-account-application-for-financial-year-2024-25-consultation-paper/"
+                     target="_blank" rel="noreferrer">
+                    Eskom MYPD5 — Regulatory Clearing Account FY2024/25 Consultation
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>29 Jun 2026</td>
+                <td>14 Aug 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/invitation-for-public-comments-and-an-advert-for-a-public-hearing-on-the-consultation-paper-on-section-29-of-the-electricity-regulation-act/"
+                     target="_blank" rel="noreferrer">
+                    Consultation on Section 29 of the Electricity Regulation Act
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>29 Jun 2026</td>
+                <td>3 Aug 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/consultation-paper-for-draft-nersa-rules-on-electricity-trading-south-africa/"
+                     target="_blank" rel="noreferrer">
+                    Draft NERSA Rules on Electricity Trading
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>26 Jun 2026</td>
+                <td>29 Jul 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/draft-market-inquiry-report-on-the-impact-of-fixed-and-generation-capacity-charges-levied-by-electricity-distributors/"
+                     target="_blank" rel="noreferrer">
+                    Draft Market Inquiry: Fixed & Generation Capacity Charges by Distributors
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>25 Jun 2026</td>
+                <td>27 Jul 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/transitional-generation-pricing-and-vesting-contract-framework/"
+                     target="_blank" rel="noreferrer">
+                    Transitional Generation Pricing & Vesting Contract Framework
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>20 May 2026</td>
+                <td>4 Aug 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/call-for-stakeholder-comments-national-energy-regulator-of-south-africa-nersa-wholesale-electricity-pricing-methodology-consultation-paper/"
+                     target="_blank" rel="noreferrer">
+                    Wholesale Electricity Pricing Methodology Consultation Paper
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>18 May 2026</td>
+                <td>4 Aug 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/national-energy-regulator-of-south-africa-market-code-application-by-ntcsa/"
+                     target="_blank" rel="noreferrer">
+                    Market Code Application By NTCSA
+                  </a>
+                </td>
+                <td><span class="status-badge status-consolidation">Input Consolidation</span></td>
+                <td>21 Apr 2026</td>
+                <td>17 Jun 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/itac/" target="_blank" rel="noreferrer">ITAC</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/international-trade-administration-commission-of-south-africa-itac/"
+                     target="_blank" rel="noreferrer">
+                    International Trade Administration Commission (ITAC)
+                  </a>
+                </td>
+                <td><span class="status-badge status-consolidation">Input Consolidation</span></td>
+                <td>27 Mar 2026</td>
+                <td>27 Apr 2026</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/nersa-rules-for-electricity-trading/" target="_blank" rel="noreferrer">
+                    Draft Consultation Paper Rules for Electricity Trading (original)
+                  </a>
+                </td>
+                <td><span class="status-badge status-approved">Approved</span></td>
+                <td>—</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/consultation-paper-on-eskoms-application-for-the-amendment-of-the-generator-losses-charge/"
+                     target="_blank" rel="noreferrer">
+                    Eskom Generator Losses Charge — Amendment Consultation
+                  </a>
+                </td>
+                <td><span class="status-badge status-open">Open</span></td>
+                <td>—</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td><a href="https://energycouncil.org.za/authority/nersa/" target="_blank" rel="noreferrer">NERSA</a></td>
+                <td>
+                  <a href="https://energycouncil.org.za/policy/nersa-approves-the-eskom-retail-tariffs-and-structural-adjustment-application-for-the-2026-27-financial-year/"
+                     target="_blank" rel="noreferrer">
+                    Eskom Retail Tariff Structural Adjustment (ERTSA) FY2026/27 — Approved
+                  </a>
+                </td>
+                <td><span class="status-badge status-approved">Approved</span></td>
+                <td>—</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Policy Sector Browser === -->
+    <section>
+      <h2 class="h5 fw-bold mb-3">🗂️ Policy & Plans by Sector</h2>
+
+      <div class="filter-btn-group mb-3" id="sectorFilters">
+        <button class="btn btn-outline-dark btn-sm active-filter" data-filter="all">All</button>
+        <button class="btn btn-outline-dark btn-sm" data-filter="power">⚡ Power</button>
+        <button class="btn btn-outline-dark btn-sm" data-filter="gas">🔥 Gas</button>
+        <button class="btn btn-outline-dark btn-sm" data-filter="fuels">⛽ Fuels</button>
+        <button class="btn btn-outline-dark btn-sm" data-filter="general">📋 General</button>
+      </div>
+
+      <div id="policySectors"></div>
+    </section>
+
+    <!-- === Methodology Document Embedded === -->
+    <section class="mt-4">
+      <div class="card policy-card">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h5 fw-bold text-sa-green mb-2">📄 Wholesale Tariff Methodology — Full Document</h2>
+          <p class="text-muted mb-3">
+            The complete consultation document as published by NERSA in May 2026. This is the foundational
+            methodology document for SAWEM wholesale electricity pricing.
+          </p>
+          <div class="ratio ratio-16x9" style="max-height: 800px;">
+            <iframe src="https://energycouncil.org.za/wp-content/uploads/2026/05/Consultation-document-Wholesale-tariff-methodology.pdf"
+                    title="Wholesale Tariff Methodology PDF" allowfullscreen></iframe>
+          </div>
+          <div class="mt-3">
+            <a href="https://energycouncil.org.za/wp-content/uploads/2026/05/Consultation-document-Wholesale-tariff-methodology.pdf"
+               class="btn btn-success" target="_blank" rel="noreferrer">
+              📥 Download PDF
+            </a>
+            <a href="https://energycouncil.org.za/policy/call-for-stakeholder-comments-national-energy-regulator-of-south-africa-nersa-wholesale-electricity-pricing-methodology-consultation-paper/"
+               class="btn btn-outline-dark ms-2" target="_blank" rel="noreferrer">
+              🔗 View on Energy Council
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SAWEM-Related Documents === -->
+    <section class="mt-4">
+      <div class="card policy-card">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h5 fw-bold text-sa-green mb-3">📚 SAWEM Foundational Documents</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="data/power/SAWEM%20Specification.pdf" target="_blank">SAWEM Specification</a>
+                  <span class="badge bg-secondary">PDF</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="data/power/SAWEM%20Market%20Code.pdf" target="_blank">SAWEM Market Code</a>
+                  <span class="badge bg-secondary">PDF</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="data/power/SAWEM%20BRP.pdf" target="_blank">SAWEM BRP</a>
+                  <span class="badge bg-secondary">PDF</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="data/power/SAWEM%20CPA.pdf" target="_blank">SAWEM CPA</a>
+                  <span class="badge bg-secondary">PDF</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="data/power/SAWEM%20Market%20Conduct%20Rules.pdf" target="_blank">SAWEM Market Conduct Rules</a>
+                  <span class="badge bg-secondary">PDF</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="https://energycouncil.org.za/policy/wholesale-market-code/" target="_blank" rel="noreferrer">
+                    NTCSA Wholesale Market Code
+                  </a>
+                  <span class="badge bg-info">External</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // === Policy data: structured for dynamic rendering ===
+    const sectors = [
+      {
+        id: 'power',
+        label: '⚡ Power',
+        legislation: [
+          'Amendment to Schedule 2 of ERA: Licensing Exemption and Registration Notice, 2022',
+          'The Electricity Act, 1987 (Act No. 41 of 1987), as amended',
+          'The National Energy Regulator Act (No. 40 of 2004)',
+          'Electricity Regulation Amendment Act, 2024 (Act No 38 of 2024)',
+          'The Nuclear Energy Act, 1999 (Act No. 46 of 1999)',
+          'The National Nuclear Regulator Act, 1999 (Act No. 47 of 1999)',
+        ],
+        policy: [
+          'Free Basic Alternative Energy Policy 2003',
+          'ToR for Market Inquiry into Electricity Charges',
+          'Draft Electricity Transmission Infrastructure Regulations',
+          'The Electricity Pricing Policy (EPP), 2008',
+          'The Integrated Resource Plan 2025 (IRP)',
+          'The Electricity Pricing Policy Review 2022',
+        ],
+        links: {
+          legislation: [
+            'https://energycouncil.org.za/policy/amendment-to-schedule-2-of-era-licensing-exemption-and-registration-notice-2022/',
+            'https://energycouncil.org.za/policy/the-electricity-act-1987-act-no-41-of-1987-as-amended/',
+            'https://energycouncil.org.za/policy/the-national-energy-regulator-act-no-40-of-2004/',
+            'https://energycouncil.org.za/policy/electricity-regulation-amendment-era-act-2024/',
+            'https://energycouncil.org.za/policy/nuclear-energy-act/',
+            'https://energycouncil.org.za/policy/the-national-nuclear-regulator-act-1999/',
+          ],
+          policy: [
+            'https://energycouncil.org.za/policy/free-basic-alternative-energy-policy-2003/',
+            'https://energycouncil.org.za/policy/tor-for-market-inquiry-into-electricity-charges/',
+            'https://energycouncil.org.za/policy/draft-electricity-transmission-infrastructure-regulations/',
+            'https://energycouncil.org.za/policy/the-electricity-pricing-policy/',
+            'https://energycouncil.org.za/policy/integrated-resource-plan/',
+            'https://energycouncil.org.za/policy/the-electricity-pricing-policy-review-2022/',
+          ],
+        },
+      },
+      {
+        id: 'gas',
+        label: '🔥 Gas',
+        legislation: [
+          'The Gas Amendment Bill 2023',
+          'The Gas Act, 2001 (Act No. 48 of 2001)',
+          'The Gas Regulator Levies Act, 2002 (Act No. 75 of 2002)',
+        ],
+        policy: [
+          'The Gas Master Plan 2024',
+        ],
+        links: {
+          legislation: [
+            'https://energycouncil.org.za/policy/the-gas-amendment-bill-2023/',
+            'https://energycouncil.org.za/policy/gas-act-2001-act-no-48-of-2001/',
+            'https://energycouncil.org.za/policy/gas-regulator-levies-act/',
+          ],
+          policy: [
+            'https://energycouncil.org.za/policy/gas-master-plan-2024/',
+          ],
+        },
+      },
+      {
+        id: 'fuels',
+        label: '⛽ Fuels',
+        legislation: [
+          'The Mineral and Petroleum Resources Development Act, 2002 (Act No. 28 of 2002)',
+          'The National Radioactive Waste Disposal Institute Act, 2008 (Act No. 53 of 2008)',
+          'The National Nuclear Regulator Act, 1999 (Act No. 47 of 1999)',
+          'The Nuclear Energy Act, 1999 (Act No. 46 of 1999)',
+          'The Petroleum Pipelines Levies Act 2004 (Act No. 28 of 2004)',
+          'The Petroleum Products Amendment Act (Act No. 120 of 1977)',
+          'The Petroleum Pipelines Act, 2003 (Act No. 60 of 2003)',
+        ],
+        policy: [],
+        links: { legislation: [], policy: [] },
+      },
+      {
+        id: 'general',
+        label: '📋 General',
+        legislation: [],
+        policy: [
+          "South Africa's Second Nationally Determined Contribution Under the Paris Agreement (NDC)",
+          'The Just Energy Transition Investment Plan (JET IP)',
+          'The Paris Agreement (2016) on Climate Change',
+          'The Energy Action Plan (EAP)',
+          'The National Development Plan 2030',
+          'The White Paper on the Energy Policy 1998',
+          'National Environmental Management Act 107 of 1998',
+          'Integrated Energy Plan 2016',
+          'The National Energy Act, 2008 (Act No. 34 of 2008)',
+        ],
+        links: { legislation: [], policy: [] },
+      },
+    ];
+
+    // Build link URLs for general sector
+    sectors[3].links.policy = [
+      'https://energycouncil.org.za/policy/south-africas-second-nationally-determined-contribution-under-the-paris-agreement-ndc/',
+      'https://energycouncil.org.za/policy/the-just-energy-transition-investment-plan-jet-ip/',
+      'https://energycouncil.org.za/policy/the-paris-agreement-2016-on-climate-change/',
+      'https://energycouncil.org.za/policy/the-energy-action-plan-eap/',
+      'https://energycouncil.org.za/policy/the-national-development-plan-2030/',
+      'https://energycouncil.org.za/policy/the-white-paper-on-the-energy-policy-1998/',
+      'https://energycouncil.org.za/policy/national-environmental-management-act-107-of-1998/',
+      'https://energycouncil.org.za/policy/integrated-energy-plan-2016/',
+      'https://energycouncil.org.za/policy/the-national-energy-act-2008-act-no-34-of-2008/',
+    ];
+
+    function renderSectors(filter) {
+      const container = document.getElementById('policySectors');
+      container.innerHTML = '';
+
+      sectors.forEach((sector, idx) => {
+        if (filter !== 'all' && sector.id !== filter) return;
+
+        const div = document.createElement('div');
+        div.className = 'card policy-card mb-3';
+
+        let html = `<div class="sector-header">${sector.label}</div><div class="card-body p-0">`;
+
+        if (sector.legislation.length > 0) {
+          html += `<div class="p-2 ps-3 bg-light fw-bold small border-bottom">Legislation <span class="count-badge">${sector.legislation.length}</span></div>`;
+          sector.legislation.forEach((item, i) => {
+            const url = sector.links.legislation[i];
+            html += `<div class="policy-item d-flex justify-content-between align-items-center">
+              <span>${url ? `<a href="${url}" target="_blank" rel="noreferrer">${item}</a>` : item}</span>
+              <span class="badge bg-secondary" style="font-size:0.65rem;">Act</span>
+            </div>`;
+          });
+        }
+
+        if (sector.policy.length > 0) {
+          html += `<div class="p-2 ps-3 bg-light fw-bold small border-bottom">Policy & Plans <span class="count-badge">${sector.policy.length}</span></div>`;
+          sector.policy.forEach((item, i) => {
+            const url = sector.links.policy[i];
+            html += `<div class="policy-item d-flex justify-content-between align-items-center">
+              <span>${url ? `<a href="${url}" target="_blank" rel="noreferrer">${item}</a>` : item}</span>
+              <span class="badge bg-info" style="font-size:0.65rem;">Policy</span>
+            </div>`;
+          });
+        }
+
+        if (sector.legislation.length === 0 && sector.policy.length === 0) {
+          html += `<div class="p-3 text-muted">No items listed yet.</div>`;
+        }
+
+        html += '</div>';
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
+    }
+
+    // === Filter Buttons ===
+    document.querySelectorAll('#sectorFilters .btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#sectorFilters .btn').forEach(b => b.classList.remove('active-filter'));
+        this.classList.add('active-filter');
+        renderSectors(this.dataset.filter);
+      });
+    });
+
+    // Initial render
+    renderSectors('all');
+  </script>
+</body>
+</html>

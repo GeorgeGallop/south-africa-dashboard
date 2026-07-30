@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complex Adaptive Systems • SAWEM ABM-MDP-OPF Framework</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .sa-gold  { color: #FFCD00; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-intro    { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-props    { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-emerg    { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-design   { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-practice { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .concept-card {
+      transition: all 0.2s;
+      border-left: 4px solid #007A4D;
+    }
+    .concept-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    .property-icon { font-size: 1.6rem; margin-right: 8px; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #007A4D;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #007A4D;
+      font-size: 0.85rem;
+    }
+    .santa-fe-quote {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#big-picture">&#127917; What Is a CAS?</a>
+          <a class="nav-link" href="#hallmarks">&#9632; The Hallmarks</a>
+          <a class="nav-link" href="#emergence">&#9632; Emergence</a>
+          <a class="nav-link" href="#adaptation">&#9632; Adaptation & Learning</a>
+          <a class="nav-link" href="#self-organization">&#9632; Self-Organization</a>
+          <a class="nav-link" href="#coevolution">&#9632; Co-evolution</a>
+          <a class="nav-link" href="#design">&#9632; Designing Your CAS-ABM</a>
+          <a class="nav-link" href="#practice">&#9632; In Practice: SAWEM</a>
+          <a class="nav-link" href="#summary">&#9632; The Full Picture</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+
+        <h1 class="display-4 fw-bold text-sa-green">&#127760; Complex Adaptive Systems</h1>
+        <p class="lead text-muted mb-4">
+          The theory of how autonomous agents interact, adapt, and create system-level order
+          &mdash; and why the SAWEM electricity market is a textbook example.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- THE BIG PICTURE                                            -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="big-picture">
+          <div class="card-header level-intro">
+            &#127917; What Is a Complex Adaptive System?
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Layman's Introduction</h5>
+              <p class="mb-2">
+                Imagine a flock of starlings at dusk. No single bird is in charge. Each bird follows
+                simple rules: stay close to your neighbours, avoid collisions, match their speed and
+                direction. Yet out of these simple local rules emerges a breathtaking shape-shifting
+                cloud &mdash; a <strong>complex adaptive system</strong>.
+              </p>
+              <p class="mb-0">
+                The flock has no leader, no blueprint, no central planner. The swirling patterns are
+                <strong>emergent</strong> &mdash; they arise from the bottom up, from the interactions
+                of individual agents following local rules. Each bird <strong>adapts</strong> to the
+                movements of its neighbours. The flock as a whole <strong>self-organizes</strong> into
+                a coherent structure that is more than the sum of its parts.
+              </p>
+            </div>
+
+            <p>
+              A <strong>Complex Adaptive System (CAS)</strong> is a system composed of many interacting
+              agents that adapt their behaviour in response to each other and to their shared environment.
+              The system's macro-level patterns &mdash; prices, congestion, investment cycles, market
+              concentration &mdash; <em>emerge</em> from the micro-level interactions and are constantly
+              evolving. You cannot understand the electricity market by studying any single generator,
+              any more than you understand a flock by studying one bird.
+            </p>
+
+            <p>
+              The <strong>South African Wholesale Electricity Market (SAWEM)</strong> is a CAS.
+              Generators bid strategically, load aggregators hedge, investors choose when to build,
+              regulators adjust policy, and all of them react to each other's actions and to external
+              shocks (weather, fuel prices, politics). The outcomes &mdash; SMP, emissions trajectories,
+              capacity adequacy, market power &mdash; are <em>emergent properties</em> of this
+              decentralized adaptive system. This is the fundamental reason why traditional equilibrium
+              models fall short and why you are building an Agent-Based Model.
+            </p>
+
+            <div class="santa-fe-quote">
+              <strong>&#127891; From the Santa Fe Institute &mdash; the birthplace of CAS theory:</strong><br>
+              &ldquo;Complex Adaptive Systems are systems that have a large number of components,
+              often called agents, that interact and adapt or learn. The whole system exhibits
+              emergent behaviour that cannot be understood by examining the components in isolation.
+              The system is open, not closed; it operates far from equilibrium; and its future is
+              fundamentally uncertain.&rdquo;
+            </div>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <span style="font-size:2.5rem;">&#129302;</span>
+                  <h6 class="fw-bold mt-2">Many Agents</h6>
+                  <small class="text-muted">Heterogeneous, autonomous, interacting locally</small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <span style="font-size:2.5rem;">&#128260;</span>
+                  <h6 class="fw-bold mt-2">Adaptation</h6>
+                  <small class="text-muted">Agents change behaviour in response to feedback</small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <span style="font-size:2.5rem;">&#10024;</span>
+                  <h6 class="fw-bold mt-2">Emergence</h6>
+                  <small class="text-muted">Macro patterns nobody designed or predicted</small>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128196; A Brief Intellectual History</h5>
+            <div class="timeline-item">
+              <div class="timeline-year">1948 &mdash; Norbert Wiener, Cybernetics</div>
+              <p class="small mb-0">Feedback loops as the fundamental mechanism of goal-directed behaviour in machines and organisms. The seed idea: systems that regulate themselves through information feedback.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1968 &mdash; Ludwig von Bertalanffy, General Systems Theory</div>
+              <p class="small mb-0">Systems are more than the sum of their parts. Open systems exchange energy and information with their environment and can self-organise far from equilibrium.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1970s &mdash; Ilya Prigogine, Dissipative Structures</div>
+              <p class="small mb-0">Nobel-winning work showing that order can arise spontaneously in systems driven far from thermodynamic equilibrium. The &ldquo;order through fluctuations&rdquo; principle.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1984 &mdash; Santa Fe Institute founded</div>
+              <p class="small mb-0">The intellectual home of CAS. John Holland (genetic algorithms, classifier systems), Brian Arthur (increasing returns, path dependence), Stuart Kauffman (NK fitness landscapes, edge of chaos). They asked: what do immune systems, ecosystems, financial markets, and ant colonies have in common?</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">1994 &mdash; John Holland, <em>Complexity: A Very Short Introduction</em></div>
+              <p class="small mb-0">Formalized CAS with seven basic properties: aggregation, tagging, nonlinearity, flows, diversity, internal models, and building blocks.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2000s&ndash;present &mdash; ABM becomes the primary CAS tool</div>
+              <p class="small mb-0">With cheap computation, CAS theory finally has its experimental laboratory: the Agent-Based Model. The SAWEM ABM you are building is a direct intellectual descendant of this tradition.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THE HALLMARKS OF A CAS                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="hallmarks">
+          <div class="card-header level-props">
+            &#9632; The Hallmarks of a Complex Adaptive System
+          </div>
+          <div class="card-body">
+            <p>
+              Not every system with many parts is a CAS. A pile of sand has many grains but is not
+              adaptive. A CAS must satisfy a specific set of properties. The more of these your
+              electricity market model captures, the more faithfully it will represent reality.
+            </p>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9312;</span> Heterogeneous Agents</h5>
+                    <p class="small mb-0">Agents differ in their characteristics, strategies, information, and objectives. Homogeneity is a modelling simplification that destroys important CAS dynamics. <em>In SAWEM: Eskom coal stations differ by heat rate, age, fuel contract, hedge position; households differ by income, appliance ownership, solar adoption rate.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9313;</span> Local Interactions</h5>
+                    <p class="small mb-0">Agents interact primarily with nearby neighbours, not globally. Information is local and imperfect. <em>In SAWEM: generators see the SMP (a global signal) but not competitors' private costs or strategies. They infer, guess, and learn.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9314;</span> Nonlinearity</h5>
+                    <p class="small mb-0">Small changes can produce disproportionately large effects, and vice versa. The system is not a linear superposition of its parts. <em>In SAWEM: a single forced outage at a large coal station during peak demand can send SMP from R800 to R5000/MWh. The effect is not proportional to the cause.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9315;</span> Feedback Loops</h5>
+                    <p class="small mb-0">Positive feedback (reinforcing: success breeds more success, price spikes attract investment) and negative feedback (balancing: high prices reduce demand, low prices discourage generation). <em>In SAWEM: high SMP &rarr; IPP investment &rarr; more supply &rarr; lower SMP &rarr; investment stops: a negative feedback loop with a multi-year delay.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9316;</span> Adaptation & Learning</h5>
+                    <p class="small mb-0">Agents change their behaviour in response to experience. They are not static optimizers but adaptive entities. <em>In SAWEM: generators learn to bid strategically via DDPG reinforcement learning. Households adopt solar when electricity bills pass a threshold. NERSA adjusts the carbon tax based on observed emissions.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9317;</span> Open & Far From Equilibrium</h5>
+                    <p class="small mb-0">CAS exchanges energy, matter, and information with their environment. They operate far from thermodynamic or economic equilibrium. <em>In SAWEM: the market is constantly disrupted by fuel price shocks, policy changes, technological cost declines, and demand shifts. There is no steady state to converge to.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9318;</span> Path Dependence</h5>
+                    <p class="small mb-0">History matters. Small initial conditions can lock the system into one trajectory that is hard to reverse. <em>In SAWEM: Eskom's historical investment in coal-fired generation created a carbon-intensive system that is difficult to unwind. The location of coal plants near Mpumalanga mines locked in transmission patterns.</em></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card concept-card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold"><span class="property-icon">&#9319;</span> Emergence</h5>
+                    <p class="small mb-0">Macro-level patterns arise from micro-level interactions in ways that cannot be predicted by studying agents in isolation. <em>The defining property of a CAS and the central reason you are building an ABM.</em></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- EMERGENCE                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="emergence">
+          <div class="card-header level-emerg">
+            &#9632; Emergence &mdash; The Heart of CAS
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Whole Is Smarter Than the Parts</h5>
+              <p class="mb-0">
+                There is no central neuron in your brain that &ldquo;knows&rdquo; you. Consciousness
+                emerges from the collective firing of billions of neurons, each following simple
+                electrochemical rules. There is no &ldquo;flock neuron&rdquo; that tells starlings
+                where to fly &mdash; the flock's shape emerges from each bird's local rules. Similarly,
+                the System Marginal Price is not &ldquo;decided&rdquo; by any agent &mdash; it emerges
+                from the bids of hundreds of generators, the needs of thousands of loads, and the
+                physics of the transmission network. <strong>This is what makes your model powerful:
+                you are not programming the market outcome; you are programming the conditions from
+                which the market outcome emerges.</strong>
+              </p>
+            </div>
+
+            <h5 class="fw-bold">Levels of Emergence</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Level</th><th>What Emerges</th><th>SAWEM Example</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Level 1: Simple</strong></td>
+                  <td>Aggregates, averages, totals</td>
+                  <td>Total system load, average SMP, total emissions. These are <em>simple</em> emergents: sums of agent-level quantities. Fully determined by micro-behaviour.</td>
+                </tr>
+                <tr>
+                  <td><strong>Level 2: Pattern</strong></td>
+                  <td>Structures, rhythms, distributions</td>
+                  <td>The daily SMP profile (peak/off-peak pattern), the merit order stack, the duck curve from solar penetration. These are <em>relational</em> emergents: they depend on how agents are arranged relative to each other.</td>
+                </tr>
+                <tr>
+                  <td><strong>Level 3: Adaptive</strong></td>
+                  <td>Novel strategies, conventions, institutions</td>
+                  <td>Strategic capacity withholding, tacit collusion cycles, the emergence of a secondary market for CfDs, the formation of bidding coalitions. These are <em>adaptive</em> emergents: new behaviours that agents invent in response to the system they have created.</td>
+                </tr>
+                <tr>
+                  <td><strong>Level 4: Structural</strong></td>
+                  <td>Phase transitions, regime shifts</td>
+                  <td>The &ldquo;coal collapse&rdquo; tipping point where coal generation becomes uneconomic before end of design life; the switch from a supply-constrained to a flexibility-constrained system; the emergence of a new market design (e.g., capacity mechanism introduced).</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128300; How to Detect Emergence in Your Model</h5>
+            <p class="small">
+              Not everything that comes out of an ABM is truly emergent. Here is how to distinguish
+              genuine emergence from mere aggregation:
+            </p>
+            <ol class="small">
+              <li><strong>Nonlinearity test:</strong> if you double the number of agents, does the macro property change qualitatively (not just scale)? Genuine emergence is not linearly scalable.</li>
+              <li><strong>Decomposition test:</strong> can you predict the macro property by studying a single agent in isolation? If yes, it is not emergent. If no, it is emergent &mdash; it depends on interactions.</li>
+              <li><strong>Novelty test:</strong> did the macro property surprise you when you first saw it? (This is informal but honest. Many ABM results that were &ldquo;obvious in hindsight&rdquo; were not predicted beforehand. That is emergence.)</li>
+              <li><strong>Robustness test:</strong> does the macro property persist across many runs with different random seeds? Robust emergence is not a fluke of one simulation.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ADAPTATION & LEARNING                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="adaptation">
+          <div class="card-header level-props">
+            &#9632; Adaptation & Learning &mdash; How Agents Change
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Difference Between &ldquo;Optimizing&rdquo; and &ldquo;Adapting&rdquo;</h5>
+              <p class="mb-0">
+                A traditional economic model assumes agents are <strong>optimizers</strong>: they know
+                the full range of possible futures and choose the single best action. A CAS assumes
+                agents are <strong>adaptive</strong>: they have limited information, learn from
+                feedback, and improve over time (but never perfectly). Optimization is a mathematician's
+                idealisation. Adaptation is how real organisms, people, and firms actually behave. Your
+                ABM should model adaptation, not optimization.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">Fitness Landscapes &mdash; The &ldquo;Space&rdquo; of Possibilities</h5>
+            <p class="small">
+              A central CAS concept from Stuart Kauffman: imagine all possible strategies an agent
+              could pursue laid out on a landscape, where the height of each point represents how
+              well that strategy performs (its <strong>fitness</strong>). Agents explore this landscape,
+              trying new strategies, climbing toward higher fitness. The shape of the landscape
+              determines what kind of learning is possible:
+            </p>
+            <div class="row g-2 small">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>&#9968;&#65039; Smooth landscape</strong> (one peak)<br>
+                  <span class="text-muted">Easy to find the optimum. Simple hill-climbing works. In SAWEM: a pure price-taker market where the optimal bid is always SRMC.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>&#127960; Rugged landscape</strong> (many peaks)<br>
+                  <span class="text-muted">Hard to find the global optimum. Agents can get stuck on local peaks. In SAWEM: bidding strategies interact, so what works for one generator depends on what others do. The landscape deforms as agents move.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white h-100">
+                  <strong>&#127758; Deforming landscape</strong> (shifting peaks)<br>
+                  <span class="text-muted">Other agents' adaptations change your landscape. This is the <strong>co-evolutionary</strong> nature of CAS. In SAWEM: when one generator learns to bid more aggressively, it changes the SMP, which changes the optimal bid for every other generator.</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; What This Means for the SAWEM ABM</h5>
+            <ul class="small">
+              <li><strong>Use learning, not equilibrium:</strong> do not assume generators know the optimal bid. Give them a learning algorithm (Q-learning, DDPG) and let them discover it. The process of discovery is as important as the destination &mdash; and the destination may never be reached because the landscape keeps shifting.</li>
+              <li><strong>Model bounded rationality:</strong> agents do not see the full state. They see a partial observation (SMP history, not competitors' costs). This is realistic and produces qualitatively different outcomes than perfect-information models.</li>
+              <li><strong>Exploration vs. exploitation:</strong> every learning agent faces this trade-off. Exploit what you know (bid your current best strategy) vs. explore new possibilities (try a different bid to see what happens). The balance determines how fast the system evolves and whether it gets stuck in suboptimal configurations.</li>
+              <li><strong>Adaptation rate matters:</strong> if agents learn very fast, the system churns. If they learn very slowly, it may be path-dependent. The learning rate is a tuning parameter that can dramatically change emergent outcomes.</li>
+            </ul>
+
+            <div class="santa-fe-quote">
+              <strong>&#127891; John Holland on adaptation:</strong><br>
+              &ldquo;Adaptation is the process that builds and modifies the internal models that
+              allow agents to anticipate the future. A CAS is constantly projecting the consequences
+              of its actions into the future, using feedback from the past to improve those
+              projections.&rdquo;
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SELF-ORGANIZATION                                           -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="self-organization">
+          <div class="card-header level-emerg">
+            &#9632; Self-Organization &mdash; Order Without a Conductor
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Invisible Hand Meets CAS</h5>
+              <p class="mb-0">
+                Adam Smith's &ldquo;invisible hand&rdquo; was an early intuition about self-organization:
+                individual self-interest, mediated by prices, produces collective order. CAS theory
+                generalizes this: self-organization is the spontaneous emergence of macroscopic
+                order from local interactions, without central control. The SAWEM market is a
+                self-organizing system &mdash; the SMP coordinates the behaviour of thousands of
+                agents without any single entity dictating what each should do.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">Conditions for Self-Organization</h5>
+            <p class="small">
+              Self-organization does not happen in any system with many agents. It requires specific
+              conditions that your ABM should be designed to capture:
+            </p>
+            <ol class="small">
+              <li><strong>Information flow:</strong> agents must be able to sense the consequences of their actions and the actions of others. In SAWEM, the SMP is this signal &mdash; it carries information about scarcity, congestion, and fuel costs compressed into a single number.</li>
+              <li><strong>Appropriate diversity:</strong> too little diversity and the system is rigid; too much and it is chaotic. The right balance allows for exploration (diverse strategies) while maintaining coherence.</li>
+              <li><strong>Nonlinear interactions:</strong> the effect of an agent's action must depend on the state of other agents. Linear interactions produce predictable averages, not self-organized patterns.</li>
+              <li><strong>Energy/information gradient:</strong> the system must be driven away from equilibrium by a sustained flow of energy or information. In SAWEM: the &ldquo;energy&rdquo; is the gap between the cost of generation and the value of electricity to consumers. This gradient drives the entire market.</li>
+            </ol>
+
+            <h5 class="fw-bold mt-4">Edge of Chaos &mdash; Where CAS Lives</h5>
+            <p class="small">
+              One of the deepest CAS insights (Langton, Kauffman): complex adaptive systems operate
+              at the <strong>edge of chaos</strong> &mdash; a narrow regime between rigid order and
+              random disorder. Too much order and the system cannot adapt (like a centrally-planned
+              economy). Too much chaos and it cannot maintain coherence (like a market with no rules
+              at all). The most adaptive systems hover at the boundary.
+            </p>
+            <p class="small">
+              <em>What this means for your model:</em> if your SAWEM ABM settles into a perfectly
+              repeating pattern every year (too ordered), you have probably over-constrained it.
+              If it jumps randomly with no discernible structure (too chaotic), you have probably
+              under-constrained it. The interesting behaviour lives between these extremes &mdash;
+              where you can see cycles, regime shifts, and emergent patterns without perfect
+              predictability.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CO-EVOLUTION                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="coevolution">
+          <div class="card-header level-props">
+            &#9632; Co-evolution &mdash; Everyone Is Changing Everyone Else
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Red Queen Effect</h5>
+              <p class="mb-0">
+                In <em>Through the Looking-Glass</em>, the Red Queen tells Alice: &ldquo;Now, here,
+                you see, it takes all the running you can do, to keep in the same place.&rdquo; In
+                CAS, this is the <strong>Red Queen effect</strong>: as one agent adapts, it changes
+                the environment for every other agent, who must adapt in response, which changes the
+                environment again. Nobody stands still. The market is a co-evolutionary system:
+                generators, loads, regulators, and investors are all adapting to each other in a
+                never-ending dance.
+              </p>
+            </div>
+
+            <h5 class="fw-bold">Co-evolutionary Dynamics in SAWEM</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Agent A adapts...</th><th>...which changes the environment for B...</th><th>...to which B adapts...</th><th>...which loops back to A.</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gas generator learns to bid higher during scarcity</td>
+                  <td>SMP increases during peak hours</td>
+                  <td>Industrial load invests in self-generation (solar + battery) to avoid high SMP</td>
+                  <td>Gas generator's market share shrinks; it must adapt its bidding strategy again</td>
+                </tr>
+                <tr>
+                  <td>NERSA increases carbon tax</td>
+                  <td>Coal operating costs rise, coal bids increase</td>
+                  <td>IPP investors find renewables more competitive; more solar and wind enter</td>
+                  <td>NERSA observes emissions drop faster than expected and adjusts the tax trajectory</td>
+                </tr>
+                <tr>
+                  <td>Households adopt rooftop solar en masse</td>
+                  <td>Mid-day net demand drops (duck curve deepens)</td>
+                  <td>Coal stations cycle more, incurring higher start-up costs and wear</td>
+                  <td>Households see SMP drop at midday (lower feed-in tariffs) and adjust adoption decisions</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h5 class="fw-bold mt-4">&#128200; Detecting Co-evolution in Your Model Output</h5>
+            <ul class="small">
+              <li><strong>Cross-correlation with lags:</strong> SMP and renewable investment should be cross-correlated with a multi-year lag (high SMP &rarr; investment boom 2&ndash;3 years later).</li>
+              <li><strong>Cycles that persist:</strong> if the model produces persistent investment cycles (boom-bust), that is a signature of co-evolution with delayed feedback.</li>
+              <li><strong>Regime-dependent strategies:</strong> if the optimal bid policy for a generator is different in &ldquo;tight supply&rdquo; years vs. &ldquo;excess capacity&rdquo; years, that is evidence that the agent's landscape is co-evolving with the rest of the system.</li>
+              <li><strong>Escaping local optima:</strong> if an agent's performance improves, then degrades, then improves again (in a non-random way), it may be responding to other agents' adaptations that &ldquo;moved the mountain.&rdquo;</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- DESIGNING YOUR CAS-ABM                                      -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="design">
+          <div class="card-header level-design">
+            &#9632; Designing a CAS-Aware ABM &mdash; Practical Principles
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; From Theory to Simulation</h5>
+              <p class="mb-0">
+                CAS theory is not just an abstract framework &mdash; it gives you specific design
+                principles for your ABM. Here is what CAS theory tells you about building the
+                SAWEM model well.
+              </p>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128221; Principle 1: Model Heterogeneity, Not Averages</h5>
+            <p class="small">
+              The standard economic approach is to use a &ldquo;representative agent.&rdquo; CAS says
+              this destroys the very fabric of the system. Heterogeneity is not noise to be averaged
+              away &mdash; it is the engine of adaptation. <strong>In practice:</strong> do not model
+              &ldquo;the typical coal station&rdquo; &mdash; model each station with its own heat rate,
+              forced outage rate, coal stock, and hedge position. The range matters more than the mean.
+            </p>
+
+            <h5 class="fw-bold mt-4">&#128221; Principle 2: Let Behaviour Emerge, Don't Impose It</h5>
+            <p class="small">
+              Avoid programming the macro-level outcomes you expect to see. Program micro-level rules
+              and let the macro emerge. If you program &ldquo;the market reaches equilibrium&rdquo;
+              into your agents, you will never discover that the real market might oscillate or
+              exhibit multiple equilibria. <strong>In practice:</strong> give generators a learning
+              algorithm and a reward function, not a pre-determined bidding rule. Let them discover
+              strategic behaviour on their own.
+            </p>
+
+            <h5 class="fw-bold mt-4">&#128221; Principle 3: Build in Feedback Delays</h5>
+            <p class="small">
+              Many CAS dynamics arise from the fact that feedback is not instantaneous. Investment
+              decisions take years to materialize. Learning takes time. Policy changes face legislative
+              delays. Without these delays, the system settles into a steady state. With delays,
+              it oscillates, overshoots, and adapts. <strong>In practice:</strong> model the 2&ndash;4
+              year construction lag between IPP investment decision and commercial operation. Model
+              the 6&ndash;12 month lag between SMP observation and household solar adoption.
+            </p>
+
+            <h5 class="fw-bold mt-4">&#128221; Principle 4: Watch for Phase Transitions</h5>
+            <p class="small">
+              Complex systems often undergo abrupt, qualitative changes when a control parameter
+              crosses a critical value. These <strong>phase transitions</strong> are the most important
+              events a CAS can experience. <strong>In practice:</strong> run sensitivity scans on
+              carbon tax rate, demand growth rate, and learning rate. Look for abrupt changes in
+              emissions, SMP, or market concentration. These are the &ldquo;tipping points&rdquo;
+              that policy-makers need to know about.
+            </p>
+
+            <h5 class="fw-bold mt-4">&#128221; Principle 5: Validate Against Stylized Facts, Not Single Numbers</h5>
+            <p class="small">
+              Because CAS are path-dependent and sensitive to initial conditions, your model should
+              not be expected to predict exact outcomes. What it should reproduce are <strong>stylized
+              facts</strong>: qualitative patterns observed in real markets. <strong>In practice:</strong>
+              does your model produce a merit-order effect (SMP drops as renewables rise)? Does it
+              produce price spikes during scarcity? Does it produce boom-bust investment cycles?
+              These are the validations that matter, not whether SMP in Year 7 equals exactly R1,247.
+            </p>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <h6 class="fw-bold sa-green">&#10004; Do This</h6>
+                  <ul class="small mb-0">
+                    <li>Heterogeneous agents with real parameter distributions</li>
+                    <li>Learning algorithms (RL, evolutionary) for strategic agents</li>
+                    <li>Realistic feedback delays (construction, learning, policy)</li>
+                    <li>Multiple runs with different random seeds</li>
+                    <li>Sensitivity analysis across policy parameters</li>
+                    <li>Look for phase transitions, regime shifts, emergent patterns</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded bg-white h-100">
+                  <h6 class="fw-bold text-danger">&#10008; Avoid This</h6>
+                  <ul class="small mb-0">
+                    <li>Homogeneous representative agents</li>
+                    <li>Static optimization with perfect information</li>
+                    <li>Instantaneous feedback and adjustment</li>
+                    <li>Single-run conclusions</li>
+                    <li>Point predictions without uncertainty bounds</li>
+                    <li>Assuming the system has a single equilibrium</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- IN PRACTICE: SAWEM                                          -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="practice">
+          <div class="card-header level-practice">
+            &#9632; In Practice &mdash; SAWEM as a Complex Adaptive System
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; The Map of Everything You Are Building</h5>
+              <p class="mb-0">
+                Here is how all the pieces of your thesis fit together. Complex Adaptive Systems is
+                the <strong>overarching theory</strong> that explains why your model works the way
+                it does. It is not another page in a sequence &mdash; it is the umbrella under which
+                every other page sits.
+              </p>
+            </div>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-3">
+                <div class="p-3 text-center border rounded bg-white h-100">
+                  <strong style="font-size:1.6rem;">&#127760;</strong>
+                  <h6 class="fw-bold mt-1">Complex Adaptive Systems</h6>
+                  <small class="text-muted">The theory: emergence, adaptation, self-organization, co-evolution, nonlinearity. <strong>You are here.</strong></small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 text-center border rounded bg-white h-100">
+                  <strong style="font-size:1.6rem;">&#129302;</strong>
+                  <h6 class="fw-bold mt-1">Agent-Based Modeling</h6>
+                  <small class="text-muted">The methodology: implement CAS as computational experiments with autonomous agents. <a href="thesis-abm.html">&#8594; ABM page</a></small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 text-center border rounded bg-white h-100">
+                  <strong style="font-size:1.6rem;">&#127936;</strong>
+                  <h6 class="fw-bold mt-1">Stochastic Dynamical Systems</h6>
+                  <small class="text-muted">The mathematics: stochastic differential equations, MDPs, Fokker-Planck, noise-driven dynamics. <a href="thesis-stochastic.html">&#8594; Stochastic page</a></small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 text-center border rounded bg-white h-100">
+                  <strong style="font-size:1.6rem;">&#129518;</strong>
+                  <h6 class="fw-bold mt-1">OPF + MDP</h6>
+                  <small class="text-muted">The engine: SCUC/SCED optimization and multi-agent RL learning. <a href="thesis-methods.html">&#8594; Methods page</a></small>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128218; The Intellectual Stack</h5>
+            <p class="small">
+              When you defend this thesis, or write about it, this is how the pieces connect:
+            </p>
+            <div style="background:#f8f9fa; border-radius:8px; padding:1.5rem; margin:1rem 0;">
+              <div class="row text-center small">
+                <div class="col-12 mb-2">
+                  <span class="badge" style="background:#1b5e20; font-size:0.9rem; padding:0.4rem 1rem;">&#127760; CAS Theory &mdash; The &ldquo;Why&rdquo;</span>
+                  <div style="font-size:1.2rem; margin:4px 0;">&#8593;</div>
+                </div>
+                <div class="col-12 mb-2">
+                  <span class="badge" style="background:#0d47a1; font-size:0.85rem; padding:0.4rem 1rem;">&#129302; ABM Methodology &mdash; The &ldquo;How&rdquo;</span>
+                  <div style="font-size:1.2rem; margin:4px 0;">&#8593;</div>
+                </div>
+                <div class="col-12 mb-2">
+                  <span class="badge" style="background:#e65100; font-size:0.85rem; padding:0.4rem 1rem;">&#127936; Stochastic Dynamical Systems &mdash; The &ldquo;Math&rdquo;</span>
+                  <div style="font-size:1.2rem; margin:4px 0;">&#8593;</div>
+                </div>
+                <div class="col-12">
+                  <span class="badge" style="background:#4a148c; font-size:0.85rem; padding:0.4rem 1rem;">&#129518; OPF + MDP/RL &mdash; The &ldquo;Engine&rdquo;</span>
+                  <div style="font-size:1.2rem; margin:4px 0;">&#8593;</div>
+                </div>
+                <div class="col-12">
+                  <span class="badge" style="background:#880e4f; font-size:0.85rem; padding:0.4rem 1rem;">&#128202; SAWEM Data & Scenarios &mdash; The &ldquo;What&rdquo;</span>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">&#128204; What CAS Theory Tells You About Your Results</h5>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>If You See This in Your Model...</th><th>CAS Theory Says...</th><th>What to Do</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SMP is patternless noise</td>
+                  <td>You are in the chaotic regime. Agents may have too much freedom or too little structure.</td>
+                  <td>Introduce market rules (price caps, must-offer requirements) or reduce noise amplitude.</td>
+                </tr>
+                <tr>
+                  <td>SMP repeats identically year after year</td>
+                  <td>You are in the ordered regime. The system is too rigid.</td>
+                  <td>Add stochastic elements (outages, weather, demand noise) or let agents learn more aggressively.</td>
+                </tr>
+                <tr>
+                  <td>Occasional price spikes with quiet periods in between</td>
+                  <td>You are near the edge of chaos. This is where real markets operate.</td>
+                  <td>Analyse the spike distribution (power law? exponential?) and the conditions that precede spikes.</td>
+                </tr>
+                <tr>
+                  <td>Investment comes in waves (boom-bust)</td>
+                  <td>You have a co-evolutionary system with delayed feedback. Classic CAS behaviour.</td>
+                  <td>Measure the period of the cycle. Compare to construction lead times. Test if faster/slower learning changes the period.</td>
+                </tr>
+                <tr>
+                  <td>Small change in carbon tax causes emissions to collapse</td>
+                  <td>You have found a phase transition &mdash; a critical threshold where the system reorganizes.</td>
+                  <td>Map the full phase diagram: run many carbon tax values and find the exact tipping point. This is your most policy-relevant finding.</td>
+                </tr>
+                <tr>
+                  <td>Different runs produce very different outcomes (same parameters, different seeds)</td>
+                  <td>Your system has multiple attractors. Path dependence is strong. Initial conditions matter.</td>
+                  <td>Run ensemble of 50&ndash;100 seeds. Cluster the outcome trajectories. Describe the different &ldquo;futures&rdquo; as scenarios.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THE FULL PICTURE                                            -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="summary">
+          <div class="card-header level-intro">
+            &#9632; The Full Picture &mdash; What You Are Ultimately Creating
+          </div>
+          <div class="card-body">
+            <div class="layman-box">
+              <h5>&#128172; One Sentence to Understand Your Entire Thesis</h5>
+              <p class="mb-0">
+                <strong>You are building a computational laboratory where the South African electricity
+                market can evolve, adapt, and surprise you &mdash; so that you can discover emergent
+                phenomena, test counterfactual policies, and identify tipping points before they
+                happen in reality.</strong>
+              </p>
+            </div>
+
+            <p class="small">
+              Every part of your thesis serves this mission:
+            </p>
+            <ul class="small">
+              <li><strong>CAS theory</strong> tells you why you need to build this laboratory at all &mdash; because the market is a complex adaptive system that cannot be understood through equilibrium models.</li>
+              <li><strong>ABM</strong> is the experimental apparatus &mdash; the &ldquo;petri dish&rdquo; where you grow the artificial market.</li>
+              <li><strong>Stochastic dynamical systems</strong> is the mathematical language you use to describe what you observe: the random processes, the SDEs, the stationary distributions, the first-passage times.</li>
+              <li><strong>OPF</strong> is the &ldquo;physics engine&rdquo; &mdash; the law of gravity in your artificial world that determines who gets dispatched and at what price.</li>
+              <li><strong>MDP / RL</strong> is how your agents learn, adapt, and co-evolve &mdash; the mechanism that keeps the system alive and changing.</li>
+              <li><strong>SAWEM data</strong> is the seed &mdash; the initial conditions that give your model its connection to reality.</li>
+            </ul>
+
+            <div class="card border-0 mt-4" style="background: #f0f4f8;">
+              <div class="card-body">
+                <h5 class="fw-bold">&#128260; Navigation: All Thesis Pages</h5>
+                <div class="row g-2 small text-center">
+                  <div class="col">
+                    <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#127760; CAS &larr;</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127891; ACE</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-emcas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127758; EMCAS</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+                  </div>
+                  <div class="col">
+                    <a href="thesis-simulation.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127922; Simulation</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="small text-muted mt-4">
+              <strong>Recommended reading to go deeper into CAS:</strong> John Holland, <em>Complexity: A Very Short Introduction</em> (Oxford, 2014) &mdash; the most accessible entry point. Melanie Mitchell, <em>Complexity: A Guided Tour</em> (Oxford, 2009) &mdash; broader and deeper. Stuart Kauffman, <em>The Origins of Order</em> (Oxford, 1993) &mdash; the classic on fitness landscapes and self-organization. For the Santa Fe Institute's ongoing work: <a href="https://www.santafe.edu" target="_blank">santafe.edu</a>.
+            </p>
+          </div>
+        </div>
+
+        <hr>
+        <p class="text-muted text-center mt-4">
+          Complex Adaptive Systems &mdash; the unifying theory behind the SAWEM ABM-MDP-OPF framework.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

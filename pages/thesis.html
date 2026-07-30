@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview • SA Power Market Economic Evolution via OPF</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .nav-pills .nav-link { color: #495057; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+    .nav-pills .nav-link.active { background: #007A4D; color: white; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="thesis.html" style="border:2px solid #007A4D;">&#127917; Overview</a>
+          <a class="nav-link" href="thesis-cas.html">&#127760; CAS</a>
+          <a class="nav-link" href="thesis-ace.html">&#127891; ACE</a>
+          <a class="nav-link" href="thesis-emcas.html">&#127758; EMCAS</a>
+          <a class="nav-link" href="thesis-abm.html">&#129302; ABM</a>
+          <a class="nav-link" href="thesis-stochastic.html">&#127936; Stochastic</a>
+          <a class="nav-link" href="thesis-methods.html">&#129518; Methods</a>
+          <a class="nav-link" href="thesis-agents.html">&#129302; Agents</a>
+          <a class="nav-link" href="thesis-simulation.html">&#127922; Simulation</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+
+        <h1 class="display-4 fw-bold text-sa-green">Prerequisites for Economic Evolutionary Analysis</h1>
+        <h5 class="text-muted">Understanding OPF Buildouts and Scenarios in the South African Wholesale Electricity Market (SAWEM)</h5>
+
+        <div class="row mt-4">
+          <div class="col-lg-12">
+
+            <h5>Why These Prerequisites Matter</h5>
+            <p>Analyzing the economic evolutionary trajectory of South Africa&#8217;s power system requires combining power systems engineering, economic dispatch, and scenario-based modeling. A solid grasp of the topics below will help you interpret OPF (Optimal Power Flow) results across different SAWEM futures.</p>
+
+            <h5>1. Fundamentals of Power Systems Economics</h5>
+            <p>The electricity market is driven by the interaction of supply costs, demand, and infrastructure constraints.</p>
+            <ul>
+              <li><strong>Economic Dispatch</strong>: Minimizing total generation cost while meeting demand and respecting transmission limits.</li>
+              <li><strong>Merit Order Curve</strong>: Ranking generators by marginal cost (from lowest to highest).</li>
+              <li><strong>Locational Marginal Pricing (LMP)</strong>: Price at each node reflecting energy, congestion, and losses.</li>
+              <li><strong>Levelized Cost of Electricity (LCOE)</strong>: Long-term cost metric for comparing technologies.</li>
+            </ul>
+
+            <h5>2. Optimal Power Flow (OPF)</h5>
+            <p>OPF is the core optimization tool used to model efficient power system operation and buildout.</p>
+            <p class="math">Minimize: &#931; C<sub>i</sub>(P<sub>i</sub>)<br>
+            Subject to: Power balance, line flow limits, generator limits, voltage constraints</p>
+            <p>Variants include:</p>
+            <ul>
+              <li>DC-OPF (linearized, faster)</li>
+              <li>AC-OPF (non-linear, more accurate)</li>
+              <li>Security-Constrained OPF (N-1 reliability)</li>
+              <li>Multi-period / Stochastic OPF (for planning across time and uncertainty)</li>
+            </ul>
+
+            <h5>3. Scenario Planning & Evolutionary Pathways</h5>
+            <p>Future power system trajectories are explored through carefully designed scenarios.</p>
+            <p>Key dimensions for SAWEM scenarios:</p>
+            <ul>
+              <li><strong>Renewables Buildout</strong>: Pace of wind, solar PV, and battery storage addition</li>
+              <li><strong>Coal & Gas Retirement</strong>: Timing of Eskom fleet decommissioning</li>
+              <li><strong>Demand Growth</strong>: Electrification of transport, industry, and hydrogen production</li>
+              <li><strong>Transmission Expansion</strong>: New corridors to unlock renewable-rich regions (Northern Cape, Eastern Cape)</li>
+              <li><strong>Carbon Pricing / Policy</strong>: Impact of carbon tax and Just Energy Transition Investment Plan (JET IP)</li>
+            </ul>
+
+            <h5>4. Market Design Concepts in SAWEM</h5>
+            <p>South Africa is transitioning toward a competitive wholesale market.</p>
+            <ul>
+              <li>Day-Ahead and Real-Time markets</li>
+              <li>Ancillary services procurement</li>
+              <li>Capacity mechanisms and strategic reserves</li>
+              <li>Bilateral contracting vs. market clearing</li>
+            </ul>
+
+            <h5>5. Economic Metrics for Trajectory Evaluation</h5>
+            <p>When comparing OPF buildout scenarios, track these indicators:</p>
+            <ul>
+              <li>Total System Cost (CAPEX + OPEX)</li>
+              <li>Cost of Unserved Energy (Value of Lost Load)</li>
+              <li>CO&#8322; emissions trajectory</li>
+              <li>System adequacy (Loss of Load Expectation - LOLE)</li>
+              <li>Average wholesale price and price volatility</li>
+              <li>Regional economic impacts (job creation in RE zones vs. coal regions)</li>
+            </ul>
+
+            <h5>6. Basic Optimization & Modeling Literacy</h5>
+            <p>Helpful for interpreting results:</p>
+            <ul>
+              <li>Linear Programming (LP) and Mixed-Integer Linear Programming (MILP)</li>
+              <li>Understanding shadow prices / dual variables</li>
+              <li>Handling uncertainty (robust optimization, stochastic programming)</li>
+            </ul>
+
+            <h5>7. <a href="thesis-simulation.html" class="text-decoration-none text-reset">&#127922; Simulation &mdash; Dual-Timescale ABM + OPF Framework</a></h5>
+            <p>
+              The closed-loop simulation that ties everything together: the Macro Economy ABM generates demand scenarios,
+              the Power Market ABM produces agent bids, the OPF clears the market, and agents learn from outcomes.
+              <a href="thesis-simulation.html">Go to the Simulation page &#8594;</a>
+            </p>
+            <ul>
+              <li><strong>Agent trajectories</strong> &mdash; hourly generator dispatch, household adoption, Eskom financials</li>
+              <li><strong>System-level time series</strong> &mdash; SMP, emissions, congestion, reliability, market concentration</li>
+              <li><strong>Emergent metrics</strong> &mdash; tipping points, investment cycles, phase transitions, causal inference</li>
+            </ul>
+
+            <hr>
+
+            <h5 class="mt-5">Recommended Quick Review Resources</h5>
+            <ul>
+              <li>IRENA & CSIR reports on South African power system modeling</li>
+              <li>Eskom Transmission Development Plan (TDP)</li>
+              <li>National Energy Regulator of South Africa (NERSA) documents</li>
+              <li>"Power System Economics" by Steven Stoft</li>
+              <li>PyPSA or MATPOWER tutorials for hands-on OPF modeling</li>
+            </ul>
+
+            <p class="mt-4 text-muted">Once you're comfortable with these concepts, you're ready to analyze detailed OPF buildout results and evaluate long-term economic evolutionary trajectories for the South African power market under different SAWEM scenarios.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

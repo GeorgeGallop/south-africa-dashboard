@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gas Turbine Manufacturing • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <style>
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .key-box { background: #fff8e1; border-left: 4px solid #ffb300; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .fix-box { background: #e8f5e9; border-left: 4px solid #43a047; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .turbine-table th { background: #e65100; color: white; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tech-card { border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; border: 1px solid #ffe0b2; background: #fff3e0; }
+    .tech-card h6 { font-weight: 700; color: #e65100; }
+    .tier-card { border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 4px solid; height: 100%; }
+    .tier-oem { background: #e3f2fd; border-left-color: #1565c0; }
+    .tier-tier1 { background: #e8f5e9; border-left-color: #2e7d32; }
+    .tier-tier2 { background: #fff3e0; border-left-color: #f57f17; }
+    .tier-tier3 { background: #fce4ec; border-left-color: #c62828; }
+    .supply-chain-box { background: #f5f0f7; border-radius: 12px; padding: 1rem; border: 1px solid #e8dff0; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="gas.html" class="btn btn-light btn-sm">🔥 Gas</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Hero -->
+        <div class="p-4 mb-3" style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 16px;">
+          <h1 class="fw-bold">🔥 Gas Turbine Manufacturing</h1>
+          <p class="mb-0">How gas turbines are made — from raw material inputs and casting, through assembly and testing, to the balance-of-plant equipment delivered alongside the turbine. Covers the global supply chain, the OEMs, and South Africa's position in the sector.</p>
+        </div>
+
+        <!-- The Big Picture -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🌍 What Is Gas Turbine Manufacturing?</h4>
+            <p>Gas turbine manufacturing is the design, casting, machining, assembly, and testing of turbine engines that convert natural gas (or liquid fuels) into rotational mechanical power for electricity generation, mechanical drive (compressors/pumps), and aviation. The sector sits at the intersection of <strong>precision metallurgy, aerodynamics, combustion science, and heavy electrical engineering</strong>.</p>
+            <p>The industry is dominated by a small number of global OEMs — the "Big Three" — with a deep, multi-tier supply chain extending across dozens of countries. A single large gas turbine contains 20,000+ parts, takes 12–24 months from order to delivery, and costs $15–$50 million depending on size and configuration.</p>
+
+            <div class="row g-2 mt-3">
+              <div class="col-md-3">
+                <div class="stat-card text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-3">$35B</div>
+                  <small class="text-muted">Global gas turbine market (2024)</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-3">~3</div>
+                  <small class="text-muted">Dominant global OEMs (GE, Siemens, Mitsubishi)</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-3">20,000+</div>
+                  <small class="text-muted">Parts per large turbine</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="stat-card text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-3">~40%</div>
+                  <small class="text-muted">Simple-cycle thermal efficiency (CCGT ~62%)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- The OEMs -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🏭 The Big Three OEMs and Their Product Families</h4>
+            <p>Three companies dominate the large-frame gas turbine market (>50 MW). A fourth tier includes smaller players in aeroderivative and industrial turbines.</p>
+
+            <div class="table-responsive">
+              <table class="table table-bordered turbine-table">
+                <thead>
+                  <tr>
+                    <th>OEM</th>
+                    <th>Flagship Models</th>
+                    <th>Power Range</th>
+                    <th>Efficiency (CCGT)</th>
+                    <th>Key Market Strength</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>GE Vernova</strong><br><small>(formerly GE Power)</small></td>
+                    <td>7F, 9F, 9HA.01/02, 7HA.03</td>
+                    <td>50–830 MW</td>
+                    <td>up to 64% (HA Class)</td>
+                    <td>Largest installed base worldwide. HA class is the most efficient in the world. Strong aeroderivative line (LM series).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Siemens Energy</strong><br><small>(formerly Siemens Power)</small></td>
+                    <td>SGT-800, SGT-3000, SGT-4000F, SGT-5000F, SGT5-8000H</td>
+                    <td>8–593 MW</td>
+                    <td>up to 63.5% (8000H)</td>
+                    <td>Very strong in European and Asian markets. SGT-800 (industrial) popular for mid-size IPP projects. Advanced H-class.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Mitsubishi Heavy Industries (MHI)</strong><br><small>via Mitsubishi Power</small></td>
+                    <td>M501JAC, M701JAC, M701F</td>
+                    <td>40–780 MW</td>
+                    <td>up to 64% (JAC)</td>
+                    <td>Dominant in Japan and parts of Asia. J-series is their top: 1,600°C+ turbine inlet temperature. JAC is air-cooled (no steam for cooling).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ansaldo Energia</strong><br><small>(Italy)</small></td>
+                    <td>GT36, AE64, AE94</td>
+                    <td>25–570 MW</td>
+                    <td>up to 62.5%</td>
+                    <td>Smaller player but technologically competitive. GT36 uses sequential combustion (reheat) for flexibility.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Solar Turbines</strong><br><small>(Caterpillar subsidiary)</small></td>
+                    <td>Titan, Taurus, Mars, Centaur</td>
+                    <td>1–30 MW</td>
+                    <td>n/a (mid-size)</td>
+                    <td>Industrial turbines for oil & gas mechanical drive (compressors, pumps, cogeneration). Packaged units with enclosure.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="key-box mt-3">
+              <strong>💡 Aeroderivative vs Frame:</strong> Aeroderivative turbines (GE LM series, Rolls-Royce MT30) are adapted from aircraft jet engines — lighter, faster-starting, lower efficiency but more flexible. Frame/heavy-duty turbines (GE 9F, Siemens SGT5-8000H) are larger, more efficient at baseload, slower to start, designed for utility-scale power generation.
+            </div>
+          </div>
+        </div>
+
+        <!-- Inputs: Raw Materials -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">#️⃣ Inputs: What Goes Into a Gas Turbine</h4>
+            <p>A gas turbine is as much a materials engineering challenge as a mechanical one. The hot gas path sees temperatures above 1,500°C — hotter than the melting point of most metals. Every material choice is driven by the need for <strong>creep resistance, oxidation resistance, thermal fatigue resistance, and strength at high temperature</strong>.</p>
+
+            <div class="supply-chain-box mb-3">
+              <h6 class="fw-bold">🪨 Superalloys (Nickel-Based)</h6>
+              <p class="small mb-0"><strong>What:</strong> Inconel (718, 738), Waspaloy, Rene 80, CMSX single-crystal alloys. <strong>Used in:</strong> turbine blades, vanes, combustion chamber liners, shrouds. <strong>Why:</strong> Maintain strength at 1,000–1,300°C. Single-crystal blades eliminate grain boundaries that cause creep. <strong>Critical inputs:</strong> Nickel (Russia, Indonesia, Canada), Chromium, Cobalt (DRC), Rhenium (Chile, Kazakhstan — extremely expensive, $3,000+/kg), Tantalum, Tungsten.</p>
+            </div>
+
+            <div class="supply-chain-box mb-3">
+              <h6 class="fw-bold">⚙️ Steel Alloys (Forged and Cast)</h6>
+              <p class="small mb-0"><strong>What:</strong> 12% Cr steel, Cr-Mo-V alloys, 9-10% Cr martensitic steel. <strong>Used in:</strong> compressor blades & discs, rotors, casings, shafts. <strong>Why:</strong> High fatigue strength, corrosion resistance at compressor temperatures. <strong>Critical inputs:</strong> Iron ore, Chromium, Molybdenum, Vanadium, Manganese.</p>
+            </div>
+
+            <div class="supply-chain-box mb-3">
+              <h6 class="fw-bold">🔥 Ceramic Coatings (TBCs — Thermal Barrier Coatings)</h6>
+              <p class="small mb-0"><strong>What:</strong> Yttria-stabilized zirconia (YSZ), gadolinium zirconate, mullite. <strong>Applied via:</strong> Electron beam physical vapor deposition (EB-PVD) or air plasma spray (APS). <strong>Why:</strong> Reduce metal surface temperature by 100–200°C. Applied to turbine blades, vanes, combustion liners. Only 0.3–0.5 mm thick but essential for modern turbine efficiency.</p>
+            </div>
+
+            <div class="supply-chain-box mb-3">
+              <h6 class="fw-bold">🧪 Cooling Air & Film Cooling</h6>
+              <p class="small mb-0"><strong>What:</strong> Compressed air bled from the compressor is routed through internal passages inside turbine blades and ejected through tiny holes to create a protective film of cool air over the blade surface. <strong>Why:</strong> Allows the turbine to operate at gas temperatures 300°C+ above the metal melting point. Modern blades have dozens of precisely drilled cooling holes (laser drilled). The cooling air design is proprietary and critical to OEM performance.</p>
+            </div>
+
+            <div class="supply-chain-box mb-3">
+              <h6 class="fw-bold">🔩 Other Enabling Materials</h6>
+              <p class="small mb-0"><strong>Copper alloys</strong> — bearings, heat exchanger tubes. <strong>Aluminum alloys</strong> — low-temperature ducts, instrumentation supports. <strong>Composite materials</strong> — intake ducting, noise enclosures (glass fiber, carbon fiber). <strong>Sealing materials</strong> — graphite, ceramic fiber, metallic brush seals to minimize leakage between rotating and stationary parts.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- The Manufacturing Process -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🔧 The Turbine Construction Process</h4>
+            <p>Building a large gas turbine is a 12–24 month process. Here's the sequence, from molten metal to test bed:</p>
+
+            <div class="tech-card">
+              <h6>1. Blade & Vane Casting (Investment Casting)</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> A wax pattern of the blade is coated in ceramic slurry, dried, and the wax is melted out, leaving a ceramic mould. Molten superalloy is poured into the mould under vacuum (to prevent oxidation). The casting is directionally solidified (DS) or grown as a single crystal (SX) by controlling cooling rates through the mould.<br>
+                <strong>Why it's hard:</strong> Turbine blades have complex internal cooling passages that are cast in place using ceramic cores. Single-crystal casting with no grain boundaries requires extreme precision. Only a handful of foundries worldwide can do this at scale.<br>
+                <strong>Key suppliers:</strong> PCC Airfoils (Howmet), Doncasters, SAFRAN, MTU Aero Engines, IHI (Japan).<br>
+                <strong>Location:</strong> Primarily USA, Germany, UK, Japan, France.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>2. Compressor Blade & Disc Forging</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> Steel and titanium alloy billets are heated to forging temperature (~1,200°C) and pressed in multi-ton closed-die forging presses. The rough shape is then precision machined on 5-axis CNC mills to final aerodynamic profile. Each compressor stage has a specific airfoil profile that changes the pressure and temperature of the working fluid.<br>
+                <strong>Why it's hard:</strong> Compressor blades must be identical within microns to maintain balance at 3,000–3,600 RPM. The root of the blade (fir tree attachment) must withstand centrifugal forces of tens of thousands of Gs.<br>
+                <strong>Key suppliers:</strong> GKN Aerospace, FMW (Austria), Mettis Aerospace, Senior Aerospace, Shin Caterpillar Mitsubishi.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>3. Rotor Assembly (Stacking the Spool)</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> Compressor discs and turbine discs are stacked on a central shaft, aligned within microns, and tightened with a central tie rod (for bolted rotors) or welded together (for welded rotors). The entire rotating assembly is balanced dynamically — a multi-stage process where tiny amounts of weight are added or removed.<br>
+                <strong>Why it's hard:</strong> A 200-ton rotor spinning at 3,000 RPM must have zero perceptible vibration. Unbalance of even 0.1 gram on a 20-meter-long rotor causes destructive vibration at speed. Rotor dynamics analysis (critical speeds, mode shapes) is a specialist discipline within turbomachinery engineering.<br>
+                <strong>Supply:</strong> Mostly done in-house by OEMs. Forging of rotor shafts comes from specialized steel forges (Japan Steel Works, Sheffield Forgemasters, Le Creusot).
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>4. Diaphragm, Vane & Nozzle Assembly</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> The stationary parts — vane carriers, nozzle rings, diaphragms — are assembled into the turbine casing. Each row of stationary vanes directs the hot gas at precisely the correct angle into the next rotating blade row. The tip clearances (gap between blade tip and casing) are set to hundreds of a millimeter.<br>
+                <strong>Why it's hard:</strong> The casing expands thermally as the turbine heats up. The running clearances must be calculated to avoid rubbing without being so large that leakage kills efficiency. Most modern turbines use <strong>active clearance control</strong> — casing heating/cooling systems that manage tip clearances dynamically.<br>
+                <strong>Supply:</strong> Casing castings from heavy steel foundries. Vane assemblies from the same superalloy foundries that make blades.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>5. Combustion System Assembly</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> The combustion system — multiple burner cans (or a single annular combustor in some designs) — is assembled and fitted to the turbine. Each burner has a fuel nozzle, swirl vanes, and a combustion liner. Modern systems use <strong>DLE (Dry Low Emissions)</strong> technology to achieve <9 ppm NOx without injecting steam or water.<br>
+                <strong>Why it's hard:</strong> Combustion dynamics (thermoacoustic instability) is one of the hardest engineering problems in gas turbines. The flame can oscillate violently, damaging the combustor within minutes. DLE combustors require precise fuel-air mixing and staging to suppress this. Each OEM's DLE design is proprietary.<br>
+                <strong>Key suppliers:</strong> Parker Hannifin (fuel nozzles), OEMs design their own combustors in-house. Combustion chamber castings from superalloy foundries.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>6. Final Assembly & Balancing</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> The rotor is installed in the lower half of the casing. The upper half is lowered by overhead crane. Bearings, seals, and instrumentation (temperature sensors, vibration probes, flame detectors) are installed. The assembly undergoes a <strong>cold alignment</strong> check where all bearing journals, couplings, and seals are verified to be coaxial within microns.<br>
+                <strong>Why it's hard:</strong> A 10-meter-long casing half weighing 80 tons must be positioned so that it mates perfectly with the lower half without damaging the blade tips or seals.<br>
+                <strong>Location:</strong> OEM final assembly plants in the USA (GE — Greenville SC, Schenectady NY), Germany (Siemens — Berlin, Mülheim), Japan (MHI — Takasago).
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h6>7. Full-Speed, Full-Load String Test</h6>
+              <p class="small mb-0">
+                <strong>Process:</strong> Before a turbine leaves the factory, it is tested on a dedicated test bed at full speed (3,000 or 3,600 RPM) and up to full load using a dynamometer or a power grid connection. The test runs for 1–2 weeks, measuring vibration, temperatures, pressures, emissions, and power output at every operating condition from start-up to baseload.<br>
+                <strong>Why it's hard:</strong> Test beds capable of handling 400+ MW turbines cost $100M+ and consume enormous amounts of power (or need a grid connection). The test validates the entire design and identifies any issues before shipment.<br>
+                <strong>Location:</strong> GE Greenville (SC), Siemens Berlin, Mitsubishi Takasago, Ansaldocso (Switzerland).<br>
+                <strong>Cost per test:</strong> $1–3 million for a large turbine test.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- What Else Is Delivered -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📦 What Else Is Delivered With the Turbine (Balance of Plant)</h4>
+            <p>A gas turbine generator set — commonly called a <strong>"turbine island"</strong> — includes far more than the engine itself. For a turnkey power plant, these are the major systems delivered alongside or in parallel with the turbine:</p>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-6">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">⚡ Generator & Electrical Systems</h6>
+                  <p class="small mb-0">
+                    A hydrogen- or air-cooled synchronous generator matched to the turbine's speed and power output. Includes:<br>
+                    <strong>Excitation system:</strong> Static or brushless exciter supplying DC to the rotor field windings.<br>
+                    <strong>Generator circuit breaker:</strong> High-voltage breaker between the generator and the step-up transformer.<br>
+                    <strong>ISSU:</strong> Isolated phase bus duct carrying the generator output to the transformer.<br>
+                    <strong>Key suppliers:</strong> GE, Siemens, Mitsubishi, ABB, STO (Ansaldo), Andritz.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">🔁 Heat Recovery Steam Generator (HRSG — for CCGT)</h6>
+                  <p class="small mb-0">
+                    For combined-cycle plants, the hot exhaust gas from the turbine (500–650°C) passes through an HRSG — a large heat exchanger that generates steam for a steam turbine. HRSG includes:<br>
+                    <strong>Economizer, evaporator, superheater sections:</strong> Precisely designed tube banks with fins for heat transfer.<br>
+                    <strong>Duct burner (optional):</strong> Supplementary firing to boost steam output.<br>
+                    <strong>Casing, expansion joints, stack:</strong> The entire exhaust path from turbine to chimney.<br>
+                    <strong>Key suppliers:</strong> Nooter/Eriksen, CMI, Babcock & Wilcox, AE&E, Doosan, Alstom.<br>
+                    <strong>Cost:</strong> $10–40M for a large CCGT HRSG.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">⛽ Fuel Gas System</h6>
+                  <p class="small mb-0">
+                    <strong>Fuel gas compressor:</strong> If pipeline pressure is insufficient.<br>
+                    <strong>Gas metering station:</strong> Flow measurement and fiscal metering.<br>
+                    <strong>Gas preheater:</strong> To prevent condensation of higher hydrocarbons.<br>
+                    <strong>Fuel gas treatment:</strong> Filtering, coalescing, and heating to meet the turbine's fuel specs.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">🌬️ Air Intake & Exhaust Systems</h6>
+                  <p class="small mb-0">
+                    <strong>Air intake filter house:</strong> Multi-stage filtration (static + pulse self-cleaning).<br>
+                    <strong>Inlet chilling/evaporative cooling:</strong> Boosts power output on hot days.<br>
+                    <strong>Exhaust silencer:</strong> 30–40 dB noise attenuation.<br>
+                    <strong>Exhaust ducting & stack:</strong> Usually with expansion joints and CEMS emissions monitoring ports.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">💧 Cooling & BOP Systems</h6>
+                  <p class="small mb-0">
+                    <strong>Lube oil system:</strong> Reservoir, pumps, coolers, filters — for turbine and generator bearings.<br>
+                    <strong>Hydraulic system:</strong> For fuel gas control valves, variable inlet guide vanes, trip mechanisms.<br>
+                    <strong>Cooling water system:</strong> Heat exchangers for lube oil, generator cooling water, and auxiliaries.<br>
+                    <strong>Heating, Ventilation & Air Conditioning (HVAC):</strong> For the turbine enclosure and control room.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">🧠 Control & I&C Systems</h6>
+                  <p class="small mb-0">
+                    <strong>Turbine control system (TCS):</strong> Redundant PLC/DCS controlling sequencing, load, temperature, and protection.<br>
+                    <strong>Unit control panel:</strong> The operator interface for the entire turbine island.<br>
+                    <strong>CMMS system:</strong> Condition monitoring & maintenance scheduling software.<br>
+                    <strong>Vibration monitoring:</strong> Bently Nevada (or equivalent) proximity probes, accelerometers.<br>
+                    <strong>Emissions monitoring (CEMS):</strong> Continuous gas analyzers for NOx, CO, O₂.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">🧯 Fire Protection & Safety Systems</h6>
+                  <p class="small mb-0">
+                    <strong>CO₂ or gas suppression:</strong> Inert gas release in the turbine enclosure on fire detection.<br>
+                    <strong>Fire detection:</strong> UV/IR flame detectors, heat sensors, smoke detectors.<br>
+                    <strong>Gas detection:</strong> Natural gas/methane and CO sensors in the enclosure and fuel gas area.<br>
+                    <strong>Drain & vent systems:</strong> Safe disposal of fuel gas in emergency events.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="supply-chain-box" style="height:100%;">
+                  <h6 class="fw-bold">🏗️ Civil, Structural & Enclosure</h6>
+                  <p class="small mb-0">
+                    <strong>Turbine building/enclosure:</strong> Weatherproof, sound-attenuated structure around the turbine.<br>
+                    <strong>Foundation:</strong> Spring-supported or reinforced concrete foundation to isolate vibration.<br>
+                    <strong>Inlet & exhaust transition ducts:</strong> Fabricated steel ducts connecting filters and stack.<br>
+                    <strong>Cable trays, HVAC ducting, lighting:</strong> The full balance-of-plant infrastructure.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- The Global Supply Chain -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🌏 The Global Supply Chain Structure</h4>
+            <p>Gas turbine manufacturing uses a multi-tier supply chain that spans the world. South Africa's role is currently modest but has potential in certain niches.</p>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-3">
+                <div class="tier-card tier-oem">
+                  <h6 class="fw-bold">Tier 0 — OEMs</h6>
+                  <p class="small mb-0">System integrators and design owners. Do final R&D, design, system engineering, assembly, and test. Control the IP. <strong>GE Vernova, Siemens Energy, Mitsubishi Power, Ansaldo Energia, Solar Turbines, Kawasaki, MAN Energy Solutions.</strong></p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="tier-card tier-tier1">
+                  <h6 class="fw-bold">Tier 1 — Critical Component Manufacturers</h6>
+                  <p class="small mb-0">Make the most complex parts: single-crystal blades, forged discs, combustion chambers, nozzles, bearings. Must be certified to aerospace-level quality standards. <strong>PCC/Howmet, Doncasters, GKN, MTU, IHI, SAFRAN.</strong></p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="tier-card tier-tier2">
+                  <h6 class="fw-bold">Tier 2 — Subcomponent & Material Suppliers</h6>
+                  <p class="small mb-0">Supply castings, forgings, tubing, electrical components, sensors, valves, seals, fasteners. Provide the specialized materials: superalloys, steels, ceramics, TBC powders. <strong>Carpenter Technology, Special Metals, VSMPO-AVISMA, Höganäs, Kyocera, Saint-Gobain.</strong></p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="tier-card tier-tier3">
+                  <h6 class="fw-bold">Tier 3 — Commodity & Services</h6>
+                  <p class="small mb-0">Raw metal suppliers, logistics, testing labs, machining shops, IT systems, aftermarket repair & overhaul. This is where most countries — including South Africa — participate. <strong>Scaw Metals (SA), Hulamin (SA — aluminum), AEMCO, standard machining shops.</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- South Africa's Position -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🇿🇦 South Africa in Gas Turbine Manufacturing</h4>
+            <p>South Africa is not a manufacturer of complete gas turbines — no local company produces a full engine. However, the country participates in the supply chain in several ways:</p>
+
+            <div class="key-box">
+              <h6 class="fw-bold">🟢 Existing Participation</h6>
+              <ul class="small mb-0">
+                <li><strong>Metal fabrication & machining:</strong> South Africa has a heavy industrial fabrication sector (e.g., <strong>DCD Group, Bell Equipment, Hulamin</strong>) that could supply Tier 2 components like intake ducts, acoustic enclosures, base frames, and non-critical steel fabrications. The rig-building and structural steel sector is well developed.</li>
+                <li><strong>Mining & metallurgy:</strong> SA produces the key alloying inputs: <strong>manganese</strong> (the world's largest resource), <strong>chrome</strong> (over 40% of global ore), <strong>vanadium, iron ore, and PGMs</strong> (used in high-temperature oxidation coatings). The country is already a supplier of these critical raw materials to the global superalloy and steel industry.</li>
+                <li><strong>Maintenance, Repair & Overhaul (MRO):</strong> SA has gas turbine MRO capability — <strong>Ansaldo's Atlas Facilities</strong> in Cape Town services African gas turbine fleets. <strong>SAFRI</strong> (SA Factory Railway & Industrial) does turbocharger and rotating equipment repair. With the growth of OCGT plants in SA (200+ gas turbines currently operating at Ankerlig, Gourikwa, Dedisa, Avon), the domestic MRO market is substantial.</li>
+                <li><strong>Balance-of-plant fabrication:</strong> HRSG and cooling system components can be and are manufactured locally for SA and African projects.</li>
+              </ul>
+            </div>
+
+            <div class="bad-box mt-3 p-3">
+              <h6 class="fw-bold">🔴 Gaps & Constraints</h6>
+              <ul class="small mb-0">
+                <li><strong>No investment casting capability</strong> for single-crystal superalloys — the technology and capital required are beyond any current local foundry.</li>
+                <li><strong>No heat treatment/coating capability</strong> for TBC application — EB-PVD coating lines are only in the US, Europe, and Japan.</li>
+                <li><strong>Limited precision machining</strong> to the tolerance required for turbine blades (<10 microns).</li>
+                <li><strong>No OEM presence</strong> — no GE, Siemens, or Mitsubishi manufacturing or assembly plant in SA (unlike Brazil, which hosts GE's South American operations).</li>
+                <li><strong>Skills pipeline:</strong> Turbo-machinery design and manufacturing engineering is a niche discipline with limited local university programs.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Economic & Strategic Position -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📈 Market & Strategic Context</h4>
+            <p>The gas turbine manufacturing sector is going through a significant transition that directly affects South Africa's energy planning:</p>
+
+            <div class="row g-2">
+              <div class="col-md-6">
+                <div class="supply-chain-box">
+                  <h6 class="fw-bold">🔋 Transition to "H-Class" Efficiency</h6>
+                  <p class="small mb-0">Modern H-class / J-class turbines (GE HA, MHI JAC, Siemens 8000H) achieve CCGT efficiency of 63–64%, compared to 55–58% for older F-class. For South Africa, this means <strong>existing gas power plans using older technology would burn 15–20% more fuel</strong> than if they specified modern turbines. The trade-off: H-class turbines cost more but require less gas per MWh — critical when gas is imported LNG.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="supply-chain-box">
+                  <h6 class="fw-bold">🌱 Hydrogen Readiness</h6>
+                  <p class="small mb-0">All three major OEMs now offer turbomachinery that can burn a blend of natural gas and hydrogen (up to 30–100% H₂ depending on the combustor). For South Africa — which has a <strong>Green Hydrogen National Programme</strong> targeting 10 GW of electrolysis by 2030 — this means gas turbines installed today can be converted to run on green hydrogen in the future. This is a key value proposition: the turbine is a "future-proof" investment that can decarbonize over time.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="supply-chain-box">
+                  <h6 class="fw-bold">⏱️ Fast Start & Flexibility</h6>
+                  <p class="small mb-0">Modern gas turbines can reach full load in 10–15 minutes (aeroderivatives in 2–3 minutes). This makes them the ideal complement to wind and solar, which are intermittent. South Africa's IRP2025 and TDP2025 both plan significant OCGT capacity for this reason. The manufacturing implication: the market is shifting from baseload CCGT designs to more flexible, fast-starting machines with <strong>lower minimum load</strong> and <strong>higher ramp rates</strong>.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="supply-chain-box">
+                  <h6 class="fw-bold">🛠️ Aftermarket & Services</h6>
+                  <p class="small mb-0">The gas turbine aftermarket (spare parts, repair, overhaul, upgrades) is a <strong>$20B+/year</strong> global industry — roughly half the size of the new-build market. For South Africa, every turbine installed creates a multi-decade revenue stream for MRO services. The OEMs push "long-term service agreements" (LTSAs) that cover maintenance for 10–20 years, often worth 2–3× the original turbine cost over the contract period. Building local MRO capability captures this value domestically.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Manufacturers Mentioned -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📋 Key Suppliers & Companies in the Value Chain</h4>
+            <div class="table-responsive">
+              <table class="table table-bordered turbine-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>HQ</th>
+                    <th>Role</th>
+                    <th>Products/Competence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>GE Vernova</strong></td><td>USA</td><td>OEM</td><td>HA-class gas turbines, LM aeroderivatives, generators, HRSG</td></tr>
+                  <tr><td><strong>Siemens Energy</strong></td><td>Germany</td><td>OEM</td><td>SGT series, generators, grid integration, digital controls (Omnivise)</td></tr>
+                  <tr><td><strong>Mitsubishi Power</strong></td><td>Japan</td><td>OEM</td><td>M501JAC, M701JAC, steam turbines, TOMONI digital platform</td></tr>
+                  <tr><td><strong>Ansaldo Energia</strong></td><td>Italy</td><td>OEM</td><td>GT36 sequential combustion, aftermarket services</td></tr>
+                  <tr><td><strong>PCC/Howmet</strong></td><td>USA</td><td>Tier 1</td><td>Investment castings, single-crystal & DS turbine blades, shrouds</td></tr>
+                  <tr><td><strong>Doncasters</strong></td><td>UK</td><td>Tier 1</td><td>Investment castings, precision machining of vanes & blades</td></tr>
+                  <tr><td><strong>GKN Aerospace</strong></td><td>UK</td><td>Tier 1</td><td>Compressor blades, structural castings</td></tr>
+                  <tr><td><strong>Bently Nevada</strong></td><td>USA</td><td>Tier 2</td><td>Vibration monitoring & protection systems (Baker Hughes)</td></tr>
+                  <tr><td><strong>Parker Hannifin</strong></td><td>USA</td><td>Tier 2</td><td>Fuel nozzles, fuel metering valves, actuation systems</td></tr>
+                  <tr><td><strong>Sandvik</strong></td><td>Sweden</td><td>Tier 2</td><td>Superalloy tubing, precision strip steel, HRSG finned tubes</td></tr>
+                  <tr><td><strong>Doosan Enerbility</strong></td><td>South Korea</td><td>Tier 1/2</td><td>HRSG fabrication, power plant equipment, iron/steel castings</td></tr>
+                  <tr><td><strong>Andritz</strong></td><td>Austria</td><td>Tier 2</td><td>Hydrogen-cooled generators, excitation systems, hydro turbine-generators</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-source-footer mb-4">
+          <strong>Source:</strong> Industry analysis, OEM specifications, open-source manufacturing data. <strong>Sector:</strong> Gas turbine manufacturing — a $35B/year global industry producing turbomachinery for power generation and mechanical drive applications.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>National Rail Policy • Transnet • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .pillar-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .pillar-box h5 { font-weight: 800; }
+    .timeline-table th { background: #007A4D; color: white; font-weight: 800; }
+    .timeline-table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transnet.html" class="btn btn-light btn-sm">🚂 Transnet</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #007A4D;">📄 National Rail Policy (2022)</h1>
+    <h5 class="text-muted mb-4">White Paper on National Rail Policy — Gazette No. 46397, 20 May 2022</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">The National Rail Policy is the foundational policy document that sets out South Africa's vision for a restructured, competitive, and efficient rail system. Approved by Cabinet in 2022, it marks the most significant rail reform since the formation of Transnet in 1990. Its central thesis: the vertically integrated state monopoly has failed, and the future lies in <strong>vertical separation, open access, and independent regulation</strong> — with private operators running trains on a publicly owned, independently managed network.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Gazette No:</strong> 46397<br>
+          <strong>Date:</strong> 20 May 2022<br>
+          <strong>Status:</strong> Approved White Paper<br>
+          <strong>Lead Department:</strong> Department of Transport<br>
+          <strong>Linked Act:</strong> <a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Problem -->
+    <h3 class="fw-bold mt-4 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">The Problem the Policy Diagnoses</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The White Paper opens with a blunt assessment: <em>"South Africa's rail system is in a state of crisis and decline."</em> It identifies several interlocking failures:</p>
+      <div class="row g-3 mt-2">
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>Declining freight volumes</strong>
+            <p class="small mb-0">General freight volumes fell by over 70% between 1988 and 2022. Rail's share of land freight dropped from ~89% to below 30%. The dominant mode became road — more expensive, more carbon-intensive, and more dangerous.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>Chronic underinvestment</strong>
+            <p class="small mb-0">Decades of deferred maintenance and capital under-spend left infrastructure in poor condition. Ageing locomotives, deteriorating track, obsolete signalling — the network's reliability collapsed.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>Monopoly inefficiency</strong>
+            <p class="small mb-0">Transnet's vertical integration — owning infrastructure and operating trains — gave it no competitive pressure. No alternative existed for customers. Service quality, pricing, and investment decisions suffered from the absence of market discipline.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <strong>Governance & state capture</strong>
+            <p class="small mb-0">The 2010s procurement scandals demonstrated that a state monopoly with weak oversight is vulnerable to systemic corruption. The policy explicitly cites governance failure as a structural problem requiring structural reform, not just personnel changes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Pillars -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">The Three Pillars of Reform</h3>
+    <p class="lead">The policy rests on three structural interventions designed to permanently change the incentives governing South Africa's rail system:</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="pillar-box h-100" style="border-color: #007A4D;">
+          <h5 class="text-success">1. Vertical Separation</h5>
+          <p>The infrastructure (tracks, signalling, stations) is separated from train operations. A new, independent <strong>Rail Infrastructure Manager</strong> owns and maintains the network and allocates access to all operators on equal terms. Transnet Freight Rail becomes just one train operator among many — competing for slots, not controlling them.</p>
+          <p class="small text-muted">Modelled on: UK (Network Rail), EU directives, Australian open-access frameworks.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="pillar-box h-100" style="border-color: #FFCD00;">
+          <h5 style="color: #b8860b;">2. Open Access</h5>
+          <p>Any licensed operator — private, public, domestic, international — has the <strong>right to apply</strong> for train paths on the national rail network. The Infrastructure Manager must grant access on published, non-discriminatory terms. This ends Transnet's de facto monopoly over who runs trains.</p>
+          <p class="small text-muted">First corridor targeted: Durban–Gauteng container line. Over 100 applications received by late 2024.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="pillar-box h-100" style="border-color: #002395;">
+          <h5 style="color: #002395;">3. Independent Economic Regulation</h5>
+          <p>A new, arms-length <strong>Transport Economic Regulator</strong> sets access tariffs, monitors market conduct, resolves disputes, and enforces compliance. This removes pricing and access decisions from political and corporate control and places them with an expert body accountable to Parliament.</p>
+          <p class="small text-muted">Established via the Economic Regulation of Transport Act (2024).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What the Policy Actually Mandates -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">What the Policy Mandates</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <ul>
+            <li class="mb-2"><strong>Establish a Rail Infrastructure Manager</strong> — a legally and operationally independent entity that owns, maintains, and controls access to the national rail network. Transnet's infrastructure assets are transferred to this entity.</li>
+            <li class="mb-2"><strong>Separate Transnet Freight Rail's train operations</strong> from infrastructure ownership. TFR becomes a train operating company (TOC) competing with other TOCs for access slots.</li>
+            <li class="mb-2"><strong>Create a Transport Economic Regulator</strong> with powers to set maximum tariffs for access to rail and port infrastructure, investigate anti-competitive behaviour, and impose remedies.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul>
+            <li class="mb-2"><strong>Mandate non-discriminatory access</strong> — any qualified operator can apply for slots; decisions must be published with reasons; appeals go to the Regulator, not Transnet management.</li>
+            <li class="mb-2"><strong>Establish a Rail Safety Regulator</strong> independent of operators, enforcing uniform safety standards across all TOCs.</li>
+            <li class="mb-2"><strong>Develop a multi-year Network Statement</strong> — a public document listing available capacity, access charges, and technical standards — so operators can plan investments with certainty.</li>
+            <li class="mb-2"><strong>Prioritise key freight corridors</strong> for early implementation: Durban–Gauteng, Sishen–Saldanha, Hotazel–Ngqura, and the coal line to Richards Bay.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Timeline -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Implementation Roadmap</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered timeline-table">
+        <thead>
+          <tr><th>Phase</th><th>Timeline</th><th>Key Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-bold">Phase 1 — Legal & Institutional</td>
+            <td>2022–2024</td>
+            <td>Pass the Economic Regulation of Transport Act. Establish the Transport Economic Regulator. Begin legal separation of the Rail Infrastructure Manager from Transnet.</td>
+          </tr>
+          <tr>
+            <td class="fw-bold">Phase 2 — Pilot Open Access</td>
+            <td>2024–2026</td>
+            <td>Publish the first Network Statement. Accept and process third-party access applications. First private trains running on the Durban–Gauteng corridor. Concession tenders for priority export corridors.</td>
+          </tr>
+          <tr>
+            <td class="fw-bold">Phase 3 — Full Separation</td>
+            <td>2026–2028</td>
+            <td>Complete transfer of rail infrastructure to the Infrastructure Manager. Full operational independence. Transnet Freight Rail operates as a commercial TOC competing on equal terms.</td>
+          </tr>
+          <tr>
+            <td class="fw-bold">Phase 4 — Mature Market</td>
+            <td>2028–2030+</td>
+            <td>Multiple competing TOCs on the core network. Transparent, regulated access pricing. Rail regains material market share from road. Logistics costs as a percentage of GDP decline.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Why It Matters -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Why the Rail Policy Matters for the Economy</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's logistics costs are among the highest in the world — approximately <strong>12% of GDP</strong>, compared to 8–9% in peer emerging economies. Coal exporters lost an estimated R50+ billion in revenue in 2022–2023 alone because Transnet could not move volumes to port. The Rail Policy's reforms are not ideological — they are an economic necessity. Every percentage point reduction in logistics costs adds billions of rand to GDP and makes South African exports more competitive globally.</p>
+      <p>The World Bank and National Treasury have both estimated that fixing rail logistics bottlenecks could add <strong>1–2% to annual GDP growth</strong>. The Rail Policy is the blueprint for unlocking that growth — by replacing a failing monopoly with a competitive market that attracts private capital, skills, and innovation.</p>
+    </div>
+
+    <!-- Relationship to the 2024 Act -->
+    <div class="content-card card p-4 mb-4" style="border-color: #002395; background: #f0f4ff;">
+      <h6 class="fw-bold" style="color: #002395;">How the Policy and the Act fit together</h6>
+      <p class="mb-0">The National Rail Policy (2022) sets out the <em>what</em> and the <em>why</em>. The <a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a> provides the <em>how</em> — the legal powers, institutional design, and enforcement mechanisms to implement the policy. Together they form a complete reform architecture: policy vision plus statutory teeth.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="data/national-rail-policy-2022.pdf" target="_blank">National Rail Policy White Paper — Full PDF ↓</a></li>
+      <li><a href="https://www.transport.gov.za" target="_blank">Department of Transport</a></li>
+      <li><a href="transnet.html">Transnet Overview</a></li>
+      <li><a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

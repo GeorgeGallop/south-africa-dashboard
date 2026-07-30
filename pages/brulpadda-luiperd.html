@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brulpadda & Luiperd • Gas • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #1565c0; }
+    .report-img { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.15); max-width: 100%; }
+    .report-caption { font-size: 0.8rem; color: #555; font-style: italic; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="upstream.html" class="btn btn-light btn-sm">🛢️ Upstream</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #1565c0;">🌊 Brulpadda & Luiperd</h1>
+    <h5 class="text-muted mb-4">Block 11B/12B, Outeniqua Basin — South Africa's First Deep-Water Gas Discoveries</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">In February 2019, TotalEnergies drilled Brulpadda-1AX — 175 km off the southern coast in 1,800m of water — encountering 57m of net gas-condensate pay. In October 2020, Luiperd-1X was even larger: 73m of net pay in superior reservoir. Together: <strong>~3.4 Tcf of recoverable gas and ~200 MMbbl of condensate</strong>. Enough to supply South Africa for over a decade. Yet as of 2026, no development plan exists and TotalEnergies has exited the block.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Block:</strong> 11B/12B, Outeniqua Basin<br>
+          <strong>Operator:</strong> TotalEnergies (45%)<br>
+          <strong>Partners:</strong> QatarEnergy (25%), CNRI (20%), Main Street (10%)<br>
+          <strong>Water depth:</strong> ~1,800m<br>
+          <strong>Combined gas:</strong> ~3.4 Tcf recoverable<br>
+          <strong>Condensate:</strong> ~200 MMbbl<br>
+          <strong>Status:</strong> Operator exit 2024 — development suspended
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Combined Gas</small><h3>3.4</h3><small>Tcf recoverable</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Condensate</small><h3>200</h3><small>MMbbl</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Brulpadda Pay</small><h3>57 m</h3><small>net gas-condensate</small></div></div>
+      <div class="col-6 col-md-3"><div class="stat-box"><small>Luiperd Pay</small><h3>73 m</h3><small>net gas-condensate</small></div></div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-md-6 text-center">
+        <img src="../images/gas/offshore-map.jpg" alt="Outeniqua Basin Map" class="report-img">
+        <div class="report-caption">Fig 1: Offshore map showing Block 11B/12B in the Outeniqua Basin. Source: Petroleum Agency SA / TotalEnergies public data.</div>
+      </div>
+      <div class="col-md-6 text-center">
+        <img src="../images/gas/brulpadda-diagram.jpg" alt="Brulpadda/Luiperd Diagram" class="report-img">
+        <div class="report-caption">Fig 2: Block diagram showing Brulpadda and Luiperd reservoir structure. Source: TotalEnergies investor presentation.</div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #1565c0; padding-left: 16px;">The Discoveries</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The Outeniqua Basin is a Mesozoic rift basin south of Mossel Bay. Cretaceous turbidite sandstones deposited by ancient submarine fans form the reservoirs. <strong>Brulpadda-1AX</strong> (Feb 2019, 3,633m TD, 57m net pay, φ 15-20%) confirmed a working petroleum system. <strong>Luiperd-1X</strong> (Oct 2020, 40 km east, 73m net pay, φ up to 25%) was larger and higher quality. The trap is a faulted anticline sealed by Late Cretaceous marine shales, sourced from Jurassic–Early Cretaceous organic-rich shales.</p>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Why TotalEnergies Walked Away</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>In July 2024, TotalEnergies exited Block 11B/12B. The reasons were fundamentally commercial:</p>
+      <div class="row g-3">
+        <div class="col-md-6"><div class="p-3" style="border: 2px solid #c62828;"><h6 class="fw-bold text-danger">The Cost Problem</h6><ul class="small"><li>$2–4 billion capex for a 2-well subsea tieback</li><li>175 km subsea pipeline to shore ($500M–$1B extra)</li><li>Agulhas Current — one of the world's fastest — limits weather windows</li><li>Coral South FLNG (Mozambique): $7B for 16 Tcf vs. $2-4B for 3.4 Tcf</li></ul></div></div>
+        <div class="col-md-6"><div class="p-3" style="border: 2px solid #e65100;"><h6 class="fw-bold" style="color:#e65100;">The Market Problem</h6><ul class="small"><li>SA gas market: only ~0.16 Tcf/yr — tiny by global standards</li><li>No gas-fired power fleet, no gas-to-power offtaker</li><li>LNG imports faster and cheaper than deep-water development</li><li>Estimated breakeven $8-12/MMBtu — competitive but unbankable without signed offtake</li></ul></div></div>
+      </div>
+      <div class="mt-4 p-3" style="background: #fff8e1; border-left: 6px solid #c62828;"><strong>Fundamental mismatch:</strong> World-class geology, stranded commercial asset. The gas is there — 3.4 Tcf proven. But getting it to market requires billions in a country with no gas infrastructure or offtake certainty. TotalEnergies didn't exit because the resource was bad — they exited because the market doesn't exist yet.</div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">What Happens Now</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>The remaining JV partners and government are exploring: finding a replacement operator (Shell, Eni, Gulf NOCs), phased development (Brulpadda first with tieback to Mossel Bay's PetroSA GTL infrastructure), FLNG vessels, or gas-to-power offtake agreements. Strategic implications: Gas Master Plan credibility damaged, LNG imports become the only near-term option, Mozambique gas cliff (2028) looms larger, exploration deterrent effect on other IOCs.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources:</strong> TotalEnergies press releases (2019, 2020) · PASA · Daily Maverick (July 2024) · Upstream newspaper · Block 11B/12B JV data</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

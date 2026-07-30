@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electrified Rail • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 4px; background: #002395; }
+    .timeline-dot { position: absolute; left: 6px; width: 22px; height: 22px; background: #FFCD00; border: 4px solid #002395; border-radius: 50%; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transportation.html" class="btn btn-light btn-sm">🚛 Transportation</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #002395;">⚡ Electrified Rail</h1>
+    <h5 class="text-muted mb-4">How South Africa Built — and Is Now Losing — One of the World's Great Electric Rail Networks</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">South Africa's rail network is one of the most electrified in the world. Roughly 9,000 kilometres of track — about 45% of the total — runs on overhead catenary wires, drawing power from Eskom's coal-fired grid to move the heaviest freight trains on the continent. This electrified network is not a modern green initiative. It is the product of a deliberate, decades-long national project that began in the 1920s, accelerated through the apartheid era, and reached its peak in the 1980s — built on a simple logic: South Africa had cheap coal, cheap electricity, and an economy that depended on moving mountains of minerals from the interior to the coast. But that logic has fractured. Eskom's collapse, organised cable theft, and decades of underinvestment have hollowed out the network. Trains that were designed to run on wires are being pulled by diesel locomotives — or not running at all. This is the story of what South Africa built, how it worked, and whether it can be saved.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Electrified track:</strong> ~9,000 km (~45% of 20,000+ km network)<br>
+          <strong>Voltage systems:</strong> 3 kV DC and 25 kV AC<br>
+          <strong>Power source:</strong> Eskom grid (coal-fired)<br>
+          <strong>Annual traction energy:</strong> ~4,500–5,500 GWh<br>
+          <strong>Electric loco fleet:</strong> ~1,200+ units (multiple classes)
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Stats Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Electrified Track</small>
+          <h3>~9,000</h3>
+          <small class="text-muted">km</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Share of Network</small>
+          <h3>~45%</h3>
+          <small class="text-muted">electrified</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Annual Power Draw</small>
+          <h3>~5,000</h3>
+          <small class="text-muted">GWh / year</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Eskom Grid Share</small>
+          <h3>~2–3%</h3>
+          <small class="text-muted">of total generation</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 1: WHY ELECTRIFY ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 1: Why South Africa Electrified Its Railways</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>To understand South Africa's electrified rail network, you have to understand the country's economic geography — and its energy abundance. South Africa sits on enormous coal reserves in Mpumalanga. Its mineral wealth — gold, platinum, iron ore, manganese, coal itself — is concentrated in the interior. Its export ports are on the coast, 600–900 km away. Moving millions of tonnes of bulk commodities over those distances, up steep gradients from the coast to the Highveld plateau, requires prodigious amounts of energy.</p>
+      <p>In the early 20th century, most countries used steam locomotives burning coal. But steam is inefficient — only about 6–8% of the energy in the coal actually reaches the wheels. Electric traction, by contrast, can be 25–30% efficient end-to-end (from power station to wheel), and electric locomotives produce far more pulling power — torque — at low speeds, which is exactly what you need to start a 200-wagon coal train on an uphill grade.</p>
+      <p>South Africa had a unique advantage: <strong>cheap, abundant coal-fired electricity</strong>. Eskom, founded in 1923, built massive power stations in Mpumalanga, right next to the coal mines. The marginal cost of generating another megawatt-hour was very low. Electrifying the railways — stringing overhead copper wire and building traction substations — was expensive upfront, but once built, the operating cost per tonne-kilometre was dramatically lower than steam or diesel. The economic case was overwhelming: high-volume, long-distance, heavy trains on fixed corridors, powered by cheap domestic electricity. No other country matched all three conditions as perfectly as South Africa did.</p>
+      <p><strong>And crucially, the electrification happened before road deregulation.</strong> When the network was built out in the 1920s–1980s, rail had no meaningful competition from trucks. The investment was made on the assumption that rail would carry most of the country's freight forever. That assumption held for decades — and then the Transport Deregulation Act of 1988 blew it apart, as road captured general freight and left rail with only the bulk commodities that couldn't physically move by truck. The electrified network was designed for a freight system that no longer existed in the same form.</p>
+    </div>
+
+    <!-- ========== PART 2: THE BUILD-OUT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 2: The Build-Out — A Timeline of Electrification</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's electrification programme was not a single project — it was a rolling, multi-decade national commitment that spanned most of the 20th century. Each phase added new corridors, new voltage technology, and new locomotive classes.</p>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1920s: The First Wires Go Up</strong>
+        <p class="mt-2">The first electrified line in South Africa was the <strong>Glencoe–Volksrust section in Natal</strong>, electrified at 3 kV DC in 1926. This was followed by the Natal main line from Durban to Pietermaritzburg. The choice of 3 kV DC followed the global standard of the era — Italy, Spain, and the Soviet Union all used similar systems. The early electrification was concentrated in Natal because the terrain was mountainous with steep gradients and tunnels, where steam locomotives struggled badly and electric traction showed its superiority immediately.</p>
+      </div>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1930s–1950s: Spreading Across the Reef</strong>
+        <p class="mt-2">Electrification expanded from Natal into the Transvaal (now Gauteng), connecting the Port of Durban to the Witwatersrand — the industrial and mining heartland of the country. The Reef's gold mines consumed enormous amounts of electricity and materials; moving this freight efficiently was a strategic priority. By the 1950s, the core Durban–Gauteng corridor was largely electrified at 3 kV DC.</p>
+      </div>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1960s: Cape Lines and the Eastern Transvaal</strong>
+        <p class="mt-2">Electrification reached the Cape, connecting Cape Town to the interior via the Cape main line. The Eastern Transvaal (Mpumalanga) coal lines began electrification — the first recognition that coal export volumes would require electric traction to handle at scale. By the end of the 1960s, roughly 3,000 km of track was electrified.</p>
+      </div>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1970s: The Heavy-Haul Revolution — 25 kV AC Arrives</strong>
+        <p class="mt-2">This was the decisive decade. Two new heavy-haul export lines were built from scratch — not as add-ons to an existing network, but as dedicated freight railways designed for electric traction from Day 1:</p>
+        <ul>
+          <li><strong>Sishen–Saldanha (861 km, opened 1976):</strong> Built to carry iron ore from Kumba's Sishen mine in the Northern Cape to the new deep-water port at Saldanha Bay on the West Coast. Electrified at 25 kV AC — the higher voltage chosen because the line would run the longest and heaviest trains in the world (up to 342 wagons, ~4 km long, gross mass ~42,000 tonnes). A 3 kV DC system would have required far more substations and could not deliver sufficient power to a single train of that size.</li>
+          <li><strong>Coal Line to Richards Bay (580 km, opened 1976):</strong> Built to export Mpumalanga coal through the new deep-water port at Richards Bay. Also electrified at 25 kV AC. This line quickly became the largest single export corridor in the country, moving ~76 million tonnes of coal per year at peak.</li>
+        </ul>
+        <p>These two lines marked South Africa's transition from 3 kV DC as the default to 25 kV AC for the heaviest traffic. The 25 kV AC system uses fewer substations (every 40–60 km vs. 20–30 km for DC) and can deliver more power per train — essential for the 200+ wagon coal and ore consists. Both decisions proved correct and remain technically valid 50 years later.</p>
+      </div>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1980s: The Peak</strong>
+        <p class="mt-2">By the mid-1980s, roughly 9,000 km of South Africa's rail network was electrified — making it one of the most electrified heavy-freight railways in the world, comparable only to the Soviet Union, Japan, and parts of Western Europe. The 3 kV DC network covered most general freight corridors (Gauteng, KwaZulu-Natal, Eastern Cape, Western Cape), while the 25 kV AC network handled the two heavy-haul export lines. Electric locomotives had almost entirely replaced steam for mainline freight — South Africa was one of the first countries to complete the steam-to-electric transition. The last mainline steam locomotive was retired in 1992.</p>
+      </div>
+
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1990s–2020s: Stagnation and Decay</strong>
+        <p class="mt-2">After reaching ~9,000 km in the 1980s, electrification effectively stopped. No significant new electrification projects were undertaken after 1990. The focus shifted to maintaining what existed — and, increasingly, failing to maintain it. The combination of road deregulation (1988), which drained high-value freight from rail, and the post-1994 political transition, which shifted infrastructure priorities, meant that the electrified network entered a long period of managed decline. The state capture era of the 2010s accelerated the decay: maintenance budgets were looted, copper wire was stolen at industrial scale, and new diesel locomotives were procured under corrupt contracts rather than investing in the electric fleet.</p>
+      </div>
+    </div>
+
+    <!-- ========== PART 3: WHAT IS ELECTRIC TODAY ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 3: What Is Electrified Today — The Assets</h3>
+    <div class="content-card card p-4 mb-4">
+
+      <h5 class="fw-bold">The Two Voltage Systems</h5>
+      <div class="row g-4 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #002395;">
+            <h6 class="fw-bold" style="color: #002395;">3 kV DC — The Workhorse (~7,000 km)</h6>
+            <p class="small">The older, larger system. Covers the main freight corridors in Gauteng, Mpumalanga, KwaZulu-Natal, Eastern Cape, and Western Cape. Uses approximately 200+ traction substations spaced every 20–30 km along the track, each converting Eskom's 88 kV or 132 kV AC supply to 3 kV DC for the overhead wire. The substations are the most maintenance-intensive part of the system — and the most vulnerable to theft and vandalism.</p>
+            <p class="small"><strong>Key 3 kV DC corridors:</strong> Durban–Gauteng (container and general freight), Gauteng–Eastern Cape, Gauteng–Western Cape, Mpumalanga coal fields to inland destinations, various branch lines now mostly abandoned or dieselised.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">25 kV AC — The Heavy-Haul (~2,000 km)</h6>
+            <p class="small">The high-voltage system for the highest-volume export corridors. Uses fewer, larger substations (every 40–60 km) that step Eskom's 132 kV or 275 kV supply directly to 25 kV AC for the overhead wire. Because AC can be transmitted at higher voltage, the system is more efficient over long distances and can deliver more power to a single train.</p>
+            <p class="small"><strong>Key 25 kV AC corridors:</strong> Sishen–Saldanha iron ore line (861 km), coal export line to Richards Bay (580 km), and connecting spurs. These two lines together carry the majority of South Africa's mineral export tonnage — and consume the majority of the traction energy.</p>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="fw-bold mt-4">The Electric Locomotive Fleet</h5>
+      <p>Transnet Freight Rail operates one of the world's largest fleets of electric locomotives — over 1,200 units across multiple classes, spanning from 1950s-era designs to modern dual-voltage machines. This fleet represents billions of rand of capital investment and is the reason the overhead wires exist — without locomotives to draw power from them, the catenary network is worthless.</p>
+
+      <div class="table-responsive mt-3">
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light">
+            <tr><th>Class</th><th>Type</th><th>Voltage</th><th>Introduced</th><th>Power</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>6E, 6E1</strong></td><td>Heavy freight</td><td>3 kV DC</td><td>1970s</td><td>~3,000 kW</td><td>General freight. Most now retired or in storage.</td></tr>
+            <tr><td><strong>7E, 7E1</strong></td><td>Heavy freight</td><td>3 kV DC / 25 kV AC (some dual)</td><td>1980s</td><td>~3,000 kW</td><td>Coal line, general freight.</td></tr>
+            <tr><td><strong>10E, 10E1, 10E2</strong></td><td>Heavy-haul</td><td>25 kV AC</td><td>1980s</td><td>~3,800 kW</td><td>Sishen–Saldanha iron ore line. Among the most powerful single-unit electric locos in the world when introduced.</td></tr>
+            <tr><td><strong>11E</strong></td><td>Heavy-haul</td><td>25 kV AC</td><td>1980s</td><td>~3,600 kW</td><td>Coal export line to Richards Bay.</td></tr>
+            <tr><td><strong>14E, 14E1</strong></td><td>Heavy freight</td><td>3 kV DC</td><td>1980s</td><td>~3,600 kW</td><td>General freight. Many still operational.</td></tr>
+            <tr><td><strong>18E</strong></td><td>Heavy freight</td><td>3 kV DC</td><td>2000s</td><td>~3,000 kW</td><td>Rebuilt from 6E1 frames with modern electronics.</td></tr>
+            <tr><td><strong>19E</strong></td><td>Dual-voltage heavy freight</td><td>3 kV DC / 25 kV AC</td><td>2009</td><td>~3,200 kW</td><td><strong>Dual-voltage.</strong> Can run on both systems without stopping. Used on corridors that transition between DC and AC, and on the coal line.</td></tr>
+            <tr><td><strong>20E</strong></td><td>Dual-voltage heavy-haul</td><td>3 kV DC / 25 kV AC</td><td>2013</td><td>~3,200 kW</td><td><strong>Dual-voltage.</strong> Designed for the coal line and general freight.</td></tr>
+            <tr><td><strong>21E</strong></td><td>Dual-voltage heavy-haul</td><td>3 kV DC / 25 kV AC</td><td>2015</td><td>~3,200 kW</td><td><strong>Dual-voltage.</strong> Most modern electric loco in the fleet. Part of the controversial CRRC procurement (state capture era).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alert alert-info small mt-3">
+        <strong>💡 Dual-voltage capability:</strong> The 19E, 20E, and 21E classes can transition between 3 kV DC and 25 kV AC while moving — the pantograph drops briefly, a voltage sensor detects the new system, and the onboard electronics reconfigure. A train leaving the coal fields in Mpumalanga might start under 3 kV DC, transition to 25 kV AC for the long haul to Richards Bay, and never stop. This capability, developed in the 2000s, was a significant South African engineering achievement.
+      </div>
+    </div>
+
+    <!-- ========== PART 4: POWER CONSUMPTION ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 4: Power Consumption — How Much Electricity Does the Rail Network Use?</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's electrified rail network is a major industrial electricity consumer — one of the largest single customers on Eskom's grid. The numbers tell the story of scale:</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Annual Traction Energy</small>
+            <h3>~4,500–5,500</h3>
+            <small class="text-muted">GWh per year</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Peak Demand</small>
+            <h3>~600–800</h3>
+            <small class="text-muted">MW during peak ops</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-box">
+            <small class="text-muted">Share of Eskom Output</small>
+            <h3>~2–3%</h3>
+            <small class="text-muted">of annual generation</small>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3">To put 5,000 GWh in perspective: this is roughly equivalent to the annual electricity consumption of <strong>1.5 million South African households</strong>, or about the output of one large Eskom power station unit (~600 MW) running continuously. It is also roughly equal to the total electricity consumption of a medium-sized South African city like Bloemfontein or Port Elizabeth.</p>
+
+      <p><strong>Where the power goes:</strong> The two 25 kV AC heavy-haul lines (Sishen–Saldanha and the coal line to Richards Bay) are the largest consumers, accounting for perhaps 60–70% of total traction energy — because they move the heaviest trains at the highest frequencies. The 3 kV DC network, though larger in route length, handles lighter trains and lower frequencies, consuming the remaining 30–40%.</p>
+
+      <p><strong>How it connects to Eskom:</strong> Transnet's traction substations are connected to Eskom's transmission grid at 88 kV, 132 kV, or 275 kV, depending on location and power demand. The substations are dispersed across the country — a substation every 20–60 km along electrified track — meaning the traction load is geographically distributed rather than concentrated at a single point. This is both an advantage (no single point of failure) and a vulnerability (load shedding affects whichever substation is in the affected area — and a train needs power continuously along its entire route, not just at the start).</p>
+
+      <p><strong>The Eskom dependency problem:</strong> When load shedding began in 2008, it exposed a fundamental vulnerability that the original planners never anticipated. The electrification programme was built on the assumption of <strong>always-available, cheap Eskom power</strong>. That assumption held for 80 years. Now, during load shedding, Eskom instructs Transnet to reduce power draw. Trains that would normally run under electric power must either stop, slow down, or switch to diesel locomotives — and since 2018, Transnet has increasingly deployed diesel locos on electrified lines as an emergency workaround. A single stage of load shedding can reduce freight throughput on electrified corridors by 10–20%. At Stage 6 — which South Africa experienced repeatedly in 2022–2023 — the impact is severe: the coal line and iron ore line cannot operate at full capacity because the grid cannot supply the traction substations at full load.</p>
+
+      <div class="mt-4 p-3" style="background: #fff5f5; border-left: 6px solid #c62828;">
+        <strong>The paradox of electrified rail in South Africa:</strong> The entire value proposition of electric traction was that it was cheaper than diesel — because South African coal-fired electricity was among the cheapest in the world. But if the electricity isn't available, the cost advantage disappears. You can't run electric trains without electricity. And running diesel trains under dead wires — which is what Transnet has been forced to do — combines the worst of both worlds: you paid to build and maintain the catenary network, but you're paying diesel prices for the actual traction energy. It is a cash-bleeding exercise that makes neither economic nor engineering sense.
+      </div>
+    </div>
+
+    <!-- ========== PART 5: THE CABLE THEFT CRISIS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Part 5: Cable Theft — The Slow Unravelling</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>An electrified railway is only as good as its overhead wires. And South Africa's overhead wires — the copper catenary and contact wires suspended above the track — are being stolen on an industrial scale. This is not petty theft. It is organised crime — syndicates using trucks, cranes, and insider knowledge to strip kilometres of copper from the rail network.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">What Gets Stolen</h6>
+            <p class="small mb-0">Copper catenary wire, copper contact wire, copper feeder cables, substation copper busbars, signalling cables, and even the steel masts that hold the wires up (cut down for scrap). The theft follows the copper price — when global copper prices spike, cable theft incidents surge. South Africa's scrap copper export data shows volumes that far exceed what legitimate recycling can explain.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color: #e65100;">The Scale</h6>
+            <p class="small mb-0">Thousands of kilometres of overhead wire have been stolen over the past decade. Secondary and branch lines in Gauteng, Mpumalanga, and KwaZulu-Natal are worst-hit. In some areas, wire stolen on Monday is replaced by Wednesday — and stolen again by Friday. Transnet estimated cable theft-related disruption costs at <strong>R2+ billion per year</strong>, not including lost export revenue from trains that couldn't run.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3">When the wires are stolen, the line reverts to diesel traction only — assuming diesel locomotives are available. If they aren't, the line simply shuts down. Every kilometre of stolen catenary wire represents a permanent loss of electrified freight capacity — because Transnet does not have the capital budget to replace it all. The network is slowly shrinking, wire by stolen wire, and no one has a credible plan to stop it.</p>
+    </div>
+
+    <!-- ========== PART 6: THE FUTURE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 6: What Happens Next — Three Futures for Electric Rail</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>South Africa's electrified rail network is at a crossroads. Three very different futures are possible — and the path chosen will have consequences for the economy, the environment, and the viability of the country's mineral exports for decades.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color: #c62828;">
+            <h6 class="fw-bold text-danger">❌ Managed Decline</h6>
+            <p class="small">Cable theft continues. Eskom's grid remains unreliable. Transnet lacks capital for catenary maintenance. Electrified lines progressively dieselised or abandoned. By 2040: network shrinks from ~9,000 km to ~3,000 km — only Sishen–Saldanha and the coal line remain electrified. The 3 kV DC system effectively dies. All other freight moves under diesel or not at all. The locomotive fleet — Classes 6E through 21E — becomes a scrapyard liability. Annual traction energy consumption falls below 2,000 GWh.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color: #FFCD00;">
+            <h6 class="fw-bold" style="color: #b8860b;">⚠️ Holding the Line</h6>
+            <p class="small">Government and Transnet invest in anti-theft measures (drones, security, aluminium catenary wire). Eskom grid stabilises after reform. Core network maintained at ~8,000–9,000 km but no new electrification. Electric traction remains primary mode for heavy-haul corridors. General freight shifts increasingly to open-access diesel operators. Annual traction energy stabilises at ~4,000–5,000 GWh. The network survives but doesn't grow.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">✅ Electrification Renaissance</h6>
+            <p class="small">Open-access reform enables private rail operators to invest in electric locomotive fleets — creating a commercial constituency for catenary maintenance. New electrification uses 25 kV AC as standard. Grid-connected renewables supply traction power directly, reducing Eskom dependency. Hydrogen and battery-electric locomotives handle last-mile and branch lines. South Africa positions its electric rail network as a global model for green freight logistics — exactly when carbon border taxes (EU CBAM) penalise diesel supply chains. Annual traction energy grows to 6,000–7,000 GWh.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3" style="background: #f0faf4; border-left: 6px solid #007A4D;">
+        <strong>The strategic argument:</strong> The world is moving toward carbon pricing. The EU's Carbon Border Adjustment Mechanism (CBAM) will impose costs on carbon-intensive imports. South Africa's mineral exports — iron ore, coal, manganese, ferrochrome — will increasingly be judged by their full supply-chain carbon footprint, including transport from mine to port. An electrified rail network powered by a decarbonising grid is one of South Africa's strongest competitive advantages in this emerging trade regime. Abandoning electrification for diesel would lock in higher transport emissions for decades — precisely when global markets are beginning to penalise them. The 1920s decision to electrify the railways, made for purely economic reasons (cheap coal power), has accidentally become a 21st-century environmental asset. Whether South Africa preserves it or lets it decay is one of the most consequential infrastructure decisions the country will make in the next decade.
+      </div>
+    </div>
+
+    <p class="fw-bold fs-5 mt-4">South Africa's electrified rail network was built over 60 years, powered by cheap coal, to move the country's mineral wealth to the world. It was a deliberate, expensive, and — for most of the 20th century — brilliantly successful national project. The question now is whether a country that has struggled to maintain basic infrastructure can hold onto an asset that most of the world would envy: 9,000 km of electrified heavy-freight railway, with the locomotives, substations, and institutional knowledge to operate it. The technical case for keeping it is overwhelming. The financial and operational challenges are severe. The outcome is not yet determined.</p>
+
+    <hr>
+    <p class="text-muted"><strong>Related Pages:</strong></p>
+    <ul>
+      <li><a href="transportation.html">Transportation & Freight Logistics — Full Modal Shift Story</a></li>
+      <li><a href="transnet.html">Transnet SOC Ltd</a></li>
+      <li><a href="road-deregulation.html">Road Deregulation (1988)</a></li>
+      <li><a href="eskom.html">Eskom — The Power Behind the Wires</a></li>
+      <li><a href="national-rail-policy.html">National Rail Policy (2022)</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
