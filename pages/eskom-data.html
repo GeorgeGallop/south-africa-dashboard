@@ -112,6 +112,59 @@
           </div>
         </div>
 
+        <!-- Load Shape Table -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📐 Load Shape Factors</h4>
+            <p class="text-muted small">Hourly deviation from the daily mean — the "shape" of the dispatch curve. Each hour's MW is compared against the 24-hour average to produce a deviation (MW and %). The Normalized column maps each hour to 0–1 (min hour = 0, max hour = 1). Enter a <strong>Min Load</strong> and <strong>Max Load</strong> below to re-scale the profile to any load range.</p>
+            
+            <div class="row g-3 mb-3 align-items-end">
+              <div class="col-md-3">
+                <label class="form-label small fw-bold mb-1">Reference Year</label>
+                <select id="shapeYearSelect" class="form-select form-select-sm" onchange="renderLoadShapeTable(this.value)">
+                  <option value="avg">All Years (Average)</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label small fw-bold mb-1">Min Load (MW)</label>
+                <input type="number" id="shapeMinLoad" class="form-control form-control-sm" oninput="computeShapedSeries()" step="100">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label small fw-bold mb-1">Max Load (MW)</label>
+                <input type="number" id="shapeMaxLoad" class="form-control form-control-sm" oninput="computeShapedSeries()" step="100">
+              </div>
+              <div class="col-md-5">
+                <span class="text-muted small" id="shapeRangeInfo"></span>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="fw-bold">Reference Shape (Deviation from Mean)</h6>
+                <div class="table-responsive data-table-wrap" style="max-height: 520px;">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead>
+                      <tr><th>Hour</th><th>MW</th><th>Dev MW</th><th>Dev %</th><th>Norm</th></tr>
+                    </thead>
+                    <tbody id="shapeTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Shaped Load Series</h6>
+                <div class="table-responsive data-table-wrap" style="max-height: 520px;">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead>
+                      <tr><th>Hour</th><th>Shaped MW</th><th>% of Range</th></tr>
+                    </thead>
+                    <tbody id="shapedOutputBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Renewables & Imports -->
         <div class="section-card card">
           <div class="card-body">
@@ -390,19 +443,15 @@
         </tr>`;
       });
 
+      // --- Load Shape Table Setup ---
+      setupLoadShapeSection();
+
       // Configure CSV download
     }
 
-    // Load the CSV directly for the data table
-    async function loadRawData() {
-      const resp = await fetch('../data/power/Eskom 5Y Data Request.csv');
-      const text = await resp.text();
-      const lines = text.split('\n').filter(l => l.trim());
-      const headers = parseCSVLine(lines[0]);
-      const totalLines = lines.length - 1;
-      document.getElementById('rawRowCount').textContent = totalLines.toLocaleString();
-    }
-    loadRawData();
+    // Fetch CSV to confirm it loads (no-op, data is pre-summarized)
+    // The precomputed JSON summary provides all stats displayed on this page.
+
 
     function parseCSVLine(line) {
       const result = [];
@@ -416,6 +465,150 @@
       }
       result.push(current.trim());
       return result;
+    }
+
+    // ========== LOAD SHAPE FUNCTIONS ==========
+    // Holds the 24-hour profile arrays keyed by year + "avg"
+    let hourlyProfiles = {};
+    // Holds the currently computed shape data: { label, h, mw, deviation, deviationPct, interpolated }
+    let currentShapeData = [];
+
+    function setupLoadShapeSection() {
+      if (!DATA || !DATA.hourlyProfile) return;
+      hourlyProfiles = {};
+
+      // Collect each year that has at least 12 non-zero hours (not forecast-only stub)
+      const years = Object.keys(DATA.hourlyProfile).sort();
+      const sel = document.getElementById('shapeYearSelect');
+      // Keep the "avg" option, clear the rest
+      while (sel.options.length > 1) sel.remove(1);
+
+      years.forEach(yr => {
+        const vals = DATA.hourlyProfile[yr];
+        const arr = [];
+        for (let h = 0; h < 24; h++) {
+          arr.push(vals[h] && vals[h] !== 0 ? vals[h] : 0);
+        }
+        const nonZero = arr.filter(v => v > 0).length;
+        if (nonZero >= 12) {
+          hourlyProfiles[yr] = arr;
+          const opt = document.createElement('option');
+          opt.value = yr;
+          opt.textContent = yr;
+          sel.appendChild(opt);
+        }
+      });
+
+      // Build multi-year average
+      if (Object.keys(hourlyProfiles).length > 0) {
+        const avgArr = new Array(24).fill(0);
+        let yrCount = Object.keys(hourlyProfiles).length;
+        Object.values(hourlyProfiles).forEach(arr => {
+          for (let h = 0; h < 24; h++) avgArr[h] += arr[h];
+        });
+        for (let h = 0; h < 24; h++) avgArr[h] = avgArr[h] / yrCount;
+        hourlyProfiles['avg'] = avgArr;
+      }
+
+      // Default to "avg"
+      renderLoadShapeTable('avg');
+
+      // Auto-populate min using hour 0, max using hour 23
+      if (currentShapeData.length > 0) {
+        const ref0 = currentShapeData[0].mw;
+        const ref23 = currentShapeData[23].mw;
+        document.getElementById('shapeMinLoad').value = Math.round(ref0 / 100) * 100;
+        document.getElementById('shapeMaxLoad').value = Math.round(ref23 / 100) * 100;
+        computeShapedSeries();
+      }
+    }
+
+    function renderLoadShapeTable(yearKey) {
+      const arr = hourlyProfiles[yearKey] || hourlyProfiles['avg'];
+      if (!arr) return;
+
+      const mean = arr.reduce((a, b) => a + b, 0) / 24;
+      const ref0 = arr[0];   // midnight anchor = min point
+      const ref23 = arr[23]; // 23:00 anchor = max point
+      const anchorRange = ref23 - ref0 || 1;
+
+      currentShapeData = [];
+      for (let h = 0; h < 24; h++) {
+        const mw = arr[h];
+        const dev = mw - mean;
+        const devPct = mean !== 0 ? (dev / mean) * 100 : 0;
+        // Interpolated: position between ref0 (0) and ref23 (1) — can go outside [0,1] if hour is below 0:00 or above 23:00
+        const interp = (mw - ref0) / anchorRange;
+        currentShapeData.push({
+          label: `${h}:00`,
+          h: h,
+          mw: mw,
+          deviation: dev,
+          deviationPct: devPct,
+          interpolated: interp
+        });
+      }
+
+      const tbody = document.getElementById('shapeTableBody');
+      tbody.innerHTML = '';
+      currentShapeData.forEach((d) => {
+        const devClass = d.deviation >= 0 ? 'text-danger' : 'text-success';
+        let rowClass = '';
+        if (d.h === 0) rowClass = 'table-info';      // min anchor
+        else if (d.h === 23) rowClass = 'table-danger'; // max anchor
+        tbody.innerHTML += `<tr class="${rowClass}">
+          <td><strong>${d.label}</strong></td>
+          <td>${d.mw.toFixed(0)}</td>
+          <td class="${devClass}">${d.deviation >= 0 ? '+' : ''}${d.deviation.toFixed(0)}</td>
+          <td class="${devClass}">${d.deviationPct >= 0 ? '+' : ''}${d.deviationPct.toFixed(2)}%</td>
+          <td>${d.interpolated.toFixed(4)}</td>
+        </tr>`;
+      });
+
+      updateShapeRangeInfo();
+    }
+
+    function updateShapeRangeInfo() {
+      const el = document.getElementById('shapeRangeInfo');
+      if (currentShapeData.length === 0) {
+        el.textContent = '';
+        return;
+      }
+      const ref0 = currentShapeData[0].mw;
+      const ref23 = currentShapeData[23].mw;
+      const globalMin = Math.min(...currentShapeData.map(d => d.mw));
+      const globalMax = Math.max(...currentShapeData.map(d => d.mw));
+      const mean = Math.round(currentShapeData.map(d => d.mw).reduce((a, b) => a + b, 0) / 24);
+      el.innerHTML = `Anchors: 0:00 = <strong>${Math.round(ref0).toLocaleString()} MW</strong> | 23:00 = <strong>${Math.round(ref23).toLocaleString()} MW</strong> | Global range: <strong>${Math.round(globalMin).toLocaleString()} – ${Math.round(globalMax).toLocaleString()} MW</strong> | Mean: <strong>${mean.toLocaleString()} MW</strong>`;
+    }
+
+    function computeShapedSeries() {
+      if (currentShapeData.length === 0) return;
+
+      const minLoad = parseFloat(document.getElementById('shapeMinLoad').value);
+      const maxLoad = parseFloat(document.getElementById('shapeMaxLoad').value);
+
+      const tbody = document.getElementById('shapedOutputBody');
+      if (isNaN(minLoad) || isNaN(maxLoad) || minLoad >= maxLoad) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Enter valid Min & Max Load to compute the shaped series.</td></tr>';
+        return;
+      }
+
+      const targetRange = maxLoad - minLoad;
+      tbody.innerHTML = '';
+      currentShapeData.forEach(d => {
+        // d.interpolated is 0 at hour 0, 1 at hour 23 — map linearly to [minLoad, maxLoad]
+        const shapedMw = minLoad + d.interpolated * targetRange;
+        const pctOfRange = ((shapedMw - minLoad) / targetRange) * 100;
+        let rowClass = '';
+        if (d.h === 0) rowClass = 'table-info';
+        else if (d.h === 23) rowClass = 'table-danger';
+        tbody.innerHTML += `<tr class="${rowClass}">
+          <td><strong>${d.label}</strong></td>
+          <td>${shapedMw.toFixed(0)}</td>
+          <td>${pctOfRange.toFixed(2)}%</td>
+        </tr>`;
+      });
     }
   </script>
 </body>

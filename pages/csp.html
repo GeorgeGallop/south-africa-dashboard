@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSP (Concentrated Solar) • Capacity Type • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <style>
+    .csp-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .csp-card .card-body { padding: 1.8rem; }
+    .stat-card { background: #f5f0f7; border-radius: 12px; padding: 1rem; text-align: center; height: 100%; }
+    .stat-card .num { font-size: 1.7rem; font-weight: 800; color: #2d1b3e; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-amber { background: #fff8e1; color: #f57f17; }
+    .badge-red { background: #fce4ec; color: #c62828; }
+    .key-fact { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 8px; padding: 0.9rem 1.1rem; }
+    .core-insight { background: #2d1b3e; color: #fff; border-radius: 16px; padding: 1.6rem; }
+    .core-insight h3 { color: #ffb300; }
+    table.project-table td, table.project-table th { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Hero -->
+        <div class="p-4 mb-3" style="background: linear-gradient(135deg, #fff8e1, #ffecb3); border-radius: 16px;">
+          <h1 class="fw-bold">☀️ Concentrated Solar Power (CSP)</h1>
+          <p class="mb-0 lead">Solar power that <strong>stores heat, not electricity</strong> — and can keep generating <strong>well after dark</strong>. South Africa's CSP fleet (~600&nbsp;MW) is built around molten-salt thermal storage, making it one of the few renewable technologies that can be dispatched to meet the <strong>evening peak</strong>.</p>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="row g-2 mb-4">
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">~600 MW</div><div class="label">Installed CSP</div><div class="sub">7 plants, all Northern Cape</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">12 hrs</div><div class="label">Largest Storage</div><div class="sub">Redstone (2025)</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">9 hrs</div><div class="label">Bokpoort Storage</div><div class="sub">1st utility plant >9h</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">2 Types</div><div class="label">Trough vs Tower</div><div class="sub">Parabolic / central receiver</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">~550°C</div><div class="label">Salt Temperature</div><div class="sub">Hot tank (approx.)</div></div>
+          </div>
+          <div class="col-md-2">
+            <div class="stat-card"><div class="num">1st</div><div class="label">KaXu COD</div><div class="sub">March 2015</div></div>
+          </div>
+        </div>
+
+        <!-- The core insight -->
+        <div class="core-insight mb-4">
+          <h3 class="h4 fw-bold mb-2">🔑 The key to "working at night": CSP stores heat, not electricity</h3>
+          <p class="mb-2">A normal solar panel (PV) makes electricity directly from sunlight, so when the sun goes down the power stops. A CSP plant instead uses mirrors to <strong>make heat</strong>, and that heat can be <strong>banked in molten salt</strong> — a liquid "thermal battery" kept in insulated tanks.</p>
+          <p class="mb-0">During the day the plant produces electricity <em>and</em> charges the salt tanks. In the evening, when the mirrors go dark, the plant simply switches to drawing stored heat out of the tanks and keeps the turbine spinning — for <strong>up to 12 hours</strong> at Redstone, meaning it can run through the whole night and into the next morning.</p>
+        </div>
+
+        <!-- How it works -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">⚙️ How a CSP plant works (with storage)</h4>
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <h6 class="fw-bold">☀️ Day cycle — collect heat, make power, charge the tank</h6>
+                <ol class="mb-0">
+                  <li>Mirrors (<strong>parabolic troughs</strong> or <strong>heliostat field + tower</strong>) track the sun and concentrate direct sunlight onto a receiver pipe or tower-top receiver.</li>
+                  <li>The concentrated light heats a heat-transfer fluid — synthetic oil (~390°C) in trough plants, or molten salt directly (~550°C) in tower plants like Redstone.</li>
+                  <li>Some hot fluid goes to a <strong>heat exchanger</strong> that boils water into steam, spinning a steam turbine → electricity.</li>
+                  <li>The <em>remaining</em> hot fluid is used to <strong>melt salt</strong>; the hot salt (~550°C) is pumped up into the <strong>hot salt tank</strong> — this is the plant "charging" its battery.</li>
+                </ol>
+              </div>
+              <div class="col-lg-6">
+                <h6 class="fw-bold">🌙 Night cycle — discharge the battery</h6>
+                <ol class="mb-0">
+                  <li>Sun sets; the mirror field stops collecting. No more solar heat is coming in.</li>
+                  <li>Hot molten salt is drawn from the <strong>hot tank</strong> and pumped through a heat exchanger.</li>
+                  <li>The salt's stored heat boils water → steam → <strong>the turbine keeps running exactly as during the day</strong>.</li>
+                  <li>Cooled salt flows back to the <strong>cold tank</strong> (~290°C), ready to be re-melted by tomorrow's sun.</li>
+                  <li>Generation continues until the hot tank runs out — <strong>hours of storage</strong> versus minutes of battery for a typical PV plant.</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Simple two-tank SVG diagram -->
+            <div class="mt-4 rounded-3 p-3 bg-light border text-center">
+              <div class="fw-semibold mb-2 text-muted small text-uppercase">The two-tank molten-salt storage loop</div>
+              <svg viewBox="0 0 720 260" style="max-width: 100%; height: auto;" role="img" aria-label="Two-tank molten salt storage diagram">
+                <!-- Sun -->
+                <circle cx="60" cy="50" r="22" fill="#FFCD00" stroke="#B8860B" stroke-width="2"/>
+                <g stroke="#FFCD00" stroke-width="3" stroke-linecap="round">
+                  <line x1="60" y1="16" x2="60" y2="6"/>
+                  <line x1="60" y1="94" x2="60" y2="104"/>
+                  <line x1="26" y1="50" x2="16" y2="50"/>
+                  <line x1="94" y1="50" x2="104" y2="50"/>
+                </g>
+                <!-- Mirror trough -->
+                <path d="M 130 95 Q 175 55 220 95" fill="none" stroke="#607D8B" stroke-width="6"/>
+                <line x1="175" y1="78" x2="175" y2="60" stroke="#F57C00" stroke-width="4"/>
+                <path d="M 120 108 L 230 108 L 240 122 L 110 122 Z" fill="#B0BEC5" stroke="#607D8B" stroke-width="2"/>
+                <!-- Receiver pipe to hot side -->
+                <polyline points="175,60 350,60 350,85" fill="none" stroke="#D32F2F" stroke-width="5"/>
+                <text x="95" y="130" font-size="12" fill="#555">concentrated sunlight heats the fluid</text>
+                <!-- Divider -->
+                <line x1="20" y1="150" x2="700" y2="150" stroke="#ccc" stroke-width="1" stroke-dasharray="5,4"/>
+                <text x="20" y="172" font-size="12" fill="#888">Heat from the solar field</text>
+                <!-- Hot tank -->
+                <rect x="120" y="185" width="90" height="45" rx="6" fill="#FFCDD2" stroke="#D32F2F" stroke-width="2"/>
+                <text x="147" y="205" font-size="12" font-weight="bold" fill="#B71C1C">HOT SALT</text>
+                <text x="137" y="221" font-size="11" fill="#B71C1C">~550 °C</text>
+                <!-- Cold tank -->
+                <rect x="230" y="185" width="90" height="45" rx="6" fill="#BBDEFB" stroke="#1565C0" stroke-width="2"/>
+                <text x="240" y="205" font-size="12" font-weight="bold" fill="#0D47A1">COLD SALT</text>
+                <text x="247" y="221" font-size="11" fill="#0D47A1">~290 °C</text>
+                <!-- Turbine / grid -->
+                <rect x="400" y="190" width="90" height="35" rx="6" fill="#FFF3E0" stroke="#EF6C00" stroke-width="2"/>
+                <text x="416" y="212" font-size="12" font-weight="bold" fill="#E65100">TURBINE</text>
+                <polyline points="165,185 165,160 450,160 450,190" fill="none" stroke="#D32F2F" stroke-width="4"/>
+                <polyline points="275,230 275,245 460,245 460,225" fill="none" stroke="#1565C0" stroke-width="4"/>
+                <line x1="490" y1="207" x2="560" y2="207" stroke="#E65100" stroke-width="5"/>
+                <text x="490" y="195" font-size="12" fill="#E65100">⚡ to grid</text>
+                <!-- Night caption -->
+                <text x="585" y="180" font-size="12" fill="#E65100">at night the hot tank</text>
+                <text x="585" y="196" font-size="12" fill="#E65100">drives the turbine</text>
+                <text x="585" y="212" font-size="12" fill="#888">(blue = return loop)</text>
+              </svg>
+            </div>
+
+            <div class="key-fact mt-3">
+              <strong>Still confused?</strong> Think of it like a thermos flask full of liquid lava. Trough/tower plants literally heat salt until it melts, pour the hot liquid into an insulated tank, and use that stored heat hours later to boil water. The "storage hours" number (e.g. 4.5h, 9h, 12h) is how many hours the plant can run at <em>full power</em> from the tank alone.
+            </div>
+          </div>
+        </div>
+
+        <!-- 24-hour operation chart -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🕐 A typical day with night generation (illustrative, 100 MW plant with storage)</h4>
+            <p class="text-muted small">The shaded band is night (18:00 – 06:00). Note how the plant keeps delivering ~100 MW after sunset by discharging the hot-salt tank, and how the storage level refills during the day. This is the core advantage over plain PV.</p>
+            <div id="nightChart" style="height: 420px;"></div>
+          </div>
+        </div>
+
+        <!-- Storage hours chart -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🔋 Thermal storage hours by South African plant</h4>
+            <p class="text-muted small">Hours the plant can run at full rated output using stored heat alone after sunset. Khi Solar One (tower, no storage) is included for contrast — it stops when the sun goes down.</p>
+            <div id="storageChart" style="height: 360px;"></div>
+          </div>
+        </div>
+
+        <!-- Projects table -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🏗️ South Africa's CSP fleet</h4>
+            <p class="text-muted small">All plants are in the <strong>Northern Cape</strong>, which has some of the best direct-normal irradiance (DNI) in the world — essential for CSP because the technology needs <em>direct</em> sunlight, not just daylight.</p>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered project-table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Plant</th>
+                    <th>Capacity</th>
+                    <th>Technology</th>
+                    <th>Storage (hrs)</th>
+                    <th>Location</th>
+                    <th>Commercial Ops</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>KaXu Solar One</strong></td><td>100 MW</td><td>Parabolic trough</td><td>2.5</td><td>Pofadder</td><td>Mar 2015</td><td><span class="badge badge-green">Operating</span></td></tr>
+                  <tr><td><strong>Bokpoort CSP</strong></td><td>50 MW</td><td>Parabolic trough</td><td>9</td><td>Groblershoop</td><td>2016</td><td><span class="badge badge-green">Operating</span></td></tr>
+                  <tr><td><strong>Khi Solar One</strong></td><td>50 MW</td><td>Solar tower</td><td>0</td><td>Upington</td><td>2016</td><td><span class="badge badge-amber">Operating, no storage</span></td></tr>
+                  <tr><td><strong>Xina Solar One</strong></td><td>100 MW</td><td>Parabolic trough</td><td>5.5</td><td>Pofadder</td><td>2017</td><td><span class="badge badge-green">Operating</span></td></tr>
+                  <tr><td><strong>Kathu Solar Park</strong></td><td>100 MW</td><td>Parabolic trough</td><td>4.5</td><td>Kathu</td><td>2019</td><td><span class="badge badge-green">Operating</span></td></tr>
+                  <tr><td><strong>Ilanga CSP 1</strong></td><td>100 MW</td><td>Parabolic trough</td><td>4.5</td><td>Karoshoek, Upington</td><td>2019</td><td><span class="badge badge-green">Operating</span></td></tr>
+                  <tr><td><strong>Redstone</strong></td><td>100 MW</td><td>Solar tower (molten salt)</td><td>12</td><td>Postmasburg</td><td>Jun 2025</td><td><span class="badge badge-green">Full commercial ops</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="key-fact mb-0 mt-2">
+              <strong>Redstone</strong> is Sub-Saharan Africa's first molten-salt <em>tower</em> plant and the largest CSP investment in the Northern Cape. Its 12-hour storage means it can deliver a full 100 MW through the entire night and into the morning peak — effectively dispatchable, round-the-clock solar.
+            </div>
+          </div>
+        </div>
+
+        <!-- Why Northern Cape -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <div class="row g-4 align-items-center">
+              <div class="col-lg-5">
+                <img src="../images/power/South Africa Irradiance.jpg" alt="South Africa solar irradiance map" class="img-fluid rounded-3 border" style="max-height: 320px; object-fit: cover;">
+                <div class="text-muted small mt-2">South Africa's best direct sunlight (DNI) is in the Northern Cape.</div>
+              </div>
+              <div class="col-lg-7">
+                <h4 class="fw-bold mb-2">📍 Why the Northern Cape?</h4>
+                <ul class="mb-0">
+                  <li>CSP needs <strong>direct normal irradiance (DNI)</strong> — bright, focused, cloud-free sunlight. The Northern Cape has ~2,900 kWh/m²/year, among the highest on Earth (comparable to the Atacama Desert and the Sahara).</li>
+                  <li>Dry climate = <strong>few clouds and rain days</strong>, so the sun is predictable, which makes storage scheduling easier.</li>
+                  <li>Large, flat, sparsely populated land for mirror fields.</li>
+                  <li>Existing 400 kV transmission corridors from solar/wind zones connect plants like Redstone, Kathu, and Ilanga to load centres (Gauteng, Western Cape).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid role / economics -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🏛️ Role in the grid</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h6 class="fw-bold">Dispatchable, not intermittent</h6>
+                <p class="mb-0">Because generation is decoupled from moment-to-moment sunshine (heat can be stored), CSP can be told to generate at specific times — especially the <strong>17:00–21:00 evening peak</strong> when PV fades but demand stays high. This is why producers are willing to pay more per MWh than for raw PV.</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Economically complementary to PV</h6>
+                <p class="mb-0">Plain PV + batteries give minutes-to-hours of storage; CSP gives <strong>hours to overnight</strong> from a cheaper, longer-lived thermal medium. CSP fills the "shoulder" of the evening ramp, reducing reliance on OCGTs (open-cycle gas turbines) and load-shedding in the evening.</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Grid services</h6>
+                <p class="mb-0">With spinning turbines and inertia, CSP can provide services batteries struggle with — inertia, voltage support, and frequency response. Storage also allows "load shifting": charge at midday, discharge at night.</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Cost & development</h6>
+                <p class="mb-0">CSP is capital-intensive (mirror fields, tanks, towers) and historically more expensive per MWh than PV. It was procured under REIPPPP bid windows 1–4; Redstone's completion (2025) is the first new plant since 2019. The cost premium is justified by its dispatchability.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Limitations -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">⚠️ Honest limitations</h4>
+            <ul class="mb-0">
+              <li><strong>Cloudy days</strong> — bad weather means the tank can't fully recharge, so night output depends on the previous day's sun. You can't store what the mirrors didn't collect.</li>
+              <li><strong>Storage is finite</strong> — a 4.5h plant can cover the evening peak, but only a 12h plant (Redstone) can promise "all night."</li>
+              <li><strong>Water & dust</strong> — mirrors need regular cleaning (desert dust washes off) and some plants need cooling water; troughs often use air-cooled condensers to save water.</li>
+              <li><strong>Cost</strong> — per-MWh cost remains above PV, so the value proposition is dispatchability, not raw cheapness.</li>
+              <li><strong>Land & lead time</strong> — huge mirror footprints and multi-year construction.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Related pages -->
+        <div class="csp-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">Related Pages</h4>
+            <ul class="mb-0">
+              <li><a href="power.html">⚡ Power Overview</a></li>
+              <li><a href="biomass.html">🌿 Biomass (Capacity Type)</a></li>
+              <li><a href="trash.html">♻️ Trash & WTE (Capacity Type)</a></li>
+              <li><a href="corporate-renewable-energy.html">🏢 Corporate Renewable Energy</a></li>
+              <li><a href="sawem-ipp-programmes.html">📋 IPP Programmes (REIPPPP)</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="data-source-footer mb-4">
+          <strong>Sources:</strong> REIPPPP project documentation, ACWA Power (Bokpoort, Redstone), Acciona (Kathu), UNFCCC (KaXu), project operating histories. <strong>Note:</strong> capacities are nameplate; storage hours are full-load-equivalent. The 24-hour chart is illustrative, not measured data.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============ 24-HOUR OPERATION CHART ============
+    function renderNightChart() {
+      const hours = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2,'0')}:00`);
+      // Illustrative full day for a 100 MW plant with large storage (e.g. Redstone-like, 12h)
+      const solarHeat = [0,0,0,0,0,0,60,220,380,520,610,630,620,580,510,400,260,110,0,0,0,0,0,0]; // MWt collected
+      const netOutput = [100,100,100,100,100,0,30,90,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100]; // MWe
+      const storagePct = [25,20,15,10,5,3,12,28,48,66,80,90,96,100,100,100,98,88,75,62,50,40,33,29]; // % tank level
+
+      Plotly.newPlot('nightChart', [
+        {
+          x: hours, y: netOutput,
+          name: 'Electricity output (MW)',
+          mode: 'lines',
+          line: { color: '#F57C00', width: 3 },
+          yaxis: 'y',
+          fill: 'tozeroy'
+        },
+        {
+          x: hours, y: storagePct,
+          name: 'Storage level (% of hot tank)',
+          mode: 'lines',
+          line: { color: '#D32F2F', width: 2, dash: 'dot' },
+          yaxis: 'y2'
+        },
+        {
+          x: hours, y: solarHeat,
+          name: 'Solar heat collected (MWt)',
+          mode: 'lines',
+          line: { color: '#FFCD00', width: 3 },
+          yaxis: 'y3'
+        }
+      ], {
+        margin: { l: 60, r: 60, t: 30, b: 40 },
+        legend: { orientation: 'h', y: -0.25 },
+        hovermode: 'x unified',
+        yaxis: { title: 'MW', range: [0, 130], side: 'left' },
+        yaxis2: { title: 'Storage %', range: [0, 130], overlaying: 'y', side: 'right', showgrid: false },
+        yaxis3: { title: 'MWt', range: [0, 700], overlaying: 'y', side: 'right', showgrid: false, showticklabels: false },
+        shapes: [
+          { type: 'rect', x0: '18:00', x1: '06:00', yref: 'paper', y0: 0, y1: 1, fillcolor: 'rgba(45,27,62,0.08)', line: { width: 0 } }
+        ]
+      }, { responsive: true, displayModeBar: false });
+    }
+
+    // ============ STORAGE HOURS CHART ============
+    function renderStorageChart() {
+      const plants = ['KaXu', 'Bokpoort', 'Khi', 'Xina', 'Kathu', 'Ilanga 1', 'Redstone'];
+      const storageHours = [2.5, 9, 0, 5.5, 4.5, 4.5, 12];
+      const colors = ['#8E24AA','#F57C00','#B0BEC5','#7CB342','#039BE5','#5E35B1','#D32F2F'];
+
+      Plotly.newPlot('storageChart', [{
+        x: plants,
+        y: storageHours,
+        type: 'bar',
+        marker: { color: colors },
+        text: storageHours.map(h => h + ' h'),
+        textposition: 'outside',
+        hovertemplate: '%{x}: %{y} hours<extra></extra>'
+      }], {
+        margin: { l: 50, r: 20, t: 10, b: 40 },
+        yaxis: { title: 'Full-load storage hours', range: [0, 14] }
+      }, { responsive: true, displayModeBar: false });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNightChart();
+      renderStorageChart();
+    });
+  </script>
+</body>
+</html>
