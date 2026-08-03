@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aeroderivative Gas Turbines • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .key-box { background: #fff8e1; border-left: 4px solid #ffb300; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .fix-box { background: #e8f5e9; border-left: 4px solid #43a047; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .turbine-table th { background: #e65100; color: white; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tech-card { border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; border: 1px solid #ffe0b2; background: #fff3e0; }
+    .tech-card h6 { font-weight: 700; color: #e65100; }
+    .spec-hero { background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 16px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="gas-turbine-manufacturing.html" class="btn btn-light btn-sm">🔧 Gas Turbine Manufacturing</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Hero -->
+        <div class="p-4 mb-3 spec-hero">
+          <h1 class="fw-bold">✈️ Aeroderivative Gas Turbines</h1>
+          <p class="mb-0">Gas turbines born from aircraft jet engines: fast-starting, lightweight, modular and flexible. Specs, advantages, costs, and why they are the perfect match for what South Africa's grid is looking for.</p>
+        </div>
+
+        <!-- What Are They -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🧭 What Is an Aeroderivative Gas Turbine?</h4>
+            <p>An <strong>aeroderivative gas turbine</strong> is a power-generation turbine adapted from an aircraft jet engine. The core — the gas generator — is essentially a jet engine mounted on its side and coupled to a power turbine that drives a generator. Because the design inherits decades of aviation engineering, it is <strong>lighter, faster-starting, faster-ramping and far more portable</strong> than a heavy industrial frame machine.</p>
+            <p>Aeroderivatives typically sit in the <strong>~20–120 MW class</strong>, between small industrial turbines and the huge H-class frames (300–800 MW). They shine at the <strong>fast-response, mid-merit and peaking</strong> duties that a modern grid with high shares of wind and solar desperately needs.</p>
+
+            <div class="key-box">
+              <strong>💡 Aero vs Frame in one line:</strong> Frame turbines (GE 9F, Siemens SGT5-8000H) are big, heavy and most efficient at steady baseload; aeroderivatives (GE LM series, Rolls-Royce Trent) are smaller, quicker and built to cycle hard every day.
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Table -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📐 The Specs: Leading Aeroderivative Models</h4>
+            <div class="table-responsive">
+              <table class="table table-bordered turbine-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>OEM</th>
+                    <th>Power (Simple Cycle)</th>
+                    <th>Simple-Cycle Efficiency</th>
+                    <th>Start to Full Load</th>
+                    <th>Notable Strengths</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>LM2500 / LM2500XPRESS</strong></td>
+                    <td>GE Vernova</td>
+                    <td>~22–35 MW</td>
+                    <td>~37%</td>
+                    <td>~5 min</td>
+                    <td>Workhorse of the industry — 2,000+ units shipped; packaged, highly reliable, proven fuel flexibility.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LM6000 / LM6000PF+</strong></td>
+                    <td>GE Vernova</td>
+                    <td>~40–57 MW</td>
+                    <td>~40–42% (56% in combined cycle)</td>
+                    <td><5 min fire, ~10 min to full power</td>
+                    <td>Best $/kW in its class; 99%+ start reliability; 1,200+ units, ~60 million operating hours. This is the engine SA already runs at Ankerlig.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Trent 60 / SGT-A65</strong></td>
+                    <td>Rolls-Royce / Siemens Energy</td>
+                    <td>~58–66 MW</td>
+                    <td>~42%</td>
+                    <td>~2–5 min fire, ~10 min to full</td>
+                    <td>Highest efficiency in class; derived from the RB211/Trent airliner engines; popular for mid-merit and combined-cycle peaking.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LMS100</strong></td>
+                    <td>GE Vernova</td>
+                    <td>~100–122 MW</td>
+                    <td>~44–46%</td>
+                    <td>~10 min to full load</td>
+                    <td>Hybrid aero design (aero core + industrial power turbine); the most efficient simple-cycle gas turbine in the world, with full load in ~10 minutes.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>L30A / L50A</strong></td>
+                    <td>Kawasaki</td>
+                    <td>~30 / ~50 MW</td>
+                    <td>~40%</td>
+                    <td>~5–10 min</td>
+                    <td>Japanese quality; strong emissions performance; compact packages suited to distributed peaking.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row g-2 mt-3">
+              <div class="col-md-3">
+                <div class="text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-4">5–10 min</div>
+                  <small class="text-muted">To full load (vs 30–90 min for large frames)</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-4">20–120 MW</div>
+                  <small class="text-muted">Typical unit size — modular and scalable</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-4">37–46%</div>
+                  <small class="text-muted">Simple-cycle efficiency (LMS100 leads the class)</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-center p-2" style="background:#fff3e0; border-radius:8px;">
+                  <div class="fw-bold fs-4">95–99%</div>
+                  <small class="text-muted">Availability and start reliability</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advantages -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">✅ The Advantages</h4>
+            <div class="tech-card">
+              <h6>⚡ Fast start & extreme ramp rates</h6>
+              <p class="small mb-0">Full load in 5–10 minutes and ramp rates of tens of MW per minute. When the sun sets or the wind drops, aeroderivatives catch the load in minutes — something a large frame turbine, let alone coal or nuclear, cannot do.</p>
+            </div>
+            <div class="tech-card">
+              <h6>🔁 Built to cycle daily without penalty</h6>
+              <p class="small mb-0">Aeroderivative engines are descended from aircraft engines that start and stop, throttle and re-throttle on every flight. They handle <strong>thousands of starts per year</strong> with minimal maintenance impact — ideal for a grid that needs dispatchable back-up behind renewables, not a baseload machine.</p>
+            </div>
+            <div class="tech-card">
+              <h6>📦 Lightweight, packaged & quick to install</h6>
+              <p class="small mb-0">Aero engines are compact and mostly <strong>factory-assembled on skids</strong>. A complete simple-cycle plant can ship as modules, need far less civil works, and reach commercial operation in <strong>6–12 months</strong> from order — versus 3–5 years for a large frame or CCGT project. They can even be containerised and relocated as demand shifts.</p>
+            </div>
+            <div class="tech-card">
+              <h6>🛠️ Exchangeable cores — shorter outages</h6>
+              <p class="small mb-0">Because the gas generator is a self-contained jet-engine core, maintenance can mean <strong>swapping the entire core</strong> in days rather than a lengthy in-situ overhaul. A spare core restores the plant to service almost immediately — a major availability advantage over heavy frames.</p>
+            </div>
+            <div class="tech-card">
+              <h6>💧 Minimal or zero water use</h6>
+              <p class="small mb-0">Simple-cycle aeroderivatives need <strong>no cooling water</strong> — no steam cycle, no cooling towers. In a water-stressed country like South Africa, this removes a whole class of siting constraints and environmental permissions.</p>
+            </div>
+            <div class="tech-card">
+              <h6>⛽ Fuel & hydrogen flexibility</h6>
+              <p class="small mb-0">Multi-fuel capable (natural gas, diesel, kerosene) with <strong>dry low-emissions (DLE)</strong> combustors on modern models, and growing <strong>hydrogen-blend readiness</strong> — aligning with South Africa's Green Hydrogen Programme and the future conversion of new gas plants.</p>
+            </div>
+            <div class="tech-card">
+              <h6>🌡️ Part-load performance that holds up</h6>
+              <p class="small mb-0">Unlike large frames whose efficiency collapses at part load, aeroderivatives stay comparatively efficient when running at 30–70% load — exactly where a mid-merit plant behind renewables spends most of its life.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Costs -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">💰 The Costs</h4>
+            <p>Aeroderivatives are <strong>cheaper to buy per plant, faster to build, but more expensive per MW of capacity and per MWh of energy</strong> than the largest frame machines. That trade is exactly right for peaking and mid-merit duty — and the numbers below are typical ranges:</p>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-6">
+                <div class="p-3" style="background:#e8f5e9; border-left:4px solid #2e7d32; border-radius:0 12px 12px 0; height:100%;">
+                  <h6 class="fw-bold">🟢 Capital cost (EPC, simple cycle)</h6>
+                  <p class="small mb-0"><strong>Roughly $700–$1,000/kW</strong> installed (including balance of plant) for a skid-mounted aero plant. That is higher per kW than a giant frame simple cycle (~$400–$600/kW) — but the total project cost is far lower because the plant is small, modular and quick, and you only pay for the capacity you need now.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3" style="background:#e8f5e9; border-left:4px solid #2e7d32; border-radius:0 12px 12px 0; height:100%;">
+                  <h6 class="fw-bold">🟢 Example: an LM6000 plant</h6>
+                  <p class="small mb-0">A 4 × 50 MW LM6000 simple-cycle plant (~200 MW) is typically a <strong>$150–$200 million</strong> project and can be up and running in under a year — a fraction of the capital and timeline of a 800 MW H-class CCGT (~$600–$900 million, 4+ years).</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3" style="background:#fff3e0; border-left:4px solid #f57f17; border-radius:0 12px 12px 0; height:100%;">
+                  <h6 class="fw-bold">🟠 Operating cost</h6>
+                  <p class="small mb-0">Non-fuel O&M for aeroderivatives is typically <strong>$5–$10/MWh</strong> — higher than a large frame baseload machine (~$3–$5/MWh) because aero engines run hot and need more frequent hot-gas-path inspections. The offset is fuel: at the <strong>low load factors (5–30%)</strong> where SA will run peakers, total annual O&M spend stays modest.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3" style="background:#fff3e0; border-left:4px solid #f57f17; border-radius:0 12px 12px 0; height:100%;">
+                  <h6 class="fw-bold">🟠 Fuel economics & heat rate</h6>
+                  <p class="small mb-0">Simple-cycle heat rates of ~6,500 kcal/kWh (LM6000 class) mean aero turbines burn <strong>15–25% more gas per MWh than an H-class CCGT</strong>. But they only run when the grid needs them. For peaking on imported LNG, the relevant figure is the <strong>cost of the marginal MWh at the exact hour of scarcity</strong> — where starting in minutes, not hours, is what captures value.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="key-box mt-3">
+              <strong>💡 The bottom line on cost:</strong> Aeroderivatives are not the cheapest electricity per MWh — they are the cheapest <em>capacity to deliver fast</em>, the cheapest way to firm up renewables, and the cheapest insurance against load shedding when every hour of unserved energy costs the economy billions.
+            </div>
+          </div>
+        </div>
+
+        <!-- Perfect for SA -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">🇿🇦 Why They Are Perfect for What South Africa Is Looking For</h4>
+
+            <div class="tech-card">
+              <h6>⚡ The grid crisis demands speed — and aero is the fastest path</h6>
+              <p class="small mb-0">South Africa's electricity emergency is now. IRP2025 and the 2025–2026 gas-to-power procurement aim to add dispatchable gas capacity on a tight schedule. An <strong>aeroderivative simple-cycle plant can deliver new megawatts in 6–12 months</strong>, modular in 50 MW blocks, while frame CCGT projects take 4–6 years. For the immediate capacity gap, nothing matches aeroderivatives for speed.</p>
+            </div>
+
+            <div class="tech-card">
+              <h6>🌬️ They are the perfect partner for wind and solar</h6>
+              <p class="small mb-0">South Africa is adding gigawatts of wind and solar, which are intermittent. The grid needs <strong>fast-starting, fast-ramping, daily-cycling</strong> capacity to fill the gaps at dawn, dusk and on windless weeks — precisely the duty cycle aeroderivatives were built for. Their 5–10 minute starts and high part-load efficiency make them the natural complement to the renewable build-out.</p>
+            </div>
+
+            <div class="tech-card">
+              <h6>🏭 South Africa already runs this technology</h6>
+              <p class="small mb-0"><strong>Eskom's Ankerlig power station</strong> (Western Cape, ~1,338 MW) operates a fleet of <strong>GE LM6000 aeroderivative turbines</strong>, making SA one of the most experienced operators of the platform in Africa. Local crews, local maintenance organisations (including Ansaldo's Atlas Facilities MRO in Cape Town) and an existing spares ecosystem mean new aero plants plug into <strong>established local capability</strong> rather than importing a brand-new skillset.</p>
+            </div>
+
+            <div class="tech-card">
+              <h6>💧 No water, no problem</h6>
+              <p class="small mb-0">Simple-cycle aeroderivatives need <strong>no cooling water</strong>. In a country where water constraints already throttle coal and will shape new CCGT siting, aero plants can be placed near demand centres and gas supply without water availability becoming a dealbreaker — and they can be <strong>dispersed across the grid</strong> to relieve transmission bottlenecks.</p>
+            </div>
+
+            <div class="tech-card">
+              <h6>⛽ Matched to LNG import timelines</h6>
+              <p class="small mb-0">LNG imports are set to arrive at Richards Bay and Coega within the next few years. Aero turbines can run on <strong>natural gas, diesel or both</strong> — meaning plants ordered today can burn diesel for emergency peaking immediately, then switch to cheaper pipeline/LNG gas as supply comes online. That sequencing flexibility is a perfect fit for a transition with uncertain timing.</p>
+            </div>
+
+            <div class="tech-card">
+              <h6>🌱 Hydrogen-ready for the long game</h6>
+              <p class="small mb-0">The OEMs offer aeroderivatives capable of burning <strong>blends of hydrogen</strong> with natural gas, and the class is on a clear roadmap to higher H₂ percentages. South Africa's Green Hydrogen ambition means turbines purchased now are <strong>not stranded assets</strong> — they can progressively decarbonise as domestic green hydrogen scales up.</p>
+            </div>
+
+            <div class="fix-box mt-3">
+              <strong>🟩 The right mix, not one technology:</strong> Aeroderivatives are the right tool for fast-reacting peaking and mid-merit duty. For genuine baseload on cheap gas, a high-efficiency H-class CCGT remains the right tool. An optimal South African gas fleet — exactly what the gas-to-power programme is now procuring — will likely combine <strong>aeroderivative peakers for flexibility with a smaller number of H-class frames for baseload</strong>. The aeroderivative is the part of that mix that answers the urgent question: <em>"how do we close today's capacity gap fastest, without locking in tomorrow's problem?"</em>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sources -->
+        <div class="section-card card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3">📚 Sourcing & Further Reading</h4>
+            <ul class="small mb-2">
+              <li>GE Vernova — LM6000 aeroderivative gas turbine product pages (simple-cycle efficiency ~40–42%, 56% combined cycle, 99%+ start reliability, LM6000PF+ ~53.8 MW).</li>
+              <li>GE Vernova / Baker Hughes — LM2500 gas turbine family (22–35 MW class, thousands of units shipped).</li>
+              <li>Rolls-Royce / Siemens Energy — Trent 60 / SGT-A65 (58–66 MW, ~42% simple-cycle efficiency).</li>
+              <li>Eskom — Ankerlig & Gourikwa technical brochure (LM6000 fleet at Ankerlig, ~1,338 MW).</li>
+              <li>South Africa IRP2025 / gas-to-power procurement documentation (dispatchable gas capacity expansion).</li>
+              <li>Industry public reporting on gas turbine capital and O&M cost ranges.</li>
+            </ul>
+            <p class="small text-muted mb-0">Costs and performance figures are typical public-domain ranges for the aeroderivative class and should be verified against a specific OEM quotation for a procurement context.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
