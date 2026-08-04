@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coal to Liquids • Sasol • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="sasol.html" class="btn btn-light btn-sm">🧪 Sasol Overview</a>
+        <a href="companies.html" class="btn btn-light btn-sm">🏢 Companies</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold text-sa-green">Coal to Liquids (CTL)</h1>
+    <h5 class="text-muted">The Fischer-Tropsch story — and how South Africa turned coal into fuel</h5>
+    <p class="lead">Every drop of petrol in a South African engine has a claim to this technology. Coal-to-liquids (CTL) is the industrial alchemy of turning solid coal into liquid fuel, and South Africa is the only country that ever ran it at full commercial scale. It is the founding story of Sasol, the reason the town of Secunda exists, and now one of the biggest decarbonisation challenges on the planet.</p>
+
+    <!-- The Big Picture -->
+    <div class="row mb-5">
+      <div class="col-md-7">
+        <div class="alert alert-light border border-success p-4">
+          <strong>Technology:</strong> Fischer-Tropsch (FT) synthesis from coal-derived syngas<br>
+          <strong>Discovered:</strong> 1925 — Mülheim an der Ruhr, Germany<br>
+          <strong>First commercial plant:</strong> Sasolburg (Sasol One), first production March 1955<br>
+          <strong>World's largest CTL plant:</strong> Secunda (Mpumalanga), on stream 1980–1982<br>
+          <strong>Secunda capacity:</strong> ~150,000 barrels per day of synthetic liquid fuel<br>
+          <strong>Secunda coal feed:</strong> ~35–40 million tonnes per year<br>
+          <strong>Other operators worldwide:</strong> None at true commercial scale in the West — CTL outside South Africa has largely remained experimental or stranded<br>
+          <strong>Cumulative output by 2005:</strong> 1.5 billion barrels of synthetic fuel from coal
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center py-5" style="background: #f0faf4; border-radius: 8px;">
+            <h1 class="display-1 mb-3">🛢️</h1>
+            <h5 class="card-title text-sa-green">From Coal</h5>
+            <p class="card-text text-muted small">To Petrol, Diesel & Jet Fuel — via chemistry invented a century ago in Germany.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. The Science -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>1 · The Chemistry — How Fischer-Tropsch Actually Works</h5>
+        <p>Coal-to-liquids is a two-stage process. The chemistry itself is not mystical — it is the same carbon and hydrogen skeleton that makes up crude oil, reassembled from coal.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">Stage 1 — Gasification</h6>
+                <p class="small mb-1">Coal is crushed and reacted with steam and oxygen at high temperature and pressure in gasifiers (Sasol's original units were Lurgi fixed-bed gasifiers).</p>
+                <p class="small mb-1"><strong>The net reaction:</strong> Coal + O₂ + H₂O → carbon monoxide (CO) + hydrogen (H₂)</p>
+                <p class="small mb-0 text-muted">This mixture of CO and hydrogen is called <strong>synthesis gas</strong>, or syngas — the raw material everything downstream is built from.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">Stage 2 — Fischer-Tropsch Synthesis</h6>
+                <p class="small mb-1">The syngas is passed over a metal catalyst (in Sasol's high-temperature process: iron) in a fluidised-bed reactor.</p>
+                <p class="small mb-1"><strong>The Fischer-Tropsch reaction:</strong> CO + H₂ → hydrocarbons (CₙH₂ₙ₊₂) + H₂O</p>
+                <p class="small mb-0 text-muted">The catalyst stitches the carbon onto hydrogen chains, growing straight and branched paraffins — essentially building a synthetic crude oil, molecule by molecule.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">Stage 3 — Upgrading & Refining</h6>
+                <p class="small mb-1">The raw FT product — "syncrude" — is not yet pump-ready. It is upgraded through hydrocracking, hydrotreating and conventional refining steps.</p>
+                <p class="small mb-0 text-muted">This produces the familiar slate: petrol, diesel, jet fuel, LPG, and chemical feedstocks (ethylene, propylene, waxes, ammonia). Secunda's syncrude is so clean of sulphur that its diesel has long been prized for its quality.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">High-Temperature vs Low-Temperature FT</h6>
+                <p class="small mb-1"><strong>HTFT</strong> (iron catalyst, ~300–350°C) — optimises petrol production; used at Secunda in the <strong>Synthol</strong> and later <strong>Sasol Advanced Synthol (SAS)</strong> reactors, developed from the original circulating fluidised-bed designs.</p>
+                <p class="small mb-0"><strong>LTFT</strong> (~200–250°C) — optimises wax and diesel; the original low-temperature <strong>Arge</strong> reactors were used at Sasolburg and underpin Sasol's world-leading waxes business.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Origin story -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>2 · The Origin Story — Two Germans, One World War, and a Patent in 1925</h5>
+        <p>The Fischer-Tropsch process was discovered in <strong>1925</strong> by <strong>Professor Franz Fischer</strong>, founding director of the Kaiser Wilhelm Institute for Coal Research in <strong>Mülheim an der Ruhr, Germany</strong>, and his head of department, <strong>Dr Hans Tropsch</strong>. The two applied for a patent in 1925 (granted in 1929) covering the production of liquid hydrocarbons from carbon monoxide and hydrogen using metal catalysts.</p>
+        <p>Germany, rich in coal but cut off from oil in both World Wars, industrialised the process immediately. During the <strong>Second World War</strong>, German plants running Fischer-Tropsch (and the rival Bergius hydrogenation process) supplied a large share of the Luftwaffe's aviation fuel and the Wehrmacht's synthetic petrol. After the war, the victorious powers — the United States, Britain, and the Soviet Union — seized the German technology and studied it intensively. The US Bureau of Mines even ran a demonstration plant. But once cheap Middle Eastern crude flooded the world, everyone quietly shelved it. Everyone except one country: South Africa.</p>
+      </div>
+    </div>
+
+    <!-- 3. Why South Africa -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>3 · Why South Africa? — The Story of Sasol One</h5>
+        <p>South Africa had no meaningful crude oil reserves and, from 1948, faced a world increasingly hostile to its government. The Afrikaner nationalist state drew a strategic conclusion: a nation that cannot be cut off from oil cannot be defeated — and the blueprint for oil independence was already in the coal chemistry literature.</p>
+        <p>In <strong>1950</strong> the state created the <strong>South African Coal, Oil and Gas Corporation</strong> — Sasol — and chose a greenfield site on the Vaal River in the Free State. Construction of what became <strong>Sasol One</strong> at <strong>Sasolburg</strong> began in <strong>1952</strong>:</p>
+        <ul>
+          <li><strong>March 1955</strong> — first product dispatched: eight drums of creosote. The first commercial coal-to-liquids operation outside Germany was alive.</li>
+          <li><strong>August 1955</strong> — the Synthol reactor completed its first reaction; petrol production commenced.</li>
+          <li><strong>End of 1955</strong> — main construction complete: gasifiers, FT reactors, a power station, nitrogen chemicals and fertiliser plants, and a town for the workers.</li>
+        </ul>
+        <p>The early reactors were <strong>circulating fluidised-bed reactors (CFBRs)</strong> — each initially producing ~1,500 barrels per day, later improved to ~6,500 barrels per day. The engineering came from an American collaboration (M.W. Kellogg building on the Synthol concept), and South African engineers rapidly learned to improve, re-engineer, and eventually leapfrog the German process. Over the decades Sasol grew its own FT reactor lineage — from CFBR to Synthol to the commercialised <strong>Sasol Advanced Synthol (SAS)</strong> reactors that run at Secunda today.</p>
+        <p class="mb-0"><strong>The strategic bet worked.</strong> Sasol One proved that South African coal could be converted into fuel, chemicals, and fertiliser on a commercial basis — turning a science-fiction chemistry claim from 1920s Germany into the foundation of a national industry.</p>
+      </div>
+    </div>
+
+    <!-- 4. The Secunda mega-plants -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>4 · The Oil Crises & the Race to Secunda</h5>
+        <p>Two things happened in the 1970s. First, the global oil embargoes of 1973–74 sent crude prices through the roof. Second, the international community began imposing hardening sanctions on apartheid South Africa, explicitly targeting oil. The state's answer was to build the biggest coal-to-liquids complex the world has ever seen — and to do it fast.</p>
+        <ul>
+          <li><strong>1974–1980 — Sasol Two:</strong> an R2.3 billion complex at a new site near the coal fields of Mpumalanga, in what became the purpose-built town of <strong>Secunda</strong> ("second" — the second site after Sasolburg). Construction of Sasol Two was completed in <strong>1980</strong>.</li>
+          <li><strong>1980–1982 — Sasol Three:</strong> a near-duplicate plant built immediately to double capacity. Sasol Three came on stream in <strong>1982</strong>.</li>
+        </ul>
+        <p>Sasol Two and Sasol Three together form the <strong>Secunda CTL complex</strong> — two production units, dozens of gasifiers, and at nameplate ~<strong>150,000 barrels per day</strong> of synthetic liquid fuel from <strong>~35–40 million tonnes of coal a year</strong>, mined from Sasol's own tied mines (Bosjesspruit, Twistdraai, Syferfontein, and others) around the plant. By the late apartheid era the complex was supplying around <strong>a third of the country's liquid fuel</strong>, immune to any naval blockade.</p>
+        <div class="alert alert-warning border border-dark bg-light small">
+          <strong>Security through chemistry.</strong> The scale was so large, and the secrecy so tight, that Sasol's coal mines, the power station, the gasifier park and the reactor trains were treated as strategic assets. Even the <strong>Synthol</strong> technology itself was exported to American partners for study, but it was South Africa that perfected it. The oil embargo that was meant to strangle the economy instead forced the creation of the world's largest and most advanced synthetic-fuel industry.
+        </div>
+        <p class="mb-0"><strong>The divergence:</strong> while the rest of the world built refineries around imported crude, South Africa built a petrochemical empire around its very own low-grade coal. Sasolburg pivoted to chemicals (its fuel production ceased in <strong>1990</strong>; the <strong>Natref</strong> crude refinery, commissioned in <strong>1969</strong>, remained), while Secunda stayed on coal — and became the largest single emitter of greenhouse gases on the planet.</p>
+      </div>
+    </div>
+
+    <!-- 5. Chemistry in the plant - reactor evolution -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>5 · Inside the Plant — Gasifiers, Reactors & the Value Chain</h5>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">⚙️ Gasifier Park</h6>
+                <p class="small mb-0">Secunda's Lurgi gasifiers turn coal into raw syngas plus by-products (tar, phenols, ammonia). Each gasifier is a small chemical plant in its own right; dozens run in parallel to feed the reactor trains.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">🧬 FT Reactor Trains</h6>
+                <p class="small mb-0">Sasol Advanced Synthol (SAS) reactors — the culmination of 50 years of reactor evolution — convert syngas into syncrude over iron catalysts at high temperature. Cleanup of the product gives light and heavy syncrude streams.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm" style="background: #f0faf4;">
+              <div class="card-body">
+                <h6 class="fw-bold">🛢️ Upgraders & Refinery</h6>
+                <p class="small mb-0">Hydrocrackers break heavy syncrude into fuels; product work-up yields petrol, diesel, jet fuel, LPG, and a rich stream of chemical feedstocks for Secunda's own downstream plants and for piping to Sasolburg.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-3 small text-muted">The FT plants do not exist in isolation. They are hard-wired into the national economy: coal from Mpumalanga's coalfields (see the Mining → Coal page), electricity from Eskom's grid, water from the Vaal system, gas from Mozambique's Pande-Temane fields (see the Gas pages), and fuel into the inland transport corridor.</p>
+      </div>
+    </div>
+
+    <!-- 6. What it all means - mesh -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>6 · Why This Story Runs Through the Whole Dashboard</h5>
+        <p>CTL is the thread that connects half of this site's sections in one narrative:</p>
+        <ul>
+          <li><strong>⛏️ Mining → Coal:</strong> Secunda is Mpumalanga's biggest coal customer — 35–40 Mt/yr of tied-mine, low-grade coal that has no other export value. The coal economy and the fuel economy are the same story.</li>
+          <li><strong>⚡ Power:</strong> CTL plants are also self-generators — Sasol runs its own cogeneration units and remains a major Eskom customer, tying liquid fuel into the electricity grid's fate.</li>
+          <li><strong>🔥 Gas:</strong> Sasol was South Africa's gas pioneer — the Rompco pipeline from Mozambique exists because Sasol needed gas for its chemical complex. The gas transition is, in large part, the CTL transition.</li>
+          <li><strong>🚛 Transport:</strong> inland fuel supply — petrol, diesel, jet fuel for Johannesburg, the landlocked economic heartland — rides on Secunda's syncrude, not on imported crude landed at coastal refineries.</li>
+          <li><strong>🏢 Companies & SOEs:</strong> Sasol and Transnet are intertwined: coal trains move a large share of the rail network's tonnage, much of it to Secunda, and fuels move back out along the same corridors.</li>
+          <li><strong>🌍 Just Energy Transition (JET):</strong> the hardest question in South Africa's energy transition is not wind or solar — it is what replaces the world's largest single GHG emitter at Secunda. Decarbonising CTL means gas switching, ~1.2 GW of renewable wheeling, green hydrogen (a direct descendant of FT chemistry: H₂ + CO₂ → e-fuels), and carbon capture.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. Key Statistics -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Key Statistics</h5>
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr><th>Metric</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FT process discovered</td><td>1925 (patent granted 1929)</td></tr>
+            <tr><td>Discoverers</td><td>Franz Fischer & Hans Tropsch, Kaiser Wilhelm Institute for Coal Research, Mülheim</td></tr>
+            <tr><td>Sasol founded</td><td>1950</td></tr>
+            <tr><td>Sasolburg construction / first product</td><td>Construction from 1952 · first creosote March 1955 · petrol August 1955</td></tr>
+            <tr><td>First reactor capacity (1955)</td><td>~1,500 bbl/day CFBR (later ~6,500)</td></tr>
+            <tr><td>Natref crude refinery</td><td>Commissioned 1969 (Sasolburg)</td></tr>
+            <tr><td>Sasol Two at Secunda</td><td>Completed 1980</td></tr>
+            <tr><td>Sasol Three at Secunda</td><td>On stream 1982</td></tr>
+            <tr><td>Secunda fuel production ended (Sasolburg CTL)</td><td>1990 · Sasolburg pivoted to chemicals</td></tr>
+            <tr><td>Secunda capacity</td><td>~150,000 bbl/day of synthetic fuel</td></tr>
+            <tr><td>Secunda coal consumption</td><td>~35–40 Mt/year (tied mines)</td></tr>
+            <tr><td>Cumulative synthetic fuel by 2005</td><td>1.5 billion barrels</td></tr>
+            <tr><td>Share of SA liquid fuel at peak</td><td>~1/3 of national consumption</td></tr>
+            <tr><td>Share of SA GHG emissions</td><td>~11% (Secunda + Sasolburg)</td></tr>
+            <tr><td>Decarbonisation targets</td><td>30% cut vs 2017 by 2030 · net-zero by 2050</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 8. Timeline -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Timeline — From Mülheim to Secunda and Beyond</h5>
+        <table class="table table-sm table-striped">
+          <tbody>
+            <tr><td class="fw-bold" style="white-space:nowrap;">1925</td><td>Fischer & Tropsch discover FT synthesis at Mülheim an der Ruhr; patent filed.</td></tr>
+            <tr><td class="fw-bold">1930s–45</td><td>Nazi Germany builds an FT synthetic-fuel industry to fuel the war machine.</td></tr>
+            <tr><td class="fw-bold">1950</td><td>South Africa founds Sasol — the only state to pursue FT at commercial scale.</td></tr>
+            <tr><td class="fw-bold">1952–55</td><td>Sasolburg built; first creosote dispatched March 1955; petrol flows from August 1955.</td></tr>
+            <tr><td class="fw-bold">1969</td><td>Natref crude refinery commissioned alongside Sasol One.</td></tr>
+            <tr><td class="fw-bold">1973–79</td><td>Oil crises + anti-apartheid oil sanctions push the state to double down on CTL.</td></tr>
+            <tr><td class="fw-bold">1980 / 1982</td><td>Secunda's Sasol Two completed, then Sasol Three — the world's largest CTL complex (150,000 bbl/day).</td></tr>
+            <tr><td class="fw-bold">1990</td><td>Fuel production ceases at Sasolburg; Secunda remains the CTL core.</td></tr>
+            <tr><td class="fw-bold">1990s–2000s</td><td>Sasol globalises and exports its process know-how; GTL (gas-to-liquids) plants in Qatar, Nigeria.</td></tr>
+            <tr><td class="fw-bold">2010s–20s</td><td>Lake Charles crisis forces a pivot back to the SA core; decarbonisation roadmap begins — gas, renewables, green hydrogen, CCS.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Fischer%E2%80%93Tropsch_process" target="_blank">Wikipedia — Fischer-Tropsch process</a></li>
+      <li><a href="https://www.kofo.mpg.de/en/institute/history/1912-1943" target="_blank">Max Planck Institute for Coal Research — History (1912–1943)</a></li>
+      <li><a href="https://www.sasol.com/historical-milestones" target="_blank">Sasol — Historical Milestones</a></li>
+      <li><a href="https://www.sasol.com/sasol-produces-15-billion-barrels-synthetic-fuel-coal-fifty-years" target="_blank">Sasol — 1.5 billion barrels of synthetic fuel</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Secunda_CTL" target="_blank">Wikipedia — Secunda CTL</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Sasol" target="_blank">Wikipedia — Sasol</a></li>
+      <li><a href="https://transitionpetrochemicals.meridianeconomics.co.za/secunda-and-sasolburg-overview/" target="_blank">Meridian Economics — Transition Petrochemicals</a></li>
+    </ul>
+
+    <div class="d-flex gap-2 mb-5">
+      <a href="sasol.html" class="btn btn-outline-success">← Back to Sasol Overview</a>
+      <a href="coal.html" class="btn btn-outline-success">⛏️ Coal Mining →</a>
+      <a href="../index.html" class="btn btn-outline-dark">🏠 Home</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
