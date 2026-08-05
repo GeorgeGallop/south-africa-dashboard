@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Artificial Intelligence • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="economy.html" class="btn btn-light btn-sm">📈 Economy</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="display-5 fw-bold text-sa-green text-center mb-2">🤖 Artificial Intelligence — The Lay of the Land</h1>
+    <p class="lead text-center mb-5">The explosive build-out of AI infrastructure in South Africa — hyperscaler cloud regions, data centres, AI startups, government policy, and the wave of investment reshaping the industry.</p>
+
+    <!-- Quick stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm text-center">
+          <div class="card-body">
+            <h2 class="fw-bold text-sa-green mb-0">3</h2>
+            <p class="small text-muted mb-0">Global hyperscalers with cloud regions in SA (AWS, Microsoft, Google)</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm text-center">
+          <div class="card-body">
+            <h2 class="fw-bold text-sa-green mb-0">R20bn+</h2>
+            <p class="small text-muted mb-0">Microsoft's cumulative SA cloud & AI infrastructure commitment</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm text-center">
+          <div class="card-body">
+            <h2 class="fw-bold text-sa-green mb-0">~55</h2>
+            <p class="small text-muted mb-0">Existing data centres; Johannesburg accounts for over 70% of capacity</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm text-center">
+          <div class="card-body">
+            <h2 class="fw-bold text-sa-green mb-0">USD 1.9bn</h2>
+            <p class="small text-muted mb-0">SA data centre market (2025), heading to ~USD 4bn by 2035 (~7.7% CAGR)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hyperscalers -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Hyperscaler cloud regions</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Hyperscaler</th>
+                <th>Region</th>
+                <th>Launched</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Microsoft Azure</strong></td>
+                <td>South Africa North (Johannesburg) + South Africa West (Cape Town)</td>
+                <td>March 2019</td>
+                <td>First cloud regions in Africa. Cape Town region was later paused/consolidated; Johannesburg remains the anchor.</td>
+              </tr>
+              <tr>
+                <td><strong>AWS</strong></td>
+                <td>Africa (Cape Town) — af-south-1</td>
+                <td>April 2020</td>
+                <td>First AWS region in Africa.</td>
+              </tr>
+              <tr>
+                <td><strong>Google Cloud</strong></td>
+                <td>Johannesburg (africa-south1)</td>
+                <td>January 2024</td>
+                <td>Google's first cloud region in Africa (~R2.5bn investment).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted mb-0"><strong>Why SA?</strong> Strong fibre connectivity, the continent's most developed enterprise market, financial-services demand, a stable legal environment and POPIA data-residency requirements make South Africa the natural hub.</p>
+      </div>
+    </div>
+
+    <!-- Data centre build-out -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Data centre build-out</h5>
+        <p>South Africa is the <strong>largest data centre market in Africa</strong>, with ~55 existing facilities and rapid hyperscale expansion driven by cloud-first enterprise strategies, AI workloads and the entry of hyperscalers. Johannesburg is the dominant hub (>70% of capacity), followed by Cape Town.</p>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Operator</th>
+                <th>Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Teraco</strong> (Digital Realty)</td>
+                <td>Largest provider; JB1–JB4 (Johannesburg), CT1–CT2 (Cape Town). CT2 expansion to 50MW critical IT load.</td>
+              </tr>
+              <tr>
+                <td><strong>Vantage Data Centers</strong></td>
+                <td>Major hyperscale campuses (~100MW+ of capacity across Johannesburg and Cape Town).</td>
+              </tr>
+              <tr>
+                <td><strong>Open Access Data Centres (OADC)</strong></td>
+                <td>Rapid national rollout (JHB, CPT, Durban, Gqeberha) targeting enterprise and AI workloads.</td>
+              </tr>
+              <tr>
+                <td><strong>Africa Data Centres</strong></td>
+                <td>Pan-African operator with facilities in Johannesburg and Cape Town, expanding for AI.</td>
+              </tr>
+              <tr>
+                <td><strong>Others</strong></td>
+                <td>Uptime, CtrlS, Atlas Tower, NTT, Vodacom/Maziv, BCX, MetroFibre Networx / Altron, etc.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted mb-0"><strong>Hyperscale segment:</strong> valued at ~USD 1.34bn (2025), forecast to reach USD 3.66bn by 2031 — an 18.27% CAGR, among the fastest-growing in the world.</p>
+      </div>
+    </div>
+
+    <!-- Latest news & investment -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">The investment wave — what's happening now</h5>
+        <ul>
+          <li><strong>Microsoft's R5.4bn AI announcement (March 2025):</strong> Microsoft expands its SA cloud and AI infrastructure by end-2027, on top of its earlier long-term commitment (reported R20.4bn). Announced at the "Building an AI Economy" event in Bryanston — build-out of data centres, AI capacity, and land acquisition for future growth.</li>
+          <li><strong>Google's Johannesburg region (Jan 2024):</strong> ~R2.5bn+ local investment; Google now routes Africa traffic through SA and has expanded AI services (Gemini, Vertex AI) locally.</li>
+          <li><strong>AI-ready infrastructure:</strong> Providers are building high-density GPU-ready facilities. Teraco, Vantage and OADC are racing to meet AI/ML server demand.</li>
+          <li><strong>Government push:</strong> SA's national AI policy/plan and the Presidential Commission on the Fourth Industrial Revolution signal official backing; data centres are increasingly treated as strategic economic infrastructure.</li>
+          <li><strong>R6+ trillion potential:</strong> McKinsey estimates AI could add substantial value to South Africa's GDP by 2030 if adoption accelerates.</li>
+        </ul>
+        <p class="small text-muted mb-0">Sources: Microsoft, AWS, Google Cloud, Teraco, ResearchAndMarkets/Africa Data Centres database, MyBroadband, DC market reports (2025–26).</p>
+      </div>
+    </div>
+
+    <!-- AI ecosystem -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">The South African AI ecosystem</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+              <h6 class="fw-bold text-sa-green">🇿🇦 Home-grown AI companies</h6>
+              <ul class="small mb-0">
+                <li><strong>Lelapa AI</strong> — African language AI (Vulavula platform).</li>
+                <li><strong>DataProphet</strong> — manufacturing/machine-learning optimisation (Cape Town).</li>
+                <li>And more: AI-powered fintechs, healthtech and agritech across the country.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+              <h6 class="fw-bold text-sa-green">🎓 Skills & research</h6>
+              <ul class="small mb-0">
+                <li>University AI/AI4D hubs, SAICA, Deep Learning Indaba (hosted)</li>
+                <li>Google AI skills programmes, Microsoft AI skilling, AWS re/Start</li>
+                <li>Cloud & AI certifications now among the most in-demand in SA</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Challenges -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Challenges & watch items</h5>
+        <ul>
+          <li><strong>Electricity:</strong> high-density AI data centres need firm power — load-shedding history makes PPAs, wheeling and embedded generation critical.</li>
+          <li><strong>Skills gap:</strong> demand for AI/ML engineers far outstrips local supply.</li>
+          <li><strong>Data localisation vs. cost:</strong> POPIA encourages local hosting, but AI training often still leverages global regions.</li>
+          <li><strong>Cape Town Azure region:</strong> Microsoft's pause there showed infra decisions can shift — Johannesburg is now the undisputed hub.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .hover-effect:hover { transform: scale(1.05); transition: 0.3s; }
+  </style>
+</body>
+</html>
