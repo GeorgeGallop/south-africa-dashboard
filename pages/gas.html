@@ -6,6 +6,119 @@
   <title>Gas • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ====================== THE GAS STORY ====================== */
+    .story-section-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      border-left: 8px solid #007A4D;
+      padding-left: 16px;
+    }
+    .story-lede {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #212529;
+    }
+    .story-act {
+      border: none;
+      border-radius: 0;
+      border-top: 4px solid #007A4D;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.4rem;
+    }
+    .story-act .act-badge {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 3px 10px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .story-act h5 { font-weight: 800; }
+    .story-act p { font-size: 0.95rem; line-height: 1.7; }
+    .story-act em { font-style: normal; font-weight: 700; }
+
+    /* Coloured act accents matching the project palette */
+    .act-a1 { border-top-color: #1565c0; }
+    .act-a1 .act-badge { background: #1565c0; }
+    .act-a2 { border-top-color: #c62828; }
+    .act-a2 .act-badge { background: #c62828; }
+    .act-a3 { border-top-color: #e65100; }
+    .act-a3 .act-badge { background: #e65100; }
+    .act-a4 { border-top-color: #6a1b9a; }
+    .act-a4 .act-badge { background: #6a1b9a; }
+    .act-a5 { border-top-color: #37474f; }
+    .act-a5 .act-badge { background: #37474f; }
+    .act-a6 { border-top-color: #007A4D; }
+    .act-a6 .act-badge { background: #007A4D; }
+    .act-a7 { border-top-color: #00695c; }
+    .act-a7 .act-badge { background: #00695c; }
+    .act-a8 { border-top-color: #b8860b; }
+    .act-a8 .act-badge { background: #b8860b; }
+    .act-a9 { border-top-color: #002395; }
+    .act-a9 .act-badge { background: #002395; }
+
+    .story-stat {
+      background: #f8f9fa;
+      border: 3px solid #000;
+      padding: 1.1rem;
+      text-align: center;
+      box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+      height: 100%;
+    }
+    .story-stat small { text-transform: uppercase; letter-spacing: 0.04em; color: #555; font-weight: 700; }
+    .story-stat h3 { font-weight: 800; margin: 0; }
+
+    .story-pull {
+      background: #fff8e1;
+      border-left: 6px solid #c62828;
+      padding: 14px 18px;
+      font-weight: 700;
+      margin: 14px 0;
+    }
+    .story-pull .src { display: block; font-size: 0.75rem; font-weight: 400; color: #777; margin-top: 6px; }
+
+    .story-verdict {
+      background: #007A4D;
+      color: #fff;
+      border: 3px solid #000;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+      padding: 22px 26px;
+      margin: 14px 0 30px;
+    }
+    .story-verdict h4 { font-weight: 800; }
+    .story-verdict p { font-size: 0.98rem; line-height: 1.7; margin-bottom: 0; }
+    .story-verdict em { font-style: normal; font-weight: 800; color: #FFCD00; }
+
+    .story-chain-cell { border: 2px solid #000; background: #f8f9fa; padding: 14px; height: 100%; }
+    .story-chain-cell h6 { font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+    .story-chain-cell ul { padding-left: 16px; margin: 0; }
+    .story-chain-cell li { font-size: 0.88rem; line-height: 1.5; padding: 3px 0; border-bottom: 1px dashed #ccc; }
+    .story-chain-cell li:last-child { border-bottom: none; }
+
+    .story-chapter-nav {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+    }
+    .story-chapter-nav .nav-link {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      color: #212529;
+    }
+    .story-chapter-nav .nav-link:hover { background: #e9ecef; }
+
+    .story-watch-item { border-left: 3px solid #002395; padding: 6px 12px; margin-bottom: 8px; }
+    .story-watch-item h6 { font-weight: 800; }
+    .story-watch-item p { font-size: 0.85rem; margin: 0; color: #444; }
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
@@ -19,52 +132,336 @@
   </nav>
 
   <div class="container mt-4">
-    <h1 class="display-5 fw-bold text-sa-green">🔥 Natural Gas</h1>
-    <p class="lead">Overview of South Africa's natural gas markets, infrastructure, and the national Gas Master Plan.</p>
 
-    <div class="row mt-4">
-      <div class="col-12">
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5>Overview</h5>
-            <p>Natural gas is positioned as a transition fuel for South Africa, helping the grid balance variable wind and solar while reducing the most carbon-intensive parts of the energy system. It also supports coastal industry, petrochemicals, metals processing, and fertilizer production.</p>
-            <p>This page focuses on the broad role of gas in the South African energy transition: balancing power, supporting demand-side resilience, and linking domestic supply with imports through infrastructure.</p>
+    <!-- ============================================================
+         THE GAS STORY — the full arc woven together
+         ============================================================ -->
+    <div id="gasStory" class="mb-5">
+
+      <h2 class="story-section-title mt-2 mb-3">📖 The Gas Story</h2>
+      <p class="story-lede">
+        You could not write a more frustrating story if you tried. South Africa sits on gas it has barely
+        touched — offshore basins that were always promising, a power crisis that was always urgent, and a
+        fleet of peaking plants built to burn gas that never saw a mole of it delivered. Discoveries were made,
+        then shelved on a moratorium and a commercial exit. FSRUs were rushed in during the load-shedding
+        crisis, then fell through before a single cargo arrived. Now the load is falling and the grid is
+        stable — and the decision point is finally here: <strong>build the LNG import grid at Richards Bay,
+        Coega and Durban</strong>, wire up the <strong>domestic gas market</strong>, and remember that
+        <strong>Mozambique is right there</strong>.
+      </p>
+
+      <!-- Chapter nav -->
+      <nav class="story-chapter-nav mb-4">
+        <div class="nav nav-pills flex-wrap gap-1">
+          <a class="nav-link" href="#act1">I · Found it</a>
+          <a class="nav-link" href="#act2">II · Shelved it</a>
+          <a class="nav-link" href="#act3">III · Diesel plants</a>
+          <a class="nav-link" href="#act4">IV · FSRU rush</a>
+          <a class="nav-link" href="#act5">V · They fell</a>
+          <a class="nav-link" href="#act6">VI · The ports</a>
+          <a class="nav-link" href="#act7">VII · Mozambique</a>
+          <a class="nav-link" href="#act8">VIII · The market</a>
+          <a class="nav-link" href="#act9">IX · Where it lands</a>
+        </div>
+      </nav>
+
+      <!-- ACT I -->
+      <div id="act1" class="card story-act act-a1 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act I</span>
+          <h5>We found it here</h5>
+          <p>The resource was never the problem. In <em>February 2019</em>, TotalEnergies drilled
+          <strong>Brulpadda-1AX</strong> — 175 km off the southern coast in 1,800 m of water — and hit 57 m of net
+          gas-condensate pay in the Outeniqua Basin's Block 11B/12B. In <em>October 2020</em>,
+          <strong>Luiperd-1X</strong> landed 40 km east with an even better 73 m of net pay in superior
+          reservoir. Together: <strong>~3.4 Tcf of recoverable gas and ~200 MMbbl of condensate</strong> —
+          enough to supply South Africa for over a decade.</p>
+          <p>It wasn't a fluke on top of nothing. The gas was already known: PetroSA's F-O and FA fields
+          offshore Mossel Bay have fed the gas-to-liquids plant since 1992, and the Orange Basin discoveries
+          point to a much bigger west-coast story still being appraised. The geology was there.</p>
+          <div class="row g-3 mt-1">
+            <div class="col-6 col-md-3"><div class="story-stat"><small>Combined gas</small><h3 class="text-primary">3.4</h3><small>Tcf recoverable</small></div></div>
+            <div class="col-6 col-md-3"><div class="story-stat"><small>Condensate</small><h3 class="text-primary">200</h3><small>MMbbl</small></div></div>
+            <div class="col-6 col-md-3"><div class="story-stat"><small>Brulpadda pay</small><h3 class="text-primary">57 m</h3><small>net gas-condensate</small></div></div>
+            <div class="col-6 col-md-3"><div class="story-stat"><small>Luiperd pay</small><h3 class="text-primary">73 m</h3><small>net gas-condensate</small></div></div>
           </div>
         </div>
+      </div>
 
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5>Gas pathways</h5>
-            <p>South Africa’s gas strategy is shaped by three pathways:</p>
+      <!-- ACT II -->
+      <div id="act2" class="card story-act act-a2 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act II</span>
+          <h5>We didn't extract it — moratorium, then a commercial exit</h5>
+          <p>The discovery should have triggered a decade of development: a subsea tie-back, a gas-to-power
+          programme, an industrial feedstock. Instead it went nowhere. Onshore, the <strong>Karoo shale</strong>
+          — a massive 13–390 Tcf technically recoverable resource — remains undeveloped under the
+          <em>hydraulic fracturing moratorium</em>, a long-term (post-2035) option at best. Offshore, the
+          development never happened <em>commercially</em>: no development plan, no take-or-pay, no pipeline,
+          no offtake.</p>
+          <p>By <strong>July 2024 TotalEnergies exited Block 11B/12B</strong>. The reasons were commercial, not
+          geological: <strong>$2–4 billion capex</strong> for a two-well subsea tie-back, another
+          <strong>$500M–$1B</strong> for a 175 km subsea pipeline, the fast Agulhas Current limiting weather
+          windows — versus Coral South FLNG in Mozambique achieving <strong>$7B for 16 Tcf</strong>. And the
+          market wasn't there: South Africa's gas market is only <strong>~0.16 Tcf/yr</strong>, with no
+          gas-fired power fleet, no gas-to-power offtaker, and LNG imports available faster and cheaper. The
+          breakeven of <strong>$8–12/MMBtu</strong> was competitive but unbankable without signed offtake.</p>
+          <div class="story-pull">World-class geology, stranded commercial asset. The gas is there — 3.4 Tcf
+          proven. But getting it to market requires billions in a country with no gas infrastructure or offtake
+          certainty. TotalEnergies didn't exit because the resource was bad; they exited because the market
+          doesn't exist yet.
+          <span class="src">Act II · the shelving</span></div>
+        </div>
+      </div>
+
+      <!-- ACT III -->
+      <div id="act3" class="card story-act act-a3 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act III</span>
+          <h5>Then gas plants got built — running on diesel</h5>
+          <p>Here's the paradox at the centre of the story. South Africa built open-cycle gas turbines to meet
+          peak demand (<strong>Ankerlig, Gourikwa, Avon, Dedisa</strong>) — and then lit them with liquid fuel,
+          because the gas never came. The fleet was <em>gas-capable but gas-starved</em>. The FA line fed only
+          part of the Western Cape, and it draws from a declining field.</p>
+          <p>The Gas Master Plan's current state says it all: domestic production is
+          <strong><1 bcm/yr</strong>, imports from Mozambique via ROMPCO are
+          <strong>~4.3 bcm/yr</strong> at maximum capacity since ~2021, and gas is only
+          <strong>~4% of the primary energy mix</strong> — against ~70% coal, ~15% oil and ~6% renewables
+          + nuclear. The peakers proved the country wanted gas-fired capacity fast; what it lacked was the
+          <em>gas</em>. That gap is what every FSRU scheme after this was trying to close.</p>
+        </div>
+      </div>
+
+      <!-- ACT IV -->
+      <div id="act4" class="card story-act act-a4 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act IV</span>
+          <h5>Load-shedding crisis → the FSRU rush</h5>
+          <p>Then the grid broke. The <em>load-shedding crisis</em> of 2022–23 made waiting impossible. The
+          answer the market reached for was the <strong>FSRU</strong> — a Floating Storage and Regasification
+          Unit that receives imported LNG, stores it in its cryogenic tanks, regasifies it and sends gas ashore.
+          No drilling, no basin development, no long pipeline. Just a ship, a berth, and gas from the open
+          market. FSRUs can be operational in <em>2–3 years</em> versus 5–7 for an onshore terminal, with
+          typical storage of 125,000–170,000 m³, and they're redeployable.</p>
+          <p>The Gas Master Plan treats LNG imports as the <strong>near-term anchor supply (2027+)</strong>,
+          with <strong>Ngqura (Coega)</strong> and <strong>Richards Bay</strong> identified as the active FSRU
+          sites. <strong>Karpowership</strong> was in active discussions for FSRU-based gas-to-power at Richards
+          Bay; <strong>Golar LNG</strong> had vessels available to redeploy; <strong>TNPA</strong> handles port
+          readiness and <strong>DMRE / PetroSA</strong> coordinate offtake. It was the fastest possible bridge
+          to dispatchable, low-carbon backup.</p>
+          <div class="row g-3 mt-1">
+            <div class="col-md-4"><div class="story-stat"><small>FSRU to first gas</small><h3 class="text-warning">2–3</h3><small>years vs 5–7 onshore</small></div></div>
+            <div class="col-md-4"><div class="story-stat"><small>FSRU storage</small><h3 class="text-warning">125–170k</h3><small>m³ ship tanks</small></div></div>
+            <div class="col-md-4"><div class="story-stat"><small>GMP anchor</small><h3 class="text-warning">2027+</h3><small>LNG imports, Coega & Richards Bay</small></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT V -->
+      <div id="act5" class="card story-act act-a5 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act V</span>
+          <h5>They didn't get built</h5>
+          <p>The fast-track FSRU bids were the fastest fix on the table — and they fell through before a single
+          cargo arrived. Commercial close slipped, grid access was withdrawn, and the licences were set aside.
+          The emergency bridge never made landfall. The 2 000 MW of risk-mitigation gas the country had banked
+          on never materialised as a fleet of floating ships.</p>
+          <p>Meanwhile the <em>gas cliff</em> was already on the horizon: the Pande–Temane fields feeding the
+          ROMPCO line were depleting, with the inland market facing a supply squeeze around 2028. The one
+          source that <em>did</em> feed the industrial heart was running out, just as the emergency imports
+          failed to arrive.</p>
+          <div class="story-pull">The FSRU was the right idea at the wrong time. The crisis demanded instant
+          gas; the process demanded paperwork that could not close in time. By the time the courts finished,
+          the blackouts were already fading.
+          <span class="src">Act V · the bridge that wasn't</span></div>
+        </div>
+      </div>
+
+      <!-- ACT VI -->
+      <div id="act6" class="card story-act act-a6 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act VI</span>
+          <h5>Now: load falls, grid stabilises → build the ports</h5>
+          <p>The load-shedding crisis is over. <em>Load is decreasing and the grid is stable</em> — which changes
+          everything. The moment demanded emergency 450 MW ships; this moment demands a
+          <em>permanent</em> gas import strategy. Because the domestic fields were shelved, the strategy is now
+          <em>import-based, not extraction-based</em>: <strong>build the ports, bring in the LNG, regasify it,
+          and feed a domestic gas market</strong>.</p>
+          <p>The Gas Master Plan's corridors are the blueprint. <strong>Corridor A</strong> — Coega (Ngqura)
+          LNG terminal → Mossel Bay → the existing PetroSA / Sasol network — is prioritised because it
+          connects to existing infrastructure and can immediately feed PetroSA's GTL plant, preventing its
+          shutdown. <strong>Corridor B</strong> — Richards Bay LNG (FSRU) → Empangeni → Vryheid → Gauteng — is
+          the ~500 km route to the inland load. The ports at <strong>Richards Bay, Coega and Durban</strong>
+          form the import triangle, with <strong>Vitol</strong> and others as the market players; the
+          <strong>GIPPPP gas IPP programme</strong> is the procurement vehicle.</p>
+          <div class="row g-3 mt-1">
+            <div class="col-md-4"><div class="story-stat"><small>Phase 1 cost</small><h3 class="text-success">R50–80bn</h3><small>LNG terminals + corridors</small></div></div>
+            <div class="col-md-4"><div class="story-stat"><small>Corridor A</small><h3 class="text-success">R20–30bn</h3><small>Coega → Mossel Bay → Gauteng</small></div></div>
+            <div class="col-md-4"><div class="story-stat"><small>Corridor B</small><h3 class="text-success">R12–18bn</h3><small>Richards Bay → Gauteng</small></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT VII -->
+      <div id="act7" class="card story-act act-a7 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act VII</span>
+          <h5>And Mozambique is right there</h5>
+          <p>The genius of the import strategy is that the supply is already on the doorstep. The same gas that
+          built the <strong>Pande–Temane</strong> fields and fed them through the <strong>ROMPCO</strong> line
+          (865 km, 36-inch, ~4.3 bcm/yr at ceiling) has been delivering to Secunda and the
+          <strong>Sasol-Gas network</strong> (~2 900 km, ~1 600 industrial, commercial and residential
+          customers) for two decades. That's the <em>declining</em> southern supply.</p>
+          <p>The real prize is to the north, in the <strong>Rovuma Basin</strong> — one of the world's great gas
+          provinces off Mozambique's coast. <strong>Area 1</strong> and <strong>Area 4</strong>, operated by
+          TotalEnergies and ExxonMobil, hold the volumes that make the South African ports viable. The planned
+          second Mozambique–South Africa pipeline (Rovuma → Richards Bay / Gauteng) is the most cost-effective
+          incremental supply option after LNG — but it's conditional on a Rovuma FID and security in Cabo
+          Delgado, where an insurgency has delayed development since 2021.</p>
+          <div class="story-pull">The supply was never the problem. It was always two days' sail away — the
+          delivery was the missing piece.
+          <span class="src">Act VII · Mozambique</span></div>
+        </div>
+      </div>
+
+      <!-- ACT VIII -->
+      <div id="act8" class="card story-act act-a8 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act VIII</span>
+          <h5>Build the domestic market</h5>
+          <p>Ports and supply are only half of it. A gas market needs <em>demand</em> — and the demand is the
+          domestic industrial grid, not just power. Gas-to-power is the anchor load; the moat is industrial
+          feedstock, process heat, ferrochrome and PGM smelters, fertiliser and the SEZs. The Gas Master Plan's
+          Base Case projects <strong>600–900 PJ/yr of gas demand by 2040</strong>, requiring
+          <strong>10–15 MTPA of LNG and 8–12 GW of gas-to-power</strong> — roughly a <em>5–7× increase</em> over
+          current consumption.</p>
+          <h6 class="fw-bold mt-3">Identified demand nodes (GMP, indicative peak PJ/yr)</h6>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead class="table-light">
+                <tr><th>Tier</th><th>Demand node</th><th>Province</th><th>Peak demand (PJ/yr)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Gauteng Industrial Complex</td><td>Gauteng</td><td>150–200</td></tr>
+                <tr><td>1</td><td>Richards Bay</td><td>KwaZulu-Natal</td><td>80–120</td></tr>
+                <tr><td>1</td><td>Coega / Ngqura</td><td>Eastern Cape</td><td>70–100</td></tr>
+                <tr><td>1</td><td>Mossel Bay / PetroSA GTL</td><td>Western Cape</td><td>60–90</td></tr>
+                <tr><td>2</td><td>Durban / South Basin</td><td>KwaZulu-Natal</td><td>50–70</td></tr>
+                <tr><td>2</td><td>Vaal Triangle / Sasolburg</td><td>Free State</td><td>40–60</td></tr>
+                <tr><td>2</td><td>eMalahleni / Witbank</td><td>Mpumalanga</td><td>40–60</td></tr>
+                <tr><td>2</td><td>Steelpoort / Burgersfort</td><td>Limpopo / Mpumalanga</td><td>30–50</td></tr>
+                <tr><td>3</td><td>Western Cape (Cape Town / Saldanha)</td><td>Western Cape</td><td>30–50</td></tr>
+                <tr><td>3</td><td>Phalaborwa / Limpopo</td><td>Limpopo</td><td>20–40</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h6 class="fw-bold mt-3">The value chain</h6>
+          <div class="row g-3">
+            <div class="col-md-4"><div class="story-chain-cell">
+              <h6>Upstream</h6>
+              <ul>
+                <li><strong>Brulpadda / Luiperd</strong> — ~3.4 Tcf recoverable, stranded</li>
+                <li><strong>Pande–Temane</strong> — Mozambique, declining</li>
+                <li><strong>Rovuma Area 1 & 4</strong> — the big prize</li>
+                <li><strong>Karoo shale</strong> — 13–390 Tcf, post-2035, on moratorium</li>
+              </ul>
+            </div></div>
+            <div class="col-md-4"><div class="story-chain-cell">
+              <h6>Midstream</h6>
+              <ul>
+                <li><strong>ROMPCO</strong> — 865 km, at ceiling</li>
+                <li><strong>LNG ports</strong> — Richards Bay, Coega / Ngqura, Durban</li>
+                <li><strong>Corridor A</strong> — Coega → Mossel Bay → Gauteng</li>
+                <li><strong>Corridor B</strong> — Richards Bay → Gauteng</li>
+              </ul>
+            </div></div>
+            <div class="col-md-4"><div class="story-chain-cell">
+              <h6>Downstream</h6>
+              <ul>
+                <li><strong>Gas-to-power</strong> — the anchor load</li>
+                <li><strong>Peakers</strong> — Ankerlig, Gourikwa, Avon, Dedisa</li>
+                <li><strong>GIPPPP gas IPPs</strong> — the procurement vehicle</li>
+                <li><strong>Industrial</strong> — Secunda, SEZs, smelters, process heat</li>
+              </ul>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT IX / SYNTHESIS -->
+      <div id="act9" class="card story-act act-a9 shadow-sm mb-4">
+        <div class="card-body">
+          <span class="act-badge">Act IX</span>
+          <h5>Where this lands</h5>
+          <p>The whole story reduces to a single, uncomfortable truth: <em>South Africa never needed to extract
+          its own gas to build the market — it needed the terminals</em>. The discovery proved the basin. The
+          moratorium and commercial exit killed the timeline. The crisis demanded a bridge, and the bridge
+          failed. Now the grid is stable enough to build the real thing, and the real thing is a
+          <em>gas import economy</em> — ports at Richards Bay, Coega and Durban, a Mozambican supply two days'
+          sail away, and a domestic market that wants the molecules for power and industry alike.</p>
+          <div class="story-verdict">
+            <h4>💡 The synthesis, in one breath</h4>
+            <p>We found it (Brulpadda / Luiperd) → we shelved it (moratorium + commercial exit) → we built gas
+            plants that burn diesel (Ankerlig, Gourikwa, Avon, Dedisa) → we rushed FSRUs in the crisis
+            (Karpowership, Golar, Ngqura, Richards Bay) → they didn't get built → and now that load is falling
+            and the grid is stable we build the <em>massive LNG import grid</em> at <strong>Richards Bay,
+            Coega and Durban</strong>, wire up the <strong>domestic gas market</strong>, and keep
+            <strong>Mozambique in the frame</strong> — because it was always the supply next door. The gas was
+            never the missing piece. The <em>delivery</em> was.</p>
+          </div>
+          <h6 class="fw-bold mt-4">What to watch</h6>
+          <div class="story-watch-item">
+            <h6>Mozambique security & Rovuma FID</h6>
+            <p>Area 1 / Area 4 and the second SA pipeline are conditional on FID and stability in Cabo Delgado.</p>
+          </div>
+          <div class="story-watch-item">
+            <h6>LNG price</h6>
+            <p>The 10–15 MTPA base case works only if delivered LNG stays <strong>below ~$10/MMBtu</strong>;
+            at $8–12/MMBtu gas-to-power competes with new coal and diesel OCGTs but not existing coal.</p>
+          </div>
+          <div class="story-watch-item">
+            <h6>The financing gap</h6>
+            <p>Phase 1 alone is R50–80bn. Without anchor offtake (Eskom gas-to-power, Sasol/PetroSA) developers
+            won't reach FID — the classic chicken-and-egg.</p>
+          </div>
+          <div class="story-watch-item">
+            <h6>Market structure & TPA</h6>
+            <p>Sasol controls the network, the ROMPCO contracts and is the largest user; third-party access is
+            the single most important reform for a real market.</p>
+          </div>
+          <div class="story-watch-item">
+            <h6>GMP–IRP alignment</h6>
+            <p>The Gas Master Plan is a standalone strategy; if the IRP under-allocates gas-to-power, the
+            demand projections won't materialise and the infrastructure is overbuilt.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================================
+         EXPLORE OTHER GAS SECTIONS
+         ============================================================ -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <h5>Explore other gas sections</h5>
+        <p>Each page below is a different angle on South Africa's gas transition:</p>
+        <ul>
+          <li><a href="gas_master_plan.html" class="link-primary">Gas Master Plan</a> — the official roadmap for infrastructure, demand nodes, and market design.</li>
+          <li><a href="gas-act.html" class="link-primary">Gas Act (2001)</a> — the statute that governs the piped gas industry: the rules, the regulator, and who is involved.</li>
+          <li><a href="hydraulic-fracturing-regulations.html" class="link-primary">Hydraulic Fracturing Regulations</a> — the proposed environmental framework for any future fracking of onshore oil and gas (Karoo).</li>
+          <li><a href="offshore_exploration.html" class="link-primary">Offshore Exploration</a> — the drilling story, the offshore baseload potential, and why LNG imports are still critical.</li>
+          <li><strong>LNG</strong> — the import-focused sector that will supply gas while local production grows:
             <ul>
-              <li>Domestic and offshore exploration to build local supply.</li>
-              <li>LNG import and regasification terminals to meet near-term demand.</li>
-              <li>Pipeline infrastructure and market reforms to connect supply to industry and power.</li>
+              <li><a href="gas_lng.html" class="link-primary">LNG Overview</a> — the full value chain from liquefaction to end use.</li>
+              <li><a href="gas_lng_regasification.html" class="link-primary">Regasification</a> — converting imported LNG back to gas for the pipeline network.</li>
+              <li><a href="gas_lng_fsrus.html" class="link-primary">FSRUs</a> — floating storage and regasification units as a fast-track deployment option.</li>
             </ul>
-            <p>Together, these pathways aim to deliver a flexible gas supply that can firm renewables, support industrial clusters, and reduce the country’s reliance on coal-fired generation.</p>
-          </div>
-        </div>
-
-        <div class="card shadow-sm mb-5">
-          <div class="card-body">
-            <h5>Explore other gas sections</h5>
-            <p>Each page below is a different angle on South Africa's gas transition:</p>
-            <ul>
-              <li><a href="gas_master_plan.html" class="link-primary">Gas Master Plan</a> — the official roadmap for infrastructure, demand nodes, and market design.</li>
-              <li><a href="offshore_exploration.html" class="link-primary">Offshore Exploration</a> — the drilling story, the offshore baseload potential, and why LNG imports are still critical.</li>
-              <li><strong>LNG</strong> — the import-focused sector that will supply gas while local production grows:
-                <ul>
-                  <li><a href="gas_lng.html" class="link-primary">LNG Overview</a> — the full value chain from liquefaction to end use.</li>
-                  <li><a href="gas_lng_regasification.html" class="link-primary">Regasification</a> — converting imported LNG back to gas for the pipeline network.</li>
-                  <li><a href="gas_lng_fsrus.html" class="link-primary">FSRUs</a> — floating storage and regasification units as a fast-track deployment option.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-
+          </li>
+        </ul>
       </div>
     </div>
+
   </div>
 </body>
 </html>

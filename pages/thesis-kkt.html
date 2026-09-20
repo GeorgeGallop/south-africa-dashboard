@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Karush-Kuhn-Tucker (KKT) • SAWEM Optimization & Pricing</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+      margin-bottom: 0.5rem;
+    }
+    .sa-green { color: #007A4D; }
+    .sa-gold  { color: #FFCD00; }
+    .kkt-card { border-left: 5px solid #007A4D; margin-bottom: 1.5rem; }
+    .kkt-card.setup    { border-left-color: #002395; }
+    .kkt-card.conds    { border-left-color: #007A4D; }
+    .kkt-card.duals    { border-left-color: #FFCD00; }
+    .kkt-card.dispatch { border-left-color: #862633; }
+    .kkt-card.opf      { border-left-color: #007A4D; }
+    .kkt-card.sawem    { border-left-color: #002395; }
+    .kkt-card.power    { border-left-color: #862633; }
+    .kkt-card.convex   { border-left-color: #6c757d; }
+    .kkt-card.frame    { border-left-color: #FFCD00; }
+    .cond-badge {
+      display: inline-block;
+      background: #007A4D;
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    table.dual-table th, table.dual-table td { vertical-align: middle; }
+    .flow-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    .flow-box {
+      background: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      text-align: center;
+      font-size: 0.85rem;
+      min-width: 130px;
+    }
+    .flow-arrow { align-self: center; font-size: 1.4rem; color: #6c757d; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold text-sa-green">&#128220; Karush-Kuhn-Tucker (KKT) Conditions</h1>
+    <p class="lead text-muted mb-4">
+      The first-order necessary conditions for optimality in a constrained optimisation problem &mdash;
+      and the mathematical bridge between <strong>dispatch</strong> and <strong>prices</strong> in a
+      wholesale electricity market. In SAWEM, the KKT multipliers <em>are</em> the market prices.
+    </p>
+
+    <!-- ============================================================ -->
+    <!-- 1. SETUP: THE CONSTRAINED PROBLEM                            -->
+    <!-- ============================================================ -->
+    <div class="kkt-card setup card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#128202;</span> 1. The Constrained Optimisation Problem</h2>
+        <p>
+          Almost every question in power-system economics is an optimisation subject to constraints.
+          We can only dispatch as much as the network can carry, run units within their physical
+          limits, and keep energy balance at every instant. Write a generic
+          <strong>inequality-constrained</strong> problem as:
+        </p>
+        <div class="math">
+          <strong>minimise</strong> &nbsp; f(x) &nbsp; &nbsp; x &#8712; &#8477;<sup>n</sup><br>
+          <strong>subject to</strong> &nbsp; g<sub>i</sub>(x) &le; 0, &nbsp; i = 1, &hellip;, m<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h<sub>j</sub>(x) = 0, &nbsp; j = 1, &hellip;, l
+        </div>
+        <p class="small">
+          Here <strong>f</strong> is the objective (e.g. total generation cost), the
+          <strong>g<sub>i</sub></strong> are inequality constraints (e.g. &nbsp;p<sub>g</sub> &le; P<sub>g</sub><sup>max</sup>,
+          |f<sub>&#8467;</sub>| &le; F<sub>&#8467;</sub><sup>max</sup>&nbsp;) and the
+          <strong>h<sub>j</sub></strong> are equality constraints (e.g. the nodal power-balance equations).
+        </p>
+        <p>The core object is the <strong>Lagrangian</strong>, which attaches a price-like multiplier to every constraint:</p>
+        <div class="math">
+          L(x, &lambda;, &mu;) = f(x) + &Sigma;<sub>i=1</sub><sup>m</sup> &mu;<sub>i</sub> &middot; g<sub>i</sub>(x)
+          + &Sigma;<sub>j=1</sub><sup>l</sup> &lambda;<sub>j</sub> &middot; h<sub>j</sub>(x)
+        </div>
+        <ul class="small mb-0">
+          <li><strong>&lambda;<sub>j</sub></strong> &mdash; multiplier on the <em>equality</em> constraint
+            h<sub>j</sub> (free in sign).</li>
+          <li><strong>&mu;<sub>i</sub></strong> &mdash; multiplier on the <em>inequality</em> constraint
+            g<sub>i</sub> (constrained to be non-negative).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. THE KKT CONDITIONS                                        -->
+    <!-- ============================================================ -->
+    <div class="kkt-card conds card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#9989;</span> 2. The Four KKT Conditions</h2>
+        <p>
+          Suppose x<sup>*</sup> is a <strong>local minimiser</strong> of the constrained problem and a
+          <strong>constraint qualification</strong> holds (e.g. linear independence of the active
+          constraint gradients &mdash; LICQ, or Slater's condition for convex problems). Then there exist
+          multipliers (&lambda;<sup>*</sup>, &mu;<sup>*</sup>) such that:
+        </p>
+        <table class="table table-bordered small">
+          <thead class="table-light">
+            <tr><th style="width:190px;">Condition</th><th>Statement</th><th>Economic meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="cond-badge">1</span> Stationarity</td>
+              <td class="math mb-0">&#8711;<sub>x</sub> L(x<sup>*</sup>, &lambda;<sup>*</sup>, &mu;<sup>*</sup>) = 0</td>
+              <td>No profitable infinitesimal re-dispatch: marginal benefit equals the marginal value of the constraints it consumes.</td>
+            </tr>
+            <tr>
+              <td><span class="cond-badge">2</span> Primal feasibility</td>
+              <td class="math mb-0">g<sub>i</sub>(x<sup>*</sup>) &le; 0, &nbsp; h<sub>j</sub>(x<sup>*</sup>) = 0</td>
+              <td>The solution actually respects the physical limits of the system.</td>
+            </tr>
+            <tr>
+              <td><span class="cond-badge">3</span> Dual feasibility</td>
+              <td class="math mb-0">&mu;<sub>i</sub><sup>*</sup> &ge; 0</td>
+              <td>Prices are never negative for a constraint you are relaxing &mdash; a transmission limit has a non-negative congestion price.</td>
+            </tr>
+            <tr>
+              <td><span class="cond-badge">4</span> Complementary slackness</td>
+              <td class="math mb-0">&mu;<sub>i</sub><sup>*</sup> &middot; g<sub>i</sub>(x<sup>*</sup>) = 0</td>
+              <td>A constraint is either <em>inactive</em> (then its price is zero) or <em>binding</em> (then it has a price). No free lunch &mdash; you only pay for what binds.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-secondary small mt-3">
+          <strong>&#128218; Intuition:</strong> Complementary slackness is what makes a price form inside the
+          optimisation. A slack constraint (g<sub>i</sub> < 0) contributes nothing to the Lagrangian, so
+          &mu;<sub>i</sub> must vanish. A binding constraint (g<sub>i</sub> = 0) can carry a non-zero
+          multiplier &mdash; exactly the shadow price we observe as a market signal.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. SHADOW PRICES                                              -->
+    <!-- ============================================================ -->
+    <div class="kkt-card duals card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#128176;</span> 3. Multipliers = Shadow Prices</h2>
+        <p>
+          The KKT multiplier attached to a constraint is its <strong>marginal value</strong>: the rate at
+          which the optimal objective improves if the constraint is relaxed by one unit. This is the
+          economic content of the whole construction.
+        </p>
+        <div class="math">
+          &mu;<sub>i</sub><sup>*</sup> = &minus; &part;f(x<sup>*</sup>) / &part;b<sub>i</sub>
+          &nbsp;&nbsp; where &nbsp; g<sub>i</sub>(x) &le; b<sub>i</sub>
+        </div>
+        <table class="table table-sm table-bordered small dual-table mt-3">
+          <thead class="table-light"><tr><th>Constraint being relaxed</th><th>Multiplier</th><th>Wholesale-market name</th></tr></thead>
+          <tbody>
+            <tr><td>Power balance: &nbsp;&Sigma;<sub>g</sub> p<sub>g</sub> = D</td><td>&lambda;</td><td><strong>System Marginal Price (SMP)</strong> &mdash; the energy price paid to all dispatched units</td></tr>
+            <tr><td>Transmission limit: &nbsp;|f<sub>&#8467;</sub>| &le; F<sub>&#8467;</sub><sup>max</sup></td><td>&zeta;<sub>&#8467;</sub></td><td><strong>Congestion price</strong> &mdash; source of Locational Marginal Price (LMP) differences</td></tr>
+            <tr><td>Reserve requirement: &nbsp;&Sigma;<sub>g</sub> r<sub>g</sub> &ge; R</td><td>&mu;</td><td><strong>Scarcity / reserve price</strong> &mdash; the value of holding one more MW of headroom</td></tr>
+            <tr><td>Unit upper limit: &nbsp;p<sub>g</sub> &le; P<sub>g</sub><sup>max</sup></td><td>&mu;<sub>g</sub><sup>max</sup></td><td><strong>Capacity rent</strong> &mdash; payment received by the marginal (binding) plant</td></tr>
+            <tr><td>Unit lower limit: &nbsp;p<sub>g</sub> &ge; P<sub>g</sub><sup>min</sup></td><td>&mu;<sub>g</sub><sup>min</sup></td><td>Must-run / minimum-load price</td></tr>
+          </tbody>
+        </table>
+        <p class="small mb-0">
+          This is why the <a href="thesis-methods.html">Methods page</a> lists
+          <em>&ldquo;&lambda;<sub>t</sub> = SMP (System Marginal Price)&rdquo;</em> against the power-balance
+          row: the price is not an assumption imposed on the market &mdash; it <strong>emerges</strong> as the
+          dual of the balance constraint in the clearing optimisation.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 4. ECONOMIC DISPATCH                                          -->
+    <!-- ============================================================ -->
+    <div class="kkt-card dispatch card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#9889;</span> 4. KKT in Economic Dispatch</h2>
+        <p>Start with the simplest market-clearing problem &mdash; merit-order (no network):</p>
+        <div class="math">
+          <strong>minimise</strong> &nbsp; &Sigma;<sub>g</sub> C<sub>g</sub>(p<sub>g</sub>)<br>
+          <strong>subject to</strong> &nbsp; &Sigma;<sub>g</sub> p<sub>g</sub> = D &nbsp;&nbsp; [&lambda;]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; P<sub>g</sub><sup>min</sup> &le; p<sub>g</sub> &le; P<sub>g</sub><sup>max</sup> &nbsp;&nbsp; [&mu;<sub>g</sub><sup>min</sup>, &mu;<sub>g</sub><sup>max</sup>]
+        </div>
+        <p class="small">The Lagrangian is</p>
+        <div class="math">
+          L = &Sigma;<sub>g</sub> C<sub>g</sub>(p<sub>g</sub>) + &lambda;&middot;(D &minus; &Sigma;<sub>g</sub> p<sub>g</sub>)
+          + &Sigma;<sub>g</sub> [ &mu;<sub>g</sub><sup>max</sup>(p<sub>g</sub> &minus; P<sub>g</sub><sup>max</sup>)
+          + &mu;<sub>g</sub><sup>min</sup>(P<sub>g</sub><sup>min</sup> &minus; p<sub>g</sub>) ]
+        </div>
+        <p class="small"><strong>Stationarity</strong> w.r.t. p<sub>g</sub> gives the fundamental dispatch rule:</p>
+        <div class="math">
+          C'<sub>g</sub>(p<sub>g</sub>) &minus; &lambda; &minus; &mu;<sub>g</sub><sup>max</sup> + &mu;<sub>g</sub><sup>min</sup> = 0
+        </div>
+        <table class="table table-sm table-bordered small mt-3">
+          <thead class="table-light"><tr><th>Position of g</th><th>KKT implication</th><th>Market reading</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Interior: P<sub>g</sub><sup>min</sup> < p<sub>g</sub> < P<sub>g</sub><sup>max</sup></td>
+              <td class="math mb-0">&mu;<sub>g</sub><sup>max</sup> = &mu;<sub>g</sub><sup>min</sup> = 0 &nbsp;&rArr;&nbsp; C'<sub>g</sub>(p<sub>g</sub>) = &lambda;</td>
+              <td>Marginal cost <strong>equals</strong> the SMP &mdash; this unit sets the price.</td>
+            </tr>
+            <tr>
+              <td>At upper bound p<sub>g</sub> = P<sub>g</sub><sup>max</sup></td>
+              <td class="math mb-0">&mu;<sub>g</sub><sup>max</sup> = &lambda; &minus; C'<sub>g</sub>(P<sub>g</sub><sup>max</sup>) > 0</td>
+              <td>Cheap unit is saturated and earns a <strong>capacity rent</strong> (it is cheaper than the SMP).</td>
+            </tr>
+            <tr>
+              <td>At lower bound p<sub>g</sub> = P<sub>g</sub><sup>min</sup></td>
+              <td class="math mb-0">&mu;<sub>g</sub><sup>min</sup> = &lambda; &minus; C'<sub>g</sub>(P<sub>g</sub><sup>min</sup>) > 0</td>
+              <td>Must-run / minimum-load unit dispatched even though expensive.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-success small mt-3">
+          <strong>&#128640; The key takeaway:</strong> the market price &lambda; is <em>not</em> a free variable; it is
+          pinned down by the stationarity condition together with the balance equality. It equals the marginal
+          cost of the marginal unit (the merit-order rule), and the KKT conditions are simply the formal
+          statement of that rule.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 5. OPF & LMP DECOMPOSITION                                    -->
+    <!-- ============================================================ -->
+    <div class="kkt-card opf card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#127919;</span> 5. KKT in OPF &rarr; Locational Marginal Prices</h2>
+        <p>Add the network. In a DC-OPF the constraints become nodal:</p>
+        <div class="math">
+          <strong>minimise</strong> &nbsp; &Sigma;<sub>g</sub> C<sub>g</sub>(p<sub>g</sub>)<br>
+          <strong>subject to</strong> &nbsp; B&middot;&theta; = P &nbsp;&nbsp; (nodal power balance) &nbsp;&nbsp; [&lambda;<sub>n</sub>]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |f<sub>&#8467;</sub>| &le; F<sub>&#8467;</sub><sup>max</sup> &nbsp;&nbsp; (line capacity) &nbsp;&nbsp; [&zeta;<sub>&#8467;</sub><sup>+</sup>, &zeta;<sub>&#8467;</sub><sup>&minus;</sup>]
+        </div>
+        <p class="small">
+          Now every node carries its own multiplier &lambda;<sub>n</sub>, and every congested line its own
+          &zeta;<sub>&#8467;</sub>. The nodal price &lambda;<sub>n</sub> decomposes into components:
+        </p>
+        <div class="math">
+          <strong>LMP<sub>n</sub></strong> = &lambda;<sub>ref</sub>
+          &nbsp;+&nbsp; &Sigma;<sub>&#8467;</sub> &zeta;<sub>&#8467;</sub> &middot; &part;f<sub>&#8467;</sub>/&part;D<sub>n</sub>
+          &nbsp;+&nbsp; <em>loss component</em>
+        </div>
+        <table class="table table-sm table-bordered small mt-3">
+          <thead class="table-light"><tr><th>Component</th><th>Multiplier</th><th>What it pays for</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Energy</strong></td><td>&lambda;<sub>ref</sub></td><td>The system-wide cost of one more MW of demand at the reference bus.</td></tr>
+            <tr><td><strong>Congestion</strong></td><td>&zeta;<sub>&#8467;</sub><sup>+</sup>, &zeta;<sub>&#8467;</sub><sup>&minus;</sup></td><td>The cost of the binding line limits &mdash; this is where prices diverge between nodes.</td></tr>
+            <tr><td><strong>Losses</strong></td><td>&part;(loss)/&part;D<sub>n</sub></td><td>The marginal cost of incremental network losses (drops out in the pure DC linearisation).</td></tr>
+          </tbody>
+        </table>
+        <p class="small mb-0">
+          In the SAWEM framework (see <a href="thesis-methods.html">Methods</a>) the congestion duals are listed exactly
+          as <em>&ldquo;&zeta;<sub>&#8467;,t</sub><sup>+</sup>, &zeta;<sub>&#8467;,t</sub><sup>&minus;</sup> = congestion rents&rdquo;</em>.
+          KKT is the reason those &zeta; values <strong>exist and are priced</strong> &mdash; they are the shadow prices
+          of the transmission limits.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 6. SAWEM-SPECIFIC CONSTRAINTS                                 -->
+    <!-- ============================================================ -->
+    <div class="kkt-card sawem card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#127758;</span> 6. KKT Across the SAWEM Clearing Problem</h2>
+        <p>
+          The South African Wholesale Electricity Market is cleared by a Security-Constrained Unit
+          Commitment / Economic Dispatch (SCUC/SCED). Each constraint in that MILP carries a dual that
+          the KKT conditions identify as a price. Mapping the framework's constraint table to KKT:
+        </p>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light"><tr><th>SAWEM constraint</th><th>KKT multiplier</th><th>Market price / interpretation</th></tr></thead>
+          <tbody>
+            <tr><td>Power balance &nbsp;&Sigma;<sub>g</sub> p<sub>g,t</sub> = D<sub>t</sub></td><td>&lambda;<sub>t</sub></td><td><strong>SMP</strong> &mdash; the market-clearing energy price (pay-as-clear).</td></tr>
+            <tr><td>Reserve req. &nbsp;&Sigma;<sub>g</sub> r<sub>g,t</sub> &ge; R<sub>t</sub></td><td>&mu;<sub>t</sub></td><td><strong>Reserve scarcity price</strong> &mdash; co-optimised with energy.</td></tr>
+            <tr><td>Unit limits &nbsp;v<sub>g,t</sub>&middot;P<sup>min</sup> &le; p<sub>g,t</sub> &le; v<sub>g,t</sub>&middot;P<sup>max</sup></td><td>&mu;<sub>g,t</sub><sup>min</sup>, &mu;<sub>g,t</sub><sup>max</sup></td><td>Capacity rents; KKT multipliers on capacity.</td></tr>
+            <tr><td>Ramp limits &nbsp;p<sub>g,t</sub> &minus; p<sub>g,t&minus;1</sub> &le; RU</td><td>&rho;<sub>g,t</sub></td><td>Inter-temporal price of flexibility.</td></tr>
+            <tr><td>Min up / min down</td><td>&sigma;<sub>g,t</sub></td><td>Value of the commitment binary state.</td></tr>
+            <tr><td>DC line flow &nbsp;|f<sub>&#8467;,t</sub>| &le; F<sub>&#8467;</sub><sup>max</sup></td><td>&zeta;<sub>&#8467;,t</sub><sup>+</sup>, &zeta;<sub>&#8467;,t</sub><sup>&minus;</sup></td><td><strong>Congestion rents</strong> &rarr; LMP differentials.</td></tr>
+            <tr><td>Reserve-energy coupling &nbsp;p<sub>g,t</sub> + r<sub>g,t</sub> &le; v<sub>g,t</sub>&middot;P<sup>max</sup></td><td>&nu;<sub>g,t</sub></td><td>Co-optimisation link between energy and reserve.</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-info small mt-3">
+          <strong>&#128161; Why the SMP is a KKT multiplier:</strong> in a pay-as-clear market every dispatched generator
+          is paid the same price &mdash; the dual on the energy-balance equality in the clearing optimisation. Because
+          the market operator <em>solves the KKT system</em> (via the MILP/LP solver), the price is a
+          <strong>by-product of the solution</strong>, not an input. This is the most direct application of KKT
+          to wholesale electricity markets.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 7. STRATEGIC BIDDING / MARKET POWER                           -->
+    <!-- ============================================================ -->
+    <div class="kkt-card power card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#128101;</span> 7. KKT & Strategic Bidding (Market Power)</h2>
+        <p>
+          The clearing problem above is the system operator's. A <strong>generator</strong> that can move the
+          price faces its own constrained optimisation &mdash; maximise profit given its residual demand
+          (the price it receives depends on how much it sells):
+        </p>
+        <div class="math">
+          <strong>maximise</strong> &nbsp; &pi;(q) = p(q)&middot;q &minus; C(q)<br>
+          <strong>first-order (KKT) condition:</strong> &nbsp; p(q) + q &middot; &part;p/&part;q = C'(q)
+        </div>
+        <p class="small">
+          Rearranging produces the <strong>Lerner index</strong>, the standard measure of market power:
+        </p>
+        <div class="math">
+          L = (p &minus; MC) / p = &minus; 1 / &epsilon;
+          &nbsp;&nbsp;&nbsp; where &nbsp; &epsilon; = (q/p) &middot; &part;p/&part;q &nbsp; (elasticity of residual demand)
+        </div>
+        <ul class="small mb-0">
+          <li>The generator marks up price above marginal cost by an amount inversely proportional to <strong>&epsilon;</strong>.</li>
+          <li>When &epsilon; is large (many substitutes, competitive fringe), the markup is small &mdash; close to the KKT point of the competitive dispatch.</li>
+          <li>When &epsilon; is small (must-run load, tight system), the markup grows &mdash; this is exactly the <strong>scarcity pricing</strong> the ABM observes as emergent behaviour.</li>
+        </ul>
+        <p class="small mt-2 mb-0">
+          In the <a href="thesis-abm.html">Agent-Based Model</a>, agents learn these bid policies; the
+          Lerner index and the gap (SMP &minus; SRMC) are tracked as emergent market-power metrics. The
+          <strong>competitive benchmark</strong> they are measured against is precisely the KKT solution of the
+          dispatch problem.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 8. CONVEXITY & NON-CONVEXITY                                  -->
+    <!-- ============================================================ -->
+    <div class="kkt-card convex card border-0 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title fw-bold"><span class="concept-icon">&#9878;&#65039;</span> 8. Convexity, Sufficiency, and the Non-convex Catch</h2>
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light"><tr><th>Problem class</th><th>Role of KKT</th><th>Wholesale-market example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Convex</strong> (LP / QP; f and g convex, h affine)</td><td>KKT is <em>necessary and sufficient</em>; no duality gap.</td><td><strong>DC-OPF / merit-order dispatch</strong> &mdash; the SMP and LMPs come straight from the KKT solution.</td></tr>
+            <tr><td><strong>Linear</strong> (LP) &mdash; a special convex case</td><td>KKT = primal/dual feasibility + complementary slackness (the simplex / interior-point optimality conditions).</td><td><strong>SCED</strong> (security-constrained economic dispatch) with linear bid curves.</td></tr>
+            <tr><td><strong>Mixed-Integer</strong> (MILP) &mdash; binary commitment variables</td><td>KKT holds on the continuous relaxation; integrality handled by branch-and-cut. Prices come from the <em>relaxed</em> duals (a source of the duality gap).</td><td><strong>SCUC</strong> with v<sub>g,t</sub> &isin; {0,1}, start-up, min-up/down.</td></tr>
+            <tr><td><strong>Non-convex</strong> (AC-OPF: sinusoidal power flow)</td><td>KKT only <em>necessary</em>; may find local optima and raise ill-defined prices.</td><td><strong>AC-OPF</strong> / lossy LMP models; often solved with SDP or SOCP relaxations.</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning small mt-3">
+          <strong>&#9888;&#65039; Practical caveat for SAWEM:</strong> because the real clearing problem is a MILP
+          with binary commitment and some non-linearities, the reported SMP / LMPs are identical to KKT multipliers of
+          the corresponding <em>relaxed</em> optimality system. In a tight, scarce system this can under-price
+          flexibility &mdash; which is why market designs add explicit scarcity or reserve-price adders (the reserve
+          dual &mu; above) on top of the energy price.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 9. CONNECTION TO THE FRAMEWORK                                -->
+    <!-- ============================================================ -->
+    <div class="kkt-card frame card border-0 shadow-sm mb-5" style="background: #f0f4f8;">
+      <div class="card-body">
+        <h2 class="fw-bold"><span class="concept-icon">&#128260;</span> 9. KKT in the SAWEM Evolutionary Framework</h2>
+        <p class="small mb-3">
+          KKT is the connective tissue of the closed-loop framework. It does not sit as a separate module &mdash;
+          it is the mathematical engine that turns <em>bid stacks</em> into <em>prices and dispatch</em>, and
+          therefore the signal every agent learns from.
+        </p>
+        <div class="flow-row mb-3">
+          <div class="flow-box"><strong>&#129302; ABM</strong><br><span class="text-muted">Agents submit bids</span></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-box"><strong>&#129518; OPF / SCUC</strong><br><span class="text-muted">Solves KKT system</span></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-box" style="border-color:#007A4D;"><strong>&#128176; Prices</strong><br><span class="text-muted">SMP &lambda;, congestion &zeta;, reserve &mu;</span></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-box"><strong>&#128202; MDP</strong><br><span class="text-muted">Rewards &rarr; learning</span></div>
+        </div>
+        <ul class="small">
+          <li><strong>Pricing:</strong> the SMP, LMPs, congestion rents and reserve prices are the KKT duals of the clearing problem &mdash; the same values the <a href="thesis-methods.html">Methods page</a> lists in its dual column.</li>
+          <li><strong>Learning:</strong> agents receive rewards (profit) whose dependence on dispatch is fully captured by the KKT stationarity conditions; reinforcement learning drives bids toward the KKT/equilibrium point of the competitive case.</li>
+          <li><strong>Benchmarking:</strong> the KKT solution of the <em>competitive</em> dispatch is the no-market-power counterfactual against which the ABM's emergent behaviour (Lerner index, SMP uplift) is judged.</li>
+          <li><strong>Inference:</strong> the sensitivity (shadow-price) structure is what allows causal statements like &ldquo;the congestion rent on the Cape corridor is the social value of relieving it.&rdquo;</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr>
+    <div class="small mb-3">
+      <strong>&#128218; Other thesis pages</strong><br>
+      <div class="d-flex flex-wrap gap-1 mt-1">
+        <a href="thesis.html" class="btn btn-sm btn-outline-secondary">&#127917; Overview</a>
+        <a href="thesis-cas.html" class="btn btn-sm btn-outline-secondary">&#127760; CAS</a>
+        <a href="thesis-ace.html" class="btn btn-sm btn-outline-secondary">&#127891; ACE</a>
+        <a href="thesis-emcas.html" class="btn btn-sm btn-outline-secondary">&#127758; EMCAS</a>
+        <a href="thesis-abm.html" class="btn btn-sm btn-outline-secondary">&#129302; ABM</a>
+        <a href="thesis-stochastic.html" class="btn btn-sm btn-outline-secondary">&#127936; Stochastic</a>
+        <a href="thesis-methods.html" class="btn btn-sm btn-outline-secondary">&#129518; Methods</a>
+        <a href="thesis-kkt.html" class="btn btn-sm btn-success">&#128220; KKT</a>
+        <a href="thesis-neural-networks.html" class="btn btn-sm btn-outline-secondary">&#129504; Neural Nets</a>
+        <a href="thesis-agents.html" class="btn btn-sm btn-outline-secondary">&#129302; Agents</a>
+        <a href="thesis-simulation.html" class="btn btn-sm btn-outline-secondary">&#127922; Simulation</a>
+      </div>
+    </div>
+
+    <p class="text-muted text-center">
+      Karush-Kuhn-Tucker conditions &mdash; the first-order optimality conditions that make the prices of a
+      wholesale electricity market a mathematical <em>consequence</em> of the dispatch problem, not an assumption.
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

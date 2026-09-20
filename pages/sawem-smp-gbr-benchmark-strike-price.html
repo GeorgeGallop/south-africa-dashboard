@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GBR Benchmark Strike Price &bull; Pricing &bull; SAWEM &bull; South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+    .section-divider-thin {
+      height: 2px;
+      background: #e9ecef;
+      border-radius: 2px;
+      margin: 2rem 0;
+    }
+    .formula-card {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+    .formula-card .math-label {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: #007A4D;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .callout-box {
+      border-left: 5px solid #007A4D;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .callout-box p:last-child { margin-bottom: 0; }
+    .callout-box-warn {
+      border-left: 5px solid #e65100;
+      background: #fff8f0;
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .callout-box-warn p:last-child { margin-bottom: 0; }
+    .callout-box-idea {
+      border-left: 5px solid #FFCD00;
+      background: #fffdf0;
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .callout-box-idea p:last-child { margin-bottom: 0; }
+    .def-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .def-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .def-item {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .def-item .term {
+      font-weight: 700;
+      color: #007A4D;
+      font-size: 0.9rem;
+    }
+    .def-item .desc {
+      font-size: 0.9rem;
+      color: #444;
+      margin-top: 0.3rem;
+      margin-bottom: 0;
+    }
+    .badge-math {
+      background: #002395;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+    }
+    .badge-part {
+      background: #007A4D;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+    .badge-mid {
+      background: #002395;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .step-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .step-row .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #007A4D;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step-row .content { flex: 1; }
+    .step-row .content p:last-child { margin-bottom: 0; }
+    .layer-card {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: white;
+      height: 100%;
+    }
+    .layer-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .layer-card ul {
+      font-size: 0.9rem;
+      color: #444;
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+    }
+    .layer-card ul li { margin-bottom: 0.3rem; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 30%; background: #f8f9fa; }
+    .table-math td:first-child {
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+    }
+    .table-math td.num, .table-math th.num { text-align: right; white-space: nowrap; }
+    .total-row td { font-weight: 700; background: #eef7f2; }
+    .strike-row td { font-weight: 800; background: #002395; color: #fff; }
+    .strike-row td a { color: #fff; }
+    .figure-card {
+      border: 2px solid #212529;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .figure-card img { width: 100%; height: auto; display: block; background: #fff; }
+    .figure-card figcaption { padding: 0.85rem 1rem 1rem; font-size: 0.9rem; color: #495057; border-top: 1px solid #dee2e6; }
+    .source-tag {
+      font-size: 0.7rem; padding: 0.15rem 0.5rem;
+      border-radius: 10px; display: inline-block;
+    }
+    .source-ner { background: #f3e8ff; color: #6b21a8; }
+    .source-spec { background: #dbeafe; color: #1e40af; }
+    .source-code { background: #dcfce7; color: #166534; }
+    .source-cpa { background: #fef3c7; color: #92400e; }
+    .flow-chain {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+    .flow-chain .node {
+      flex: 1 1 150px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 0.75rem;
+      background: #fff;
+      font-size: 0.82rem;
+    }
+    .flow-chain .node .k {
+      font-weight: 700;
+      color: #007A4D;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .flow-chain .arrow {
+      align-self: center;
+      color: #FFCD00;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0 0.15rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="sawem-smp.html" class="btn btn-light btn-sm">💰 SMP</a>
+        <a href="transitional-generation-pricing.html" class="btn btn-light btn-sm">📄 Vesting Framework</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- ============================================================ -->
+    <!-- HEADER                                                        -->
+    <!-- ============================================================ -->
+    <header class="mb-4">
+      <p class="small text-muted mb-1">
+        Power &middot; SAWEM &middot; Pricing &middot; <a href="sawem-smp.html">System Marginal Price (SMP)</a>
+      </p>
+      <h1 class="display-6 fw-bold text-sa-green mb-2">GBR Benchmark Strike Price</h1>
+      <p class="text-muted mb-3">
+        The <strong>benchmark strike price</strong> of the Transitional Generation Pricing and Vesting
+        Contract Framework &mdash; the cost-reflective price benchmark NERSA derives from the
+        <strong>Generator Revenue Requirement Benchmark (GRR Benchmark)</strong> and uses to settle
+        two-way vesting contracts while the South African Wholesale Electricity Market (SAWEM) is still
+        thin. This page breaks down exactly where it comes from, each formula behind it, every number in
+        NERSA&rsquo;s worked example, and what it means for each type of market participant &mdash;
+        including how the answer changes with the <em>capacity type</em>.
+      </p>
+      <p class="mb-0">
+        <span class="badge-mid">Transitional framework</span>
+        <span class="badge-mid">Illustrative numbers</span>
+        <span class="badge-mid">Not a market price</span>
+      </p>
+    </header>
+<!-- ============================================================ -->
+    <!-- STATUS & SOURCE FACTS                                         -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <table class="table table-bordered fact mb-0">
+        <tbody>
+          <tr><th>Framework</th><td>Transitional Generation Pricing and Vesting Contract Framework</td></tr>
+          <tr><th>Authority</th><td>National Energy Regulator of South Africa (NERSA)</td></tr>
+          <tr><th>Issued</th><td>20 May 2026 (wholesale price methodology paper issued 18 May 2026)</td></tr>
+          <tr><th>Comment period</th><td>Closed 4 August 2026 (extended from 6 July 2026)</td></tr>
+          <tr><th>Public hearing</th><td><strong>19 August 2026</strong>, 09:30&ndash;12:00, MS Teams &mdash; this hearing ran</td></tr>
+          <tr><th>Status</th><td>Closed; NERSA consolidating inputs. ELS recommendation, then Energy Regulator decision &mdash; no date published</td></tr>
+          <tr><th>Benchmark illustration</th><td>Arnot Power Station &mdash; 2&nbsp;100 MW baseload coal, one month (30 days), 85% available capacity factor, 1&nbsp;070&nbsp;000 MWh benchmark energy quantity, 70% vesting level (749&nbsp;000 MWh)</td></tr>
+          <tr><th>Primary PDF</th><td><a href="../data/power/NERSA-Transitional-Generation-Pricing-and-Vesting-Framework-2026.pdf" target="_blank" rel="noreferrer">Transitional Generation Pricing and Vesting Contract Framework (May 2026)</a> <span class="source-tag source-ner">NERSA</span></td></tr>
+          <tr><th>Notice PDF</th><td><a href="../data/power/NERSA-Vesting-Contract-and-Wholesale-Price-Consultation-Paper.pdf" target="_blank" rel="noreferrer">Notice of extension of deadline for written comments</a> <span class="source-tag source-ner">NERSA</span></td></tr>
+          <tr><th>Companion page</th><td><a href="transitional-generation-pricing.html">Transitional Generation Pricing & Vesting Contract Framework</a> &mdash; summary of the same consultation</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FIGURE 1                                                      -->
+    <!-- ============================================================ -->
+    <figure class="figure-card mb-4">
+      <img src="../images/power/NERSA-Figure-1-generation-pricing-vesting-framework.png"
+           alt="Figure 1: High-level overview of the Eskom generation pricing and vesting contract framework, showing Zone 1 benchmark pricing formation (Parts 1 to 4), Zone 2 market and vesting settlement, and Zone 3 transitional governance">
+      <figcaption>
+        <strong>Figure 1: High-level overview of the Eskom generation pricing and vesting contract framework.</strong>
+        <strong>Zone 1</strong> builds the benchmark price: Part 1 capacity cost recovery, Part 2 ancillary services recovery and
+        Part 3 SRMC-based offer pricing feed the Generator Revenue Requirement Benchmark (GRR Benchmark), which
+        Part 4 divides by expected energy to produce the strike price benchmark. <strong>Zone 2</strong> settles the
+        difference between that strike and the wholesale market price on vested volumes (the realised generator revenue
+        outcome, RGRO). <strong>Zone 3</strong> is the transitional overlay: market monitoring, market-power mitigation,
+        vesting reduction and eventual sunset. Source: NERSA, May 2026.
+      </figcaption>
+    </figure>
+
+    <!-- ============================================================ -->
+    <!-- 1) WHAT IT IS                                                 -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">1) What the &ldquo;GBR Benchmark Strike Price&rdquo; actually is</h2>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Short definition</strong></p>
+                <p>
+                  The <strong>strike price</strong> is a cost-reflective <em>benchmark</em> price, expressed in
+                  R/MWh, obtained by dividing NERSA&rsquo;s efficient generation revenue requirement by the
+                  benchmark energy quantity the plant is expected to produce. It is the number the vesting
+                  contract settles against: generators are paid the difference when the market clears below it,
+                  and pay the difference back when the market clears above it.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>What it is <em>not</em></strong></p>
+                <p>
+                  It is <strong>not</strong> a market price, a cap, or a floor. Dispatch and clearing prices
+                  continue to come from SRMC-based offers in the SAWEM Day-Ahead Market. The strike price is a
+                  settlement reference and a monitoring tool only. NERSA is explicit (paras 7.3, 7.7, 7.13,
+                  8.19) that the strike price is a benchmark and a financial reference point &mdash; <em>not</em>
+                  a guaranteed revenue entitlement.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <h3 class="h5 fw-bold mt-4 mb-3">1.1) Naming &mdash; the letters, carefully</h3>
+          <p class="mb-3">
+            NERSA&rsquo;s document uses three closely related labels, and the working figure adds a fourth.
+            They are not interchangeable, so it is worth fixing them up front:
+          </p>
+
+          <div class="def-grid mb-3">
+            <div class="def-item">
+              <div class="term">GRR Benchmark &mdash; &ldquo;Generator Revenue Requirement Benchmark&rdquo;</div>
+              <p class="desc">
+                NERSA&rsquo;s defined term. Para 7.10: <em>&ldquo;GRR Benchmark = Capacity Costs + Ancillary
+                Services Costs + Efficient Energy Costs&rdquo;</em>. The definition list describes it as
+                &ldquo;the efficient benchmark revenue requirement determined by NERSA for purposes of deriving
+                the strike price under this Framework.&rdquo;
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">Strike Price (Benchmark Reference)</div>
+              <p class="desc">
+                Para 7.12: <em>&ldquo;Strike Price (R/MWh) = GRR Benchmark / Benchmark Energy Quantity&rdquo;</em>.
+                This is the per-MWh benchmark that vesting contracts settle against.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">&ldquo;GBR&rdquo; &mdash; the label used on this page</div>
+              <p class="desc">
+                A short handle for the same thing (the benchmark generation revenue reference and the strike
+                price derived from it). NERSA does not use the abbreviation &ldquo;GBR&rdquo; anywhere in the
+                framework text; the authoritative terms are <strong>GRR Benchmark</strong> and
+                <strong>strike price benchmark</strong>.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">&ldquo;GRRB (Part 4)&rdquo; &mdash; the 18% line in the worked example</div>
+              <p class="desc">
+                In NERSA&rsquo;s illustrative settlement figure, Part 4 adds a line labelled
+                <em>&ldquo;GRRB (Part 4)&rdquo;</em> equal to <strong>18.0% of benchmark costs</strong>
+                (R208.0&nbsp;m on a R1&nbsp;155.4&nbsp;m cost base). It is added <em>before</em> dividing by the
+                benchmark energy quantity. The numbered text of Part 4 does not itself spell out an 18% uplift,
+                so treat this line as the Part 4 benchmark allowance as presented in NERSA&rsquo;s illustration.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout-box-idea">
+            <p class="mb-0">
+              <strong>Read this page alongside:</strong> the <a href="sawem-smp.html">System Marginal Price (SMP)</a>
+              page explains how the <em>market</em> price on the other side of the vesting settlement is formed,
+              and <a href="transitional-generation-pricing.html">Transitional Generation Pricing</a> summarises the
+              consultation itself.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2) WHERE IT COMES FROM                                        -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">2) Where it comes from</h2>
+
+          <p class="mb-3">
+            The strike price is the output of a specific regulatory chain, not a market outcome. It is the
+            point where primary legislation, a regulatory revenue determination and the SAWEM market design
+            meet.
+          </p>
+
+          <div class="flow-chain mb-4">
+            <div class="node">
+              <span class="k">1. Primary legislation</span>
+              Electricity Regulation Act, 2006 (as amended). NERSA&rsquo;s mandate flows from ss 4(a)(ii),
+              4(a)(iv), 15 and 35 of the ERA, plus s 4(c) of NERA and the Electricity Pricing Policy (paras 1.2&ndash;1.10).
+            </div>
+            <div class="arrow">&rarr;</div>
+            <div class="node">
+              <span class="k">2. Regulatory revenue determination</span>
+              Approved benchmark generation revenue requirements &mdash; explicitly including the
+              <strong>MYPD6</strong> revenue framework (paras 7.8, 7.14 and 7.18).
+            </div>
+            <div class="arrow">&rarr;</div>
+            <div class="node">
+              <span class="k">3. Benchmark adjustment (Parts 1&ndash;3)</span>
+              Prudency, efficiency and benchmarking principles are applied so the numbers reflect
+              <em>efficient</em> cost structures rather than actual incurred costs (paras 4.10, 7.9, 7.11).
+            </div>
+            <div class="arrow">&rarr;</div>
+            <div class="node">
+              <span class="k">4. GRR Benchmark</span>
+              Capacity Costs + Ancillary Services Costs + Efficient Energy Costs (para 7.10).
+            </div>
+            <div class="arrow">&rarr;</div>
+            <div class="node">
+              <span class="k">5. Strike price (Part 4)</span>
+              GRR Benchmark &divide; Benchmark Energy Quantity = R/MWh (para 7.12).
+            </div>
+            <div class="arrow">&rarr;</div>
+            <div class="node">
+              <span class="k">6. Vesting settlement (Part 6)</span>
+              (Strike Price &minus; Market Price) &times; Vesting Volume (para 9.10). The market price comes
+              from the SAWEM Day-Ahead Market SMP.
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Why the benchmark exists at all</strong></p>
+                <p>
+                  Paras 2.1&ndash;2.3 and 2.8 set out the problem: South Africa is moving from a vertically
+                  integrated, monopolistic supply industry to a competitive market, but during the transition
+                  the sector remains structurally concentrated, liquidity is thin, and premature full exposure
+                  would expose consumers and investors to excessive volatility and financing uncertainty.
+                </p>
+                <p class="mb-0">
+                  The strike price is the anchor used to stabilise revenue <em>without</em> replacing market
+                  dispatch &mdash; a &ldquo;shock absorber&rdquo; that is transitional by design.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box-warn h-100">
+                <p><strong>What the benchmark is deliberately built from</strong></p>
+                <ul class="mb-0">
+                  <li><strong>Efficient costs, not actual costs.</strong> Para 7.11: the components already embed prudency, efficiency, benchmarking and operational-performance principles.</li>
+                  <li><strong>Benchmark energy, not actual output.</strong> Para 7.12.1: the benchmark energy quantity reflects expected efficient output based on benchmark availability, planned maintenance and system dispatch assumptions &mdash; not realised generation.</li>
+                  <li><strong>MYPD6 continuity.</strong> Paras 7.14&ndash;7.18 align the strike price with existing regulatory control periods to give predictable settlements during early market development.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- ============================================================ -->
+    <!-- 3) THE BUILDING BLOCKS                                        -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-1">3) The four building blocks &mdash; and the exact formulas</h2>
+          <p class="text-muted mb-4">
+            The framework is deliberately split into parts so that <em>fixed</em> cost recovery never enters
+            the energy offer price. Each part has its own published formula; the strike price is simply the
+            sum of parts 1&ndash;3, grossed up as shown in Part 4, divided by benchmark energy.
+          </p>
+
+          <!-- PART 1 -->
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h3 class="h5 fw-bold mb-2"><span class="badge-part">PART 1</span> Capacity Cost Recovery</h3>
+              <p class="mb-2">
+                <strong>Purpose (para 4.1):</strong> recover prudent and efficient <em>fixed</em> generation
+                costs separately from SRMC-based energy pricing, so that fixed costs cannot distort the dispatch
+                merit order, energy price formation stays transparent, and plant stays available during the
+                transition.
+              </p>
+              <p class="mb-2">
+                <strong>Contracting entities (paras 4.7&ndash;4.8):</strong> supplier = Eskom generation units,
+                <em>plant by plant</em>; counterparty = the Central Purchasing Agency (CPA).
+              </p>
+              <div class="row g-3">
+                <div class="col-12 col-lg-7">
+                  <div class="formula-card mb-0">
+                    <div class="math-label">Capacity payment (para 4.9)</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Capacity payment (R/MWh) =
+  ( Return
+  + Depreciation
+  + Fixed O&M
+  + Insurance
+  + Fixed Compliance Costs
+  &plusmn; Efficiency Adjustment )  &divide;  available capacity</pre>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                  <div class="formula-card mb-0" style="font-size:0.85rem;">
+                    <div class="math-label">Where each term comes from</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Return = RAB &times; WACC          (para 4.9.1)
+Depreciation = capital recovered on a
+  cost-reflective basis over the asset's
+  regulatory economic life      (para 4.9.2)
+Fixed O&M = fixed operations and
+  maintenance cost              (para 4.9.3)
+Insurance = prudent premiums    (para 4.9.4)
+Fixed Compliance Costs = statutory,
+  regulatory, licensing and environmental
+  obligations                   (para 4.9.5)</pre>
+                  </div>
+                </div>
+              </div>
+              <div class="callout-box-idea mt-3">
+                <p class="mb-1"><strong>The availability-linked adjustment (para 4.9.6)</strong></p>
+                <p class="mb-2">
+                  <code>Efficiency Adjustment = Capacity Payment &times; (Actual Availability / Benchmark Availability)</code>
+                </p>
+                <p class="mb-0">
+                  Generators are paid <em>conditional on availability regardless of dispatch</em>. NERSA ties the
+                  metric to the technology: <strong>EAF</strong> (energy availability factor) for coal,
+                  <strong>readiness</strong> for OCGT, and <strong>cycle availability</strong> for nuclear &mdash;
+                  with penalties for non-performance. Benchmark efficiency adjustments are applied
+                  <em>ex-ante</em>, so they sit inside the benchmark itself (para 4.10).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- PART 2 -->
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h3 class="h5 fw-bold mb-2"><span class="badge-part">PART 2</span> Ancillary Services Recovery</h3>
+              <p class="mb-2">
+                <strong>Purpose (paras 5.1&ndash;5.2):</strong> fund the system-reliability services that are not
+                energy market transactions &mdash; frequency control, reserve management, voltage support, black
+                start and broader system balancing &mdash; and recover them separately so they do not distort the
+                energy price.
+              </p>
+              <p class="mb-2">
+                <strong>Categories (paras 5.7&ndash;5.8):</strong> spinning reserve, frequency response, voltage and
+                reactive power support, black start capability, operating reserves. The list may evolve with system
+                requirements (para 5.9).
+              </p>
+              <p class="mb-2">
+                <strong>Contracting (para 5.10):</strong> contracted by the CPA and the System Operator on the basis
+                of capability, availability and response time.
+              </p>
+              <div class="row g-3">
+                <div class="col-12 col-lg-7">
+                  <div class="formula-card mb-0">
+                    <div class="math-label">Ancillary service costs (para 5.11)</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Ancillary Services Costs (R/MWh) =
+    Availability Payment (R/MW reserved)
+  + Utilisation Payment (R/MWh when dispatched)
+
+Availability Payment =
+    Reserved Capacity (MW)
+  &times; Availability Tariff (R/MW/hour)
+  &times; Hours Available
+
+Utilisation Payment =
+    Energy Delivered (MWh)
+  &times; Utilisation Tariff (R/MWh)</pre>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                  <div class="callout-box-warn h-100">
+                    <p class="mb-2"><strong>Two quirks worth knowing</strong></p>
+                    <ul class="mb-0">
+                      <li>
+                        For strike-price integration, ancillary costs are <strong>normalised to a R/MWh
+                        equivalent based on expected energy output</strong> (footnote 1 to para 5.11) &mdash; that is
+                        how a R/MW-reserved service ends up as a R/MWh line in the benchmark.
+                      </li>
+                      <li>
+                        Ancillary payments are <strong>not</strong> subject to economic efficiency adjustments in the
+                        same way as capacity and energy (para 5.12), because they are procured for reliability.
+                        Providers remain subject to technical performance, availability and response requirements (para 5.13).
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PART 3 -->
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h3 class="h5 fw-bold mb-2"><span class="badge-part">PART 3</span> SRMC-Based Offer Pricing (Energy)</h3>
+              <p class="mb-2">
+                <strong>Purpose (paras 6.1&ndash;6.5):</strong> make generators offer at short-run marginal cost so
+                that dispatch reflects the true marginal cost of production. Where fixed or non-marginal costs leak
+                into energy offers, dispatch is distorted, wholesale prices become inefficient and consumers pay
+                for it.
+              </p>
+              <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                  <div class="formula-card mb-0">
+                    <div class="math-label">Offer price (para 6.6)</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Offer Price (R/MWh) =
+    SRMC  &plusmn;  Permitted Flexibility Margin
+
+SRMC =
+    Fuel Cost
+  + Variable O&M
+  + Emissions
+  + Water
+
+Fuel Cost = Heat rate &times; fuel price
+                                              (para 6.6.1)</pre>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="formula-card mb-0" style="font-size:0.85rem;">
+                    <div class="math-label">Components and the flexibility margin</div>
+                    <pre style="margin:0; white-space:pre-wrap;">Variable O&M = consumables, chemicals,
+  lubricants, variable maintenance, ash
+  handling, waste disposal, auxiliaries
+  and other output-varying costs (para 6.6.2)
+
+Emissions = Carbon + environmental (para 6.6.3)
+
+Water = cooling, treatment, pumping and
+  operational water consumption (para 6.6.4)
+
+Permitted Flexibility Margin = limited
+  bidding latitude around efficient SRMC to
+  accommodate operational and technology
+  realities while mitigating excessive market
+  power early on (para 6.6.5)</pre>
+                  </div>
+                </div>
+              </div>
+              <p class="text-muted small mt-3 mb-0">
+                Para 6.7: the offer price reflects <em>only</em> short-run marginal costs and excludes the fixed
+                generation costs recovered through Parts 1 and 2. All variable cost items remain subject to
+                prudency and efficiency assessment, so only efficiently incurred costs enter the benchmark.
+                NERSA may refine the flexibility margin over time (para 6.12), and it has asked stakeholders
+                whether the margin should be symmetric or asymmetric, and whether it should differ by technology.
+              </p>
+            </div>
+          </div>
+
+          <!-- PART 4 -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <h3 class="h5 fw-bold mb-2"><span class="badge-part">PART 4</span> Strike Price Framework &mdash; where the benchmark is actually set</h3>
+              <p class="mb-2">
+                <strong>Purpose (para 7.1):</strong> establish a cost-reflective benchmark pricing reference used
+                to support vesting contract settlement, moderate revenue volatility, enable transparent monitoring
+                of market outcomes and ease the transition to competition.
+              </p>
+              <p class="mb-3">
+                <strong>Critical boundary (paras 7.3, 7.7, 7.13):</strong> the strike price does
+                <strong>not</strong> determine wholesale market prices, dispatch outcomes, or whether a generator
+                participates. Those continue to arise from SRMC-based offers under Part 3 and prevailing system
+                conditions.
+              </p>
+              <div class="formula-card mb-3">
+                <div class="math-label">The two Part 4 equations (paras 7.10 and 7.12)</div>
+                <pre style="margin:0; white-space:pre-wrap;">GRR Benchmark =
+      Capacity Costs            (from Part 1)
+    + Ancillary Services Costs  (from Part 2, normalised to R/MWh)
+    + Efficient Energy Costs    (from Part 3)
+
+Strike Price (R/MWh) = GRR Benchmark  &divide;  Benchmark Energy Quantity</pre>
+              </div>
+              <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                  <div class="def-item h-100">
+                    <div class="term">GRR Benchmark (paras 7.8&ndash;7.11)</div>
+                    <p class="desc">
+                      Derived primarily from approved benchmark generation revenue requirements under applicable
+                      regulatory determinations &mdash; explicitly including the approved MYPD6 revenue framework
+                      &mdash; then adjusted for prudency, efficiency and benchmarking. It therefore reflects
+                      <em>benchmark-efficient</em> generation costs rather than actual incurred generator costs.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="def-item h-100">
+                    <div class="term">Benchmark Energy Quantity (para 7.12.1)</div>
+                    <p class="desc">
+                      The benchmark forecast generation output, in MWh, used to derive the strike price. It is built
+                      from benchmark plant availability assumptions, expected operational capability, planned
+                      maintenance assumptions, system dispatch expectations, forecast market demand conditions and
+                      other benchmark operational assumptions. It is a <em>normalised</em> volume and need not match
+                      actual realised output.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+<!-- ============================================================ -->
+    <!-- 4) THE CALCULATION                                            -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-1">4) How it is calculated &mdash; NERSA&rsquo;s Arnot worked example, line by line</h2>
+          <p class="text-muted mb-4">
+            Parts 7 and 10 of the framework carry a full integrated demonstration on a representative Eskom baseload
+            coal unit: <strong>Arnot Power Station</strong>, 2&nbsp;100 MW, one month (30 days), 85% available
+            capacity factor. The whole example runs in the same two directions: market below the strike, and
+            market above the strike.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="def-item text-center h-100">
+                <div class="term">Installed capacity</div>
+                <p class="desc fs-5 fw-bold mb-0">2&nbsp;100 MW</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="def-item text-center h-100">
+                <div class="term">Available capacity factor</div>
+                <p class="desc fs-5 fw-bold mb-0">85%</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="def-item text-center h-100">
+                <div class="term">Benchmark energy quantity</div>
+                <p class="desc fs-5 fw-bold mb-0">1&nbsp;070&nbsp;000 MWh</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="def-item text-center h-100">
+                <div class="term">Vesting level (70% of sent-out)</div>
+                <p class="desc fs-5 fw-bold mb-0">749&nbsp;000 MWh</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3">4.1) Step 1 &mdash; build the benchmark cost components (Parts 1&ndash;3)</h3>
+          <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered table-math align-middle mb-0">
+              <thead>
+                <tr class="bg-light">
+                  <th>Component</th>
+                  <th>Basis</th>
+                  <th class="num">Total cost (R million)</th>
+                  <th class="num">Unit cost (R/MWh)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Capacity Costs (Part 1)</td>
+                  <td>Prudent & efficient</td>
+                  <td class="num">653.4</td>
+                  <td class="num">610.7</td>
+                </tr>
+                <tr>
+                  <td>Ancillary Services (Part 2)</td>
+                  <td>Prudent & efficient</td>
+                  <td class="num">64.2</td>
+                  <td class="num">60.0</td>
+                </tr>
+                <tr>
+                  <td>Energy Costs (SRMC) (Part 3)</td>
+                  <td>SRMC-based offers</td>
+                  <td class="num">437.8</td>
+                  <td class="num">409.2</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Total Benchmark Costs</td>
+                  <td>&nbsp;</td>
+                  <td class="num">1&nbsp;155.4</td>
+                  <td class="num">1&nbsp;079.9</td>
+                </tr>
+                <tr>
+                  <td>GRRB (Part 4)</td>
+                  <td>18.0% of benchmark costs</td>
+                  <td class="num">208.0</td>
+                  <td class="num">194.4</td>
+                </tr>
+                <tr class="total-row">
+                  <td>TOTAL BENCHMARK (incl. GRRB)</td>
+                  <td>&nbsp;</td>
+                  <td class="num">1&nbsp;363.4</td>
+                  <td class="num">1&nbsp;274.3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted small mb-4">
+            Unit costs are simply the R-million figures divided by the 1&nbsp;070&nbsp;000 MWh benchmark energy
+            quantity. The 18.0% line is R1&nbsp;155.4&nbsp;m &times; 0.18 = R208.0&nbsp;m. Note the cost base
+            <em>before</em> the Part 4 allowance &mdash; R1&nbsp;155.4&nbsp;m, or R1&nbsp;079.9/MWh &mdash; is the
+            value obtained directly from the para 7.10 definition of the GRR Benchmark. Source: NERSA Figure 3
+            (Part 7 demonstration).
+          </p>
+
+          <h3 class="h5 fw-bold mb-3">4.2) Step 2 &mdash; derive the strike price (Part 4)</h3>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-7">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered table-math align-middle mb-0">
+                  <thead>
+                    <tr class="bg-light">
+                      <th>Description</th>
+                      <th>Calculation</th>
+                      <th class="num">Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Total Benchmark (incl. GRRB)</td>
+                      <td>&nbsp;</td>
+                      <td class="num">R 1&nbsp;363.4 million</td>
+                    </tr>
+                    <tr>
+                      <td>&divide; Benchmark Quantity</td>
+                      <td>1&nbsp;363.4 million &divide; 1&nbsp;070&nbsp;000 MWh</td>
+                      <td class="num">1&nbsp;070&nbsp;000 MWh</td>
+                    </tr>
+                    <tr class="strike-row">
+                      <td>STRIKE PRICE (benchmark reference)</td>
+                      <td>&nbsp;</td>
+                      <td class="num">R 1&nbsp;274.3/MWh</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-12 col-lg-5">
+              <div class="formula-card mb-0" style="font-size:0.85rem;">
+                <div class="math-label">The arithmetic, spelled out</div>
+                <pre style="margin:0; white-space:pre-wrap;">R 653.4 m + R 64.2 m + R 437.8 m
+  = R 1 155.4 m      (GRR Benchmark cost base)
+
+R 1 155.4 m &times; 18.0%
+  = R 208.0 m        (Part 4 allowance)
+
+R 1 155.4 m + R 208.0 m
+  = R 1 363.4 m      (total benchmark)
+
+R 1 363.4 m &divide; 1 070 000 MWh
+  = R 1 274.3 /MWh   (strike price)</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box-warn mb-4">
+            <p class="mb-0">
+              <strong>The &ldquo;efficient&rdquo; part is not decoration.</strong> Para 10.8 of the framework states
+              that Arnot&rsquo;s <em>actual</em> SRMC-related operating expenditure of approximately
+              <strong>R470&nbsp;million</strong> was adjusted down to a benchmark-efficient SRMC allowance of
+              approximately <strong>R437.8&nbsp;million</strong> &mdash; a disallowance of roughly
+              <strong>R32&nbsp;million</strong> in the month. Fuel, variable O&M and water are each tested
+              against benchmark efficiency (paras 10.8&ndash;10.9). Only the benchmark-efficient allowance enters
+              the GRR Benchmark, which is why the recovered strike is lower than the plant&rsquo;s actual incurred cost.
+            </p>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3">4.3) Step 3 &mdash; market outcome, settlement and realised revenue (Parts 3, 6, 5)</h3>
+          <p class="mb-3">
+            Both scenarios keep the same plant, the same costs and the same strike price. Only the wholesale
+            market clearing price changes.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h4 class="h6 fw-bold text-sa-green mb-2">Scenario A &mdash; market <em>below</em> the strike (R900/MWh)</h4>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-math align-middle mb-0">
+                      <tbody>
+                        <tr><td>Market clearing price</td><td class="num">R 900 /MWh</td></tr>
+                        <tr><td>Cleared energy volume</td><td class="num">1&nbsp;070&nbsp;000 MWh</td></tr>
+                        <tr><td>Energy revenue from market</td><td class="num">R 963.0 m</td></tr>
+                        <tr><td>Strike price (benchmark)</td><td class="num">R 1&nbsp;274.3 /MWh</td></tr>
+                        <tr><td>Price deviation (Strike &minus; Market)</td><td class="num">R 374.3 /MWh</td></tr>
+                        <tr><td>Vested volume (70%)</td><td class="num">749&nbsp;000 MWh</td></tr>
+                        <tr class="total-row"><td>Vesting settlement</td><td class="num">R 280.5 m CREDIT</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    Because the market cleared below the benchmark, the settlement is an <strong>upward</strong>
+                    adjustment &mdash; a credit to the generator on vested volumes.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h4 class="h6 fw-bold text-sa-green mb-2">Scenario B &mdash; market <em>above</em> the strike (R1&nbsp;600/MWh)</h4>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-math align-middle mb-0">
+                      <tbody>
+                        <tr><td>Market clearing price</td><td class="num">R 1&nbsp;600 /MWh</td></tr>
+                        <tr><td>Cleared energy volume</td><td class="num">1&nbsp;070&nbsp;000 MWh</td></tr>
+                        <tr><td>Energy revenue from market</td><td class="num">R 1&nbsp;712.0 m</td></tr>
+                        <tr><td>Strike price (benchmark)</td><td class="num">R 1&nbsp;274.3 /MWh</td></tr>
+                        <tr><td>Price deviation (Strike &minus; Market)</td><td class="num">&minus;R 325.7 /MWh</td></tr>
+                        <tr><td>Vested volume (70%)</td><td class="num">749&nbsp;000 MWh</td></tr>
+                        <tr class="total-row"><td>Vesting settlement</td><td class="num">&minus;R 243.9 m DEBIT</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="text-muted small mt-2 mb-0">
+                    Because the market cleared above the benchmark, the settlement is a <strong>downward</strong>
+                    adjustment &mdash; a debit that clips excess inframarginal rent on vested volumes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="h6 fw-bold mb-3">Realised Generator Revenue Outcome (RGRO) &mdash; the four revenue streams</h4>
+          <p class="mb-3">
+            Para 8.11 defines the RGRO as
+            <code>Capacity Payments + Ancillary Service Payments + Energy Market Revenue &plusmn; Vesting Contract Settlement Adjustments</code>,
+            which maps directly onto Parts 1, 2, 3 and 6 (para 8.12).
+          </p>
+          <div class="table-responsive mb-4">
+            <table class="table table-sm table-bordered table-math align-middle mb-0">
+              <thead>
+                <tr class="bg-light">
+                  <th>Revenue stream</th>
+                  <th>Calculation</th>
+                  <th class="num">Scenario A (R m)</th>
+                  <th class="num">Scenario B (R m)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Capacity revenue (Part 1)</td>
+                  <td>Regulated recovery</td>
+                  <td class="num">653.4</td>
+                  <td class="num">653.4</td>
+                </tr>
+                <tr>
+                  <td>Ancillary services revenue (Part 2)</td>
+                  <td>Regulated recovery</td>
+                  <td class="num">64.2</td>
+                  <td class="num">64.2</td>
+                </tr>
+                <tr>
+                  <td>Energy revenue from market (Part 3)</td>
+                  <td>900 &times; 1&nbsp;070&nbsp;000 / 1&nbsp;600 &times; 1&nbsp;070&nbsp;000</td>
+                  <td class="num">963.0</td>
+                  <td class="num">1&nbsp;712.0</td>
+                </tr>
+                <tr>
+                  <td>Vesting settlement (Part 6)</td>
+                  <td>Credit / (Debit) adjustment</td>
+                  <td class="num">+280.5</td>
+                  <td class="num">&minus;243.9</td>
+                </tr>
+                <tr class="total-row">
+                  <td>TOTAL RGRO</td>
+                  <td>&nbsp;</td>
+                  <td class="num">1&nbsp;961.1</td>
+                  <td class="num">2&nbsp;185.7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted small mb-4">
+            <strong>Rounding note:</strong> the figures above are exactly as published in NERSA&rsquo;s demonstration.
+            Recomputing from the rounded strike price gives Scenario A a settlement of about R280.4&nbsp;m
+            (374.3 &times; 749&nbsp;000 = R280&nbsp;350&nbsp;700) rather than R280.5&nbsp;m; Scenario B reconciles
+            exactly (325.7 &times; 749&nbsp;000 = R243&nbsp;949&nbsp;300). The difference is presentation rounding only.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>What the two scenarios actually prove</strong></p>
+                <ul class="mb-0">
+                  <li><strong>Dispatch stays market-based.</strong> The generator offered at SRMC and was dispatched on merit (para 10.13).</li>
+                  <li><strong>The strike is a reference, not a cap or a floor.</strong> Neither scenario saw the strike price set the market price.</li>
+                  <li><strong>Settlement is symmetric</strong> (para 9.13): credit when market < strike, debit when market > strike.</li>
+                  <li><strong>RGRO still moves with the market.</strong> Between the two scenarios realised revenue swings by roughly R224.6&nbsp;m even with 70% of output vested &mdash; the generator keeps real exposure.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box-idea h-100">
+                <p><strong>Why only 70% is vested</strong></p>
+                <p class="mb-0">
+                  The vesting volume is, in NERSA&rsquo;s own words, &ldquo;the primary policy lever through which
+                  NERSA manages the pace and nature of the transition&rdquo; (para 9.15). In this illustration 70% of
+                  sent-out energy is vested and 30% is pure market exposure. The table in section 8 shows the
+                  options NERSA put out for consultation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FIGURE 3                                                      -->
+    <!-- ============================================================ -->
+    <figure class="figure-card mb-4">
+      <img src="../images/power/NERSA-Arnot-vesting-settlement-example.png"
+           alt="Integrated regulatory outcome demonstration for Eskom Arnot Power Station: Scenario A market price below strike (upward vesting credit) versus Scenario B market price above strike (downward vesting debit)">
+      <figcaption>
+        <strong>Figure 3: Integrated Regulatory Outcome Demonstration &mdash; Eskom Arnot Power Station (illustrative).</strong>
+        The same plant, month and costs in both columns; only the market clearing price differs. Panel 1 builds the
+        benchmark cost components, panel 2 derives the strike price, panel 3 shows the market outcome, panel 4 the
+        vesting settlement and panel 5 the realised generator revenue outcome (RGRO). Source: NERSA,
+        Transitional Generation Pricing and Vesting Contract Framework, May 2026 (Part 7).
+      </figcaption>
+    </figure>
+<!-- ============================================================ -->
+    <!-- 5) SETTLEMENT MECHANICS                                       -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">5) How the strike price is actually used &mdash; the vesting settlement</h2>
+
+          <p class="mb-3">
+            The strike price has exactly one operational job under the framework: it is the fixed leg of a
+            two-way financial settlement on a defined slice of output. Part 6 sets the formula.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-7">
+              <div class="formula-card mb-0">
+                <div class="math-label">Vesting settlement (para 9.10)</div>
+                <pre style="margin:0; white-space:pre-wrap;">Settlement = (Strike Price &minus; Market Price) &times; Vesting Volume
+
+where
+  Strike Price  = the Part 4 cost-reflective benchmark
+  Market Price  = the wholesale market clearing price
+                  formed from SRMC offers (the SAWEM SMP)
+  Vesting Volume = the defined portion of output subject to
+                  vesting settlement</pre>
+              </div>
+            </div>
+            <div class="col-12 col-lg-5">
+              <div class="callout-box h-100">
+                <p><strong>The sign is the whole mechanism</strong></p>
+                <ul class="mb-0">
+                  <li><strong>Market below strike (para 9.11):</strong> positive result = <strong>upward</strong> financial adjustment. The generator is topped up toward the benchmark.</li>
+                  <li><strong>Market above strike (para 9.12):</strong> negative result = <strong>downward</strong> financial adjustment. Excess inframarginal rent is clawed back.</li>
+                  <li><strong>Symmetric by design (para 9.13):</strong> the same contract credits below and debits above &mdash; it is not a one-way subsidy.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <h3 class="h5 fw-bold mb-3">5.1) What the strike price does <em>not</em> protect against</h3>
+          <p class="mb-3">
+            This is the part most often misread. Paras 8.17 and 8.19&ndash;8.21 are unambiguous: because the strike
+            price is a benchmark and not a guaranteed entitlement, generators keep real risk even with a vesting
+            contract in place.
+          </p>
+
+          <div class="def-grid mb-3">
+            <div class="def-item">
+              <div class="term">Market price risk &mdash; on unvested volumes</div>
+              <p class="desc">
+                Only the vesting volume is settled to the strike. The remainder earns whatever the market pays
+                (para 8.17.1). In the Arnot illustration that is 30% of sent-out energy.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">Operational performance risk &mdash; through efficiency adjustments</div>
+              <p class="desc">
+                The capacity payment is availability-linked (para 4.9.6), so poor EAF, readiness or cycle
+                availability feeds straight through to revenue (para 8.17.2).
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">Volume risk &mdash; benchmark versus actual output</div>
+              <p class="desc">
+                The strike is divided by a <em>benchmark</em> energy quantity. If actual output falls short of the
+                benchmark, the generator carries the difference (para 8.17.3).
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">Dispatch and commercial risk</div>
+              <p class="desc">
+                Dispatch still follows the merit order, and commercial and contractual risks of participating in
+                the wholesale market remain with the generator (paras 8.17.4, 8.20.4&ndash;8.20.5).
+              </p>
+            </div>
+          </div>
+
+          <div class="callout-box-idea">
+            <p class="mb-0">
+              <strong>Where the market price comes from:</strong> the &ldquo;Market Price&rdquo; in the settlement
+              formula is the SAWEM System Marginal Price &mdash; the shadow price of the energy balance constraint
+              in the Day-Ahead Market co-optimisation. See the
+              <a href="sawem-smp.html">System Marginal Price (SMP)</a> page for how that is formed, including
+              constrained-on/off payments, lost opportunity payments and the single national pricing area.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6) BY CAPACITY TYPE                                           -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">6) Does it differ by capacity type? Yes &mdash; in two distinct ways</h2>
+
+          <p class="mb-3">
+            The framework is written to be technology-neutral in its arithmetic but technology-specific in its
+            <em>application</em>. Two things change with the plant type:
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>1. The availability metric changes</strong></p>
+                <p class="mb-0">
+                  Para 4.9.6 links the capacity payment to a technology-specific performance measure:
+                  <strong>EAF (energy availability factor) for coal</strong>, <strong>readiness for OCGT</strong>,
+                  and <strong>cycle availability for nuclear</strong>, with penalties for non-performance. Because
+                  the efficiency adjustment is applied <em>ex-ante</em> (para 4.10), a different metric means a
+                  different benchmark cost for the same physical availability. Whether the benchmark availability
+                  approach is right across technologies is explicitly open &mdash; it is Stakeholder Question 1.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box-warn h-100">
+                <p><strong>2. The mix of Parts 1&ndash;3 changes completely</strong></p>
+                <p class="mb-0">
+                  The GRR Benchmark is the sum of three cost pools. A baseload coal station is
+                  <em>capacity-heavy</em>; a peaking diesel unit is <em>fuel-heavy</em>; a nuclear unit is
+                  capacity-heavy with a very low fuel component. Since Part 4 divides that sum by a
+                  <em>benchmark energy quantity</em>, two plants with identical total costs but very different
+                  expected output get very different R/MWh strike prices. In the Arnot illustration the capacity
+                  pool alone was R653.4&nbsp;m of the R1&nbsp;155.4&nbsp;m cost base &mdash; roughly 57%.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3">6.1) How each capacity type lands in the benchmark</h3>
+          <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:150px;">Capacity type</th>
+                  <th style="min-width:130px;">Availability metric (para 4.9.6)</th>
+                  <th style="min-width:150px;">Dominant benchmark component</th>
+                  <th style="min-width:190px;">Effect on the strike price</th>
+                  <th style="min-width:190px;">Market / dispatch character</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Baseload coal</strong><br><small class="text-muted">e.g. the Arnot illustration, 2&nbsp;100 MW</small></td>
+                  <td>EAF (energy availability factor)</td>
+                  <td>Part 1 capacity, with a material Part 3 energy component</td>
+                  <td>High strike, mostly fixed-cost recovery; the energy leg was R409.2/MWh of the R1&nbsp;274.3/MWh strike</td>
+                  <td>Runs baseload, so exposure to inframarginal rent is largest &mdash; this is where vesting matters most</td>
+                </tr>
+                <tr>
+                  <td><strong>OCGT / peaking</strong><br><small class="text-muted">e.g. Ankerlig, Gourikwa</small></td>
+                  <td>Readiness</td>
+                  <td>Part 1 capacity; very small expected energy output</td>
+                  <td>Very high R/MWh strike because the benchmark energy denominator is small</td>
+                  <td>Dispatched rarely; the availability payment, not energy, is the business model</td>
+                </tr>
+                <tr>
+                  <td><strong>Nuclear</strong></td>
+                  <td>Cycle availability</td>
+                  <td>Part 1 capacity &mdash; large asset base, long regulatory life</td>
+                  <td>High strike, low SRMC; depreciation and return dominate</td>
+                  <td>Baseload with low marginal cost, so inframarginal rent is high and vesting does real work</td>
+                </tr>
+                <tr>
+                  <td><strong>Hydro / pumped storage</strong></td>
+                  <td>Availability</td>
+                  <td>Part 1 plus a larger Part 2 ancillary share (reserve, voltage support, black start)</td>
+                  <td>Moderate strike; ancillary normalised to R/MWh lifts the benchmark relative to an energy-only unit</td>
+                  <td>Peaking and system support; revenue is energy plus reserve payments</td>
+                </tr>
+                <tr>
+                  <td><strong>Gas CCGT</strong></td>
+                  <td>Availability</td>
+                  <td>Part 3 fuel-driven SRMC alongside Part 1</td>
+                  <td>Strike tracks the gas price through <code>Heat rate &times; fuel price</code></td>
+                  <td>Mid-merit; highly sensitive to fuel and emissions cost assumptions</td>
+                </tr>
+                <tr>
+                  <td><strong>Diesel peakers</strong></td>
+                  <td>Readiness</td>
+                  <td>Part 3 fuel dominates</td>
+                  <td>Very high energy component; a high strike even on modest capacity cost</td>
+                  <td>Dispatched only at the top of the merit order</td>
+                </tr>
+                <tr>
+                  <td><strong>Wind / solar PV (VRE)</strong></td>
+                  <td>Availability / energy yield</td>
+                  <td>Not part of the Parts 1&ndash;4 Eskom benchmark</td>
+                  <td>No Parts 1&ndash;4 benchmark strike is derived for these units</td>
+                  <td>Near-zero SRMC; legacy REIPPP output is handled through the CPA&rsquo;s legacy contracts and CfDs, not this benchmark</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout-box-warn">
+            <p class="mb-0">
+              <strong>Important scope limit.</strong> Para 4.7 identifies the supplier under Part 1 as
+              &ldquo;Eskom generation units (plant-by-plant)&rdquo; and para 4.8 names the CPA as counterparty.
+              The benchmark strike price is therefore built <em>per Eskom plant</em>. A wind or solar farm selling
+              under a legacy REIPPP PPA does not receive a Parts 1&ndash;4 benchmark strike &mdash; it settles on
+              its own contracted price, with the CPA absorbing the difference and passing it through the legacy
+              charge. Individually negotiated bilateral contracts are not prescribed by this framework either
+              (para 2.21).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- ============================================================ -->
+    <!-- 7) BY MARKET PARTICIPANT                                      -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">7) What it means for each market participant</h2>
+
+          <p class="mb-3">
+            The benchmark strike price is not applied uniformly. It touches different participants in
+            fundamentally different ways &mdash; and for some participants it has no direct effect at all.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-6">
+              <div class="layer-card">
+                <h3>Upstream &mdash; the generation side</h3>
+                <ul class="mb-0">
+                  <li><strong>Eskom Generation stations (the vesting counterparty).</strong> Each station signs a vesting contract with the CPA, plant by plant (paras 4.7&ndash;4.8). Its revenue becomes Capacity Payments + Ancillary Service Payments + Energy Market Revenue &plusmn; Vesting Settlement (para 8.11). The capacity leg is availability-linked, so EAF/readiness/cycle availability performance directly moves the money (para 4.9.6).</li>
+                  <li><strong>Legacy REIPPP IPPs.</strong> They sit on their existing PPAs, not on a Parts 1&ndash;4 benchmark. The CPA is their counterparty and trades their output into the DAM; the difference between the contracted price and the market price flows through the legacy charge.</li>
+                  <li><strong>New / merchant generators and self-generators.</strong> No benchmark strike and no vesting contract under this framework. They simply receive the market price and carry full merchant risk. For them the strike price is a <em>monitoring</em> reference only.</li>
+                  <li><strong>Bilateral and financial counterparties.</strong> Individually negotiated bilateral contracts are explicitly outside the framework&rsquo;s scope (para 2.21).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="layer-card">
+                <h3>Downstream &mdash; the demand side</h3>
+                <ul class="mb-0">
+                  <li><strong>Eskom Distribution.</strong> Enters a downstream vesting contract with the CPA in which the strike price becomes the agreed <em>wholesale active energy price</em> &mdash; in practice the current NERSA-regulated energy tariff (para 12.14). The proposed term is five years (Stakeholder Question 9).</li>
+                  <li><strong>Municipalities.</strong> Two options (para 12.15): (i) remain an Eskom Distribution customer at a regulated price linked to the wholesale active energy strike price &mdash; which does not prevent them from procuring from IPPs bilaterally or generating themselves; or (ii) become a market participant, in which case the CPA provides a five-year vesting contract to dampen the price volatility of the electricity they buy.</li>
+                  <li><strong>Any licensed distributor entering the market.</strong> Must conclude a vesting contract with the CPA <em>before</em> participating. The hedge covers the difference between the SMP and the Wholesale Price for Energy, and the shortfall or over-recovery goes into the legacy charge (para 12.17).</li>
+                  <li><strong>Consumers.</strong> They do not see the strike price on a bill, but they are the ultimate bearer of the net vesting position through the legacy charge, and the ultimate beneficiary of the downstream price stabilisation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3">7.1) Participant matrix</h3>
+          <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:160px;">Participant</th>
+                  <th style="min-width:140px;">Gets a benchmark strike price?</th>
+                  <th style="min-width:180px;">How the strike price reaches them</th>
+                  <th style="min-width:200px;">Their residual risk</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Eskom Generation station</strong></td>
+                  <td>Yes &mdash; one per plant</td>
+                  <td>Primary settlement reference for the vesting contract; the strike is the fixed leg of <code>(Strike &minus; Market) &times; Vesting Volume</code></td>
+                  <td>Market price on unvested volumes; availability performance; volume against the benchmark; dispatch and commercial risk (paras 8.17, 8.20)</td>
+                </tr>
+                <tr>
+                  <td><strong>Central Purchasing Agency (NTCSA)</strong></td>
+                  <td>No &mdash; it is the counterparty</td>
+                  <td>Pays capacity, ancillary and vesting settlements; registers as BRP and sells the energy into the DAM at the SMP</td>
+                  <td>The net position between contracted benchmark prices and market prices, recovered through the legacy charge</td>
+                </tr>
+                <tr>
+                  <td><strong>Legacy REIPPP IPP</strong></td>
+                  <td>No</td>
+                  <td>Settles on its own contracted PPA price with the CPA as counterparty</td>
+                  <td>Its own availability and volume performance under the PPA</td>
+                </tr>
+                <tr>
+                  <td><strong>New / merchant generator</strong></td>
+                  <td>No</td>
+                  <td>Receives the market price only; the strike is purely a monitoring benchmark</td>
+                  <td>Full merchant risk: price, volume, dispatch</td>
+                </tr>
+                <tr>
+                  <td><strong>Eskom Distribution</strong></td>
+                  <td>Yes &mdash; as the downstream vesting price</td>
+                  <td>The strike becomes the agreed wholesale active energy price in a five-year vesting contract with the CPA</td>
+                  <td>Time-of-use and volume profile risk relative to the hedged volume</td>
+                </tr>
+                <tr>
+                  <td><strong>Municipality</strong></td>
+                  <td>Conditionally</td>
+                  <td>Option (i): regulated price linked to the strike as an Eskom Distribution customer. Option (ii): five-year CPA vesting contract as a market participant</td>
+                  <td>Depends on the option chosen; municipal own-generation and bilateral procurement remain permitted</td>
+                </tr>
+                <tr>
+                  <td><strong>Licensed distributor entering the market</strong></td>
+                  <td>Yes &mdash; via a mandatory vesting contract</td>
+                  <td>Hedge covers the difference between the SMP and the Wholesale Price for Energy</td>
+                  <td>Shortfall or over-recovery is trued up through the legacy charge</td>
+                </tr>
+                <tr>
+                  <td><strong>Consumers</strong></td>
+                  <td>No direct exposure</td>
+                  <td>Benefit from downstream price stability; bear the net legacy charge</td>
+                  <td>Regulated price outcomes and the legacy charge</td>
+                </tr>
+                <tr>
+                  <td><strong>Regulator (NERSA)</strong></td>
+                  <td>Sets it</td>
+                  <td>Determines the benchmark, approves the vesting volumes, monitors conduct and reviews or sunsets the mechanism</td>
+                  <td>Regulatory risk if the transition is mis-sequenced (see paras 11.4&ndash;11.6)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout-box-idea">
+            <p class="mb-0">
+              <strong>The asymmetry that matters most.</strong> Capacity-type decides <em>how much</em> of the
+              strike comes from fixed cost recovery; participant type decides <em>whether the strike applies at
+              all</em>. An Eskom coal station gets a plant-specific strike and a vesting contract; a wind farm on a
+              legacy PPA does not; a merchant gas plant does not; a distributor gets it as a downstream hedge price.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8) GOVERNANCE, VESTING VOLUME, SUNSET                          -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">8) The levers: vesting volume, reduction pathway and sunset</h2>
+
+          <p class="mb-3">
+            Two numbers control how much the benchmark strike price actually matters: the <strong>strike price</strong>
+            (the centre of the settlement) and the <strong>vesting volume</strong> (how much output is settled against
+            it). NERSA is explicit that the vesting volume is the primary policy lever for pacing the transition
+            (paras 9.15&ndash;9.18): higher vesting means more stabilisation and stronger market-power mitigation but
+            less exposure to competitive pricing; lower vesting means the reverse.
+          </p>
+
+          <h3 class="h5 fw-bold mb-3">8.1) The four illustrative vesting options (paras 9.22&ndash;9.25)</h3>
+          <div class="table-responsive mb-4">
+            <table class="table table-sm table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:90px;">Option</th>
+                  <th style="min-width:130px;">Initial vesting</th>
+                  <th style="min-width:180px;">Approach</th>
+                  <th style="min-width:250px;">Trade-off as described by NERSA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>A</strong></td>
+                  <td>100% of sent-out energy</td>
+                  <td>Full stabilisation</td>
+                  <td>Maximum revenue stability and the strongest mitigation of structural market power, but significantly delays market liquidity and competitive price discovery</td>
+                </tr>
+                <tr>
+                  <td><strong>B</strong></td>
+                  <td>80%</td>
+                  <td>Conservative stabilisation</td>
+                  <td>Substantial stabilisation and strong market-power mitigation while allowing limited exposure and gradual liquidity development</td>
+                </tr>
+                <tr style="background:#eef7f2;">
+                  <td><strong>C</strong> <small class="text-muted">(used in the illustration)</small></td>
+                  <td>70%</td>
+                  <td>Balanced transition</td>
+                  <td>Balances revenue stabilisation and market-power mitigation with gradual exposure to competitive price formation and liquidity development</td>
+                </tr>
+                <tr>
+                  <td><strong>D</strong></td>
+                  <td>60%</td>
+                  <td>Accelerated market development</td>
+                  <td>Faster exposure to competitive pricing and liquidity, but greater exposure to short-term market volatility during transition</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3">8.2) The illustrative reduction pathway (Table 2, para 9.46)</h3>
+          <p class="mb-3">
+            NERSA ties the pace of vesting reduction to the growth of <strong>non-Eskom installed capacity</strong>.
+            The table below is reproduced from the framework and is expressly for consultation &mdash; it is not a
+            predetermined regulatory decision.
+          </p>
+          <div class="table-responsive mb-4">
+            <table class="table table-sm table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:170px;">Non-Eskom installed capacity</th>
+                  <th style="min-width:190px;">Vesting volume adjustment</th>
+                  <th style="min-width:170px;">Example vesting volume (if the initial level is 70%)</th>
+                  <th style="min-width:230px;">Market implication</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Below 30%</td>
+                  <td>No reduction</td>
+                  <td>70%</td>
+                  <td>Strong stabilisation during early market development</td>
+                </tr>
+                <tr>
+                  <td>30%</td>
+                  <td>Reduce by 10 percentage points</td>
+                  <td>60%</td>
+                  <td>Increased exposure to market pricing</td>
+                </tr>
+                <tr>
+                  <td>40%</td>
+                  <td>Further reduction of 10 percentage points</td>
+                  <td>50%</td>
+                  <td>Greater price discovery and liquidity</td>
+                </tr>
+                <tr>
+                  <td>50%</td>
+                  <td>Sunset triggered</td>
+                  <td>0%</td>
+                  <td>Full market pricing</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Sunset principles (paras 9.48&ndash;9.50)</strong></p>
+                <p class="mb-0">
+                  Vesting contracts are transitional instruments, not permanent market structures or permanent price
+                  regulation. They may carry defined sunset periods, maximum implementation durations, periodic
+                  regulatory review and market-development triggers. Reduction decisions may consider the level of
+                  market concentration, non-Eskom generation participation, market liquidity, observed pricing
+                  outcomes and broader SAWEM reform (paras 9.43, 9.49).
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box-warn h-100">
+                <p><strong>Monitoring and market-power mitigation (Part 8)</strong></p>
+                <p class="mb-2">
+                  NERSA may monitor pricing behaviour, participation patterns, liquidity, vesting outcomes,
+                  concentration and volatility (para 11.7), and may look specifically for
+                  <strong>economic withholding, physical withholding, predatory pricing, artificial manipulation and
+                  excessive concentration</strong> (para 11.9).
+                </p>
+                <p class="mb-0">
+                  The framework&rsquo;s own risk table (Table 3) pairs each risk with a mitigation: market power with
+                  vesting plus surveillance, economic withholding with availability-linked payments plus monitoring,
+                  physical withholding with benchmark availability requirements, and predatory pricing with the
+                  sunset pathway and progressive vesting reduction.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box-idea mt-3">
+            <p class="mb-0">
+              <strong>Review and evolution (paras 7.14&ndash;7.27).</strong> The strike price is determined for a
+              defined regulatory control period, initially aligned with the approved MYPD6 period, to give
+              predictable settlements. NERSA may review it at the end of a control period, having regard to market
+              development, benchmark cost assumptions, operational performance trends, liquidity, new capacity entry
+              and broader SAWEM reform. NERSA also acknowledges that a benchmark derived from existing regulatory
+              revenue structures <em>may differ</em> from prevailing SRMC-based offer prices and observed market
+              prices in the early stages.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- ============================================================ -->
+    <!-- 9) SOURCES                                                    -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">9) Sources &mdash; where every figure and formula comes from</h2>
+
+          <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:230px;">Document</th>
+                  <th style="min-width:120px;">Type</th>
+                  <th style="min-width:280px;">What this page took from it</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="../data/power/NERSA-Transitional-Generation-Pricing-and-Vesting-Framework-2026.pdf" target="_blank" rel="noreferrer">
+                      <strong>Transitional Generation Pricing and Vesting Contract Framework</strong>
+                    </a><br>
+                    <small class="text-muted">NERSA, May 2026 (62 pages)</small>
+                  </td>
+                  <td><span class="source-tag source-ner">NERSA</span></td>
+                  <td>
+                    <strong>The primary source for everything on this page.</strong> Paras 1.2&ndash;1.10 (statutory mandate);
+                    2.12 and 3.5 (introduction of the GRR Benchmark); Part 1 paras 4.9&ndash;4.10 (capacity formula and
+                    availability metric); Part 2 paras 5.11&ndash;5.13 (ancillary formula and the R/MWh normalisation);
+                    Part 3 paras 6.6&ndash;6.7 (SRMC offer price); Part 4 paras 7.8&ndash;7.27 (GRR Benchmark definition,
+                    strike price formula, control period and review); Part 5 paras 8.11&ndash;8.21 (RGRO and residual risk);
+                    Part 6 paras 9.10&ndash;9.52 (settlement, vesting options A&ndash;D, reduction pathway, sunset);
+                    Part 7 paras 10.7&ndash;10.13 (the Arnot demonstration and all its numbers); Part 8 paras 11.7&ndash;11.16
+                    (monitoring, market power, risk table); Part 9 paras 12.1&ndash;12.17 (downstream vesting, Eskom
+                    Distribution and the two municipal options).
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="../data/power/NERSA-Vesting-Contract-and-Wholesale-Price-Consultation-Paper.pdf" target="_blank" rel="noreferrer">
+                      Notice of extension of deadline for written comments
+                    </a><br>
+                    <small class="text-muted">NERSA</small>
+                  </td>
+                  <td><span class="source-tag source-ner">NERSA</span></td>
+                  <td>Consultation timeline: papers published 18 and 20 May 2026; comment deadline extended to 4 August 2026; public hearings 14 and 19 August 2026.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="../data/power/SAWEM Specification.pdf" target="_blank" rel="noreferrer">
+                      SAWEM Market Specification
+                    </a><br>
+                    <small class="text-muted">NTCSA Market Operator, April 2024</small>
+                  </td>
+                  <td><span class="source-tag source-spec">Spec</span></td>
+                  <td>The market context the benchmark operates in: the multi-market model, the CPA&rsquo;s role, vesting and legacy contracts, and the CfD mechanics (strike price versus reference price).</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="../data/power/SAWEM%20Market%20Code.pdf" target="_blank" rel="noreferrer">
+                      SAWEM Market Code
+                    </a><br>
+                    <small class="text-muted">Rev 2.3, February 2026</small>
+                  </td>
+                  <td><span class="source-tag source-code">Code</span></td>
+                  <td>The market price on the other side of the settlement: SMP determination, pay-as-clear settlement, constrained-on/off and lost opportunity payments.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="../data/power/SAWEM%20CPA.pdf" target="_blank" rel="noreferrer">
+                      SAWEM CPA
+                    </a><br>
+                    <small class="text-muted">Central Purchasing Agency</small>
+                  </td>
+                  <td><span class="source-tag source-cpa">CPA</span></td>
+                  <td>The CPA&rsquo;s vesting-contract functions, the legacy charge mechanism and the pricing-area design that sits behind the downstream arrangements.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://energycouncil.org.za/policy/transitional-generation-pricing-and-vesting-contract-framework/" target="_blank" rel="noreferrer">
+                      Energy Council consultation page
+                    </a><br>
+                    <small class="text-muted">External</small>
+                  </td>
+                  <td><span class="source-tag source-ner">External</span></td>
+                  <td>The public consultation bundle: the framework paper, the wholesale price consultation paper and the Energy Council concept note on the pricing assessment approach.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout-box-idea">
+            <p class="mb-0">
+              <strong>Two NERSA figures are reproduced on this page:</strong> Figure 1 (the high-level framework
+              overview, which is the source of the Zone 1 &ldquo;GBR benchmark strike price&rdquo; diagram) and Figure 3
+              (the integrated Arnot outcome demonstration). Both are from the May 2026 framework consultation paper.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 10) CAVEATS AND TAKEAWAYS                                     -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">10) Caveats and the bottom line</h2>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="callout-box-warn h-100">
+                <p><strong>Read these before quoting any number</strong></p>
+                <ul class="mb-0">
+                  <li><strong>Everything here is proposed, not decided.</strong> The framework was out for public comment (closed 4 August 2026) and the hearing ran on 19 August 2026. There is no published decision date, and NERSA states that the illustrative options and pathways are for consultation and do not represent predetermined regulatory outcomes (paras 9.21, 9.46).</li>
+                  <li><strong>The Arnot figures are illustrative.</strong> They demonstrate the mechanism on one representative baseload coal unit for one month. They are not Arnot&rsquo;s actual tariff and not a general strike price.</li>
+                  <li><strong>The 18.0% Part 4 allowance appears in the figure only.</strong> The numbered text defines the GRR Benchmark as the sum of Parts 1&ndash;3 and does not itself set out an 18% uplift, so treat that line as the figure&rsquo;s presentation of the Part 4 benchmark allowance.</li>
+                  <li><strong>&ldquo;GBR&rdquo; is this page&rsquo;s label.</strong> NERSA&rsquo;s terms are GRR Benchmark and strike price benchmark. The figure additionally uses the abbreviation &ldquo;GRRB&rdquo;.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="callout-box h-100">
+                <p><strong>Where it comes from &mdash; one line</strong></p>
+                <p class="mb-2">
+                  From the Electricity Regulation Act mandate, through the approved MYPD6 benchmark generation
+                  revenue, through prudency and efficiency adjustments in Parts 1 to 3, into the GRR Benchmark,
+                  and finally divided by a benchmark energy quantity to give the R/MWh strike price that Part 6
+                  settles against.
+                </p>
+                <p class="mb-0"><strong>How it is calculated &mdash; one line</strong></p>
+                <div class="formula-card mb-0" style="font-size:0.8rem;">
+                  <pre style="margin:0; white-space:pre-wrap;">(Capacity + Ancillary + Efficient Energy) &times; (1 + Part 4 allowance)
+        &divide; Benchmark Energy Quantity  =  Strike Price (R/MWh)</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th style="min-width:200px;">The five things to remember</th>
+                  <th style="min-width:400px;">Why</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. It is a benchmark, not a price</strong></td>
+                  <td>Dispatch and clearing prices still come from SRMC offers under Part 3. The strike price sets no market price, no cap and no floor (paras 7.3, 7.7, 7.13).</td>
+                </tr>
+                <tr>
+                  <td><strong>2. It is built from efficient, not actual, costs</strong></td>
+                  <td>Parts 1&ndash;3 embed prudency and efficiency assessment, so the benchmark deliberately excludes inefficient spend &mdash; in the illustration roughly R32&nbsp;m of Arnot&rsquo;s actual SRMC opex was disallowed.</td>
+                </tr>
+                <tr>
+                  <td><strong>3. It settles symmetrically, not one-way</strong></td>
+                  <td><code>(Strike &minus; Market) &times; Vesting Volume</code> pays the generator when the market is low and claws revenue back when the market is high (paras 9.11&ndash;9.14).</td>
+                </tr>
+                <tr>
+                  <td><strong>4. It is technology-sensitive and plant-specific</strong></td>
+                  <td>Capacity cost recovery is linked to EAF (coal), readiness (OCGT) or cycle availability (nuclear), and the strike is derived per Eskom plant &mdash; so two stations with different cost structures and expected output get different strikes.</td>
+                </tr>
+                <tr>
+                  <td><strong>5. It is designed to disappear</strong></td>
+                  <td>Vesting volumes reduce as non-Eskom capacity grows, with a sunset trigger, and the whole mechanism is a transitional instrument rather than a permanent market structure (paras 9.28&ndash;9.50).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="my-4">
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="sawem-smp.html" class="btn btn-outline-dark">← System Marginal Price (SMP)</a>
+      <a href="transitional-generation-pricing.html" class="btn btn-outline-dark">Transitional Generation Pricing</a>
+      <a href="wholesale-pricing-methodology.html" class="btn btn-outline-dark">Wholesale Pricing Methodology</a>
+      <a href="vesting-contracts.html" class="btn btn-outline-dark">Vesting Contracts explainer</a>
+      <a href="sawem-market-structure.html" class="btn btn-outline-dark">SAWEM Market Structure</a>
+      <a href="ntcsa-market-code.html" class="btn btn-outline-dark">SAWEM Market Code</a>
+    </div>
+
+  </main>
+</body>
+</html>

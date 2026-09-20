@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Central Energy Fund • SOEs • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="companies.html" class="btn btn-light btn-sm">🏢 Companies</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <p class="text-muted small mb-2">SOEs · Central Energy Fund</p>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <a href="cef.html" class="btn btn-sm btn-success">CEF Overview</a>
+      <a href="petrosa.html" class="btn btn-sm btn-outline-success">PetroSA</a>
+      <a href="sff.html" class="btn btn-sm btn-outline-success">SFF</a>
+      <a href="igas.html" class="btn btn-sm btn-outline-success">iGas</a>
+      <a href="sanpc.html" class="btn btn-sm btn-outline-success">SANPC</a>
+      <a href="pasa.html" class="btn btn-sm btn-outline-success">PASA</a>
+      <a href="aemfc.html" class="btn btn-sm btn-outline-success">AEMFC</a>
+      <a href="sapref.html" class="btn btn-sm btn-outline-success">SAPREF</a>
+    </div>
+
+    <h1 class="display-4 fw-bold text-sa-green">Central Energy Fund (CEF)</h1>
+    <h5 class="text-muted">The state's holding company for oil, gas, strategic fuel and energy minerals — 100% government-owned</h5>
+    <p class="lead">CEF SOC Ltd is a Schedule 2 state-owned company. The Republic of South Africa is the only shareholder. The Minister of Mineral and Petroleum Resources holds the shares on behalf of the state. PetroSA is not the parent — it is one of CEF's subsidiaries, alongside SFF, iGas, PASA, AEMFC and the newly operational SANPC. SAPREF, the Durban refinery formerly owned by Shell and BP, was sold to CEF for R1 and is now state-owned too.</p>
+
+    <div class="row mb-5">
+      <div class="col-md-7">
+        <div class="alert alert-light border border-success p-4">
+          <strong>Legal form:</strong> CEF SOC Ltd — Schedule 2 public entity<br>
+          <strong>Shareholder:</strong> Republic of South Africa (100%). No listed stock, no private controlling owner.<br>
+          <strong>Shares held by:</strong> Minister of Mineral and Petroleum Resources (DMPR), on behalf of the state<br>
+          <strong>Mandate:</strong> Central Energy Fund Act 38 of 1977 — security of energy supply through exploration, acquisition, development, marketing and partnerships<br>
+          <strong>Founded:</strong> 2 November 1954 (current statutory form 1977)<br>
+          <strong>Head office:</strong> Sandton / Midrand (CEF House)<br>
+          <strong>Also manages:</strong> the Equalisation Fund on behalf of government<br>
+          <strong>Private companies around it:</strong> Sasol at Natref, traders and storage JVs sit next to the state's assets. The fund itself is 100% government.
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center py-5" style="background: #f0faf4; border-radius: 8px;">
+            <h1 class="display-1 mb-3">⛽</h1>
+            <h5 class="card-title text-sa-green">CEF Group</h5>
+            <p class="card-text text-muted small">Holding company for the state's oil, gas, fuel-stock and energy-minerals assets</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold text-sa-green mb-3">The hierarchy</h3>
+    <p>The Minister sits above CEF. CEF sits above the operating companies. That is the opposite of how this dashboard used to present PetroSA — as if it were the section head. PetroSA is the largest operating subsidiary, not the shareholder.</p>
+
+    <div class="table-responsive mb-5">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr class="table-dark">
+            <th>Layer</th>
+            <th>Entity</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Shareholder</td><td>Republic of South Africa</td><td>Sole owner. Minister of Mineral and Petroleum Resources holds the shares.</td></tr>
+          <tr><td>Holding company</td><td><strong>CEF SOC Ltd</strong></td><td>Group strategy, oversight, new entities, Equalisation Fund.</td></tr>
+          <tr><td>Operating subsidiaries</td><td>PetroSA, SFF, iGas, PASA, AEMFC, SANPC, SAPREF</td><td>Wholly owned. No listed stock. No private controlling owner.</td></tr>
+          <tr><td>Associates / JVs</td><td>ROMPCO (via iGas), Natref-adjacent private operators, storage JVs</td><td>Private companies sit <em>around</em> the group. They do not own CEF.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="fw-bold text-sa-green mb-3">What the state owns through CEF</h3>
+    <p class="text-muted">Click any subsidiary for its own page. SANPC is the 2025 consolidation of PetroSA, SFF and iGas; those three still exist as legal entities while assets and people transfer under a lease-and-assign model.</p>
+
+    <div class="row g-3 mb-5">
+      <div class="col-md-6 col-lg-4">
+        <a href="petrosa.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">🛢️ PetroSA</h5>
+              <p class="small text-muted mb-0">National oil company: Mossel Bay GTL, offshore oil and gas, Ghana Jubilee stake. Largest CEF subsidiary — technically insolvent, now feeding into SANPC.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="sff.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">🛢️ SFF</h5>
+              <p class="small text-muted mb-0">Strategic Fuel Fund — Saldanha and Milnerton tank farms, strategic crude stocks, oil-pollution control. Merging into SANPC.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="igas.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">🔥 iGas</h5>
+              <p class="small text-muted mb-0">South African Gas Development Company — the state's gas-infrastructure agent and ROMPCO shareholder. Merging into SANPC.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="sanpc.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">⛽ SANPC</h5>
+              <p class="small text-muted mb-0">South African National Petroleum Company — the 2025 merger vehicle for PetroSA, SFF and iGas. Operational from 1 April / May 2025.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="pasa.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">📋 PASA</h5>
+              <p class="small text-muted mb-0">Petroleum Agency SA — upstream oil and gas promotion, licensing and data. Not part of the SANPC merger; remains the designated agency under the UPRDA.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="aemfc.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">⛏️ AEMFC</h5>
+              <p class="small text-muted mb-0">African Exploration Mining and Finance Corporation — the state's mining company. Coal at Vlakfontein (Mpumalanga) for Eskom. Not part of SANPC.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a href="sapref.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="text-sa-green">🏭 SAPREF</h5>
+              <p class="small text-muted mb-0">Durban refinery. Shell and BP sold it to CEF for R1. Flood-damaged, idle since 2022. Now a 100% CEF asset, with a restart / rebuild plan.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <h3 class="fw-bold text-sa-green">What CEF is for</h3>
+    <p>CEF exists because the apartheid state built a parallel oil-and-fuel system under sanctions, and the democratic state kept the holding company. The 1977 Act is still the mandate: finance and promote coal, liquid fuels, oil, and "any other form of energy." In practice the group covers:</p>
+    <ul>
+      <li><strong>Upstream oil and gas</strong> — PetroSA's offshore fields and Ghana; PASA's licensing of the Orange Basin and South Coast.</li>
+      <li><strong>Midstream gas</strong> — iGas's stake in the Mozambique–Secunda ROMPCO pipeline.</li>
+      <li><strong>Strategic stocks and storage</strong> — SFF's Saldanha caverns and Milnerton tanks.</li>
+      <li><strong>Refining</strong> — PetroSA's Mossel Bay GTL (care and maintenance) and SAPREF in Durban (acquired, idle).</li>
+      <li><strong>Energy minerals</strong> — AEMFC coal for Eskom.</li>
+      <li><strong>The Equalisation Fund</strong> — a levy/refund mechanism on petroleum products, administered by CEF for the state, not a commercial subsidiary.</li>
+    </ul>
+
+    <h3 class="fw-bold text-sa-green mt-4">The 2025–26 reshaping</h3>
+    <p>Two moves define the current group. First, Cabinet's 2020 decision to merge PetroSA, SFF and iGas into a single <a href="sanpc.html">South African National Petroleum Company</a>. That merger became operational in 2025: 402 staff transferred in phase one, assets moved under a lease-and-assign model so PetroSA's legacy liabilities stay ring-fenced, and CEF committed about R5 billion of phased funding. Treasury's 2026 Vote 34 still lists the old subsidiaries <em>and</em> SANPC, because the legal consolidation is not finished.</p>
+    <p>Second, CEF bought <a href="sapref.html">SAPREF</a> from Shell Downstream SA and bpSA for a nominal <strong>R1</strong> after the April 2022 Durban floods knocked the plant offline. Competition Commission approval came in September 2024. The site — land, tanks, process units, Island View pipelines, the single buoy mooring — is now a CEF asset. Restart and a possible capacity lift from ~180,000 bpd are the stated plan; environmental liabilities are the reason Shell and BP were willing to walk away for a rand.</p>
+    <p>PASA and AEMFC stay outside the oil-company merger. PASA is the upstream regulator/promoter. AEMFC is the state's miner. Both still report up through CEF to the Minister.</p>
+
+    <h3 class="fw-bold text-sa-green mt-4">What CEF is not</h3>
+    <p>CEF is not listed. It is not a private oil major. Sasol's Natref stake, commercial fuel traders, and storage joint ventures sit in the same industry and sometimes on adjacent sites — they do not own the fund. The kids (PetroSA, SFF, iGas, SANPC, PASA, AEMFC, SAPREF) are the same: no listed stock, no private controlling owner.</p>
+
+    <h5 class="mt-4">Data Sources</h5>
+    <p class="text-muted small">CEF Act 38 of 1977; CEF Group (cefgroup.co.za); National Treasury ENE 2026 Vote 34 — Mineral and Petroleum Resources; DMPR; SANPC launch briefing 14 May 2025; Competition Commission SAPREF decision 2024; nationalgovernment.co.za CEF profile.</p>
+  </div>
+</body>
+</html>

@@ -8,9 +8,13 @@
   <link rel="stylesheet" href="../css/style.css">
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Population density overlay -->
+  <link rel="stylesheet" href="../css/population-density.css" />
   <style>
-    #map { height: 100vh; width: 100%; }
-    .sidebar { max-height: 100vh; overflow-y: auto; }
+    /* The navbar is ~56px tall; size the map to the remaining viewport so
+       the bottom-anchored Leaflet controls stay on screen. */
+    #map { height: calc(100vh - 56px); width: 100%; }
+    .sidebar { max-height: calc(100vh - 56px); overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -32,6 +36,19 @@
 
     <!-- Saved Pins Sidebar -->
     <div class="col-md-3 bg-light border-start sidebar p-3">
+      <h5 class="text-sa-green mb-2">Overlays</h5>
+      <button type="button" id="pdToggleBtn" aria-pressed="false"
+              class="btn btn-outline-success w-100 mb-2 d-flex align-items-center justify-content-center gap-2"
+              onclick="togglePopulationDensity()">
+        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/>
+        </svg>
+        Population density
+      </button>
+      <p class="small text-muted mb-3">
+        Number of people per square kilometre across South Africa's nine provinces.
+      </p>
+      <hr>
       <h5 class="text-sa-green mb-3">📍 Saved Locations</h5>
       <button onclick="addCurrentLocation()" class="btn btn-success w-100 mb-3">
         📌 Drop Pin at Current Center
@@ -42,6 +59,7 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/population-density.js"></script>
   <script>
     let map;
     let markers = [];
@@ -49,22 +67,51 @@
 
     function initMap() {
       // Cape Town coordinates
-      map = L.map('map').setView([-33.925, 18.424], 12);
+      // zoomSnap lets fitBounds use fractional zoom, so the population
+      // density layer can frame South Africa tightly instead of being
+      // rounded down a whole zoom level (which leaves wide grey margins).
+      map = L.map('map', { zoomSnap: 0.25, zoomDelta: 0.5 })
+        .setView([-33.925, 18.424], 12);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
+
+      // Population-density overlay (toggleable layer + legend + opacity)
+      POP_DENSITY.init(map, osmLayer);
+      map.on('overlayadd', updatePopDensityButton);
+      map.on('overlayremove', updatePopDensityButton);
 
       // Load saved pins
       loadSavedPins();
 
-      // Click on map to add pin
+      // Click on map to add pin — suppressed while the density
+      // overlay is on, so exploring the map does not pop a prompt.
       map.on('click', function(e) {
+        if (POP_DENSITY.isEnabled()) return;
         const name = prompt("Name this location:", "New Location");
         if (name && name.trim() !== "") {
           addPin(e.latlng.lat, e.latlng.lng, name.trim());
         }
       });
+    }
+
+    function togglePopulationDensity() {
+      if (POP_DENSITY.isEnabled()) {
+        POP_DENSITY.disable();
+      } else {
+        POP_DENSITY.show();
+      }
+      updatePopDensityButton();
+    }
+
+    function updatePopDensityButton() {
+      const btn = document.getElementById('pdToggleBtn');
+      if (!btn) return;
+      const on = POP_DENSITY.isEnabled();
+      btn.classList.toggle('btn-success', on);
+      btn.classList.toggle('btn-outline-success', !on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     }
 
     function addPin(lat, lng, name) {

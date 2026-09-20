@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Train Operating Companies (TOCs) • Transnet • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .toc-card { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); border-radius: 0; height: 100%; }
+    .toc-card:hover { box-shadow: 8px 8px 0 rgba(0,0,0,0.2); }
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 4px; background: #007A4D; }
+    .timeline-dot { position: absolute; left: 6px; width: 22px; height: 22px; background: #FFCD00; border: 4px solid #002395; border-radius: 50%; }
+    .phase-box { border: 3px solid #000; padding: 1.25rem; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); height: 100%; }
+    .corridor-row { border: 2px solid #000; }
+    .corridor-row:hover { background: #f0faf4; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transnet.html" class="btn btn-light btn-sm">🚂 Transnet</a>
+        <a href="transnet-rail-manager.html" class="btn btn-light btn-sm">🛤️ TRIM</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #007A4D;">🚂 Train Operating Companies (TOCs)</h1>
+    <h5 class="text-muted mb-4">Who Gets Access to the Network, What They Carry, and How the Slot-Allocation Machine Decides — South Africa's Rail Monopoly Officially Ends</h5>
+
+    <!-- Overview -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">On <strong>13 May 2026</strong>, the Transnet Rail Infrastructure Manager (TRIM) signed formal <strong>Rail Access Agreements (RAAs)</strong> with <strong>11 private Train Operating Companies</strong> — the moment South Africa's single-operator rail monopoly ended and a competitive, multi-operator freight rail market was born. The network, which for 130+ years was the exclusive preserve of the state (SAR&H → SATS → Transnet Freight Rail), is now a shared resource: <strong>12 operators</strong> (TFROC + 11 private TOCs) running trains across <strong>five strategic corridors</strong>. This page details the whole process — who the operators are, who does what, how the "who gets access to move what when" optimization actually works, and where the reform goes next.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Network Manager:</strong> TRIM (Transnet Rail Infrastructure Manager)<br>
+          <strong>Incumbent Operator:</strong> TFROC (Transnet Freight Rail Operating Co)<br>
+          <strong>Private TOCs:</strong> 11 (signed 13 May 2026)<br>
+          <strong>Total operators:</strong> 12<br>
+          <strong>Corridors:</strong> 5 strategic corridors, 41 routes<br>
+          <strong>New capacity:</strong> +24 Mtpa now, scaling to +52 Mtpa by 2031<br>
+          <strong>National target:</strong> 180 → 250 Mtpa by 2030
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Private TOCs</small>
+          <h3>11</h3>
+          <small class="text-muted">of 25 applicants selected</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">New Capacity</small>
+          <h3>24 Mt</h3>
+          <small class="text-muted">per annum, scaling to 52 Mt</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Routes & Corridors</small>
+          <h3>41</h3>
+          <small class="text-muted">routes on 6 corridors (initial)</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Allocation Duration</small>
+          <h3>1–10</h3>
+          <small class="text-muted">years per route</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 1: WHO IS DOING WHAT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 1: Who Is Doing What — The Cast of the New Rail Market</h3>
+    <p class="lead mb-4">The old model had one player: Transnet owned everything and did everything. The new model separates the roles structurally, so that the entity which owns the tracks cannot also favour itself when allocating access.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="highlight-box h-100" style="border-color: #002395;">
+          <h6 class="fw-bold" style="color:#002395;">🛤️ TRIM — The Infrastructure Manager (The Referee)</h6>
+          <p class="small mb-2"><strong>Role:</strong> Owns, manages, operates and maintains the national rail network (~20,000+ km of track, signalling, stations). Allocates train paths (slots) to operators on non-discriminatory, published terms.</p>
+          <ul class="small mb-2">
+            <li>Publishes the Network Statement (the rulebook + tariff schedule)</li>
+            <li>Runs the annual slot application cycle and the Ad Hoc Slot process</li>
+            <li>Collects access fees (two-part tariff: per train-km + per gross-ton-km)</li>
+            <li>Maximises network utilisation & drives road-to-rail modal shift</li>
+          </ul>
+          <p class="small mb-0"><strong>Does NOT:</strong> operate trains, own terminals, or carry cargo. CE: Moshe Motlohi.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="highlight-box h-100" style="border-color: #007A4D;">
+          <h6 class="fw-bold text-success">🚂 TFROC — The Incumbent Operator (Now One Among Many)</h6>
+          <p class="small mb-2"><strong>Role:</strong> Transnet Freight Rail Operating Company — the train-operating side of the old TFR. Runs coal, iron ore, manganese, chrome, container, and general freight trains.</p>
+          <ul class="small mb-2">
+            <li>Must apply to TRIM for slots like everyone else — no privileged access</li>
+            <li>Remains the largest operator (~160+ Mtpa of the ~180 Mtpa baseline)</li>
+            <li>Performance now measured against private competitors</li>
+          </ul>
+          <p class="small mb-0"><strong>The key change:</strong> TFROC no longer controls the track it runs on. The referee (TRIM) is structurally separate.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="highlight-box h-100" style="border-color: #e65100;">
+          <h6 class="fw-bold" style="color:#e65100;">⚖️ The Regulator — IRERC (now) → Transport Economic Regulator (soon)</h6>
+          <p class="small mb-2"><strong>Role:</strong> The independent referee's referee. Sets access tariff rules, monitors non-discriminatory access, investigates complaints, resolves disputes between TRIM and operators.</p>
+          <ul class="small mb-2">
+            <li><strong>IRERC</strong> (Interim Rail Economic Regulatory Capacity) — interim body that oversaw the draft Network Statement & tariff methodology</li>
+            <li><strong>Transport Economic Regulator</strong> — permanent body created by the Economic Regulation of Transport Act (2024); fully operational target: late 2025</li>
+          </ul>
+          <p class="small mb-0">Legal basis: <a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a>.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="highlight-box h-100" style="border-color: #c62828;">
+          <h6 class="fw-bold text-danger">🛡️ Railway Safety Regulator (RSR)</h6>
+          <p class="small mb-2"><strong>Role:</strong> Independent safety regulator. Every TOC must hold an RSR permit before it can run a single train.</p>
+          <ul class="small mb-2">
+            <li>Permit = proof that rolling stock, crews, and operating procedures meet safety standards</li>
+            <li>One of the key "conditions" in the conditional award letters issued to TOCs in Aug 2025</li>
+            <li>Levels the safety playing field — private operators cannot cut corners</li>
+          </ul>
+          <p class="small mb-0"><strong>Also in the picture:</strong> Dept of Transport (policy & gazetting), National Treasury (BFI funding), Minister of Transport Barbara Creecy (political principal).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 2: THE 11 TOCs ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 2: The 11 Train Operating Companies — Who They Are</h3>
+    <p>Selected in August 2025 from <strong>25 applicants</strong>, formalised on 13 May 2026. They span coal, manganese, containers, fuel, and general freight — with iron ore added via the corridors.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">⛏️ Menar Ports & Rail (MPR)</h6>
+            <p class="small mb-1"><strong>Allocation:</strong> 8.6 Mtpa — the largest single private allocation.</p>
+            <p class="small mb-0">Coal, manganese and ferromanganese "from pit to port" for its own mining products and other operations. Already procuring locomotives and wagons. Part of the Menar family (Menar is a diversified mining group with Eastside Coal & Kangra).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">📦 Grindrod</h6>
+            <p class="small mb-1"><strong>Profile:</strong> JSE-listed, one of SA's most diversified logistics groups (ports, terminals, shipping, road).</p>
+            <p class="small mb-0">Brings institutional capital-market credibility to the operator cohort. Well positioned for container and general freight on the Container Corridor.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🚢 TLD Marine (with MSC)</h6>
+            <p class="small mb-1"><strong>Profile:</strong> MSC — the world's largest container shipping line — gains rail access via its partnership with TLD Marine.</p>
+            <p class="small mb-0">Creates a direct link between the world's biggest maritime logistics group and SA's terrestrial freight network — a major vote of confidence in the reform.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🇦🇪 ARC South Africa</h6>
+            <p class="small mb-1"><strong>Profile:</strong> UAE-based African Rail Company's SA arm.</p>
+            <p class="small mb-0">Signed after "two years of intensive and rigorous preparation" with TRIM. Declared "the regulatory phase is complete. It is time to rail!" — signalling international investor appetite beyond domestic players.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">⛽ Sharp Logistics</h6>
+            <p class="small mb-0">Fuel and general freight carrier. Serves the inland fuel distribution network that Transnet Pipelines alone cannot fully cover — a key energy-security role.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🚃 Barberry</h6>
+            <p class="small mb-1"><strong>Profile:</strong> Holdings group active in rolling stock.</p>
+            <p class="small mb-0">In May 2026 awarded Indian firm Texmaco a contract for 30 diesel locomotives and 2,235+ wagons — the "milestone" order that will power its SA rail entry.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🪨 Minrail</h6>
+            <p class="small mb-0">Minerals-focused operator — coal, chrome, magnetite on the North and North-East Corridors. Built to serve mining houses stuck behind Transnet's poor export performance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🌍 IRACEMA</h6>
+            <p class="small mb-0">Multi-commodity operator (coal, containers, general freight). One of the smaller, focused entrants targeting specific corridors where it can win volume.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🚛 Motheo Logistics</h6>
+            <p class="small mb-0">South African logistics group extending from road into rail — representative of the "road-to-rail" modal shift the National Rail Policy explicitly targets.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🚂 The Railway Corporation</h6>
+            <p class="small mb-0">General freight operator taking advantage of open access to run trains on the mainstream network.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card">
+          <div class="card-body">
+            <h6 class="fw-bold">🔗 Interlinks</h6>
+            <p class="small mb-0">Multi-sector operator covering containers and general freight — part of the diverse cohort now competing for network slots.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card toc-card" style="border-color: #007A4D; background: #f0faf4;">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">➕ Also in the market: Traxtion</h6>
+            <p class="small mb-1"><strong>Profile:</strong> Africa's largest private rail company; R3.4bn rolling stock programme; first 8 locomotives landed Durban Aug 2026.</p>
+            <p class="small mb-0">Traxtion secured access for general freight on the Durban–Gauteng corridor and is building a Pretoria maintenance hub. The most capital-committed entrant alongside the 11.</p>
+            <a href="traxtion.html" class="small fw-bold">→ Traxtion detail page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 3: THE OPTIMIZATION ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Part 3: How the Optimization Works — "Who Gets Access to Move What, When"</h3>
+    <p class="lead mb-4">This is the heart of the system: a rules-based capacity allocation machine designed to get the maximum economic value out of a scarce, decaying national asset. It replaces the old model where Transnet simply decided everything internally.</p>
+
+    <div class="content-card card p-4 mb-4">
+      <h6 class="fw-bold mb-3">Step-by-step: from application to train on the track</h6>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 1 — The Network Statement sets the rules</strong>
+        <p class="mt-1 mb-0">TRIM publishes the Network Statement: available capacity, route specifications (line speeds, axle loads, train lengths), access charges, and the application process. Published volumes: V1 (Dec 2024), V2/V3 (Feb 2025 engagement), and V4 (finalising mid-2026). It's updated yearly or every two years. <strong>This is the rulebook — comprehensive and published in advance.</strong></p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 2 — The slot application cycle opens</strong>
+        <p class="mt-1 mb-0">Applications for the first tranche opened <strong>20 December 2024</strong> (the day the Network Statement was gazetted) and closed <strong>27 February 2025</strong>. A 60-day adjudication period followed. For the 2026/27 timetable, applications open under V4. Any licensed operator can apply — domestic or international (hence UAE's ARC).</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 3 — Adjudication: capacity is allocated on published criteria</strong>
+        <p class="mt-1 mb-0">TRIM scored <strong>25 applications</strong> against transparent criteria: operator financial strength, rolling stock readiness, safety compliance (RSR permit pathway), cargo demand (the "what"), and corridor fit (the "where"). <strong>11 met the bar.</strong> Minister Creecy: "The evaluation process has been rigorous and was conducted in full compliance with the standards of fairness and transparency."</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 4 — Conditional allocation over 41 routes on 6 corridors</strong>
+        <p class="mt-1 mb-0">August 2025: conditional award letters issued with conditions — RSR permit applications, rolling stock readiness, port offloading capacity, operational processes. Allocations ranged <strong>1–10 years</strong>. Operators can start as soon as conditions are met.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 5 — Rail Access Agreements signed (13 May 2026)</strong>
+        <p class="mt-1 mb-0">Formal RAAs concluded with all 11 TOCs. Onboarding and operational readiness support begins. 24 Mtpa of new capacity unlocked, scaling to 52 Mtpa over five years.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 6 — Ad Hoc Slots for real-time flexibility (Dec 2025+)</strong>
+        <p class="mt-1 mb-0">TRIM's <strong>Ad Hoc Slot process</strong> allows rapid allocation of capacity <em>outside</em> the annual cycle — operators can respond to real-time market demand. First application: a short-haul Cato Ridge–Durban service to cut port-precinct truck congestion (targeted start May 2026).</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <strong class="fs-6">Step 7 — Run trains, pay access fees, get monitored</strong>
+        <p class="mt-1 mb-0">Operators run trains on allocated slots, paying the two-part tariff (per train-km + per gross-ton-km, differentiated by commodity and corridor). The Regulator monitors non-discriminatory access, and the RSR ensures safety. Unused slots revert to the pool for reallocation — use-it-or-lose-it discipline.</p>
+      </div>
+    </div>
+
+    <!-- Corridor Allocations Table -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">The Initial Corridor Allocations (First Tranche, 2025/26)</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>Corridor</th>
+              <th>New Entrants</th>
+              <th>Routes</th>
+              <th>Commodities</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="corridor-row"><td class="fw-bold">North Corridor</td><td>6</td><td>15</td><td>Coal, chrome</td></tr>
+            <tr class="corridor-row"><td class="fw-bold">Iron Ore Corridor</td><td>1</td><td>1</td><td>Iron ore</td></tr>
+            <tr class="corridor-row"><td class="fw-bold">Cape Corridor</td><td>2</td><td>2</td><td>Manganese</td></tr>
+            <tr class="corridor-row"><td class="fw-bold">North-East Corridor</td><td>6</td><td>16</td><td>Coal, chrome, magnetite, fuel, containers</td></tr>
+            <tr class="corridor-row"><td class="fw-bold">Central Corridor</td><td>1</td><td>2</td><td>Coal, containers (manganese)</td></tr>
+            <tr class="corridor-row"><td class="fw-bold">Container Corridor</td><td>4</td><td>5</td><td>Containers, coal, sugar</td></tr>
+            <tr class="corridor-row"><td class="fw-bold" style="background:#f0faf4;">TOTAL (initial)</td><td style="background:#f0faf4;">—</td><td style="background:#f0faf4;">41</td><td class="small" style="background:#f0faf4;">6 corridors</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small text-muted mt-3 mb-0">Source: Department of Transport / Minister Barbara Creecy briefing, 22 August 2025.</p>
+    </div>
+
+    <!-- What the first slots look like -->
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D;">
+      <h6 class="fw-bold mb-3">What the first allocated slots actually look like (2.4 Mt pilot tranche)</h6>
+      <ul class="mb-0">
+        <li class="mb-2"><strong>Manganese:</strong> weekly 104-wagon train, Hotazel → Gqeberha (Cape Corridor)</li>
+        <li class="mb-2"><strong>Iron ore:</strong> weekly 348-wagon train, Sishen → Saldanha (Ore Corridor)</li>
+        <li class="mb-2"><strong>Containers:</strong> two weekly 50-wagon trains, Capital Park → Kingsrest & City Deep/Kaserne → Kingsrest (Central Corridor)</li>
+        <li class="mb-2"><strong>Magnetite:</strong> two weekly 80-wagon trains, Phalaborwa → Richards Bay & Phalaborwa → Maputo (North-East Corridor — note the cross-border route)</li>
+        <li class="mb-2"><strong>Chrome:</strong> weekly 50-wagon train, Pendoring → Richards Bay (North Corridor)</li>
+      </ul>
+    </div>
+
+    <!-- ========== PART 4: THE OPTIMIZATION LOGIC ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Part 4: The Optimization Logic — How "Optimal" Is Defined</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #007A4D;">
+          <h6 class="fw-bold text-success">1. Maximise tonnes per scarce path</h6>
+          <p class="small mb-0">Slots are scarce because the network can only carry ~180 Mtpa today — below the ~280 Mtpa market demand. The allocation therefore favours <strong>heavy-haul bulk</strong> (coal, iron ore, manganese, chrome) that moves the most tonnage per slot, and <strong>high-value commodities</strong> with export revenue attached. Every slot wasted on an under-filled train is export revenue lost.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #FFCD00;">
+          <h6 class="fw-bold" style="color:#b8860b;">2. Target the corridors with the biggest revenue at stake</h6>
+          <p class="small mb-0">The first allocations concentrate on lines where the economy bleeds most: manganese to Ngqura, chrome to Richards Bay, coal to RBCT, iron ore to Saldanha, containers on Durban–Gauteng. These are the corridors where Transnet's failure cost R200bn in lost mining export revenue in 2023 alone (TRIM CE Motlohi). Private capacity is aimed where the gap hurts most.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #002395;">
+          <h6 class="fw-bold" style="color:#002395;">3. Differentiated pricing to steer behaviour</h6>
+          <p class="small mb-0">The two-part tariff (per train-km + per gross-ton-km) is <strong>differentiated by commodity type and corridor</strong>. The Regulator sets maximum tariffs, so TRIM cannot gouge. Pricing signals steer operators toward efficient train configurations (longer, heavier trains earn more per fixed slot cost) and toward corridors the policy wants developed.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #e65100;">
+          <h6 class="fw-bold" style="color:#e65100;">4. Rules-based, transparent, appealable</h6>
+          <p class="small mb-0">Allocation decisions are published with reasons. Denied applicants can appeal to the Regulator — not to Transnet. This is the anti-corruption and anti-discrimination guarantee: the old system's opacity (and the Zondo Commission's findings on how opaque allocation enabled looting) is structurally eliminated.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #007A4D;">
+          <h6 class="fw-bold text-success">5. Use-it-or-lose-it discipline</h6>
+          <p class="small mb-0">A TOC that doesn't run its allocated slots forfeits them — freeing capacity for others that will. The Ad Hoc process adds a fast cycle for catching real-time demand, so unused capacity is recycled instead of hoarded. This keeps the scarce resource moving toward operators who actually perform.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="phase-box" style="border-color: #1565c0;">
+          <h6 class="fw-bold" style="color:#1565c0;">6. The end goal: modal shift</h6>
+          <p class="small mb-0">Every train shifted from road to rail removes ~50 trucks from the N3 / national roads. Target: rail volumes 180 → 250 Mtpa by 2030. The optimization isn't just about rail's internal efficiency — it's about cutting SA's ~11–12% of GDP logistics costs, road damage, emissions and congestion, and restoring export competitiveness.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 5: FINANCING ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Part 5: How the Operators Pay — Access Tariffs & the LeaseCo</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">💵 Access Tariffs — the price of a slot</h6>
+            <p class="small mb-2">Two-part structure introduced in Network Statement V1 (Dec 2024):</p>
+            <ul class="small">
+              <li><strong>Charge per train-km</strong> — covers TRIM's operating costs</li>
+              <li><strong>Charge per gross-ton-km</strong> — recovers infrastructure wear-and-tear (heavier trains = more track damage = higher charge)</li>
+            </ul>
+            <p class="small mb-0">Differentiated by commodity and corridor. Tariffs are subject to regulatory oversight (IRERC now, Transport Economic Regulator later). The revenue funds TRIM's operations and, in the target model, contributes to maintenance and expansion. Design tension: high enough to fund catch-up maintenance (R65bn needed over 5 years — Transnet can only fund half), low enough not to choke the road-to-rail shift.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color: #007A4D;">
+            <h6 class="fw-bold text-success">🚃 LeaseCo — removing the capital barrier</h6>
+            <p class="small mb-2">Rolling stock is the single biggest cost of entry (locomotives: ~R40m+ each). To stop capital-crushing smaller operators before they start, Transnet is establishing <strong>LeaseCo</strong>, a public-private rolling stock leasing company.</p>
+            <ul class="small">
+              <li><strong>500 locomotives + 17,000 wagons</strong> set aside into the entity</li>
+              <li>Leases to both domestic TOCs and Southern African regional operators</li>
+              <li><strong>5 TOCs</strong> have already signed agreements that transfer to LeaseCo once it's formally established (RFP imminent)</li>
+            </ul>
+            <p class="small mb-0">This shares the capital cost across the market and enables smaller operators to compete with incumbents who already own fleets.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 6: TIMELINE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Part 6: Timeline — From Policy to Trains on the Track</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-3">
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Mar 2022</small>
+            <p class="fw-bold mt-2 mb-0">National Rail Policy approved — the open-access vision</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Dec 2023</small>
+            <p class="fw-bold mt-2 mb-0">Freight Logistics Roadmap approved; TRIM established (1 Nov 2023)</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Dec 2024</small>
+            <p class="fw-bold mt-2 mb-0">Network Statement V1 + tariffs gazetted; slot applications open (20 Dec)</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Feb-Aug 2025</small>
+            <p class="fw-bold mt-2 mb-0">Applications close (27 Feb); 25 applicants; adjudication; 11 selected (announced 22 Aug)</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Dec 2025</small>
+            <p class="fw-bold mt-2 mb-0">Ad Hoc Slot process launched for rapid, real-time capacity allocation</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">13 May 2026</small>
+            <p class="fw-bold mt-2 mb-0">Rail Access Agreements signed with all 11 TOCs — the monopoly ends</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">Late 2026</small>
+            <p class="fw-bold mt-2 mb-0">First private TOC trains begin operating (some target pre-end-2026)</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-box">
+            <small class="text-muted">2027–2030</small>
+            <p class="fw-bold mt-2 mb-0">All TOCs operational; 24→52 Mtpa; Network Statement V4+ cycles; 250 Mtpa target</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 7: RISKS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Part 7: Risks & Obstacles</h3>
+    <div class="content-card card p-4 mb-4" style="border-color: #c62828;">
+      <ul class="mb-0">
+        <li class="mb-2"><strong>Infrastructure decay:</strong> Motlohi is blunt — TOCs enter "at their own risk" a neglected network. R65bn is needed over five years for catch-up investment; Transnet can only fund ~half. Private operators cannot run fast/heavy trains on decaying track.</li>
+        <li class="mb-2"><strong>Funding gap:</strong> TRIM is seeking fiscal support (SANRAL-style model), customer co-investment, and Budget Facility for Infrastructure (BFI) access. R16.8bn already approved for coal/iron-ore/port networks; R23.6bn in further applications.</li>
+        <li class="mb-2"><strong>Cable theft & security:</strong> The network's physical security remains a precondition for reliable private operations. Vandalism risk doesn't disappear because the operator is private.</li>
+        <li class="mb-2"><strong>Cream-skimming:</strong> Private operators will target high-volume, high-margin corridors. The regulator must ensure low-density rural lines aren't abandoned — via pricing design or explicit subsidies.</li>
+        <li class="mb-2"><strong>Transitional conflict-of-interest:</strong> TRIM is still inside the Transnet group (the "sibling" problem). Until full legal separation, there's a risk of soft capture — the referee favouring the house team (TFROC). The independent Transport Economic Regulator is the counterweight.</li>
+        <li class="mb-2"><strong>Operational readiness:</strong> TOCs must pass RSR safety permitting, secure rolling stock, and line up port capacity. Some may fail to launch — the market will reallocate their slots.</li>
+        <li class="mb-2"><strong>Execution risk at scale:</strong> 52 Mtpa from private operators is the ambition. Delivering it requires locomotives, wagons, crews, and above all track that works. The gap between 180 and 250 Mtpa remains the national challenge.</li>
+      </ul>
+    </div>
+
+    <!-- The Big Picture -->
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D; background: #f0faf4;">
+      <h6 class="fw-bold text-success">The bigger picture: why this matters</h6>
+      <p class="mb-0">South Africa's freight rail system was moving ~160–165 Mtpa against market demand of ~280 Mtpa — the gap being absorbed by trucks, at enormous cost to roads, fuel use, emissions, and export competitiveness. Moody's explicitly cited logistics reform as credit-positive, noting private participation in rail and ports "is expected to support mining and manufacturing output materially." The 13 May 2026 signing converts policy into operational reality. The model is <strong>open access, not privatisation</strong>: the network stays publicly owned; what changed is that competitive operators can now use it. Whether the 250 Mtpa target is hit by 2030 depends on operators executing and Transnet (via TRIM) maintaining and funding the network — but the governance architecture to make it happen is now in place.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Key Sources (retrieved 2026):</strong></p>
+    <ul>
+      <li>TRIM media statement (13 May 2026) — "TRIM Advances Rail Reform with TOCs Onboarding and Expanded Network Access" — <a href="../data/toc/TRIM_TOC_Onboarding_PressRelease_13May2026.pdf" target="_blank">PDF ↓</a></li>
+      <li>SAnews (13 May 2026) — "Transnet announces 11 Train Operating Companies" — <a href="../data/toc/SAnews_Transnet_announces_11_TOCs_13May2026.html" target="_blank">Saved HTML ↓</a></li>
+      <li>SAnews (22 Aug 2025) — "Transnet opens rail network to private train operators" (corridor allocations, 25→11, conditions) — <a href="../data/toc/SAnews_Transnet_opens_rail_network_22Aug2025.html" target="_blank">Saved HTML ↓</a></li>
+      <li>Railway Gazette International (20 May 2026) — "'It is time to rail' in South Africa as access agreements signed with 11 freight operators" — <a href="../data/toc/RailwayGazette_Access_Agreements_11_operators_20May2026.html" target="_blank">Saved HTML ↓</a></li>
+      <li>Engineering News (13 May 2026) — "Eleven private train operators gear up for mainline entry" (LeaseCo, BFI funding, V4)</li>
+      <li>Reuters / BusinessDay / Mining Indaba (May 2026) — operator list and context</li>
+      <li>Freight Trends Global (2025) — first-tranche slot details (2.4 Mt pilot, R65bn investment need)</li>
+      <li><a href="../data/national-rail-policy-2022.pdf" target="_blank">National Rail Policy (2022) PDF ↓</a> · <a href="../data/economic-regulation-transport-act-2024.pdf" target="_blank">Economic Regulation of Transport Act (2024) PDF ↓</a></li>
+    </ul>
+    <p class="text-muted"><strong>Related Pages:</strong></p>
+    <ul>
+      <li><a href="transnet.html">Transnet SOC Ltd — Overview</a></li>
+      <li><a href="transnet-rail-manager.html">Transnet Rail Infrastructure Manager (TRIM)</a></li>
+      <li><a href="national-rail-policy.html">National Rail Policy (2022)</a></li>
+      <li><a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a></li>
+      <li><a href="traxtion.html">Traxtion — Africa's Largest Private Rail Operator</a></li>
+      <li><a href="operation-vulindlela-freight.html">Operation Vulindlela — Freight Logistics</a></li>
+      <li><a href="cable-theft.html">Cable Theft — The Network Security Threat</a></li>
+      <li><a href="manganese.html">Manganese — The Commodity Caught in the Rail Crisis</a></li>
+      <li><a href="ironore.html">Iron Ore — Sishen–Saldanha Export Line</a></li>
+      <li><a href="coal.html">Coal — Richards Bay Export Line</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

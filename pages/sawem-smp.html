@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>System Marginal Price • SAWEM • South Africa Dashboard</title>
+  <title>System Marginal Price • Pricing • SAWEM • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 
@@ -143,6 +143,7 @@
     <!-- HEADER                                                        -->
     <!-- ============================================================ -->
     <header class="mb-4">
+      <p class="small text-muted mb-1">Power &middot; SAWEM &middot; Pricing</p>
       <h1 class="display-6 fw-bold text-sa-green mb-2">System Marginal Price (SMP)</h1>
       <p class="text-muted mb-0">
         The SMP is the cornerstone of pricing in the South African Wholesale Electricity Market (SAWEM).
@@ -1116,6 +1117,33 @@ s.t.  Σ<sub>i</sub> p<sub>i,t</sub> = D<sub>t</sub>                            
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RELATED: BENCHMARK STRIKE PRICE                               -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">Related &mdash; the benchmark strike price</h2>
+          <p class="mb-3">
+            The SMP is the <em>market</em> price. The same transitional market design also defines a
+            <strong>cost-reflective benchmark strike price</strong> under NERSA&rsquo;s Transitional Generation
+            Pricing and Vesting Contract Framework &mdash; derived from a Generator Revenue Requirement Benchmark
+            and used to settle two-way vesting contracts on a defined slice of output. The two prices sit on
+            opposite sides of the same settlement equation:
+          </p>
+          <div class="formula-card mb-3">
+            <div class="math-label">Vesting settlement &mdash; links the two prices</div>
+            <pre style="margin:0; white-space:pre-wrap;">Settlement = (Strike Price &minus; Market Price) &times; Vesting Volume
+                            ↑                 ↑
+              benchmark strike        SAWEM SMP (this page)</pre>
+          </div>
+          <a href="sawem-smp-gbr-benchmark-strike-price.html" class="btn btn-outline-dark">
+            &rarr; GBR Benchmark Strike Price &mdash; full breakdown
+          </a>
         </div>
       </div>
     </section>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neural Networks • Load Forecasting in Power Markets</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-problem   { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-intro     { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-anatomy   { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-learn     { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-arch      { background: #e0f7fa; color: #006064; border-bottom-color: #006064; }
+    .card-header.level-pipeline  { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .card-header.level-sa        { background: #fff8e1; color: #f57f17; border-bottom-color: #f57f17; }
+    .card-header.level-market    { background: #e8eaf6; color: #1a237e; border-bottom-color: #1a237e; }
+    .card-header.level-limits    { background: #fbe9e7; color: #bf360c; border-bottom-color: #bf360c; }
+    .layman-box {
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #33691e; }
+    .stake-box {
+      background: #fff8e1;
+      border: 2px solid #ffc107;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .equation-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+    }
+    .nav-pills .nav-link { color: #495057; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+    .nav-pills .nav-link.active { background: #007A4D; color: white; }
+    .nn-subnav .nav-link { color: #4a148c; }
+    .nn-subnav .nav-link.active { background: #7b1fa2; color: white; }
+    .nn-node {
+      fill: #007A4D;
+      stroke: #004d31;
+      stroke-width: 1.5;
+    }
+    .nn-node-in { fill: #1565c0; stroke: #0d47a1; }
+    .nn-node-out { fill: #e65100; stroke: #bf360c; }
+    .nn-edge { stroke: #90a4ae; stroke-width: 1.2; fill: none; }
+    .feature-chip {
+      display: inline-block;
+      background: #e8f5e9;
+      border: 1px solid #007A4D;
+      color: #1b5e20;
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.8rem;
+      margin: 0.15rem;
+      font-weight: 600;
+    }
+    .horizon-card {
+      border-left: 4px solid #007A4D;
+      background: #fff;
+      padding: 0.9rem 1rem;
+      height: 100%;
+    }
+    .demo-panel {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="thesis-activation-functions.html" class="btn btn-light btn-sm">&#8767; Activations</a>
+        <a href="ai.html" class="btn btn-light btn-sm">&#129302; AI</a>
+        <a href="thesis.html" class="btn btn-light btn-sm">&#128196; Thesis</a>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top nn-subnav" style="top: 1rem;">
+          <div class="small fw-bold text-muted px-2 mb-1">Neural Networks</div>
+          <a class="nav-link active" href="thesis-neural-networks.html">&#127917; Overview</a>
+          <a class="nav-link" href="thesis-activation-functions.html">&#8767; Activation Functions</a>
+          <hr class="my-2">
+          <a class="nav-link" href="#problem">&#9889; The Industry Problem</a>
+          <a class="nav-link" href="#what">&#129504; What Is a Neural Net?</a>
+          <a class="nav-link" href="#anatomy">&#9632; Anatomy of a Network</a>
+          <a class="nav-link" href="#learning">&#9632; How They Learn</a>
+          <a class="nav-link" href="#architectures">&#9632; Architectures for Load</a>
+          <a class="nav-link" href="#pipeline">&#9632; The Forecasting Pipeline</a>
+          <a class="nav-link" href="#demo">&#9632; Interactive Forecast</a>
+          <a class="nav-link" href="#sawem">&#9632; SAWEM Application</a>
+          <a class="nav-link" href="#market">&#9632; From Forecast to Price</a>
+          <a class="nav-link" href="#limits">&#9632; Failure Modes</a>
+          <a class="nav-link" href="#stack">&#9632; In the Thesis Stack</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <p class="small text-muted mb-1">Thesis &rsaquo; Neural Networks &rsaquo; Overview</p>
+        <h1 class="display-4 fw-bold text-sa-green">&#129504; Neural Networks</h1>
+        <h5 class="text-muted mb-2">Overview</h5>
+        <p class="lead text-muted mb-4">
+          A method for learning non-linear mappings from data &mdash; explained through
+          <strong>short-term load forecasting</strong>, the industrial problem that every
+          power market must solve before it can clear a day-ahead price.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- THE INDUSTRY PROBLEM                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="problem">
+          <div class="card-header level-problem">
+            &#9889; The Industry Problem &mdash; Why Load Forecasting Exists
+          </div>
+          <div class="card-body">
+
+            <div class="stake-box">
+              <h5 class="fw-bold">Electricity cannot be stored at grid scale (yet) the way a warehouse stores grain.</h5>
+              <p class="mb-0">
+                Generation must equal demand plus losses in every settlement period. If the system
+                operator (or a Balance Responsible Party in SAWEM) guesses tomorrow's demand wrong,
+                the market still has to balance &mdash; but it balances in the expensive, last-minute
+                world of the balancing mechanism, not in the cheaper, planned world of the day-ahead
+                market. <strong>Load forecasting is the demand-side input that makes economic dispatch,
+                unit commitment, and the System Marginal Price possible.</strong>
+              </p>
+            </div>
+
+            <p>
+              In a wholesale power market the load forecast is not a weather app curiosity. It is an
+              operational and financial instrument. It tells the market operator how much energy must
+              be scheduled; it tells generators which units to commit overnight; it tells traders how
+              much to buy or sell; and it tells the system operator how much reserve to hold. A 2%
+              error on a 30 GW peak is 600 MW &mdash; a mid-sized power station of surprise, paid for
+              at imbalance prices rather than at the day-ahead SMP.
+            </p>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6 col-xl-3">
+                <div class="horizon-card">
+                  <div class="small text-muted fw-bold text-uppercase">Very short term</div>
+                  <div class="fw-bold">Minutes &ndash; 6 hours</div>
+                  <div class="small mb-0">Real-time dispatch, AGC, balancing. Feeds the System Operator's nowcast.</div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xl-3">
+                <div class="horizon-card" style="border-left-color:#e65100;">
+                  <div class="small text-muted fw-bold text-uppercase">Short term (STLF)</div>
+                  <div class="fw-bold">Day-ahead (24&ndash;48 h)</div>
+                  <div class="small mb-0">The workhorse. SAWEM DAM gate closes 10:00 SAST on D&minus;1. This is where neural nets earn their keep.</div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xl-3">
+                <div class="horizon-card" style="border-left-color:#002395;">
+                  <div class="small text-muted fw-bold text-uppercase">Medium term</div>
+                  <div class="fw-bold">Weeks &ndash; months</div>
+                  <div class="small mb-0">Maintenance windows, coal and LNG offtake, hydro scheduling, seasonal hedging.</div>
+                </div>
+              </div>
+              <div class="col-md-6 col-xl-3">
+                <div class="horizon-card" style="border-left-color:#7b1fa2;">
+                  <div class="small text-muted fw-bold text-uppercase">Long term</div>
+                  <div class="fw-bold">Years (IRP / TDP)</div>
+                  <div class="small mb-0">Capacity expansion. IRP 2025's 255 TWh in 2030 is a load forecast with GDP, population and efficiency inside it.</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="mb-0">
+              Classical tools &mdash; ARIMA, exponential smoothing, linear regression on temperature
+              and calendar dummies &mdash; still work on a quiet winter Tuesday. They fail when the
+              mapping is <em>non-linear and state-dependent</em>: a 2&nbsp;&deg;C change at 18:00 in
+              July does not move load the same way as a 2&nbsp;&deg;C change at 14:00 in January;
+              a Gauteng weekday with a public holiday on Friday is not a weekend; rooftop PV turns
+              gross demand into a duck-shaped <em>net</em> load; and years of load shedding mean the
+              historical series is not unconstrained demand. That is the regime in which neural
+              networks became the industry standard for short-term load forecasting.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- WHAT IS A NEURAL NETWORK                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="what">
+          <div class="card-header level-intro">
+            &#129504; What Is a Neural Network? &mdash; Told as a Load Forecast
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Layman's Introduction</h5>
+              <p>
+                Imagine you are a trader at a Balance Responsible Party. At 09:30 tomorrow morning
+                you must tell the SAWEM Market Operator how many megawatts your customers will draw
+                in every hour of the following day. You have a pile of clues: it will be 12&nbsp;&deg;C
+                in Johannesburg, it is a Thursday, last Thursday at 18:00 the load was 31.2 GW, it is
+                not a public holiday, and sunset is at 17:41.
+              </p>
+              <p>
+                A linear model would say: &ldquo;add 400 MW per degree below 18&nbsp;&deg;C, subtract
+                8% on weekends, done.&rdquo; Reality is messier. Heating load saturates. Air-conditioning
+                kicks in only above a threshold. The evening peak is a <em>shape</em>, not a number.
+                Mining shifts, soccer matches, and load-shedding recovery all warp the curve in ways
+                that no single equation captures.
+              </p>
+              <p class="mb-0">
+                A <strong>neural network</strong> is a stack of simple calculators (neurons) that
+                <em>learn</em> that messy mapping from examples. You show it thousands of historical
+                days: the clues that were known the day before, and the load that actually materialised.
+                It adjusts internal numbers (weights) until its guess of tomorrow's megawatts is as
+                close as possible to what happened. After training, it is a function:
+              </p>
+              <div class="math mt-3 mb-0">
+                D&#770;<sub>t</sub> = f<sub>&theta;</sub>( hour, day-type, weather, lagged load, calendar, &hellip; )
+              </div>
+            </div>
+
+            <p>
+              The name is a metaphor, not a claim of biological fidelity. Each &ldquo;neuron&rdquo;
+              computes a weighted sum of its inputs, then squashes the result through a non-linear
+              <em>activation</em>. Stack enough of them and the network can approximate, to any
+              accuracy you can afford, any continuous function from features to load. That is the
+              universal approximation theorem, and it is why the same architecture that classifies
+              handwritten digits can forecast Eskom system demand.
+            </p>
+
+            <p class="mb-0">
+              Three ideas do all the work:
+            </p>
+            <ol class="mt-2 mb-0">
+              <li><strong>Representation.</strong> Raw clues (hour = 18, temp = 12&nbsp;&deg;C) are
+                encoded as numbers the network can multiply.</li>
+              <li><strong>Composition.</strong> Layers of non-linear units compose simple functions
+                into a complicated one &mdash; the daily load shape.</li>
+              <li><strong>Learning from error.</strong> The difference between predicted MW and
+                metered MW is a loss. Gradients of that loss wiggle every weight in the direction
+                that would have made yesterday's forecast better.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ANATOMY                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="anatomy">
+          <div class="card-header level-anatomy">
+            &#9632; Anatomy of a Network &mdash; From Features to Megawatts
+          </div>
+          <div class="card-body">
+
+            <h5 class="fw-bold">The neuron, as a tiny load model</h5>
+            <p>
+              A single neuron with inputs <em>x</em>, weights <em>w</em>, bias <em>b</em> and
+              activation &sigma; computes
+            </p>
+            <div class="math mb-3">z = w &middot; x + b &nbsp;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;&nbsp; a = &sigma;(z)</div>
+            <p>
+              Suppose we are predicting the 18:00 system load and this neuron only sees three clues,
+              already scaled to roughly [&minus;1, 1]:
+            </p>
+
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                  <tr>
+                    <th>Feature x</th>
+                    <th>Meaning for the 18:00 forecast</th>
+                    <th>Example value</th>
+                    <th>Weight w</th>
+                    <th>Contribution w&middot;x</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>temp_norm</code></td>
+                    <td>How far temperature is from 18&nbsp;&deg;C (heating drives winter peak)</td>
+                    <td>&minus;0.40 &nbsp;(12&nbsp;&deg;C)</td>
+                    <td>&minus;1.20</td>
+                    <td>+0.48</td>
+                  </tr>
+                  <tr>
+                    <td><code>is_weekday</code></td>
+                    <td>Commercial and industrial load is in (1) or out (0)</td>
+                    <td>1.00</td>
+                    <td>+0.70</td>
+                    <td>+0.70</td>
+                  </tr>
+                  <tr>
+                    <td><code>load_lag168</code></td>
+                    <td>Same hour last week, scaled &mdash; the strongest single predictor in STLF</td>
+                    <td>0.85</td>
+                    <td>+1.10</td>
+                    <td>+0.94</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="text-end"><strong>Bias b</strong></td>
+                    <td>+0.10</td>
+                  </tr>
+                  <tr class="table-success">
+                    <td colspan="4" class="text-end"><strong>Pre-activation z</strong></td>
+                    <td><strong>2.22</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              Pass <em>z</em> through ReLU, &sigma;(z) = max(0, z), and the neuron fires at 2.22.
+              A linear output neuron then rescales that hidden activity into megawatts. One neuron
+              is a half-baked regression. <strong>A layer of them</strong> is where the method
+              becomes a network: each hidden unit can specialise &mdash; one learns &ldquo;winter
+              evening heating&rdquo;, another &ldquo;Friday-before-a-holiday rundown&rdquo;, another
+              &ldquo;hot Highveld afternoon air-conditioning&rdquo;. The output layer mixes those
+              specialised detectors into a single MW number (or a 24-hour vector).
+            </p>
+
+            <h5 class="fw-bold mt-4">A feedforward net for day-ahead load</h5>
+            <p>
+              The diagram below is the architecture you would actually ship for a first-cut SAWEM
+              day-ahead forecast: calendar and weather features in, one hidden layer, predicted
+              demand out. Deep STLF models add recurrence or attention (next section). The
+              computation does not change in kind &mdash; only in depth and in how time is represented.
+            </p>
+
+            <div class="text-center my-3">
+              <svg viewBox="0 0 760 340" width="100%" style="max-width:760px;" aria-label="Feedforward neural network for load forecasting">
+                <text x="70" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1565c0">Inputs (features)</text>
+                <text x="380" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#007A4D">Hidden layer</text>
+                <text x="650" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">Output</text>
+
+                <!-- edges -->
+                <g class="nn-edges" stroke="#b0bec5" stroke-width="1">
+                  <line x1="120" y1="70"  x2="320" y2="55"/>
+                  <line x1="120" y1="70"  x2="320" y2="115"/>
+                  <line x1="120" y1="70"  x2="320" y2="175"/>
+                  <line x1="120" y1="70"  x2="320" y2="235"/>
+                  <line x1="120" y1="70"  x2="320" y2="295"/>
+
+                  <line x1="120" y1="125" x2="320" y2="55"/>
+                  <line x1="120" y1="125" x2="320" y2="115"/>
+                  <line x1="120" y1="125" x2="320" y2="175"/>
+                  <line x1="120" y1="125" x2="320" y2="235"/>
+                  <line x1="120" y1="125" x2="320" y2="295"/>
+
+                  <line x1="120" y1="180" x2="320" y2="55"/>
+                  <line x1="120" y1="180" x2="320" y2="115"/>
+                  <line x1="120" y1="180" x2="320" y2="175"/>
+                  <line x1="120" y1="180" x2="320" y2="235"/>
+                  <line x1="120" y1="180" x2="320" y2="295"/>
+
+                  <line x1="120" y1="235" x2="320" y2="55"/>
+                  <line x1="120" y1="235" x2="320" y2="115"/>
+                  <line x1="120" y1="235" x2="320" y2="175"/>
+                  <line x1="120" y1="235" x2="320" y2="235"/>
+                  <line x1="120" y1="235" x2="320" y2="295"/>
+
+                  <line x1="120" y1="290" x2="320" y2="55"/>
+                  <line x1="120" y1="290" x2="320" y2="115"/>
+                  <line x1="120" y1="290" x2="320" y2="175"/>
+                  <line x1="120" y1="290" x2="320" y2="235"/>
+                  <line x1="120" y1="290" x2="320" y2="295"/>
+
+                  <line x1="360" y1="55"  x2="610" y2="175"/>
+                  <line x1="360" y1="115" x2="610" y2="175"/>
+                  <line x1="360" y1="175" x2="610" y2="175"/>
+                  <line x1="360" y1="235" x2="610" y2="175"/>
+                  <line x1="360" y1="295" x2="610" y2="175"/>
+                </g>
+
+                <circle class="nn-node-in" cx="120" cy="70"  r="16"/>
+                <circle class="nn-node-in" cx="120" cy="125" r="16"/>
+                <circle class="nn-node-in" cx="120" cy="180" r="16"/>
+                <circle class="nn-node-in" cx="120" cy="235" r="16"/>
+                <circle class="nn-node-in" cx="120" cy="290" r="16"/>
+
+                <circle class="nn-node" cx="340" cy="55"  r="18"/>
+                <circle class="nn-node" cx="340" cy="115" r="18"/>
+                <circle class="nn-node" cx="340" cy="175" r="18"/>
+                <circle class="nn-node" cx="340" cy="235" r="18"/>
+                <circle class="nn-node" cx="340" cy="295" r="18"/>
+
+                <circle class="nn-node-out" cx="630" cy="175" r="22"/>
+
+                <text x="70" y="74"  text-anchor="end" font-size="11">hour (sin, cos)</text>
+                <text x="70" y="129" text-anchor="end" font-size="11">day-type / holiday</text>
+                <text x="70" y="184" text-anchor="end" font-size="11">temperature</text>
+                <text x="70" y="239" text-anchor="end" font-size="11">load t&minus;24, t&minus;168</text>
+                <text x="70" y="294" text-anchor="end" font-size="11">embedded PV / other</text>
+
+                <text x="340" y="60"  text-anchor="middle" font-size="11" fill="white" font-weight="700">h1</text>
+                <text x="340" y="120" text-anchor="middle" font-size="11" fill="white" font-weight="700">h2</text>
+                <text x="340" y="180" text-anchor="middle" font-size="11" fill="white" font-weight="700">h3</text>
+                <text x="340" y="240" text-anchor="middle" font-size="11" fill="white" font-weight="700">h4</text>
+                <text x="340" y="300" text-anchor="middle" font-size="11" fill="white" font-weight="700">h5</text>
+
+                <text x="630" y="180" text-anchor="middle" font-size="12" fill="white" font-weight="700">MW</text>
+                <text x="680" y="180" font-size="12" font-weight="700" fill="#e65100">D&#770;<sub>t</sub></text>
+              </svg>
+              <div class="small text-muted">Forward pass: features &rarr; hidden detectors &rarr; predicted demand (MW) for one settlement period. Repeat for each hour of D+1, or emit a 24-dimensional output in one shot.</div>
+            </div>
+
+            <h6 class="fw-bold">Why the non-linearity is not optional</h6>
+            <p class="mb-2">
+              If every activation were linear, stacking layers would collapse to a single matrix
+              multiply &mdash; ordinary linear regression. Load is not linear in temperature: the
+              response is a U-shape (heating below ~15&nbsp;&deg;C, cooling above ~24&nbsp;&deg;C,
+              a dead band in between). Load is not linear in hour: the evening ramp is a steep
+              S-curve. ReLU, tanh and GELU exist so the network can <em>bend</em>. That bend is
+              the whole reason the industry moved off ARIMA.
+            </p>
+            <p class="mb-0">
+              The activation function <em>is</em> that bend. It is the sauce: without it there
+              is no network, only a stacked regression.
+              <a href="thesis-activation-functions.html">Activation Functions &#8594;</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LEARNING                                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="learning">
+          <div class="card-header level-learn">
+            &#9632; How They Learn &mdash; Yesterday's Error Trains Tomorrow's Forecast
+          </div>
+          <div class="card-body">
+
+            <p>
+              Training is supervised regression. For each historical hour you have the features that
+              <em>would have been known</em> the day before (never leak the actual temperature of
+              18:00 if your DAM bid is due at 10:00 &mdash; use the weather <em>forecast</em> available
+              at gate opening), and the metered load that later arrived. The network emits
+              D&#770;<sub>t</sub>; the meter reads D<sub>t</sub>; the loss is the distance between them.
+            </p>
+
+            <div class="equation-box">
+              <div class="fw-bold mb-2">Point forecast (most common STLF loss)</div>
+              <div class="math mb-2">L<sub>MSE</sub> = (1/N) &Sigma;<sub>t</sub> ( D<sub>t</sub> &minus; D&#770;<sub>t</sub> )<sup>2</sup></div>
+              <div class="fw-bold mb-2">Industry-facing metric (what the control room quotes)</div>
+              <div class="math mb-2">MAPE = (100/N) &Sigma;<sub>t</sub> |D<sub>t</sub> &minus; D&#770;<sub>t</sub>| / D<sub>t</sub></div>
+              <div class="fw-bold mb-2">Probabilistic forecast (what reserve procurement actually needs)</div>
+              <div class="math mb-0">L<sub>pinball</sub>(&tau;) = (1/N) &Sigma;<sub>t</sub> [ &tau; (D<sub>t</sub> &minus; D&#770;<sub>t</sub>) ]<sub>+</sub> + [ (1&minus;&tau;)(D&#770;<sub>t</sub> &minus; D<sub>t</sub>) ]<sub>+</sub></div>
+            </div>
+
+            <p>
+              MAPE of 1.5&ndash;3% day-ahead is a serious operational model on a large, well-behaved
+              system. Below 1% is excellent and usually means you have a stable industrial base and
+              good weather. South Africa is harder than that: load shedding, rooftop PV, municipal
+              unreliability and a winter-peaking, mining-heavy mix push errors up. A BRP that can
+              hold MAPE under ~3% on its portfolio is not leaving much money on the imbalance table.
+            </p>
+
+            <h5 class="fw-bold">Gradient descent, in market language</h5>
+            <p>
+              Back-propagation is the chain rule applied to the stack of matrix multiplies. The
+              scalar loss L depends on D&#770;, which depends on the last layer's weights, which
+              depend on the hidden activations, which depend on the first layer. Differentiating
+              through that chain yields &part;L/&part;&theta; for every weight &theta;. The update
+            </p>
+            <div class="math mb-3">&theta; &larr; &theta; &minus; &eta; &nabla;<sub>&theta;</sub> L</div>
+            <p>
+              is the same idea as a generator agent in the thesis MDP updating its bid from last
+              hour's profit &mdash; except here the &ldquo;action&rdquo; is a forecast, the
+              &ldquo;reward&rdquo; is negative squared error, and the policy is a differentiable
+              function rather than a Q-table. Stochastic gradient descent (Adam, in practice)
+              does this on minibatches of hours so a year of hourly data is thousands of updates,
+              not one giant matrix solve.
+            </p>
+
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="p-3 border rounded h-100 bg-white">
+                  <div class="fw-bold text-sa-green">Train</div>
+                  <p class="small mb-0">Historical days used to fit weights. Typical split: 70% of the last 3&ndash;5 years of hourly load, weather and calendar.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded h-100 bg-white">
+                  <div class="fw-bold" style="color:#0d47a1;">Validate</div>
+                  <p class="small mb-0">Held-out months used to pick architecture and early-stop. Never tune on the test year. Seasonality means you must hold out <em>whole seasons</em>, not random hours.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded h-100 bg-white">
+                  <div class="fw-bold" style="color:#e65100;">Test / produce</div>
+                  <p class="small mb-0">Walk-forward on the most recent year, then freeze weights and run every morning before 10:00 SAST. Retrain weekly as new metered data lands.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ARCHITECTURES                                              -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="architectures">
+          <div class="card-header level-arch">
+            &#9632; Architectures the Industry Actually Uses
+          </div>
+          <div class="card-body">
+            <p>
+              &ldquo;Neural network&rdquo; is a family, not a single model. Load is a
+              <em>sequence</em> with daily, weekly and annual periods, driven by exogenous weather
+              and calendar. Different architectures buy different inductive biases.
+            </p>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width:18%;">Architecture</th>
+                    <th>What it is, in load-forecasting language</th>
+                    <th style="width:28%;">When a SAWEM desk would pick it</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>MLP (feedforward)</strong></td>
+                    <td>A bag of features for hour <em>t</em> maps to D&#770;<sub>t</sub>. You hand-craft lags (t&minus;1, t&minus;24, t&minus;168), Fourier terms for hour and week, and weather.</td>
+                    <td>Baseline. Fast to train, easy to explain to a risk committee, surprisingly strong if the feature set is good.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>RNN / LSTM / GRU</strong></td>
+                    <td>The hidden state carries a memory of the last many hours, so the network sees the <em>shape so far today</em> when it predicts the next hour. LSTM gates learn what to keep (the morning ramp) and what to forget (yesterday's lunch dip).</td>
+                    <td>Very-short-term and rolling intra-day updates, when the morning actuals should revise the afternoon forecast.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CNN (1-D / 2-D)</strong></td>
+                    <td>Convolution over time (or over a time&times;feature map) detects local motifs: the evening ramp, the lunch trough, a cold-front signature. Same idea as an image net, applied to a load curve.</td>
+                    <td>When you have many similar series (substations, municipalities) and want shared local detectors.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Seq2seq</strong></td>
+                    <td>An encoder reads history; a decoder emits the next 24 (or 48) hours in one go. Matches the DAM product: you need a vector, not a one-step-ahead scalar.</td>
+                    <td>Day-ahead submission. Avoids the error cascade of rolling a one-step model out 24 times.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Transformer / attention</strong></td>
+                    <td>Instead of a single hidden state, every hour can attend to any other hour (last week's 18:00, this morning's 07:00, last year's similar-temperature Tuesday). Positional encodings carry clock and season.</td>
+                    <td>Current SOTA for STLF on large datasets. Heavy to train; worth it if you are NTCSA or a large BRP, overkill for a single mine.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hybrid / ensemble</strong></td>
+                    <td>A statistical model (SARIMAX, TBATS) plus a neural net on the residuals; or several nets blended. Gradient-boosted trees (XGBoost/LightGBM) remain fierce competitors on tabular STLF and are often in the same ensemble.</td>
+                    <td>Production. Almost nobody ships one model. The ensemble is what hits the MAPE target on weird days.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Quantile / density nets</strong></td>
+                    <td>Output P10 / P50 / P90 (or a full distribution) instead of a single MW. Pinball or CRPS loss. The P90 minus P10 is a data-driven reserve requirement.</td>
+                    <td>System Operator reserve sizing; BRP credit-cover and imbalance-risk; any desk that has to buy options on forecast error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="mb-0 small text-muted">
+              Related, not the same: graph neural nets over the transmission network for
+              <em>nodal</em> load; physics-informed nets that hard-wire power-balance; and
+              reinforcement-learning policies that <em>use</em> a forecast to bid. Those last two
+              sit closer to the <a href="thesis-methods.html">Methods</a> and
+              <a href="thesis-agents.html">Agent Architecture</a> pages.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PIPELINE                                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="pipeline">
+          <div class="card-header level-pipeline">
+            &#9632; The Industrial Pipeline &mdash; Features, Horizons, Evaluation
+          </div>
+          <div class="card-body">
+
+            <h5 class="fw-bold">What actually goes into the network</h5>
+            <p>A production STLF feature store, South African flavour:</p>
+            <div class="mb-3">
+              <span class="feature-chip">hour sin/cos</span>
+              <span class="feature-chip">day-of-week</span>
+              <span class="feature-chip">month / season</span>
+              <span class="feature-chip">SA public holidays</span>
+              <span class="feature-chip">school calendar</span>
+              <span class="feature-chip">sunset / photoperiod</span>
+              <span class="feature-chip">temp, lag temp, CDD/HDD</span>
+              <span class="feature-chip">humidity / wind (Cape)</span>
+              <span class="feature-chip">load t&minus;1, t&minus;24, t&minus;168</span>
+              <span class="feature-chip">rolling 7-day profile</span>
+              <span class="feature-chip">embedded PV estimate</span>
+              <span class="feature-chip">load-shedding stage (ex post)</span>
+              <span class="feature-chip">mining shift flags</span>
+              <span class="feature-chip">major events (sport, elections)</span>
+            </div>
+
+            <p>
+              Two encoding details that separate a toy notebook from a desk that makes money:
+            </p>
+            <ul>
+              <li><strong>Cyclical time.</strong> Hour 23 and hour 0 are neighbours. Encoding hour
+                as an integer 0&ndash;23 tells the net they are opposites. Use sin(2&pi;h/24) and
+                cos(2&pi;h/24). Same for day-of-year.</li>
+              <li><strong>No leakage.</strong> At 10:00 on D&minus;1 you do not know D's 18:00
+                temperature. You know a <em>weather forecast</em>. Train on weather forecasts, not
+                on the ERA5 reanalysis of what the temperature turned out to be, or the model will
+                look brilliant in backtest and average in production.</li>
+            </ul>
+
+            <h5 class="fw-bold">How the industry keeps score</h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                  <tr><th>Metric</th><th>What it punishes</th><th>Why a power-market desk cares</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>MAPE</strong></td>
+                    <td>Relative error, equally across hours</td>
+                    <td>Board-level KPI. Misleading at night (small denominator) and during deep load-shedding troughs.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>RMSE / MAE (MW)</strong></td>
+                    <td>Absolute megawatts</td>
+                    <td>Peak-hour errors cost more. A 500 MW miss at 18:00 is a unit-commitment problem; a 500 MW miss at 03:00 is not.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Peak MAPE / timing error</strong></td>
+                    <td>Missing the evening peak, or being an hour early</td>
+                    <td>The System Operator's reliability metric. Peak timing errors cause the wrong OCGT to start.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pinball / CRPS / coverage</strong></td>
+                    <td>Miscalibrated uncertainty</td>
+                    <td>If your P90 is always too low, you systematically under-procure reserve and eat SBP.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Imbalance cost (R)</strong></td>
+                    <td>The only loss that hits the P&amp;L</td>
+                    <td>MAPE can be 2.1% and still lose money if errors are one-sided on high-SBP hours. Evaluate in rand, not only in percent.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="mb-0">
+              Always beat a naive baseline before celebrating. The unbeatably honest one is
+              <strong>same hour last week</strong> (seasonal naive). On a stable system it is already
+              within a few percent. The neural net has to earn everything inside that gap.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- INTERACTIVE DEMO                                           -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="demo">
+          <div class="card-header level-intro">
+            &#9632; What a Trained STLF Model Emits &mdash; Illustrative Day-Ahead Shape
+          </div>
+          <div class="card-body">
+            <p>
+              A production network outputs 24 numbers: the megawatts it expects in each hour of
+              D+1. The controls below change the <em>inputs</em> a day-ahead model would have seen
+              at 10:00 SAST. The curve is an illustrative South African system shape (winter evening
+              peak, weekday commercial load, temperature response) of the kind a trained network
+              produces &mdash; not a live Eskom forecast.
+            </p>
+
+            <div class="demo-panel">
+              <div class="row g-3 align-items-end mb-3">
+                <div class="col-md-3">
+                  <label class="form-label small fw-bold mb-1" for="nnDayType">Day type</label>
+                  <select id="nnDayType" class="form-select form-select-sm">
+                    <option value="weekday" selected>Weekday</option>
+                    <option value="weekend">Weekend</option>
+                    <option value="holiday">Public holiday</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small fw-bold mb-1" for="nnSeason">Season</label>
+                  <select id="nnSeason" class="form-select form-select-sm">
+                    <option value="winter" selected>Winter (heating peak)</option>
+                    <option value="summer">Summer (cooling + PV)</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold mb-1" for="nnTemp">Temperature at 18:00: <span id="nnTempVal">12</span>&nbsp;&deg;C</label>
+                  <input type="range" class="form-range" id="nnTemp" min="5" max="35" value="12">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small fw-bold mb-1" for="nnPv">Rooftop PV</label>
+                  <select id="nnPv" class="form-select form-select-sm">
+                    <option value="0" selected>Low</option>
+                    <option value="1">High (duck)</option>
+                  </select>
+                </div>
+              </div>
+              <canvas id="nnForecastChart" height="110"></canvas>
+              <div class="row text-center mt-3">
+                <div class="col-6 col-md-3">
+                  <div class="small text-muted">Peak</div>
+                  <div class="fw-bold" id="nnPeak">—</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="small text-muted">Peak hour</div>
+                  <div class="fw-bold" id="nnPeakHour">—</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="small text-muted">Daily energy</div>
+                  <div class="fw-bold" id="nnEnergy">—</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="small text-muted">Min (night / midday)</div>
+                  <div class="fw-bold" id="nnMin">—</div>
+                </div>
+              </div>
+              <p class="small text-muted mt-3 mb-0">
+                Watch three things a real network has to learn: (1) winter cold lifts the
+                <em>evening</em> peak, not the whole day equally; (2) a holiday looks more like a
+                Sunday than a Saturday; (3) high embedded PV carves the midday net load and steepens
+                the evening ramp &mdash; the operational nightmare the System Operator actually
+                dispatches against.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SAWEM / SOUTH AFRICA                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sawem">
+          <div class="card-header level-sa">
+            &#9632; Application to Industry &mdash; Load Forecasting in SAWEM and the RSA System
+          </div>
+          <div class="card-body">
+
+            <p>
+              Neural networks are a general method. The reason they belong on this dashboard is
+              that <strong>every institution in the South African power market already depends on
+              a load forecast</strong>, whether it admits to using a neural net or still runs a
+              regression with calendar dummies.
+            </p>
+
+            <h5 class="fw-bold">Who forecasts, and why the method matters</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th>Actor</th>
+                    <th>Forecast they must produce</th>
+                    <th>What error costs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Balance Responsible Parties</strong></td>
+                    <td>
+                      SAWEM Market Code Part 3, Section 3.3: demand-side participants submit load
+                      forecasts as price-sensitive bids or fixed demand schedules into the Day-Ahead
+                      Market. Gate closure is <strong>10:00 SAST on D&minus;1</strong>.
+                    </td>
+                    <td>
+                      Imbalance. Short positions pay SBP (System Buy Price &mdash; often SMP plus a
+                      10&ndash;30% uplift); long positions receive SSP. A persistently biased net
+                      is a transfer from the BRP to the balancing stack.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Market Operator / NTCSA System Operator</strong></td>
+                    <td>
+                      System-level STLF for SCUC/SCED: the unconstrained and constrained schedules
+                      that produce the <a href="sawem-smp.html">SMP</a>. Also reserve requirements
+                      (Section 3.4) which scale with forecast uncertainty.
+                    </td>
+                    <td>
+                      Wrong unit commitment: too little coal or OCGT left online, then emergency
+                      diesel and load shedding; or too much, then extra start-up and no-load cost
+                      socialised into the SMP.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Eskom Generation / IPP portfolios</strong></td>
+                    <td>
+                      Residual (net) demand after must-run nuclear, IPP take-or-pay, and variable
+                      renewables. This is the curve coal and gas actually chase.
+                    </td>
+                    <td>
+                      Over-commitment of inflexible plant; or under-commitment and a scramble that
+                      shows up as OCGT burn and, historically, as load-shedding stages.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>NTCSA planning (TDP)</strong></td>
+                    <td>
+                      10-year spatial demand. The TDP is worthless if the MW are in the wrong
+                      province. See <a href="TDP2025.html">TDP 2025&ndash;2034</a>.
+                    </td>
+                    <td>
+                      Building 400 kV into a load that never arrives; or not building into Gauteng
+                      / coastal industrial growth and rationing by congestion.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>IRP / DMRE</strong></td>
+                    <td>
+                      Annual energy (TWh) and peak (GW) under GDP and efficiency assumptions.
+                      IRP 2025's ~255 TWh in 2030 is a long-term load forecast.
+                    </td>
+                    <td>
+                      A high forecast justifies surplus capacity (expensive). A low forecast
+                      repeats the 2008&ndash;2015 underbuild. Neural nets are <em>not</em> the
+                      right tool at this horizon &mdash; structural models are &mdash; but STLF
+                      accuracy is how you notice the structural model is drifting.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Municipalities &amp; large users</strong></td>
+                    <td>
+                      Own-load STLF for NERSA tariff design, wheeling, and (for mines and smelters)
+                      shift scheduling against TOU and, soon, against SMP.
+                    </td>
+                    <td>
+                      Buying the peak they could have shifted; under-hedging a smelter potline;
+                      municipal under-collection when demand was mis-estimated.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-bold mt-4">Why South African load is a hard neural-net problem</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100">
+                  <h6 class="fw-bold" style="color:#e65100;">The meter is not the demand</h6>
+                  <p class="small mb-0">
+                    For most of 2014&ndash;2023, observed Eskom sent-out was <em>constrained</em>
+                    demand. Training a net on load-shedding years teaches it that winter evenings
+                    are smaller than they would have been. Unless you reconstruct unconstrained
+                    demand (or condition on stage), the model under-forecasts the first healthy
+                    winter and the System Operator is short. This is concept drift with a political
+                    cause.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100">
+                  <h6 class="fw-bold" style="color:#2e7d32;">Net load is not gross load</h6>
+                  <p class="small mb-0">
+                    Distributed generation &mdash; rooftop PV, wheeling, municipal IPPs &mdash; is
+                    chewing a hole in the midday meter. The System Operator dispatches
+                    <em>net</em> load. A network that does not see a PV proxy (irradiance, installed
+                    capacity, time of year) will over-forecast noon and then miss the 17:00&ndash;19:00
+                    ramp, which is exactly when OCGTs are expensive and the grid is tight. See
+                    <a href="distributed-generation.html">Distributed Generation</a>.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100">
+                  <h6 class="fw-bold" style="color:#002395;">Two peaks, many shapes</h6>
+                  <p class="small mb-0">
+                    National peak has historically been a winter weekday evening (heating + lighting
+                    + cooking). Coastal metros add a summer afternoon air-con peak. Mining load is
+                    flatter and shift-driven; Gauteng commercial is weekday-shaped; Western Cape
+                    weather is marine and wind-correlated. A single national MLP averages these
+                    into mush. Hierarchical forecasting (node / province / sector, then reconcile
+                    to the system total) is how serious desks do it.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100">
+                  <h6 class="fw-bold" style="color:#7b1fa2;">The calendar is local</h6>
+                  <p class="small mb-0">
+                    Heritage Day, the December builder's holiday, Ramadan in Cape Town, a
+                    Saturday rugby test at Loftus, and an election Wednesday all move gigawatts.
+                    Off-the-shelf US or European holiday lists will silently fail. The feature
+                    store is a South African data product, not a GitHub default.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- FROM FORECAST TO PRICE                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="market">
+          <div class="card-header level-market">
+            &#9632; From Forecast to Price &mdash; Where the Network Touches SMP
+          </div>
+          <div class="card-body">
+
+            <p>
+              A load forecast is not the end of the pipeline. In SAWEM it is the demand constraint
+              of the co-optimised SCUC/SCED that prints the System Marginal Price. The chain is:
+            </p>
+
+            <div class="row small text-center g-2 mb-3">
+              <div class="col-6 col-lg">
+                <div class="p-2 border rounded bg-white h-100"><strong>1. Features</strong><br><span class="text-muted">weather, calendar, lags, PV</span></div>
+              </div>
+              <div class="col-6 col-lg">
+                <div class="p-2 border rounded bg-white h-100"><strong>2. Neural net</strong><br><span class="text-muted">D&#770;<sub>1..24</sub> (&plusmn; quantiles)</span></div>
+              </div>
+              <div class="col-6 col-lg">
+                <div class="p-2 border rounded bg-white h-100"><strong>3. DAM bids</strong><br><span class="text-muted">BRP demand + SO reserve</span></div>
+              </div>
+              <div class="col-6 col-lg">
+                <div class="p-2 border rounded bg-white h-100"><strong>4. OPF / SCUC</strong><br><span class="text-muted">&lambda;<sub>t</sub> = SMP</span></div>
+              </div>
+              <div class="col-6 col-lg">
+                <div class="p-2 border rounded bg-white h-100"><strong>5. Real time</strong><br><span class="text-muted">imbalance &times; SBP/SSP</span></div>
+              </div>
+            </div>
+
+            <p>
+              Because the SMP is the dual on the power-balance constraint
+              (&Sigma; generation = D<sub>t</sub> + losses), <strong>a biased load forecast is a
+              biased price</strong>. Forecast too high and the day-ahead market commits extra
+              mid-merit and peaking plant: SMP prints high, consumers overpay, generators who
+              cleared may be constrained off in real time and collect lost-opportunity payments.
+              Forecast too low and the DAM looks cheap, real-time is short, OCGTs and emergency
+              energy set SBP, and BRPs who believed the forecast pay the spread.
+            </p>
+
+            <div class="equation-box">
+              <div class="fw-bold mb-2">The money equation the network is really minimising</div>
+              <div class="math mb-0">
+                Cost<sub>imbalance</sub> &approx; &Sigma;<sub>t</sub>
+                [ (D<sub>t</sub> &minus; D&#770;<sub>t</sub>)<sup>+</sup> &middot; SBP<sub>t</sub>
+                &minus; (D&#770;<sub>t</sub> &minus; D<sub>t</sub>)<sup>+</sup> &middot; SSP<sub>t</sub> ]
+              </div>
+              <p class="small text-muted mb-0 mt-2">
+                SBP and SSP are themselves functions of how many other BRPs missed in the same
+                direction. Correlated forecast errors (everyone using similar weather and similar
+                nets) are systematically more expensive than idiosyncratic ones. That is why a
+                desk's &ldquo;secret sauce&rdquo; is often a proprietary feature &mdash; a mine's
+                shift plan, a municipality's load-control schedule &mdash; not a deeper transformer.
+              </p>
+            </div>
+
+            <p class="mb-0">
+              This is also why probabilistic forecasts belong in a market, not just a MAPE bake-off.
+              The System Operator's reserve requirement R<sub>t</sub> should scale with the
+              predicted error band, not with a static percentage of peak. A quantile network that
+              widens P10&ndash;P90 ahead of a cut-off low over the Highveld is doing the same job
+              as a well-calibrated options book.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LIMITS                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="limits">
+          <div class="card-header level-limits">
+            &#9632; Failure Modes &mdash; When the Network Is the Wrong Tool
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Black box vs. a NERSA hearing.</strong> A linear model can say &ldquo;we
+                added 380 MW because the forecast was 4&nbsp;&deg;C colder.&rdquo; A 4-million-parameter
+                LSTM cannot, unless you add SHAP / integrated-gradients and still speak carefully.
+                For operational STLF this is tolerated. For tariff filings and IRP assumptions it
+                is not: those stay structural.</li>
+              <li><strong>Regime change.</strong> Networks interpolate. They do not invent a new
+                economy. A sudden cluster of data centres in Johannesburg, a smelter closure, or
+                the end of load shedding is a break the training set did not contain. Detect drift
+                (rolling MAPE, residual control charts) and retrain; do not wait for a spectacular
+                Tuesday.</li>
+              <li><strong>Weather-forecast error is not model error.</strong> If the 10:00 SAST
+                temperature forecast is 4&nbsp;&deg;C off, even a perfect mapping from temperature
+                to load will miss. Attribute errors, or you will &ldquo;improve&rdquo; the net
+                when you should have bought a better weather vendor.</li>
+              <li><strong>Overfitting the last crisis.</strong> A net trained hard on 2022&ndash;2023
+                stage-6 evenings will expect troughs that are no longer there. Regularise, use
+                more years, and consider an explicit &ldquo;constrained vs unconstrained&rdquo;
+                flag rather than hoping the hidden layer notices.</li>
+              <li><strong>Long-term energy (TWh) is not STLF.</strong> You cannot roll a day-ahead
+                LSTM out to 2035 and call it an IRP. Long-term load is GDP, population, efficiency,
+                electrification of transport and the death or birth of energy-intensive industry.
+                Neural nets can nowcast the <em>deviation</em> from that structural path. They
+                should not replace it.</li>
+            </ul>
+            <p class="mb-0">
+              The grown-up production stack is therefore hybrid: a structural / statistical backbone,
+              a neural net on the residual and on the short horizon, an ensemble, and a human who
+              can override a Heritage Day the feature store forgot.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- THESIS STACK                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="stack">
+          <div class="card-header level-learn">
+            &#9632; Where This Sits in the Thesis Stack
+          </div>
+          <div class="card-body">
+            <p>
+              The SAWEM evolutionary framework already has a demand object: the Macro Economy ABM
+              produces D<sub>t</sub>, which the OPF takes as given. A neural load-forecasting model
+              is how <em>agents inside the market</em> form that D<sub>t</sub> when they do not
+              have the omniscient simulator's copy.
+            </p>
+            <ul>
+              <li><strong>BRP / load agents</strong> observe a feature state and emit D&#770; as
+                their DAM bid. Their MDP reward is minus imbalance cost, so a better network is
+                a better policy &mdash; or the policy can be the network, trained by backprop
+                rather than by Q-learning.</li>
+              <li><strong>The System Operator agent</strong> uses a system-level STLF (and its
+                quantiles) to set R<sub>t</sub> and to run SCUC. Forecast error is one of the
+                stochastic processes on the <a href="thesis-stochastic.html">Stochastic Dynamical
+                Systems</a> page.</li>
+              <li><strong>Generator agents</strong> do not forecast load directly, but they
+                forecast residual demand (load minus renewables) when they decide availability
+                and start-up. The same architectures apply, with irradiance and wind as extra
+                inputs.</li>
+              <li><strong>Closed loop.</strong> Actual D<sub>t</sub> realises, SMP prints, imbalance
+                settles, agents update. The neural net is retrained on the new residual. That is
+                the same adaptation loop as the rest of the CAS/ABM stack, implemented with
+                gradients instead of with replicator dynamics.</li>
+            </ul>
+            <p class="mb-0">
+              In one sentence: <em>optimal power flow is how the market turns a demand number into
+              a price; a neural network is how a participant who cannot see the future produces
+              that demand number from the clues the world leaves lying around.</em>
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-0 mt-4" style="background: #f0f4f8;">
+          <div class="card-body">
+            <h5 class="fw-bold">&#128260; Neural Networks</h5>
+            <div class="row g-2 small text-center mb-3">
+              <div class="col-6 col-md-3">
+                <a href="thesis-neural-networks.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#127917; Overview &larr;</a>
+              </div>
+              <div class="col-6 col-md-3">
+                <a href="thesis-activation-functions.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#8767; Activation Functions</a>
+              </div>
+            </div>
+            <h5 class="fw-bold">All Thesis Pages</h5>
+            <div class="row g-2 small text-center">
+              <div class="col">
+                <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+              </div>
+              <div class="col">
+                <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127760; CAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127891; ACE</a>
+              </div>
+              <div class="col">
+                <a href="thesis-emcas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127758; EMCAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+              </div>
+              <div class="col">
+                <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+              </div>
+              <div class="col">
+                <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+              </div>
+              <div class="col">
+                <a href="thesis-neural-networks.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #007A4D !important;">&#129504; Neural Nets &larr;</a>
+              </div>
+              <div class="col">
+                <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+              </div>
+              <div class="col">
+                <a href="thesis-simulation.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127922; Simulation</a>
+              </div>
+            </div>
+            <p class="small text-muted mt-3 mb-0">
+              Related dashboard pages:
+              <a href="sawem-smp.html">System Marginal Price</a> &middot;
+              <a href="sawem-market-structure.html">SAWEM Market Structure</a> &middot;
+              <a href="TDP2025.html">TDP 2025</a> &middot;
+              <a href="IRP2025.html">IRP 2025</a> &middot;
+              <a href="distributed-generation.html">Distributed Generation</a> &middot;
+              <a href="ai.html">Artificial Intelligence</a>
+            </p>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-4">
+          <strong>To go deeper:</strong> Hippert, Pedreira &amp; Souza, &ldquo;Neural Networks for
+          Short-Term Load Forecasting: A Review and Evaluation&rdquo; (<em>IEEE Trans. Power
+          Systems</em>, 2001) &mdash; the paper that put NNs into the control-room conversation.
+          Hong &amp; Fan, &ldquo;Probabilistic Electric Load Forecasting&rdquo; (<em>Int. J.
+          Forecasting</em>, 2016). For the sequence-model era: Zhou et al. on Informer / Autoformer
+          and the GEFCom load-forecasting competitions. SAWEM timing and imbalance: Market Code
+          Parts 3 and 5, summarised on the
+          <a href="sawem-market-structure.html">Market Structure</a> page.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const hours = Array.from({ length: 24 }, (_, h) =>
+        String(h).padStart(2, '0') + ':00'
+      );
+
+      function shape(h, dayType, season, temp, highPv) {
+        const weekend = dayType === 'weekend';
+        const holiday = dayType === 'holiday';
+        const winter = season === 'winter';
+
+        const night = 0.62 + 0.06 * Math.cos((2 * Math.PI * (h - 3)) / 24);
+        const morning = 0.22 * Math.exp(-0.5 * Math.pow((h - 7.6) / 1.7, 2));
+        const midday = 0.16 * Math.exp(-0.5 * Math.pow((h - 13) / 2.8, 2));
+        const eveningAmp = winter ? 0.42 : 0.28;
+        const evening = eveningAmp * Math.exp(-0.5 * Math.pow((h - 18.8) / 1.9, 2));
+        let y = night + morning + midday + evening;
+
+        if (weekend) y *= 0.90;
+        if (holiday) y *= 0.84;
+
+        const t = (temp - 18) / 12;
+        if (winter) {
+          y *= 1 - 0.11 * t;
+          if (h >= 17 && h <= 21) y *= 1 - 0.06 * t;
+        } else {
+          y *= 1 + 0.09 * Math.max(t, 0);
+          if (h >= 13 && h <= 16) y *= 1 + 0.07 * Math.max(t, 0);
+        }
+
+        if (highPv && h >= 9 && h <= 16) {
+          const sun = Math.sin(((h - 9) / 8) * Math.PI);
+          y -= (winter ? 0.07 : 0.16) * sun;
+        }
+
+        return Math.max(y, 0.35) * 32000;
+      }
+
+      const ctx = document.getElementById('nnForecastChart');
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: hours,
+          datasets: [{
+            label: 'Day-ahead load forecast (illustrative MW)',
+            data: [],
+            borderColor: '#007A4D',
+            backgroundColor: 'rgba(0, 122, 77, 0.12)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (item) => Math.round(item.parsed.y).toLocaleString() + ' MW'
+              }
+            }
+          },
+          scales: {
+            y: {
+              title: { display: true, text: 'MW' },
+              ticks: {
+                callback: (v) => (v / 1000).toFixed(0) + ' GW'
+              }
+            }
+          }
+        }
+      });
+
+      function render() {
+        const dayType = document.getElementById('nnDayType').value;
+        const season = document.getElementById('nnSeason').value;
+        const temp = Number(document.getElementById('nnTemp').value);
+        const highPv = document.getElementById('nnPv').value === '1';
+        document.getElementById('nnTempVal').textContent = String(temp);
+
+        const series = [];
+        for (let h = 0; h < 24; h++) series.push(shape(h, dayType, season, temp, highPv));
+        chart.data.datasets[0].data = series;
+        chart.update();
+
+        const peak = Math.max.apply(null, series);
+        const min = Math.min.apply(null, series);
+        const peakH = series.indexOf(peak);
+        const energy = series.reduce((a, b) => a + b, 0);
+        document.getElementById('nnPeak').textContent = Math.round(peak).toLocaleString() + ' MW';
+        document.getElementById('nnPeakHour').textContent = hours[peakH];
+        document.getElementById('nnEnergy').textContent = (energy / 1000).toFixed(1) + ' GWh';
+        document.getElementById('nnMin').textContent = Math.round(min).toLocaleString() + ' MW';
+      }
+
+      ['nnDayType', 'nnSeason', 'nnTemp', 'nnPv'].forEach((id) => {
+        document.getElementById(id).addEventListener('input', render);
+        document.getElementById(id).addEventListener('change', render);
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

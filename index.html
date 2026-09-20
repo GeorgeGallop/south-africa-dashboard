@@ -13,6 +13,12 @@
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex align-items-center ms-auto">
+        <label class="form-check-label text-white small me-2 mb-0" for="reorderToggle" style="cursor:pointer; white-space:nowrap;">▲▼ Reorder</label>
+        <div class="form-check form-switch mb-0">
+          <input class="form-check-input" type="checkbox" id="reorderToggle" role="switch" checked>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -34,6 +40,7 @@
                 <a href="pages/power.html" class="list-group-item list-group-item-action small">→ Overview</a>
                 <a href="pages/jet.html" class="list-group-item list-group-item-action small fw-bold" style="color:#2e7d32;">→ 🌍 Just Energy Transition (JET)</a>
                 <a href="pages/pricing-formulation.html" class="list-group-item list-group-item-action small">→ Pricing Formulation</a>
+                <a href="pages/transmission-system-basics.html" class="list-group-item list-group-item-action small fw-bold">→ 🗼 Transmission System Basics</a>
 
                 <!-- Eskom Subsection -->
                 <a href="#"
@@ -75,7 +82,19 @@
                 </a>
                 <div class="collapse mt-2" id="sawemSub">
                   <div class="list-group ms-3">
-                    <a href="pages/sawem-smp.html" class="list-group-item list-group-item-action small fw-bold">→ System Marginal Price (SMP)</a>
+                    <!-- Pricing Subsection -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sawemPricingSub">
+                      <span>→ Pricing</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sawemPricingSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/sawem-smp.html" class="list-group-item list-group-item-action small fw-bold">→ System Marginal Price (SMP)</a>
+                        <a href="pages/sawem-smp-gbr-benchmark-strike-price.html" class="list-group-item list-group-item-action small">→ GBR Benchmark Strike Price</a>
+                      </div>
+                    </div>
                     <a href="pages/sawem-market-structure.html" class="list-group-item list-group-item-action small">→ Market Structure</a>
                     <a href="pages/sawem-plants.html" class="list-group-item list-group-item-action small">→ Plants</a>
                     <a href="pages/vesting-contracts.html" class="list-group-item list-group-item-action small">→ Vesting Contracts</a>
@@ -117,8 +136,12 @@
               <div class="list-group ms-3">
                 <a href="pages/gas.html" class="list-group-item list-group-item-action small">→ Overview</a>
                 <a href="pages/gas_master_plan.html" class="list-group-item list-group-item-action small">→ Gas Master Plan</a>
+                <a href="pages/gas-act.html" class="list-group-item list-group-item-action small fw-bold" style="color:#002395;">→ ⚖️ Gas Act (2001)</a>
+                <a href="pages/hydraulic-fracturing-regulations.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ 🪨 Hydraulic Fracturing Regulations</a>
+                <a href="pages/strategic-gas-pipeline-corridor.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ 🛢️ Strategic Gas Pipeline Corridor</a>
                 <a href="pages/offshore_exploration.html" class="list-group-item list-group-item-action small">→ Offshore Exploration</a>
                 <a href="pages/gas-domestic-markets.html" class="list-group-item list-group-item-action small">→ Domestic Markets</a>
+                <a href="pages/fuel-prices.html" class="list-group-item list-group-item-action small fw-bold" style="color:#e65100;">→ ⛽ Fuels Prices</a>
 
                 <!-- Gas Turbine Manufacturing Subsection -->
                 <a href="#"
@@ -202,6 +225,32 @@
 
                 <a href="pages/top-12-projects.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ 🏗️ Top 12 Priority Infrastructure Projects</a>
                 <a href="pages/ai.html" class="list-group-item list-group-item-action small fw-bold" style="color:#7b1fa2;">→ 🤖 Artificial Intelligence</a>
+                <a href="pages/green-hydrogen-ammonia.html" class="list-group-item list-group-item-action small fw-bold" style="color:#2e7d32;">→ 💧 Green Hydrogen & Ammonia</a>
+
+                <!-- Transformation Fund Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small fw-bold d-flex justify-content-between align-items-center text-decoration-none"
+                   style="color:#b8860b;"
+                   data-bs-toggle="collapse" data-bs-target="#economyTransformSub">
+                  <span>→ 🏛️ Transformation Fund (R100bn)</span>
+                  <span class="badge bg-secondary">▼</span>
+                </a>
+                <div class="collapse mt-2" id="economyTransformSub">
+                  <div class="list-group ms-3">
+                    <a href="pages/transformation-fund.html" class="list-group-item list-group-item-action small fw-bold" style="color:#b8860b;">→ Overview</a>
+                    <a href="pages/transformation-fund.html#who" class="list-group-item list-group-item-action small">→ Who is involved</a>
+                    <a href="pages/transformation-fund.html#money" class="list-group-item list-group-item-action small">→ Where the money comes from</a>
+                    <a href="pages/transformation-fund.html#flow" class="list-group-item list-group-item-action small">→ How the money flows</a>
+                    <a href="pages/transformation-fund.html#sectors" class="list-group-item list-group-item-action small">→ Sectors affected</a>
+                    <a href="pages/transformation-fund.html#township" class="list-group-item list-group-item-action small">→ Township & rural economy</a>
+                    <a href="pages/transformation-fund.html#governance" class="list-group-item list-group-item-action small">→ Governance</a>
+                    <a href="pages/transformation-fund.html#law" class="list-group-item list-group-item-action small">→ Legal framework</a>
+                    <a href="pages/transformation-fund.html#timeline" class="list-group-item list-group-item-action small">→ Timeline</a>
+                    <a href="pages/transformation-fund.html#impact" class="list-group-item list-group-item-action small">→ Industry impact</a>
+                    <a href="pages/transformation-fund.html#risks" class="list-group-item list-group-item-action small">→ Risks & open questions</a>
+                    <a href="pages/transformation-fund.html#sources" class="list-group-item list-group-item-action small">→ Documents</a>
+                  </div>
+                </div>
 
                 <!-- Banking Subsection -->
                 <a href="#"
@@ -227,11 +276,48 @@
                 <div class="collapse mt-2" id="miningSub">
                   <div class="list-group ms-3">
                     <a href="pages/mining.html" class="list-group-item list-group-item-action small fw-bold">→ Overview</a>
-                    <a href="pages/pgms.html" class="list-group-item list-group-item-action small">→ Platinum Group Metals</a>
+
+                    <!-- Platinum Group Metals Subsection -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#pgmsSub">
+                      <span>→ Platinum Group Metals</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="pgmsSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/pgms.html" class="list-group-item list-group-item-action small fw-bold">→ Overview</a>
+                        <a href="pages/platinum.html" class="list-group-item list-group-item-action small">→ Platinum</a>
+                        <a href="pages/palladium.html" class="list-group-item list-group-item-action small">→ Palladium</a>
+                        <a href="pages/rhodium.html" class="list-group-item list-group-item-action small">→ Rhodium</a>
+                        <a href="pages/ruthenium.html" class="list-group-item list-group-item-action small">→ Ruthenium</a>
+                        <a href="pages/iridium.html" class="list-group-item list-group-item-action small">→ Iridium</a>
+                        <a href="pages/osmium.html" class="list-group-item list-group-item-action small">→ Osmium</a>
+                      </div>
+                    </div>
+
                     <a href="pages/coal.html" class="list-group-item list-group-item-action small">→ Coal</a>
                     <a href="pages/manganese.html" class="list-group-item list-group-item-action small">→ Manganese</a>
                     <a href="pages/gold.html" class="list-group-item list-group-item-action small">→ Gold</a>
-                    <a href="pages/chrome.html" class="list-group-item list-group-item-action small">→ Chrome</a>
+
+                    <!-- Chrome Subsection -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#chromeSub">
+                      <span>→ Chrome</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="chromeSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/chrome.html" class="list-group-item list-group-item-action small fw-bold">→ Overview</a>
+                        <a href="pages/chrome-mining.html" class="list-group-item list-group-item-action small">→ Mining</a>
+                        <a href="pages/chrome-transport.html" class="list-group-item list-group-item-action small">→ Transport</a>
+                        <a href="pages/chrome-smelting.html" class="list-group-item list-group-item-action small">→ Smelting</a>
+                        <a href="pages/chrome-ferrochrome.html" class="list-group-item list-group-item-action small">→ Ferrochrome Industry</a>
+                        <a href="pages/chrome-end-markets.html" class="list-group-item list-group-item-action small">→ End Markets</a>
+                      </div>
+                    </div>
+
                     <a href="pages/ironore.html" class="list-group-item list-group-item-action small">→ Iron Ore</a>
 
                     <!-- Diamonds Subsection -->
@@ -304,14 +390,14 @@
                   </div>
                 </div>
 
-                <!-- Companies & SOEs Subsection -->
+                <!-- SOEs Subsection -->
                 <a href="#"
                    class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
-                   data-bs-toggle="collapse" data-bs-target="#companiesSub">
-                  <span>→ 🏢 Companies & SOEs</span>
+                   data-bs-toggle="collapse" data-bs-target="#soesSub">
+                  <span>→ 🏛️ SOEs</span>
                   <span class="badge bg-secondary">▼</span>
                 </a>
-                <div class="collapse mt-2" id="companiesSub">
+                <div class="collapse mt-2" id="soesSub">
                   <div class="list-group ms-3">
 
                     <!-- Eskom -->
@@ -336,12 +422,88 @@
                     </a>
                     <div class="collapse mt-2" id="sidebarTransnetSub">
                       <div class="list-group ms-3">
-                        <a href="pages/transnet.html" class="list-group-item list-group-item-action small">→ Overview</a>
-                        <a href="pages/transnet-rail-manager.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ 🛤️ Rail Infrastructure Manager (TRIM)</a>
-                        <a href="pages/national-rail-policy.html" class="list-group-item list-group-item-action small">→ National Rail Policy</a>
-                        <a href="pages/economic-regulation-transport.html" class="list-group-item list-group-item-action small">→ Economic Regulation of Transport Act</a>
+                    <a href="pages/transnet.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                    <a href="pages/transnet-data.html" class="list-group-item list-group-item-action small fw-bold" style="color:#002395;">→ 📊 Data</a>
+                    <a href="pages/terminal-operators.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ ⚓ Terminal Operators</a>
+                    <a href="pages/transnet-rail-manager.html" class="list-group-item list-group-item-action small" style="color:#007A4D;">→ 🛤️ Rail Infrastructure Manager (TRIM)</a>
+                    <a href="pages/train-operating-companies.html" class="list-group-item list-group-item-action small fw-bold" style="color:#00B4D8; border-left: 4px solid #00B4D8;">→ 🚂 Train Operating Companies (TOCs)</a>
+                    <a href="pages/national-rail-policy.html" class="list-group-item list-group-item-action small">→ National Rail Policy</a>
+                    <a href="pages/economic-regulation-transport.html" class="list-group-item list-group-item-action small">→ Economic Regulation of Transport Act</a>
+                    <a href="pages/transport-economic-regulator.html" class="list-group-item list-group-item-action small fw-bold" style="color:#002395;">→ ⚖️ Transport Economic Regulator (TER)</a>
                       </div>
                     </div>
+
+                    <!-- Central Energy Fund -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarCefSub">
+                      <span>→ ⛽ Central Energy Fund (CEF)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarCefSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/cef.html" class="list-group-item list-group-item-action small fw-bold" style="color:#b8860b;">→ Overview</a>
+                        <a href="pages/petrosa.html" class="list-group-item list-group-item-action small">→ 🛢️ PetroSA</a>
+                        <a href="pages/sff.html" class="list-group-item list-group-item-action small">→ SFF</a>
+                        <a href="pages/igas.html" class="list-group-item list-group-item-action small">→ iGas</a>
+                        <a href="pages/sanpc.html" class="list-group-item list-group-item-action small">→ SANPC</a>
+                        <a href="pages/pasa.html" class="list-group-item list-group-item-action small">→ PASA</a>
+                        <a href="pages/aemfc.html" class="list-group-item list-group-item-action small">→ AEMFC</a>
+                        <a href="pages/sapref.html" class="list-group-item list-group-item-action small">→ SAPREF</a>
+                      </div>
+                    </div>
+
+                    <!-- Industrial Development Corporation -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarIdcSub">
+                      <span>→ 🏭 Industrial Development Corporation (IDC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarIdcSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/idc.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                    <!-- Development Bank of Southern Africa -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarDbsaSub">
+                      <span>→ 🏦 Development Bank of Southern Africa (DBSA)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarDbsaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/dbsa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                    <!-- Telkom -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarTelkomSub">
+                      <span>→ 📞 Telkom</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarTelkomSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/telkom.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Companies Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                   data-bs-toggle="collapse" data-bs-target="#companiesSub">
+                  <span>→ 🏢 Companies</span>
+                  <span class="badge bg-secondary">▼</span>
+                </a>
+                <div class="collapse mt-2" id="companiesSub">
+                  <div class="list-group ms-3">
 
                     <!-- Sasol -->
                     <a href="#"
@@ -354,6 +516,20 @@
                       <div class="list-group ms-3">
                         <a href="pages/sasol.html" class="list-group-item list-group-item-action small">→ Overview</a>
                         <a href="pages/sasol-ctl.html" class="list-group-item list-group-item-action small fw-bold" style="color:#2e7d32;">→ 🛢️ Coal to Liquids (Fischer-Tropsch)</a>
+                      </div>
+                    </div>
+
+                    <!-- Glencore -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarGlencoreSub">
+                      <span>→ 🌐 Glencore</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarGlencoreSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/glencore.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                        <a href="pages/astron-energy.html" class="list-group-item list-group-item-action small fw-bold" style="color:#b8860b;">→ ⛽ Astron Energy (Cape Town refinery)</a>
                       </div>
                     </div>
 
@@ -422,6 +598,19 @@
                       </div>
                     </div>
 
+                    <!-- Rio Tinto -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarRioTintoSub">
+                      <span>→ 🏖️ Rio Tinto</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarRioTintoSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/rio-tinto.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
                     <!-- Exxaro Resources -->
                     <a href="#"
                        class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
@@ -471,6 +660,19 @@
                     <div class="collapse mt-2" id="sidebarShopriteSub">
                       <div class="list-group ms-3">
                         <a href="pages/shoprite-group.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                    <!-- Naspers -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sidebarNaspersSub">
+                      <span>→ 📡 Naspers</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sidebarNaspersSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/naspers.html" class="list-group-item list-group-item-action small fw-bold" style="color:#7B2D8E;">→ Overview</a>
                       </div>
                     </div>
 
@@ -565,15 +767,32 @@
                     <a href="pages/agro-processing.html" class="list-group-item list-group-item-action small">→ Agro-Processing</a>
                   </div>
                 </div>
+
+                <!-- Retail Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                   data-bs-toggle="collapse" data-bs-target="#economyRetailSub">
+                  <span>→ 🛒 Retail</span>
+                  <span class="badge bg-secondary">▼</span>
+                </a>
+                <div class="collapse mt-2" id="economyRetailSub">
+                  <div class="list-group ms-3">
+                    <a href="pages/retail.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                    <a href="pages/retail-informal.html" class="list-group-item list-group-item-action small">→ Informal Market</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <a href="pages/equities.html" class="list-group-item list-group-item-action">💹 Equities</a>
 
           <!-- Politics Dropdown -->
           <div class="list-group-item list-group-item-action">
             <a href="#" class="d-flex justify-content-between align-items-center text-decoration-none"
                data-bs-toggle="collapse" data-bs-target="#politicsSub">
               🏛️ Politics
+
               <span class="badge bg-secondary">▼</span>
             </a>
             <div class="collapse mt-2" id="politicsSub">
@@ -686,8 +905,415 @@
                   </div>
                 </div>
 
-                <a href="pages/politics-organizations.html" class="list-group-item list-group-item-action small">→ Government organizations</a>
-                <a href="pages/nersa.html" class="list-group-item list-group-item-action small">→ NERSA (Energy Regulator)</a>
+                <!-- Government Organizations Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                   data-bs-toggle="collapse" data-bs-target="#govOrgsSub">
+                  <span>→ Government organizations</span>
+                  <span class="badge bg-secondary">▼</span>
+                </a>
+                <div class="collapse mt-2" id="govOrgsSub">
+                  <div class="list-group ms-3">
+                    <!-- The Presidency -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#presidencySub">
+                      <span>→ The Presidency</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="presidencySub">
+                      <div class="list-group ms-3">
+                        <a href="pages/presidency.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Parliament -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#parliamentSub">
+                      <span>→ Parliament of South Africa</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="parliamentSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/parliament.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Constitutional Court -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#concourtSub">
+                      <span>→ Constitutional Court</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="concourtSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/concourt.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- IEC -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#iecSub">
+                      <span>→ Electoral Commission (IEC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="iecSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/iec.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- NPA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#npaSub">
+                      <span>→ National Prosecuting Authority (NPA)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="npaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/npa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Auditor-General -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#auditorGeneralSub">
+                      <span>→ Auditor-General of South Africa</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="auditorGeneralSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/auditor-general.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Public Protector -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#publicProtectorSub">
+                      <span>→ Public Protector</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="publicProtectorSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/public-protector.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- PSC -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#pscSub">
+                      <span>→ Public Service Commission (PSC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="pscSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/psc.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- SAHRC -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sahrcSub">
+                      <span>→ South African Human Rights Commission (SAHRC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sahrcSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/sahrc.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- CGE -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#cgeSub">
+                      <span>→ Commission for Gender Equality</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="cgeSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/cge.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- FIC -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#ficSub">
+                      <span>→ Financial Intelligence Centre (FIC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="ficSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/fic.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Competition Commission -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#competitionCommissionSub">
+                      <span>→ Competition Commission</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="competitionCommissionSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/competition-commission.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- NCR -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#ncrSub">
+                      <span>→ National Credit Regulator (NCR)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="ncrSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/ncr.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- CCMA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#ccmaSub">
+                      <span>→ CCMA (Dispute Resolution)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="ccmaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/ccma.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- SARB -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sarbSub">
+                      <span>→ South African Reserve Bank (SARB)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sarbSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/sarb.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- National Treasury -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#nationalTreasurySub">
+                      <span>→ National Treasury</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="nationalTreasurySub">
+                      <div class="list-group ms-3">
+                        <a href="pages/national-treasury.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- SARS -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sarsSub">
+                      <span>→ South African Revenue Service (SARS)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sarsSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/sars.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Stats SA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#statssaSub">
+                      <span>→ Statistics South Africa (Stats SA)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="statssaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/statssa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Home Affairs -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#homeAffairsSub">
+                      <span>→ Department of Home Affairs</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="homeAffairsSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/home-affairs.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Justice -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#justiceSub">
+                      <span>→ Department of Justice & Constitutional Development</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="justiceSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/justice.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- SAPS -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#sapsSub">
+                      <span>→ South African Police Service (SAPS)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="sapsSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/saps.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Basic Education -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#basicEducationSub">
+                      <span>→ Department of Basic Education</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="basicEducationSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/basic-education.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Health -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#healthSub">
+                      <span>→ Department of Health</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="healthSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/health.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Transport -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#transportSub">
+                      <span>→ Department of Transport</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="transportSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/transport.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- Water & Sanitation -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#waterSanitationSub">
+                      <span>→ Department of Water & Sanitation</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="waterSanitationSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/water-sanitation.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- ICASA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#icasaSub">
+                      <span>→ ICASA (Communications Regulator)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="icasaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/icasa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- CoGTA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#cogtaSub">
+                      <span>→ Department of Cooperative Governance (CoGTA)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="cogtaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/cogta.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- DTIC -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#dticSub">
+                      <span>→ Department of Trade, Industry & Competition (DTIC)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="dticSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/dtic.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- DFFE -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#dffeSub">
+                      <span>→ Department of Forestry, Fisheries & Environment (DFFE)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="dffeSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/dffe.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- DMPR -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#dmprSub">
+                      <span>→ Department of Mineral and Petroleum Resources (DMPR)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="dmprSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/dmpr.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                    <!-- Electricity & Energy -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#electricityEnergySub">
+                      <span>→ Department of Electricity and Energy</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="electricityEnergySub">
+                      <div class="list-group ms-3">
+                        <a href="pages/electricity-energy.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+
+                    <!-- IWMSA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#iwmsaSub">
+                      <span>→ Institute of Waste Management of Southern Africa (IWMSA)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="iwmsaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/iwmsa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                    <!-- NERSA -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action small d-flex justify-content-between align-items-center text-decoration-none"
+                       data-bs-toggle="collapse" data-bs-target="#nersaSub">
+                      <span>→ NERSA (Energy Regulator)</span>
+                      <span class="badge bg-secondary">▼</span>
+                    </a>
+                    <div class="collapse mt-2" id="nersaSub">
+                      <div class="list-group ms-3">
+                        <a href="pages/nersa.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <a href="pages/policy-tracker.html" class="list-group-item list-group-item-action small">→ Policy Tracker</a>
 
                 <!-- Bills Subsection -->
@@ -700,6 +1326,18 @@
                 <div class="collapse mt-2" id="billsSub">
                   <div class="list-group ms-3">
                     <a href="pages/bills.html" class="list-group-item list-group-item-action small fw-bold">→ Overview</a>
+                    <a href="pages/epp-2026.html" class="list-group-item list-group-item-action small">→ EPP 2026</a>
+                    <a href="pages/electricity-trading-rules.html" class="list-group-item list-group-item-action small">→ Electricity Trading Rules</a>
+                    <a href="pages/gas-bill.html" class="list-group-item list-group-item-action small">→ Gas Bill [B6-2026]</a>
+                    <a href="pages/wholesale-pricing-methodology.html" class="list-group-item list-group-item-action small">→ Wholesale Pricing Methodology</a>
+                    <a href="pages/transitional-generation-pricing.html" class="list-group-item list-group-item-action small">→ Transitional Generation Pricing</a>
+                    <a href="pages/vesting-contracts.html" class="list-group-item list-group-item-action small">→ Vesting Contracts</a>
+                    <a href="pages/ntcsa-market-code.html" class="list-group-item list-group-item-action small">→ NTCSA Market Code</a>
+                    <a href="pages/dee-market-transformation.html" class="list-group-item list-group-item-action small">→ DEE Market Transformation</a>
+                    <a href="pages/era-2024.html" class="list-group-item list-group-item-action small">→ ERA Amendment Act 2024</a>
+                    <a href="pages/era-section-29.html" class="list-group-item list-group-item-action small">→ ERA Section 29</a>
+                    <a href="pages/mypd5-rca.html" class="list-group-item list-group-item-action small">→ MYPD5 RCA FY2024/25</a>
+                    <a href="pages/distributor-charges-inquiry.html" class="list-group-item list-group-item-action small">→ Distributor Charges Inquiry</a>
                     <a href="pages/economic-inclusion-bill.html" class="list-group-item list-group-item-action small">→ Economic Inclusion for All</a>
                     <a href="pages/bbbee-bill.html" class="list-group-item list-group-item-action small">→ B-BBEE Act (2003)</a>
                   </div>
@@ -710,6 +1348,7 @@
           </div>
 
           <a href="pages/news.html"       class="list-group-item list-group-item-action">📰 News</a>
+          <a href="pages/weather.html"    class="list-group-item list-group-item-action">🌤️ Weather</a>
           <a href="pages/todo.html"       class="list-group-item list-group-item-action">✅ To-Do</a>
           <a href="pages/map.html"        class="list-group-item list-group-item-action">🗺️ Map</a>
           <a href="pages/calendar.html"   class="list-group-item list-group-item-action">📅 Calendar</a>
@@ -765,12 +1404,30 @@
             <div class="collapse mt-2" id="thesisSub">
               <div class="list-group ms-3">
                 <a href="pages/thesis.html" class="list-group-item list-group-item-action small">→ Overview</a>
+                <a href="pages/england-wales-pool.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ 🇬🇧 England & Wales Electricity Pool</a>
                 <a href="pages/thesis-cas.html" class="list-group-item list-group-item-action small">→ Complex Adaptive Systems</a>
                 <a href="pages/thesis-ace.html" class="list-group-item list-group-item-action small">→ Agent-Based Computational Economics</a>
                 <a href="pages/thesis-emcas.html" class="list-group-item list-group-item-action small">→ EMCAS (Pioneer ABM)</a>
                 <a href="pages/thesis-abm.html" class="list-group-item list-group-item-action small">→ Agent-Based Modeling</a>
                 <a href="pages/thesis-stochastic.html" class="list-group-item list-group-item-action small">→ Stochastic Dynamical Systems</a>
                 <a href="pages/thesis-methods.html" class="list-group-item list-group-item-action small">→ Methods</a>
+                <a href="pages/thesis-kkt.html" class="list-group-item list-group-item-action small fw-bold" style="color:#007A4D;">→ KKT (Karush-Kuhn-Tucker)</a>
+
+                <!-- Neural Networks Subsection -->
+                <a href="#"
+                   class="list-group-item list-group-item-action small fw-bold d-flex justify-content-between align-items-center text-decoration-none"
+                   style="color:#7b1fa2;"
+                   data-bs-toggle="collapse" data-bs-target="#thesisNnSub">
+                  <span>→ Neural Networks</span>
+                  <span class="badge bg-secondary">▼</span>
+                </a>
+                <div class="collapse mt-2" id="thesisNnSub">
+                  <div class="list-group ms-3">
+                    <a href="pages/thesis-neural-networks.html" class="list-group-item list-group-item-action small fw-bold">→ Overview</a>
+                    <a href="pages/thesis-activation-functions.html" class="list-group-item list-group-item-action small">→ Activation Functions</a>
+                  </div>
+                </div>
+
                 <a href="pages/thesis-agents.html" class="list-group-item list-group-item-action small">→ Agent Architecture</a>
                 <a href="pages/thesis-simulation.html" class="list-group-item list-group-item-action small fw-bold" style="color:#2e7d32;">→ Simulation</a>
               </div>
@@ -806,5 +1463,6 @@
       </div>
     </div>
   </div>
+  <script src="js/sidebar-reorder.js"></script>
 </body>
 </html>

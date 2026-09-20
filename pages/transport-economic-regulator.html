@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transport Economic Regulator (TER) • Transnet • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .power-box { border: 3px solid #000; padding: 1.25rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .power-box h5, .power-box h6 { font-weight: 800; }
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 4px; background: #007A4D; }
+    .timeline-dot { position: absolute; left: 6px; width: 22px; height: 22px; background: #FFCD00; border: 4px solid #002395; border-radius: 50%; }
+    .pdf-btn {
+      display: inline-block;
+      border: 3px solid #002395;
+      border-radius: 0;
+      color: #002395;
+      background: #f0f4ff;
+      padding: 0.9rem 1.6rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 5px 5px 0 rgba(0,35,149,0.25);
+      transition: all 0.15s ease;
+    }
+    .pdf-btn:hover { background: #002395; color: white; box-shadow: 3px 3px 0 rgba(0,35,149,0.25); transform: translate(2px,2px); }
+    .enable-box { border: 3px solid #000; padding: 1.1rem; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); height: 100%; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transnet.html" class="btn btn-light btn-sm">🚂 Transnet</a>
+        <a href="economic-regulation-transport.html" class="btn btn-light btn-sm">⚖️ ERT Act</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #002395;">⚖️ Transport Economic Regulator (TER)</h1>
+    <h5 class="text-muted mb-4">The Independent Referee of South Africa's Rail, Port & Pipeline Reform</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">The Transport Economic Regulator is the new independent body created by the <strong>Economic Regulation of Transport Act (2024)</strong> to referee the opening of South Africa's freight logistics network. It is the statutory counterweight to the monopoly reform: if <a href="transnet-rail-manager.html">TRIM</a> is the neutral manager of the rail network and the <a href="terminal-operators.html">landlord port model</a> opens terminals to private operators, the TER is the independent umpire that sets the pricing rules, guarantees fair access, and holds the infrastructure owners and operators accountable. <strong>Its defining feature is independence — from Transnet, from the Department of Transport, and from political control.</strong></p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Created by:</strong> Economic Regulation of Transport Act (No. 6 of 2024)<br>
+          <strong>Status:</strong> Being established / becoming operational<br>
+          <strong>Accountable to:</strong> Parliament (not the Minister)<br>
+          <strong>Key power:</strong> Sets maximum access tariffs<br>
+          <strong>Covers:</strong> Rail, ports, pipelines, future essential infra
+        </div>
+      </div>
+    </div>
+
+    <!-- Download button -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="p-4 text-center" style="background: #f0f4ff; border: 3px solid #002395; border-radius: 0; box-shadow: 6px 6px 0 rgba(0,35,149,0.15);">
+          <h5 class="fw-bold mb-2" style="color:#002395;">📄 The Economic Regulation of Transport Act, 2024</h5>
+          <p class="small mb-3 text-muted">The full statute that creates the TER, saved to the dashboard's data folder.</p>
+          <a href="../data/economic-regulation-transport-act-2024.pdf" target="_blank" class="pdf-btn">Download / Open the Act PDF ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 1: WHY IT'S NEEDED ========== -->
+    <h3 class="fw-bold mt-4 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Why It's Needed — The Conflict of Interest It Fixes</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>For decades, Transnet owned the infrastructure <em>and</em> ran the trains <em>and</em> operated the terminals <em>and</em> set its own prices. This created an irreconcilable conflict of interest: the entity that controlled the network also decided who could use it and at what price. A mining company wanting to run its own trains, or a private terminal operator wanting port access, had to negotiate with the very company it was trying to compete against.</p>
+      <p>The TER solves this by placing the pricing and access decisions with an <strong>arms-length, expert body</strong> — not with the monopolist. The core principle: <em>the entity that owns the infrastructure cannot also set the rules of access to it.</em></p>
+      <div class="mt-3 p-3" style="background: #f0f4ff; border-left: 6px solid #002395;">
+        <strong>The structural fix:</strong> Under the old model, there was no independent referee — Transnet was effectively player, referee, and rule-maker simultaneously. The TER breaks that by making access decisions based on published, non-discriminatory rules, reviewable by an independent body rather than by Transnet management.
+      </div>
+    </div>
+
+    <!-- ========== PART 2: INDEPENDENCE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">How It Will Be Independent</h3>
+    <p class="lead mb-4">Independence is the TER's defining institutional feature — and it is engineered, not hoped for.</p>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color:#002395;">
+          <h6 class="fw-bold" style="color:#002395;">🏛️ Accountable to Parliament, not the Minister</h6>
+          <p class="small mb-0">The Act places the Regulator <strong>outside the Department of Transport's direct control</strong>. It is an independent statutory body accountable to <strong>Parliament</strong> — not to the Minister of Transport. This removes the ability of politicians or the regulated entity to lean on the regulator.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color:#007A4D;">
+          <h6 class="fw-bold text-success">🔒 Security of tenure</h6>
+          <p class="small mb-0">Members are appointed through a <strong>transparent process with parliamentary oversight</strong>, have <strong>security of tenure</strong>, and can only be removed <strong>for cause</strong>. A member who rules against the Minister or against Transnet cannot simply be fired.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color:#e65100;">
+          <h6 class="fw-bold" style="color:#e65100;">💵 Independent funding</h6>
+          <p class="small mb-0">Funded through a combination of <strong>parliamentary appropriation</strong> and <strong>industry levies</strong> — reducing dependence on any single funding source that could be used as leverage. It is not a subsidiary of Transnet or the Department.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color:#1565c0;">
+          <h6 class="fw-bold" style="color:#1565c0;">📢 Public & transparent decisions</h6>
+          <p class="small mb-0">Decisions must be reasoned, published, and reviewable. The Regulator publishes annual reports on market performance, keeping pricing and access decisions in the open — the antidote to the opacity the Zondo Commission found enabled state capture.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 3: WHAT IT WILL DO ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">What It Will Do — The Five Core Functions</h3>
+    <p class="lead mb-4">The Act gives the Regulator five core functions, each backed by enforceable legal powers.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color: #007A4D;">
+          <h5 class="text-success fw-bold">1. Sets Access Tariffs</h5>
+          <p class="small mb-0">Determines the <strong>maximum prices</strong> that Transnet (or any infrastructure owner) can charge for third-party access to rail tracks, ports, and terminals. Tariffs must be transparent, non-discriminatory and cost-reflective. This ends the practice of Transnet setting its own prices without external scrutiny.</p>
+          <p class="small text-muted mt-2 mb-0">Critical for private operators: they can build business cases knowing access charges are objectively set, not negotiated in a rigged game.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color: #FFCD00;">
+          <h5 style="color: #b8860b; font-weight: 800;">2. Enforces Open Access</h5>
+          <p class="small mb-0">Ensures any licensed operator who applies for train paths or terminal slots receives fair treatment. If the Infrastructure Manager denies access, the operator can appeal to the Regulator, which can <strong>compel access</strong> if the denial is anti-competitive or unjustified.</p>
+          <p class="small text-muted mt-2 mb-0">This is the sharp end of the reform — Transnet cannot quietly refuse slots to competitors and claim "operational constraints."</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color: #002395;">
+          <h5 style="color: #002395; font-weight: 800;">3. Investigates Anti-Competitive Conduct</h5>
+          <p class="small mb-0">Has investigatory powers comparable to the Competition Commission. Probes <strong>discriminatory pricing, refusal to supply, margin squeeze, cross-subsidisation</strong>, and other abuses of dominant position by Transnet or any market participant.</p>
+          <p class="small text-muted mt-2 mb-0">Covers both the infrastructure owner (Transnet) and future dominant private operators — the framework is forward-looking.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="power-box h-100" style="border-color: #007A4D;">
+          <h5 class="text-success fw-bold">4. Imposes Remedies</h5>
+          <p class="small mb-0">Can impose structural and behavioural remedies: <strong>fines, mandatory access orders, price caps, accounting separation requirements, and divestiture recommendations</strong>. In extreme cases of non-compliance, it can refer matters for criminal prosecution.</p>
+          <p class="small text-muted mt-2 mb-0">Without enforcement teeth, regulation is theatre. This Act gives the Regulator a full set of remedies.</p>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="power-box" style="border-color: #000;">
+          <h5 class="fw-bold">5. Monitors & Reports on Market Performance</h5>
+          <p class="small mb-0">Publishes annual reports on the state of competition in rail and ports: <strong>market shares, investment levels, service quality metrics, tariff trends, and barriers to entry</strong>. This creates transparency and public accountability — and gives investors the data they need to assess market opportunities.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 4: WHO WILL RUN IT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">Who Will Run It — Governance & Composition</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">Appointment process</h6>
+            <p class="small mb-0">Members are appointed through a <strong>transparent process with parliamentary oversight</strong>, designed to ensure the regulator is staffed by independent experts rather than political appointees. Appointments are in the hands of a process that Parliament scrutinises.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">Expertise required</h6>
+            <p class="small mb-0">The Regulator is intended to be an <strong>expert, arms-length body</strong> — modelled on successful economic regulators in network industries worldwide: the UK's Office of Rail and Road, Australia's ACCC, and South Africa's own NERSA for electricity. Members would have regulatory, economic, legal and technical expertise.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">Role relative to the market</h6>
+            <p class="small mb-0">The TER sits above the market players as the referee: it sets maximum tariffs (so TRIM cannot gouge), arbitrates disputes between TRIM and operators, and monitors conduct. It does <strong>not</strong> own infrastructure or run trains — it regulates.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">From IRERC to the permanent TER</h6>
+            <p class="small mb-0">In the interim, the <strong>Interim Rail Economic Regulatory Capacity (IRERC)</strong> is serving as the temporary market-sounding and regulatory body that oversaw the draft Network Statement and tariff methodology. The permanent TER will replace it once fully established.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 5: WHAT IT WILL ENABLE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">What It Will Enable — The Outcomes</h3>
+    <p class="lead mb-4">The TER is the enabling institution that makes the whole reform credible and investable.</p>
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#007A4D;">
+          <h6 class="fw-bold text-success">1. Genuine competition</h6>
+          <p class="small mb-0">By guaranteeing fair, non-discriminatory access and enforceable remedies, the TER makes the multi-operator model real. Private rail operators and terminal operators can enter on equal terms rather than relying on the incumbent's goodwill.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#002395;">
+          <h6 class="fw-bold" style="color:#002395;">2. Private investment & investor certainty</h6>
+          <p class="small mb-0">Investors need to know access charges are objectively set and disputes will be fairly arbitrated — not subject to political or corporate whim. The TER provides that certainty, unlocking capital for rolling stock, terminals, and maintenance.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#e65100;">
+          <h6 class="fw-bold" style="color:#e65100;">3. Road-to-rail modal shift</h6>
+          <p class="small mb-0">A credible, fairly-priced rail network pulls freight off the N3 and national roads — cutting the ~11–12% of GDP logistics cost, road damage, congestion and emissions, and restoring export competitiveness.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#FFCD00;">
+          <h6 class="fw-bold" style="color:#b8860b;">4. End to self-dealing</h6>
+          <p class="small mb-0">Denied applicants can appeal to the Regulator, not to Transnet. This is the anti-corruption and anti-discrimination guarantee — the opacity that enabled the Zondo Commission's documented state capture is structurally eliminated.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#1565c0;">
+          <h6 class="fw-bold" style="color:#1565c0;">5. Fair pricing that funds maintenance</h6>
+          <p class="small mb-0">The Regulator's tariff methodology balances two needs: high enough to fund the R65bn+ catch-up maintenance backlog, low enough not to choke the road-to-rail shift. An independent body is best placed to strike that balance credibly.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="enable-box" style="border-color:#c62828;">
+          <h6 class="fw-bold text-danger">6. Accountability to users</h6>
+          <p class="small mb-0">Quarterly, terminal-by-terminal KPIs (vessel turnaround, crane moves per hour, truck turnaround) and annual market reports give importers, exporters, farmers and miners the data to hold infrastructure owners and operators accountable — exactly what the DA has demanded.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 6: SCOPE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Scope — What It Covers</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">✅ Rail Infrastructure</h6>
+            <p class="small mb-0">Tracks, signalling, stations, marshalling yards — access to this is the primary regulatory target, with TRIM as the manager and the TER as the referee.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">✅ Port Infrastructure & Services</h6>
+            <p class="small mb-0">Harbour channels, berths, cargo terminals, pilotage, towage, stevedoring. The Regulator can set port tariffs and enforce non-discriminatory terminal access — critical for the <a href="terminal-operators.html">landlord port model</a> and private terminal operators.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">✅ Pipelines</h6>
+            <p class="small mb-0">Transnet's ~3,000 km petroleum and gas pipeline network falls under the Regulator's jurisdiction for access and tariff-setting — ensuring energy logistics are also opened to competition.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border border-dark border-2" style="box-shadow: 3px 3px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold">✅ Future Essential Infrastructure</h6>
+            <p class="small mb-0">The Act is forward-looking: any future privately built rail line, port terminal, or pipeline that constitutes "essential infrastructure" can be brought under the Regulator's jurisdiction — preventing new private monopolies from replacing the state one.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 7: TIMELINE ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">From Bill to Regulator — The Timeline</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2022 — National Rail Policy</strong>
+        <p class="mt-1 mb-0">The policy commitment to independent regulation is made in the National Rail Policy (2022).</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2023 — Bill tabled</strong>
+        <p class="mt-1 mb-0">The Economic Regulation of Transport Bill is tabled in Parliament; public hearings and committee review follow.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2024 — Act signed</strong>
+        <p class="mt-1 mb-0">The Act is signed into law. The process of appointing the Regulator's board and building the institution begins.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">Interim — TRIM & IRERC</strong>
+        <p class="mt-1 mb-0">TRIM (established Nov 2023) publishes the Network Statement and access tariffs under the oversight of the interim IRERC, while the permanent regulator is stood up.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">Late 2025 onward — Fully operational</strong>
+        <p class="mt-1 mb-0">The Transport Economic Regulator becomes fully operational: first access tariff determinations, first enforcement actions, first dispute resolutions.</p>
+      </div>
+    </div>
+
+    <!-- ========== PART 8: HOW IT FITS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">How the TER Fits With the Other Institutions</h3>
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D; background: #f0faf4;">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold text-success">TRIM — Infrastructure Manager</h6>
+            <p class="small mb-0">Owns, manages, maintains the network; allocates train paths; publishes the Network Statement. <strong>The player being regulated.</strong></p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold" style="color:#002395;">TER — The Regulator</h6>
+            <p class="small mb-0">Sets maximum tariffs, enforces open access, resolves disputes, monitors conduct. <strong>The independent referee.</strong></p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center p-3 border border-dark border-3" style="box-shadow: 4px 4px 0 rgba(0,0,0,0.1);">
+            <h6 class="fw-bold" style="color:#e65100;">TFROC + Private TOCs</h6>
+            <p class="small mb-0">The train operators who compete for paths and customers. <strong>The competitors protected by the referee.</strong></p>
+          </div>
+        </div>
+      </div>
+      <p class="small mt-3 mb-0">The three pillars working together: TRIM allocates and maintains, the TOCs (public and private) compete, and the TER guarantees the access and pricing rules are fair and enforceable. The same logic extends to ports under the landlord model, where the TER regulates terminal access and tariffs alongside the Ports Regulator function.</p>
+    </div>
+
+    <!-- ========== THE BIGGER PICTURE ========== -->
+    <div class="content-card card p-4 mb-4" style="border-color: #002395; background: #f0f4ff;">
+      <h6 class="fw-bold" style="color:#002395;">The bigger picture</h6>
+      <p class="mb-0">South Africa spent three decades trying to fix Transnet through management changes, turnaround plans and financial bailouts — all inside the same monopoly structure. None worked. The Economic Regulation of Transport Act, and the Transport Economic Regulator it creates, represent a recognition that the <em>structure</em> was the problem, not the people. You cannot regulate a monopoly by asking it nicely to behave better; you have to break open the monopoly and create an independent referee with real power. The TER does exactly that. It is, alongside the unbundling of Eskom and the NERSA-led market reforms, one of the most important structural economic reforms in post-apartheid South Africa.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="../data/economic-regulation-transport-act-2024.pdf" target="_blank">Economic Regulation of Transport Act, No. 6 of 2024 — Full PDF ↓</a></li>
+      <li><a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024) — full page</a></li>
+      <li><a href="transnet-rail-manager.html">Transnet Rail Infrastructure Manager (TRIM)</a></li>
+      <li><a href="train-operating-companies.html">Train Operating Companies (TOCs)</a></li>
+      <li><a href="terminal-operators.html">Terminal Operators & the Landlord Port Model</a></li>
+      <li><a href="transnet-data.html">Transnet Data</a></li>
+      <li><a href="national-rail-policy.html">National Rail Policy (2022)</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

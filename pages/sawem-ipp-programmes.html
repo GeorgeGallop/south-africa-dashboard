@@ -6,29 +6,22 @@
   <title>IPP Programmes • SAWEM</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="../js/tablekit.js"></script>
   <style>
-    .doc-card {
-      border: 2px solid #dee2e6;
-      border-radius: 12px;
-      transition: box-shadow 0.2s ease-in-out;
-    }
+    .doc-card { border: 2px solid #dee2e6; border-radius: 12px; transition: box-shadow 0.2s ease-in-out; }
     .doc-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.10); }
-    .section-divider {
-      height: 4px;
-      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
-      border-radius: 4px;
-      margin: 2.5rem 0;
-    }
-    .era-badge {
-      background: #007A4D; color: white; font-size: 0.7rem;
-      padding: 0.2rem 0.6rem; border-radius: 20px; margin-left: 0.5rem;
-    }
-    .chart-box {
-      border: 2px solid #e9ecef; border-radius: 12px;
-      background: #f8f9fa; padding: 1rem;
-    }
+    .section-divider { height: 4px; background: linear-gradient(to right, #007A4D, #FFCD00, #002395); border-radius: 4px; margin: 2.5rem 0; }
+    .era-badge { background: #007A4D; color: white; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 20px; margin-left: 0.5rem; }
+    .chart-box { border: 2px solid #e9ecef; border-radius: 12px; background: #f8f9fa; padding: 1rem; }
+    .scope-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; border-radius: 20px; padding: 0.2rem 0.6rem; }
+    .scope-Project    { background: #e3f2fd; color: #0d47a1; }
+    .scope-Allocation { background: #fff3e0; color: #e65100; }
+    .scope-Target     { background: #f3e5f5; color: #6a1b9a; }
+    .type-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #fff; padding: 0.15rem 0.5rem; border-radius: 3px; white-space: normal; }
+    .src-link { font-size: 0.72rem; }
+    /* Dark table-head rows always use white header text */
+    .table-dark th { color: #fff !important; }
   </style>
 </head>
 <body>
@@ -46,40 +39,50 @@
     <header class="mb-4">
       <h1 class="display-6 fw-bold text-sa-green mb-2">SAWEM • IPP Procurement Programmes</h1>
       <p class="text-muted mb-0">
-        Since 2011, South Africa has run competitive auctions for Independent Power Producers (IPPs)
-        to add generation capacity to the grid. Each bid window (or programme) awarded capacity to the
-        lowest-cost bidders. Data source: <code>data/power/ipp_programmes.csv</code> — edit the CSV to update the table.
+        Since 2011, South Africa has run competitive auctions for Independent Power Producers (IPPs).
+        This table pulls every IPP project, allocation and target from the single canonical registry
+        <code>data/power/plants.csv</code> — the same file that drives the SAWEM Plants table and the
+        simulation dashboard. <strong>Scope</strong>: Project = physical plant; Allocation = programme-level award;
+        Target = announced but not yet awarded. Edit the CSV and refresh to update.
+        Official programme portal: <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer">www.ipp-projects.co.za</a>.
       </p>
     </header>
 
     <!-- Summary -->
     <div class="row g-3 mb-4">
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-sm-6 col-md">
         <div class="card border-0 shadow-sm text-center p-3">
-          <div class="text-muted small">Total REIPPPP allocated</div>
-          <div class="fw-bold fs-4 text-sa-green" id="totalReippp">—</div>
-          <div class="text-muted small">MW (BW1–BW7)</div>
+          <div class="text-muted small">REIPPPP projects listed</div>
+          <div class="fw-bold fs-4 text-sa-green" id="totalReipppProjects">—</div>
+          <div class="text-muted small">named projects in the registry</div>
         </div>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-sm-6 col-md">
         <div class="card border-0 shadow-sm text-center p-3">
-          <div class="text-muted small">Total all programmes</div>
-          <div class="fw-bold fs-4 text-sa-green" id="totalAll">—</div>
-          <div class="text-muted small">MW including RMIPPP + BESIPPPP</div>
-        </div>
-      </div>
-      <div class="col-12 col-md-3">
-        <div class="card border-0 shadow-sm text-center p-3">
-          <div class="text-muted small">Preferred bidders</div>
-          <div class="fw-bold fs-4 text-sa-green" id="totalBidders">—</div>
+          <div class="text-muted small">All IPP rows (registered)</div>
+          <div class="fw-bold fs-4 text-sa-green" id="totalIppRows">—</div>
           <div class="text-muted small">across all programmes</div>
         </div>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-sm-6 col-md">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <div class="text-muted small">Registered + allocated MW</div>
+          <div class="fw-bold fs-4 text-sa-green" id="totalAwardedMw">—</div>
+          <div class="text-muted small">Projects + Allocations (no targets)</div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md">
         <div class="card border-0 shadow-sm text-center p-3">
           <div class="text-muted small">Solar PV total</div>
           <div class="fw-bold fs-4 text-sa-green" id="totalSolarPv">—</div>
-          <div class="text-muted small">MW allocated</div>
+          <div class="text-muted small">named project capacity</div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <div class="text-muted small">Commercial operation</div>
+          <div class="fw-bold fs-4 text-sa-green" id="totalCommercialOp">—</div>
+          <div class="text-muted small">Online capacity (matches IPP Office @ May 2026)</div>
         </div>
       </div>
     </div>
@@ -88,8 +91,8 @@
     <div class="row g-3 mb-4">
       <div class="col-12 col-lg-6">
         <div class="chart-box">
-          <div class="fw-semibold mb-2">MW allocated by bid window</div>
-          <div id="chartByWindow" style="height: 300px;"></div>
+          <div class="fw-semibold mb-2">MW by programme</div>
+          <div id="chartByProgramme" style="height: 300px;"></div>
         </div>
       </div>
       <div class="col-12 col-lg-6">
@@ -100,16 +103,51 @@
       </div>
     </div>
 
-    <!-- Table (dynamically from CSV) -->
+    <!-- Stage charts: MW by programme split per procurement stage (IPP Office @ May 2026) -->
+    <div class="mb-3">
+      <h2 class="h5 fw-bold text-sa-green mb-1">Capacity by stage — MW split by programme</h2>
+      <p class="text-muted small mb-0">Source: IPP Office — IPPP Programme Status @ May 2026 (official dashboard). Values are programme-level capacities in MW.</p>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-lg-6">
+        <div class="chart-box">
+          <div class="fw-semibold mb-2">Preferred Bidders — MW</div>
+          <div id="chartPreferred" style="height: 340px;"></div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="chart-box">
+          <div class="fw-semibold mb-2">Preparing for Legal Close — MW</div>
+          <div id="chartLegalClose" style="height: 340px;"></div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="chart-box">
+          <div class="fw-semibold mb-2">Achieved Financial Close & Under Construction — MW</div>
+          <div id="chartFinancialClose" style="height: 340px;"></div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="chart-box">
+          <div class="fw-semibold mb-2">Commercial Operation — MW</div>
+          <div id="chartCommercial" style="height: 340px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table (from the unified plants.csv) -->
     <section class="card border-0 shadow-sm">
       <div class="card-body p-3 p-md-4">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-          <h2 class="h5 fw-bold text-sa-green mb-0">All IPP Programmes — bid windows & awards</h2>
-          <div class="text-muted small">Edit <code>data/power/ipp_programmes.csv</code> and refresh</div>
+          <h2 class="h5 fw-bold text-sa-green mb-0">All IPP rows — projects, allocations & targets</h2>
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-sm btn-outline-success" id="btnDownloadIpp">⬇ Download CSV</button>
+            <span class="text-muted small">Click ▾ on a header to filter columns</span>
+          </div>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height:560px; overflow-y:auto;">
           <table class="table table-sm align-middle mb-0" id="ippTable">
-            <thead>
+            <thead class="table-dark" style="position:sticky; top:0; z-index:2;">
               <tr id="ippTableHead"></tr>
             </thead>
             <tbody id="ippTableBody"></tbody>
@@ -120,58 +158,110 @@
 
     <div class="section-divider"></div>
 
+    <!-- Programme narrative: what actually makes up the IPP capacity -->
+    <section>
+      <h2 class="h4 fw-bold text-sa-green mb-3">📋 What makes up the IPP capacity?</h2>
+
+      <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body p-4">
+          <h3 class="h6 fw-bold">The complete IPP picture in one registry</h3>
+          <p class="small text-muted mb-2">
+            The plants.csv registry separates three levels so totals never double-count:
+          </p>
+          <ul class="small mb-0">
+            <li><strong>Project</strong> — an actual physical plant (e.g. Cookhouse Wind Farm 138.6 MW, Kaxu Solar One 100 MW).</li>
+            <li><strong>Allocation</strong> — an awarded programme amount not yet broken into named projects (e.g. BESIPPPP BW2 616 MW, the RMIPPPP balance).</li>
+            <li><strong>Target</strong> — a published procurement target before award (REIPPPP BW7 5000 MW, GIPPPP 2000 MW, BESIPPPP BW3).</li>
+          </ul>
+          <p class="small mt-2 mb-0">
+            <strong>REIPPPP</strong> allocated about 6,000+ MW across BW1–BW6 (the registry lists the named projects that
+            appear in available project sources — dominated by wind, solar PV and CSP). <strong>RMIPPPP</strong> (2020) awarded
+            1,995 MW across 12 projects for dispatchable gas/diesel, battery and hybrid capacity.
+            <strong>BESIPPPP</strong> (2024–) awarded 360 MW (BW1, 1440 MWh) and 616 MW (BW2); BW3 announced.
+            <strong>GIPPPP</strong> (2023) is targeting 2,000 MW of gas; the Bid Window 1 list of bids received
+            (29 May 2026) comprises 4 bids totalling 2,830 MW (see the row-level bids below).
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Programme descriptions as cards -->
     <section>
       <h2 class="h4 fw-bold text-sa-green mb-3">📋 Programme Details</h2>
-
       <div class="row g-4">
-        <!-- REIPPPP -->
         <div class="col-12 col-lg-6">
           <div class="card doc-card h-100">
             <div class="card-body p-4">
-              <h3 class="h6 fw-bold">REIPPPP — Renewable Energy Independent Power Producer Procurement Programme</h3>
+              <h3 class="h6 fw-bold">REIPPPP — Renewable Energy IPP Procurement Programme</h3>
               <span class="era-badge">2011–present</span>
               <p class="text-muted small mt-2 mb-0">
-                The flagship IPP programme. Competitive auctions for onshore wind, solar PV, CSP,
-                small hydro, biomass, landfill gas, and biogas. As of 2023, 123 projects awarded,
-                R256 billion private investment committed, 5% of SA's energy supply. Bid windows
-                were halted between 2015–2019 (blamed for exacerbating load shedding). BW7 (2024)
-                targets 5000 MW as a rolling bid window.
+                Competitive auctions for onshore wind, solar PV, CSP, small hydro, biomass, landfill gas and biogas.
+                Bid windows were halted between 2015–2019 (blamed for worsening load shedding). BW7 (2024) targets
+                5,000 MW as a rolling bid window (3,200 MW wind + 1,800 MW solar).
               </p>
             </div>
           </div>
         </div>
-
-        <!-- RMIPPP -->
         <div class="col-12 col-lg-6">
           <div class="card doc-card h-100">
             <div class="card-body p-4">
               <h3 class="h6 fw-bold">RMIPPPP — Risk Mitigation IPP Procurement Programme</h3>
               <span class="era-badge">2020</span>
               <p class="text-muted small mt-2 mb-0">
-                Introduced to quickly bring online ~2000 MW of dispatchable capacity and reduce
-                utilisation of expensive diesel-based OCGT peaking plants. Unlike REIPPPP, RMIPPP
-                is technology-neutral: awarded to gas/diesel reciprocating engines, battery storage,
-                and hybrid projects. 12 preferred bidders selected for 1995 MW total.
+                Introduced to quickly bring ~2,000 MW of dispatchable capacity online. Technology-neutral: gas/diesel
+                reciprocating engines, battery storage and hybrid projects. 12 preferred bidders, 1,995 MW total
+                (incl. the Coega Karpowership, Mulilo Coega gas plant, Dassiesridge wind and a remaining balance row).
               </p>
             </div>
           </div>
         </div>
-
-        <!-- BESIPPPP -->
         <div class="col-12 col-lg-6">
           <div class="card doc-card h-100">
             <div class="card-body p-4">
               <h3 class="h6 fw-bold">BESIPPPP — Battery Energy Storage IPP Procurement Programme</h3>
               <span class="era-badge">2024–present</span>
               <p class="text-muted small mt-2 mb-0">
-                Dedicated programme for grid-scale battery storage. BW1 (Nov 2024): 2 projects,
-                1440 MWh / 360 MW. BW2 (May 2025): 5 projects, 616 MW. BW3 announced May 2025.
-                Helps firm renewable generation and provide fast-responding reserves.
+                Dedicated grid-scale battery storage. BW1 (Nov 2024): 2 projects, 1,440 MWh / 360 MW.
+                BW2 (May 2025): 5 projects, 616 MW. BW3 announced 30 May 2025.
               </p>
             </div>
           </div>
         </div>
+        <div class="col-12 col-lg-6">
+          <div class="card doc-card h-100">
+            <div class="card-body p-4">
+              <h3 class="h6 fw-bold">GIPPPP — Gas IPP Procurement Programme</h3>
+              <span class="era-badge">2023</span>
+              <p class="text-muted small mt-2 mb-0">
+                First dedicated gas-to-power programme. RFP issued 14 Dec 2023 for 2,000 MW; bids submitted 30 Aug 2024.
+                The Bid Window 1 list of bids received was published on 29 May 2026 — 4 bids totalling 2,830 MW
+                (2 × LNG, 2 × natural gas). No preferred bidders announced yet.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Official status dashboard image -->
+    <section class="mb-4">
+      <h2 class="h4 fw-bold text-sa-green mb-3">🖼️ IPP Office Status Dashboard</h2>
+      <p class="text-muted small mb-3">
+        Official IPP Office programme status dashboard (IPPP Programme Status @ May 2026) — as published on the
+        official IPP portal <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer">www.ipp-projects.co.za</a>.
+      </p>
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-2 p-md-3 text-center">
+          <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer">
+            <img src="../images/IPP/IPP Snapshot.png" alt="IPPP Programme Status @ May 2026" class="img-fluid" style="max-height: 700px; border-radius: 8px;">
+          </a>
+        </div>
+      </div>
+      <div class="mt-3 d-flex flex-wrap align-items-center gap-2">
+        <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer" class="btn btn-sm" style="background:#007A4D;color:#fff;font-weight:600;">
+          Visit the official IPP Office portal →
+        </a>
+        <span class="text-muted small">https://www.ipp-projects.co.za/</span>
       </div>
     </section>
   </main>
@@ -179,130 +269,173 @@
   <script>
     const $ = (id) => document.getElementById(id);
     const NUM = (v) => { const n = Number(v); return Number.isFinite(n) ? n : null; };
+    const NUMERIC_KEYS = new Set(["capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y"]);
 
-    // Column definitions for the CSV-driven table
-    const COLUMNS = [
-      { key: "Programme", display: "Programme", numeric: false },
-      { key: "Bid Window", display: "Bid Window", numeric: false },
-      { key: "Year", display: "Year", numeric: false },
-      { key: "Technology", display: "Technology", numeric: false },
-      { key: "Allocated MW", display: "Allocated MW", numeric: true },
-      { key: "Preferred Bidders", display: "Preferred Bidders", numeric: false },
-      { key: "Notes", display: "Notes", numeric: false }
-    ];
-
-    let DATA = [];
-
-    function renderHead() {
-      const thead = $("ippTableHead");
-      thead.innerHTML = COLUMNS.map(c => `<th scope="col" class="text-muted ${c.numeric ? 'text-end' : ''}">${c.display}</th>`).join("");
+    function parseCSV(text) {
+      const lines = text.trim().split("\n").map(l => l.trim()).filter(l => l);
+      const headers = lines[0].split(",").map(h => h.trim());
+      return lines.slice(1).map(line => {
+        const vals = [];
+        let cur = "", inQ = false;
+        for (const ch of line) {
+          if (ch === '"') { inQ = !inQ; continue; }
+          if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
+          cur += ch;
+        }
+        vals.push(cur.trim());
+        const obj = {};
+        headers.forEach((h, i) => {
+          let v = vals[i] == null ? "" : vals[i].trim();
+          if (v === "") v = null;
+          else if (NUMERIC_KEYS.has(h)) v = NUM(v);
+          obj[h] = v;
+        });
+        return obj;
+      });
     }
 
-    function getCell(row, col) {
-      const v = row[col.key];
-      if (col.numeric) {
-        return v != null && v !== "" && !isNaN(v) ? Number(v).toLocaleString() : "—";
-      }
-      return v ?? "—";
+    const COLS = [
+      { k: "name", label: "Project / Row", num: false },
+      { k: "capacity", label: "Capacity (MW)", num: true },
+      { k: "type", label: "Technology", num: false },
+      { k: "Scope", label: "Scope", num: false },
+      { k: "Programme", label: "Programme", num: false },
+      { k: "BidWindow", label: "Bid Window", num: false },
+      { k: "owner", label: "Owner / Developer", num: false },
+      { k: "Province", label: "Province", num: false },
+      { k: "status", label: "Status", num: false },
+      { k: "Source", label: "Source", num: false },
+      { k: "Notes", label: "Notes", num: false }
+    ];
+
+    const TECH_COLORS = { "Solar PV":"#f9a825", Wind:"#2e7d32", CSP:"#e65100", "Battery Storage":"#6a1b9a", Gas:"#f57f17", "Natural Gas":"#ef6c00", "Liquefied Natural Gas":"#f57f17", Hydro:"#1565c0", Various:"#607d8b" };
+
+    let DATA = [];
+    let filterApi = null;
+    const visibleRows = () => filterApi ? filterApi.applyFilters(DATA) : DATA;
+
+    function typeBadge(t) { return '<span class="type-badge" style="background:' + (TECH_COLORS[t] || "#999") + ';">' + (t || "—") + "</span>"; }
+    function scopeBadge(s) { return '<span class="scope-badge scope-' + s + '">' + (s || "—") + "</span>"; }
+    function fmt(v, d = 0) { return v == null || !Number.isFinite(v) ? "—" : v.toLocaleString(undefined, { maximumFractionDigits: d }); }
+
+    function srcLinks(p) {
+      if (!p.Source) return "—";
+      return p.Source.split(";").map(s => s.trim()).filter(Boolean).slice(0, 1).map(u => {
+        const host = u.replace(/^https?:\/\//, "").split("/")[0];
+        return '<a class="src-link" href="' + u + '" target="_blank" rel="noreferrer">' + host + "</a>";
+      }).join(" · ");
+    }
+
+    function renderHead() {
+      $("ippTableHead").innerHTML = COLS.map(c => '<th scope="col" class="text-muted ' + (c.num ? "text-end" : "") + '">' + c.label + "</th>").join("");
     }
 
     function renderBody() {
-      const tbody = $("ippTableBody");
-      tbody.innerHTML = DATA.map(row => {
-        const cells = COLUMNS.map(c => {
-          const align = c.numeric ? "text-end" : "";
-          return `<td class="${align}">${getCell(row, c)}</td>`;
-        }).join("");
-        return `<tr>${cells}</tr>`;
+      $("ippTableBody").innerHTML = visibleRows().map(p => {
+        let html = "<tr>";
+        COLS.forEach(c => {
+          const align = c.num ? ' class="text-end"' : "";
+          if (c.k === "type") html += "<td>" + typeBadge(p.type) + "</td>";
+          else if (c.k === "Scope") html += "<td>" + scopeBadge(p.Scope) + "</td>";
+          else if (c.k === "Source") html += "<td>" + srcLinks(p) + "</td>";
+          else if (c.k === "name") html += '<td class="fw-bold">' + p.name + "</td>";
+          else {
+            const v = p[c.k];
+            html += "<td" + align + ">" + (c.num ? fmt(v, 0) : (v == null || v === "" ? "—" : v)) + "</td>";
+          }
+        });
+        return html + "</tr>";
       }).join("");
     }
 
-    function parseCSV(csvText) {
-      const lines = csvText.trim().split("\n").map(l => l.trim()).filter(l => l);
-      if (lines.length < 2) return [];
-      const headers = lines[0].split(",").map(h => h.trim());
-      const rows = lines.slice(1).map(line => {
-        // Handle quoted fields
-        const vals = [];
-        let current = "", inQuote = false;
-        for (const ch of line) {
-          if (ch === '"') { inQuote = !inQuote; continue; }
-          if (ch === "," && !inQuote) { vals.push(current.trim()); current = ""; continue; }
-          current += ch;
-        }
-        vals.push(current.trim());
-        const obj = {};
-        headers.forEach((h, i) => { obj[h] = vals[i] || null; });
-        return obj;
-      });
-      return rows;
-    }
+    function capOf(rows) { return rows.reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0); }
 
     function computeStats() {
-      let reipppTotal = 0, allTotal = 0, totalBidders = 0, solarPvTotal = 0;
-      DATA.forEach(row => {
-        const mw = NUM(row["Allocated MW"]);
-        if (mw !== null) {
-          allTotal += mw;
-          if (row["Programme"] === "REIPPPP") reipppTotal += mw;
-          if (row["Technology"] === "Solar PV") solarPvTotal += mw;
-        }
-        const bidders = parseInt(row["Preferred Bidders"]);
-        if (!isNaN(bidders)) totalBidders += bidders;
+      $("totalReipppProjects").textContent = DATA.filter(p => p.Programme === "REIPPPP" && p.Scope === "Project").length;
+      $("totalIppRows").textContent = DATA.length;
+      $("totalAwardedMw").textContent = fmt(capOf(DATA.filter(p => p.Scope !== "Target")), 0);
+      $("totalSolarPv").textContent = fmt(capOf(DATA.filter(p => p.Scope === "Project" && p.type === "Solar PV")), 0);
+      // Commercial operation = IPP rows already online. The CSV has explicit balance rows
+      // (reippp-co-balance + rmippp-co-balance) so this total matches the IPP Office @ May 2026.
+      $("totalCommercialOp").textContent = fmt(capOf(DATA.filter(p => p.status === "Online")), 0) + " MW";
+    }
+
+    // Official IPP Office dashboard @ May 2026 — programme-level capacities (MW)
+    const IPP_STAGES = [
+      { id: "chartPreferred", label: "Preferred bidders", data: [
+        ["REIPPPP", 14264], ["RMIPPPP", 428], ["BESIPPPP", 1129], ["PEAKERS", 1005]
+      ]},
+      { id: "chartLegalClose", label: "Preparing for legal close", data: [
+        ["REIPPPP", 4340], ["RMIPPPP", 0], ["BESIPPPP", 1155], ["PEAKERS", 0]
+      ]},
+      { id: "chartFinancialClose", label: "Financial close & under construction", data: [
+        ["REIPPPP", 1324], ["RMIPPPP", 223], ["BESIPPPP", 76], ["PEAKERS", 0]
+      ]},
+      { id: "chartCommercial", label: "Commercial operation", data: [
+        ["REIPPPP", 7356], ["RMIPPPP", 205], ["BESIPPPP", 0], ["PEAKERS", 1005]
+      ]}
+    ];
+
+    const STAGE_COLORS = ["#007A4D", "#FFCD00", "#e65100", "#1565c0"];
+
+    function renderStageCharts() {
+      IPP_STAGES.forEach(stage => {
+        const entries = stage.data.slice().sort((a, b) => b[1] - a[1]);
+        Plotly.newPlot(stage.id, [{
+          x: entries.map(e => e[0]), y: entries.map(e => e[1]), type: "bar",
+          text: entries.map(e => e[1].toLocaleString()),
+          textposition: "outside",
+          marker: { color: entries.map((_, i) => STAGE_COLORS[i]) }
+        }], {
+          margin: { l: 50, r: 10, t: 30, b: 40 },
+          yaxis: { title: "MW", rangemode: "tozero" },
+          showlegend: false
+        }, { responsive: true, displayModeBar: false });
       });
-      $("totalReippp").textContent = reipppTotal.toLocaleString();
-      $("totalAll").textContent = allTotal.toLocaleString();
-      $("totalBidders").textContent = totalBidders.toLocaleString();
-      $("totalSolarPv").textContent = solarPvTotal.toLocaleString();
     }
 
     function renderCharts() {
-      // By bid window (REIPPPP only, summed)
-      const bwMap = {};
-      DATA.forEach(row => {
-        const bw = row["Bid Window"];
-        const mw = NUM(row["Allocated MW"]);
-        if (mw !== null) bwMap[bw] = (bwMap[bw] || 0) + mw;
+      const prog = {};
+      const tech = {};
+      DATA.forEach(p => {
+        const pKey = p.Programme || "Other";
+        const tKey = p.type || "Other";
+        prog[pKey] = (prog[pKey] || 0) + (Number.isFinite(p.capacity) ? p.capacity : 0);
+        tech[tKey] = (tech[tKey] || 0) + (Number.isFinite(p.capacity) ? p.capacity : 0);
       });
-      const bwLabels = Object.keys(bwMap);
-      const bwValues = bwLabels.map(b => bwMap[b]);
-
-      Plotly.newPlot("chartByWindow", [{
-        x: bwLabels, y: bwValues, type: "bar",
+      const sortedProg = Object.entries(prog).sort((a, b) => b[1] - a[1]);
+      Plotly.newPlot("chartByProgramme", [{
+        x: sortedProg.map(e => e[0]), y: sortedProg.map(e => e[1]), type: "bar",
         marker: { color: "#007A4D" }
-      }], {
-        margin: { l: 40, r: 10, t: 10, b: 40 },
-        yaxis: { title: "MW" },
-        showlegend: false
-      }, { responsive: true });
-
-      // By technology (all programmes)
-      const techMap = {};
-      DATA.forEach(row => {
-        const tech = row["Technology"];
-        const mw = NUM(row["Allocated MW"]);
-        if (mw !== null) techMap[tech] = (techMap[tech] || 0) + mw;
-      });
-      const techLabels = Object.keys(techMap);
-      const techValues = techLabels.map(t => techMap[t]);
+      }], { margin: { l: 40, r: 10, t: 10, b: 40 }, yaxis: { title: "MW" }, showlegend: false }, { responsive: true });
 
       Plotly.newPlot("chartByTech", [{
-        labels: techLabels, values: techValues, type: "pie",
-        textinfo: "label+percent", hole: 0.3
-      }], {
-        margin: { l: 10, r: 10, t: 10, b: 10 },
-        showlegend: false
-      }, { responsive: true });
+        labels: Object.keys(tech), values: Object.values(tech), type: "pie", textinfo: "label+percent", hole: 0.3
+      }], { margin: { l: 10, r: 10, t: 10, b: 10 }, showlegend: false }, { responsive: true });
+
+      renderStageCharts();
     }
 
     window.onload = async () => {
-      const resp = await fetch("../data/power/ipp_programmes.csv");
-      const csvText = await resp.text();
-      DATA = parseCSV(csvText);
+      const resp = await fetch("../data/power/plants.csv");
+      const text = await resp.text();
+      const all = parseCSV(text);
+      const IPP_PROGRAMMES = new Set(["REIPPPP", "RMIPPPP", "BESIPPPP", "GIPPPP", "Peaking IPP"]);
+      DATA = all.filter(p => p.name && IPP_PROGRAMMES.has(p.Programme));
       renderHead();
+      filterApi = TableKit.attachFilters({
+        headRow: $("ippTableHead"),
+        columns: COLS,
+        getRows: () => DATA,
+        filterOnHeaderClick: true,
+        onChange: () => { renderBody(); }
+      });
       renderBody();
       computeStats();
       renderCharts();
+      $("btnDownloadIpp").addEventListener("click", () => {
+        TableKit.downloadCSV("SA-Dashboard-IPP-rows.csv", visibleRows(), COLS);
+      });
     };
   </script>
 </body>

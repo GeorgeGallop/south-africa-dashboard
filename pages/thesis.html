@@ -51,6 +51,9 @@
           <a class="nav-link" href="thesis-abm.html">&#129302; ABM</a>
           <a class="nav-link" href="thesis-stochastic.html">&#127936; Stochastic</a>
           <a class="nav-link" href="thesis-methods.html">&#129518; Methods</a>
+          <a class="nav-link" href="thesis-kkt.html">&#128220; KKT</a>
+          <a class="nav-link" href="thesis-neural-networks.html">&#129504; Neural Nets</a>
+          <a class="nav-link ps-4 small" href="thesis-activation-functions.html">&#8767; Activations</a>
           <a class="nav-link" href="thesis-agents.html">&#129302; Agents</a>
           <a class="nav-link" href="thesis-simulation.html">&#127922; Simulation</a>
         </nav>
@@ -125,6 +128,20 @@
               <li>Linear Programming (LP) and Mixed-Integer Linear Programming (MILP)</li>
               <li>Understanding shadow prices / dual variables</li>
               <li>Handling uncertainty (robust optimization, stochastic programming)</li>
+            </ul>
+
+            <h5>6b. <a href="thesis-neural-networks.html" class="text-decoration-none text-reset">&#129504; Neural Networks &mdash; Load Forecasting as the Industrial Application</a></h5>
+            <p>
+              A neural network is how a market participant who cannot see tomorrow produces a demand
+              number from weather, calendar, and lagged load. In SAWEM that number is the Day-Ahead
+              bid (gate closure 10:00 SAST on D&minus;1) that the OPF treats as D<sub>t</sub>.
+              <a href="thesis-neural-networks.html">Go to the Neural Networks page &#8594;</a>
+            </p>
+            <ul>
+              <li><strong>STLF</strong> &mdash; day-ahead and intra-day load as a learned non-linear map</li>
+              <li><strong>Imbalance</strong> &mdash; forecast error settles at SBP/SSP, so MAPE is a P&amp;L</li>
+              <li><strong>Architectures</strong> &mdash; MLP, LSTM, seq2seq, transformers, quantile nets for reserve</li>
+              <li><strong><a href="thesis-activation-functions.html">Activation functions</a></strong> &mdash; the non-linearity (the sauce) without which every stacked layer collapses to linear regression</li>
             </ul>
 
             <h5>7. <a href="thesis-simulation.html" class="text-decoration-none text-reset">&#127922; Simulation &mdash; Dual-Timescale ABM + OPF Framework</a></h5>

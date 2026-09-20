@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/news-ranking.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
@@ -113,14 +114,24 @@
     const FETCH_TIMEOUT_MS = 10000;
     const DEFAULT_KEYWORDS = "eskom, energy, mining, ramaphosa, electricity, renewables, coal, gas, economy, loadshedding, IPP, platinum, gold, South Africa, Africa, Transnet, TRIM, South Africa LNG";
 
+    // ---- RECENCY SCREENING ----
+    // Every story shown must carry a real publication date inside this window.
+    // Anything older — or with no reliable date at all — is dropped before render.
+    const MAX_STORY_AGE_DAYS = 7;
+    const MAX_STORY_AGE_MS = MAX_STORY_AGE_DAYS * 24 * 60 * 60 * 1000;
+    // Small forward allowance for timezone rounding / clock drift so a story
+    // that parses slightly "in the future" is not wrongly treated as bogus.
+    const FUTURE_SKEW_MS = 36 * 60 * 60 * 1000;
+
     const availableSources = [
-      // Working sources
+      // Verified RSS feeds
       { name: "BBC Africa",        url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",    credibility: 5, status: "working", tags: ["general", "africa"] },
       { name: "Africanews",        url: "https://www.africanews.com/feed/rss",                    credibility: 4, status: "working", tags: ["general", "africa"] },
       { name: "Al Jazeera English",url: "https://www.aljazeera.com/xml/rss/all.xml",              credibility: 4, status: "working", tags: ["general", "world"] },
       { name: "France 24 Africa",  url: "https://www.france24.com/en/africa/rss",                 credibility: 4, status: "working", tags: ["general", "africa"] },
       { name: "Mining Weekly",     url: "https://www.miningweekly.com/page/feed",                 credibility: 5, status: "working", tags: ["mining", "commodities"] },
       { name: "ESI Africa",        url: "https://www.esi-africa.com/feed/",                       credibility: 4, status: "working", tags: ["energy", "power"] },
+      { name: "Energize",          url: "https://www.energize.co.za/rss.xml",                     credibility: 4, status: "working", tags: ["energy", "power", "south-africa"] },
       { name: "Mail & Guardian",   url: "https://mg.co.za/feed/",                                 credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
       { name: "Daily Maverick",    url: "https://www.dailymaverick.co.za/feed/",                  credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
       { name: "Moneyweb",          url: "https://www.moneyweb.co.za/feed/",                       credibility: 4, status: "working", tags: ["economy", "business", "south-africa"] },
@@ -130,16 +141,22 @@
       { name: "Eskom Media",       url: "https://www.eskom.co.za/category/news/feed/",            credibility: 4, status: "working", tags: ["energy", "power", "eskom", "south-africa"] },
       { name: "SABC News",         url: "https://www.sabcnews.com/sabcnews/feed/",                credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
       { name: "Business Insider Africa", url: "https://africa.businessinsider.com/rss",           credibility: 4, status: "working", tags: ["economy", "business", "africa"] },
+      { name: "DA Newsroom",       url: "https://content.voteda.org/feed/",                       credibility: 4, status: "working", tags: ["politics", "south-africa"] },
+      { name: "Freight News",      url: "https://www.freightnews.co.za/rss",                      credibility: 4, status: "working", tags: ["transport", "logistics", "freight", "south-africa"] },
 
-      // Failing sources (kept for reference, may work with proxy)
-      { name: "CNBC Africa",       url: "https://www.cnbcafrica.com/feed/",                       credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["business", "africa"] },
-      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/feed/",                 credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["engineering", "mining", "south-africa"] },
-      { name: "Business Day",      url: "https://www.businesslive.co.za/rss/",                     credibility: 4, status: "failing", failReason: "rss2json HTTP 500", tags: ["business", "south-africa"] },
-      { name: "eNCA",              url: "https://www.enca.com/rss",                               credibility: 3, status: "failing", failReason: "rss2json HTTP 500", tags: ["news", "south-africa"] },
-      { name: "News24",            url: "http://feeds.news24.com/articles/news24/SouthAfrica/rss", credibility: 3, status: "failing", failReason: "HTTP blocked", tags: ["news", "south-africa"] },
-      { name: "Reuters Africa",    url: "https://www.reuters.com/world/africa/", type: "reuters-html", credibility: 5, status: "failing", failReason: "CORS proxy down", tags: ["general", "africa"] },
-      { name: "Bloomberg Africa",  url: "https://www.bloomberg.com/feeds/site/africa.xml",        credibility: 5, status: "failing", failReason: "Paywalled", tags: ["business", "africa"] },
-      { name: "Semafor Africa",    url: "https://www.semafor.com/vertical/africa", type: "semafor", credibility: 4, status: "failing", failReason: "CORS proxy down", tags: ["general", "africa"] }
+      // Previously failing — corrected to verified working RSS URLs
+      { name: "CNBC Africa",       url: "https://www.cnbcafrica.com/africa/feed/",                credibility: 4, status: "working", tags: ["business", "africa"] },
+      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/page/rss-feed/feed:latest-news-copy", credibility: 4, status: "working", tags: ["engineering", "mining", "south-africa"] },
+      { name: "eNCA",              url: "https://www.enca.com/rss.xml",                           credibility: 3, status: "working", tags: ["news", "south-africa"] },
+      { name: "News24",            url: "https://feeds.24.com/articles/news24/SouthAfrica/rss",   credibility: 3, status: "working", tags: ["news", "south-africa"] },
+
+      // No reliable public RSS — fetch the HTML page and scrape headline links
+      { name: "Business Day",      url: "https://www.businesslive.co.za/",                        type: "html", credibility: 4, status: "working", tags: ["business", "south-africa"] },
+      { name: "Reuters Africa",    url: "https://www.reuters.com/world/africa/",                  type: "html", credibility: 5, status: "working", tags: ["general", "africa"] },
+      { name: "Bloomberg Africa",  url: "https://www.bloomberg.com/africa",                       type: "html", credibility: 5, status: "working", tags: ["business", "africa"] },
+      { name: "Semafor Africa",    url: "https://www.semafor.com/vertical/africa",                type: "html", credibility: 4, status: "working", tags: ["general", "africa"] },
+      { name: "Sasol Media",       url: "https://www.sasol.com/media-centre/media-releases?page=1", type: "html", credibility: 4, status: "working", tags: ["energy", "business", "chemicals", "south-africa"] },
+      { name: "The Common Sense",  url: "https://www.thecommonsense.co.za/",                        type: "html", credibility: 4, status: "working", tags: ["general", "politics", "economy", "south-africa"] }
     ];
 
     let selectedSources = availableSources.filter(s => s.status === "working").map(s => s.name);
@@ -155,7 +172,8 @@
 
     function calculateImportanceScore(item) {
       const text = (item.title + ' ' + (item.description || '') + ' ' + (item.source || '')).toLowerCase();
-      const ageHours = (Date.now() - new Date(item.pubDate)) / (1000 * 60 * 60);
+      const ts = itemTimestamp(item);
+      const ageHours = ts === null ? MAX_STORY_AGE_DAYS * 24 : (Date.now() - ts) / (1000 * 60 * 60);
       let score = Math.max(0, 120 - ageHours * 3);
 
       // Source credibility boost
@@ -169,10 +187,12 @@
         if (/\b(energy|power|electricity|renewable)\b/.test(sourceTags)) score += 15;
         if (/\b(politics|government|policy)\b/.test(sourceTags)) score += 10;
         if (/\b(economy|business|finance)\b/.test(sourceTags)) score += 10;
+        if (/\b(transport|logistics|freight|rail|shipping)\b/.test(sourceTags)) score += 15;
       }
 
       // High-value keywords (Africa/South Africa specific)
       if (/\b(africa|south africa|eskom|load shedding|ramaphosa|mining|commodities|inflation|debt|power|electricity|renewable|hydrogen|investor|rating|policy|platinum|gold|coal|gas|lng|anc|da|eff|parliament|cabinet|sarb|budget|gdp)\b/.test(text)) score += 25;
+      if (/\b(transnet|freight|logistics|rail|shipping|port)\b/.test(text)) score += 25; // Transport & logistics boost
       if (/\b(south africa|eskom|load shedding)\b/.test(text)) score += 15; // Extra boost for SA-specific
       if (/\b(mining|platinum|gold|coal|commodities)\b/.test(text)) score += 10; // Mining boost
 
@@ -268,17 +288,35 @@
       return shortened || raw.slice(0, allowed);
     }
 
-    function buildNewsList(items) {
-      if (items.length === 0) {
-        return '<div class="text-center py-5 text-muted">No stories match your filters. Try different keywords or select more sources.</div>';
+    // Renders ranked entries (each carrying its own relevance) with a small
+    // relevance meter so the ranking is visible, not just felt.
+    function buildNewsList(rankedItems, totalGroups) {
+      if (rankedItems.length === 0) {
+        return `<div class="text-center py-5 text-muted">No stories published in the last ${MAX_STORY_AGE_DAYS} days match your filters. Try different keywords or select more sources.</div>`;
       }
-      const links = items.map(item => {
+
+      // Best relevance in this batch, used to scale each meter to 0-100.
+      let topRelevance = 0;
+      rankedItems.forEach(entry => { if (entry.relevance > topRelevance) topRelevance = entry.relevance; });
+
+      const links = rankedItems.map(entry => {
+        const item = entry.item;
         const date = formatDate(item.pubDate);
         const sourceName = item.source || '';
         const metaText = `${sourceName} · ${date}`;
         const titleText = truncateTitleForLine(item.title, metaText);
-        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link"><span class="headline-title">${escapeHtml(titleText)}</span><span class="headline-meta">${metaText}</span></a>`;
+
+        let meter = '';
+        if (topRelevance > 0) {
+          const pct = Math.max(4, Math.round((entry.relevance / topRelevance) * 100));
+          const tip = `${entry.matchedGroups}/${totalGroups} keywords matched · relative relevance ${pct}%`;
+          meter = `<span class="relevance-meter" title="${escapeHtml(tip)}"><span class="relevance-fill" style="width:${pct}%"></span></span>` +
+                  `<span class="relevance-score" title="${escapeHtml(tip)}">${pct}</span>`;
+        }
+
+        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link">${meter}<span class="headline-title">${escapeHtml(titleText)}</span><span class="headline-meta">${metaText}</span></a>`;
       }).join('');
+
       return `<div class="headline-list">${links}</div>`;
     }
 
@@ -315,6 +353,389 @@
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return await r.json();
       } finally { clearTimeout(t); }
+    }
+
+    // ---- CORS PROXIES: try several until one returns the raw feed/HTML ----
+    // allorigins is the most reliable of the free public proxies; the rest are fallbacks.
+    const CORS_PROXIES = [
+      (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.cors.lol/?url=${encodeURIComponent(url)}`,
+      (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+    ];
+
+    async function fetchViaProxies(rawUrl) {
+      let lastError = null;
+      for (const proxyBuilder of CORS_PROXIES) {
+        try {
+          const text = await fetchTextWithTimeout(proxyBuilder(rawUrl), FETCH_TIMEOUT_MS);
+          if (text && text.trim().length > 0) return text;
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw new Error(lastError ? lastError.message : 'All proxies failed');
+    }
+
+    // ---- SAME-ORIGIN / LOCAL SERVER PROXY (most reliable — no CORS, no public proxy) ----
+    // When the dashboard is served by server.py, /api/rss fetches the feed server-side.
+    // The list also includes the Python server's default port so a page opened on any
+    // host (e.g. Live Server on 127.0.0.1:5501) can still reach it cross-origin (CORS is on).
+    const SERVER_API_BASES = ['', 'http://localhost:3101', 'http://127.0.0.1:3101'];
+
+    async function fetchViaServerApi(rawUrl) {
+      let lastError = null;
+      for (const base of SERVER_API_BASES) {
+        try {
+          const u = `${base}/api/rss?url=${encodeURIComponent(rawUrl)}`;
+          const text = await fetchTextWithTimeout(u, FETCH_TIMEOUT_MS);
+          if (text && text.trim().length > 0) return text;
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw new Error(lastError ? lastError.message : 'Server proxy unavailable');
+    }
+
+    // ---- RSS2JSON fallback (returns already-parsed, normalised items) ----
+    async function fetchViaRss2Json(feedUrl) {
+      const cacheBuster = '&_=' + Date.now();
+      const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}${cacheBuster}`;
+      const json = await fetchJsonWithTimeout(proxy, FETCH_TIMEOUT_MS);
+      if (json && json.status === 'ok' && Array.isArray(json.items)) {
+        return json.items.map(it => ({
+          title: it.title || '',
+          link: it.link || '',
+          pubDate: it.pubDate || '',
+          description: it.description || '',
+          content: it.content || it.description || '',
+          source: it.source || ''
+        }));
+      }
+      return [];
+    }
+
+    // ---- LOCAL CACHE: avoid re-hitting the rate-limited proxies on every load/refresh ----
+    // v2: v1 entries carried fabricated "now" timestamps for scraped sources.
+    const CACHE_KEY = 'sawem-news-cache-v2';
+    const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+    function loadNewsCache() {
+      try { return JSON.parse(localStorage.getItem(CACHE_KEY)) || {}; } catch (e) { return {}; }
+    }
+
+    function saveNewsCache(cache) {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch (e) { /* ignore quota errors */ }
+    }
+
+    async function fetchSourceItems(source, requestedCount) {
+      const cache = loadNewsCache();
+      const cached = cache[source.name];
+      // Serve a fresh-enough cached copy rather than hammering the proxies.
+      if (cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL_MS) && Array.isArray(cached.items)) {
+        return cached.items.slice(0, Math.max(requestedCount * 2, 50));
+      }
+
+      let data = [];
+      try {
+        if (source.type === 'html') {
+          // HTML sources have no RSS feed — scrape the page (server proxy only).
+          const html = await fetchViaServerApi(source.url);
+          data = parseHtmlLinks(html, source.url);
+        } else {
+          // RSS/Atom: server proxy first (reliable), then rss2json as a backup.
+          try {
+            const xml = await fetchViaServerApi(source.url);
+            data = parseFeedXml(xml);
+          } catch (serverErr) {
+            data = await fetchViaRss2Json(source.url);
+          }
+        }
+      } catch (error) {
+        // On network failure, fall back to whatever stale cache we have.
+        if (cached && Array.isArray(cached.items) && cached.items.length > 0) {
+          return cached.items.slice(0, Math.max(requestedCount * 2, 50));
+        }
+        throw error;
+      }
+
+      data = data.slice(0, Math.max(requestedCount * 2, 50));
+      cache[source.name] = { ts: Date.now(), items: data };
+      saveNewsCache(cache);
+      return data;
+    }
+
+    // ---- RSS/ATOM XML PARSER ----
+    function getXmlText(node, selector) {
+      const el = node.querySelector(selector);
+      return el ? (el.textContent || '').trim() : '';
+    }
+
+    function parseFeedXml(xmlText) {
+      const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+      if (doc.querySelector('parsererror')) throw new Error('Invalid XML feed');
+      const items = [];
+
+      // RSS 2.0 (<rss><channel><item>)
+      doc.querySelectorAll('rss item').forEach((node) => {
+        const title = getXmlText(node, 'title');
+        const link = getXmlText(node, 'link');
+        const pubDate = getXmlText(node, 'pubDate') || getXmlText(node, 'dc\\:date') || getXmlText(node, 'date');
+        const description = getXmlText(node, 'description') || getXmlText(node, 'content\\:encoded') || getXmlText(node, 'summary');
+        if (title && link) items.push({ title, link, pubDate, description, content: description });
+      });
+
+      // Atom (<feed><entry>)
+      doc.querySelectorAll('feed entry').forEach((node) => {
+        const title = getXmlText(node, 'title');
+        const linkNode = node.querySelector('link');
+        const link = linkNode ? (linkNode.getAttribute('href') || getXmlText(node, 'link')) : getXmlText(node, 'link');
+        const pubDate = getXmlText(node, 'updated') || getXmlText(node, 'published');
+        const description = getXmlText(node, 'summary') || getXmlText(node, 'content');
+        if (title && link) items.push({ title, link, pubDate, description, content: description });
+      });
+
+      return items;
+    }
+
+    // ---- PUBLICATION-DATE PARSING -------------------------------------------
+    // Listing pages express dates in many shapes ("07 Sep, 2021", "12.9.2026",
+    // "2026-09-13T17:42:08Z", "2 hours ago"). These helpers convert those into a
+    // real Date so every story can be screened by how old it actually is.
+    const MONTH_INDEX = {
+      jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
+      may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7, sep: 8, sept: 8,
+      september: 8, oct: 9, october: 9, nov: 10, november: 10, dec: 11, december: 11
+    };
+
+    function makeDate(year, monthIndex, day) {
+      if (!Number.isFinite(year) || !Number.isFinite(monthIndex) || !Number.isFinite(day)) return null;
+      if (monthIndex < 0 || monthIndex > 11 || day < 1 || day > 31) return null;
+      if (year < 1990 || year > 2100) return null;
+      // Noon local time keeps the calendar day stable regardless of timezone.
+      const d = new Date(year, monthIndex, day, 12, 0, 0);
+      if (isNaN(d.getTime())) return null;
+      // Reject impossible dates such as 31 February (which would otherwise roll over).
+      if (d.getFullYear() !== year || d.getMonth() !== monthIndex || d.getDate() !== day) return null;
+      return d;
+    }
+
+    // Two numbers like "12.9.2026" are ambiguous (day-first vs month-first).
+    // Prefer whichever reading is not in the future; otherwise prefer day-first
+    // (South African / European convention).
+    function resolveAmbiguousDate(first, second, year, preferDayFirst) {
+      const dayFirst = makeDate(year, second - 1, first);
+      const monthFirst = makeDate(year, first - 1, second);
+      const futureCutoff = Date.now() + FUTURE_SKEW_MS;
+      const dayFirstOk = !!dayFirst && dayFirst.getTime() <= futureCutoff;
+      const monthFirstOk = !!monthFirst && monthFirst.getTime() <= futureCutoff;
+      if (preferDayFirst) {
+        if (dayFirstOk) return dayFirst;
+        if (monthFirstOk) return monthFirst;
+      } else {
+        if (monthFirstOk) return monthFirst;
+        if (dayFirstOk) return dayFirst;
+      }
+      return dayFirst || monthFirst || null;
+    }
+
+    function parseRelativeAge(text) {
+      const now = Date.now();
+      if (/\b(just now|moments? ago|seconds? ago|right now)\b/i.test(text)) return new Date(now);
+      if (/\byesterday\b/i.test(text)) return new Date(now - 24 * 60 * 60 * 1000);
+      const m = text.match(/\b(\d+)\s*(minutes?|mins?|hours?|hrs?|days?|weeks?)\s+ago\b/i);
+      if (!m) return null;
+      const n = parseInt(m[1], 10);
+      const unit = m[2].toLowerCase();
+      let ms;
+      if (/^min/.test(unit)) ms = n * 60 * 1000;
+      else if (/^h/.test(unit)) ms = n * 60 * 60 * 1000;
+      else if (/^d/.test(unit)) ms = n * 24 * 60 * 60 * 1000;
+      else ms = n * 7 * 24 * 60 * 60 * 1000;
+      return new Date(now - ms);
+    }
+
+    function parseAbsoluteDate(text) {
+      // Drop ordinal suffixes: "7th September 2021" -> "7 September 2021"
+      const cleaned = text.replace(/(\d)(st|nd|rd|th)\b/gi, '$1');
+
+      // 12 September 2021 / 07 Sep, 2021 / 09 Sept 2021 / 10 Sep 2025 12:00
+      let m = cleaned.match(/\b(\d{1,2})\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})\b/);
+      if (m) {
+        const monthIdx = MONTH_INDEX[m[2].toLowerCase()];
+        if (monthIdx !== undefined) {
+          const d = makeDate(parseInt(m[3], 10), monthIdx, parseInt(m[1], 10));
+          if (d) return d;
+        }
+      }
+
+      // September 7, 2021 / Sep 7 2021
+      m = cleaned.match(/\b([A-Za-z]{3,9})\.?\s+(\d{1,2}),?\s+(\d{4})\b/);
+      if (m) {
+        const monthIdx = MONTH_INDEX[m[1].toLowerCase()];
+        if (monthIdx !== undefined) {
+          const d = makeDate(parseInt(m[3], 10), monthIdx, parseInt(m[2], 10));
+          if (d) return d;
+        }
+      }
+
+      // ISO-ish year-first: 2026-09-13 or 2026/09/13
+      m = cleaned.match(/\b(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})\b/);
+      if (m) {
+        const d = makeDate(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10));
+        if (d) return d;
+      }
+
+      // Ambiguous day/month/year: 12.9.2026, 13/09/2026, 09/11/2026
+      m = cleaned.match(/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})\b/);
+      if (m) {
+        const d = resolveAmbiguousDate(parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10), true);
+        if (d) return d;
+      }
+
+      return null;
+    }
+
+    function parseFlexibleDate(raw) {
+      if (raw === null || raw === undefined) return null;
+      const text = String(raw).trim();
+      if (!text) return null;
+      const relative = parseRelativeAge(text);
+      if (relative) return relative;
+      const absolute = parseAbsoluteDate(text);
+      if (absolute) return absolute;
+      // Last resort: engine parsing (handles RFC 822 like "Wed, 10 Sep 2025 12:00:00 GMT").
+      const native = new Date(text);
+      if (!isNaN(native.getTime())) return native;
+      return null;
+    }
+
+    function itemTimestamp(item) {
+      if (typeof item.pubTime === 'number' && Number.isFinite(item.pubTime)) return item.pubTime;
+      if (!item.pubDate) return null;
+      const d = parseFlexibleDate(item.pubDate);
+      return d ? d.getTime() : null;
+    }
+
+    // True only when the story was published no later than a week ago.
+    function isWithinRecencyWindow(timestampMs) {
+      if (timestampMs === null || timestampMs === undefined) return false;
+      const age = Date.now() - timestampMs;
+      if (age < -FUTURE_SKEW_MS) return false;   // implausibly in the future
+      return age <= MAX_STORY_AGE_MS;
+    }
+
+    function dateFromElement(el) {
+      if (!el) return null;
+      const attr = el.getAttribute && (el.getAttribute('datetime') || el.getAttribute('data-datetime'));
+      if (attr) {
+        const fromAttr = parseFlexibleDate(attr);
+        if (fromAttr) return fromAttr;
+      }
+      return parseFlexibleDate(el.textContent);
+    }
+
+    // Look for a publication date inside a single DOM subtree, most specific first.
+    function findDateWithin(root) {
+      if (!root) return null;
+      if (root.tagName === 'TIME') {
+        const own = parseFlexibleDate(root.getAttribute('datetime') || root.textContent);
+        if (own) return own;
+      }
+      const timeEls = root.querySelectorAll ? root.querySelectorAll('time') : [];
+      for (const t of timeEls) {
+        const d = parseFlexibleDate(t.getAttribute('datetime') || t.textContent);
+        if (d) return d;
+      }
+      const labelled = root.querySelectorAll
+        ? root.querySelectorAll('[class*="date" i], [class*="time" i], [class*="published" i], [class*="posted" i], [class*="timestamp" i]')
+        : [];
+      for (const el of labelled) {
+        const d = dateFromElement(el);
+        if (d) return d;
+      }
+      return parseFlexibleDate(root.textContent || '');
+    }
+
+    // A date baked into the URL slug is the most reliable signal for many sites:
+    //   Business Day  /companies/2026-09-13-slug/
+    //   Semafor       /article/09/11/2026/slug
+    function extractDateFromUrl(href, baseUrl) {
+      if (!href) return null;
+      let url;
+      try { url = new URL(href, baseUrl).href; } catch (e) { return null; }
+      let m = url.match(/\/(\d{4})-(\d{2})-(\d{2})(?:[-/]|$)/);
+      if (m) { const d = makeDate(+m[1], +m[2] - 1, +m[3]); if (d) return d; }
+      m = url.match(/\/(\d{4})\/(\d{2})\/(\d{2})(?:[-/]|$)/);
+      if (m) { const d = makeDate(+m[1], +m[2] - 1, +m[3]); if (d) return d; }
+      m = url.match(/\/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[-/]|$)/);
+      if (m) { const d = resolveAmbiguousDate(+m[1], +m[2], +m[3], false); if (d) return d; }
+      return null;
+    }
+
+    // Resolve the publication date of one headline link. Order matters: signals
+    // scoped to the link itself are trusted before wider containers, so we never
+    // borrow a neighbouring story's date.
+    function extractPublishedDate(anchor, baseUrl) {
+      const own = findDateWithin(anchor);
+      if (own) return own;
+
+      const fromUrl = extractDateFromUrl(anchor.getAttribute('href'), baseUrl);
+      if (fromUrl) return fromUrl;
+
+      let el = anchor;
+      for (let depth = 0; depth < 4 && el; depth++) {
+        el = el.parentElement;
+        if (!el || el.tagName === 'BODY' || el.tagName === 'HTML') break;
+        const anchorsInCard = el.querySelectorAll ? el.querySelectorAll('a[href]').length : 0;
+        if (anchorsInCard > 3) break; // this is a list container, not a single story
+        const found = findDateWithin(el);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    // ---- GENERIC HTML HEADLINE SCRAPER (for sources without a public RSS feed) ----
+    function parseHtmlLinks(html, baseUrl) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const items = [];
+      const seen = new Set();
+      const skipWords = /\b(home|newsletter|about|contact|subscribe|sign ?in|log ?in|menu|search|more|advertise|privacy|terms|cookies|sitemap|jobs|events|cookie|store|shop|cart|account|profile|register|read ?more)\b/i;
+
+      doc.querySelectorAll('a[href]').forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Prefer an explicit heading so trailing bylines and dates are not glued
+        // onto the headline text.
+        const headingEl = link.querySelector('h1, h2, h3, h4') ||
+                          link.querySelector('[class*="headline" i], [class*="title" i]');
+        const title = ((headingEl ? headingEl.textContent : link.textContent) || '')
+          .trim().replace(/\s+/g, ' ');
+        if (!title || title.length < 18) return; // too short to be a headline
+        if (skipWords.test(title)) return;
+
+        try {
+          const url = new URL(href, baseUrl).href;
+          const key = title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 60);
+          if (seen.has(key)) return;
+          seen.add(key);
+
+          // Never invent a timestamp: an undated headline carries an empty pubDate
+          // and the recency screen will drop it rather than mislabel it as "now".
+          const published = extractPublishedDate(link, baseUrl);
+          items.push({
+            title,
+            link: url,
+            pubDate: published ? published.toISOString() : '',
+            pubTime: published ? published.getTime() : null,
+            description: '',
+            content: ''
+          });
+        } catch (e) { /* ignore invalid URLs */ }
+      });
+
+      return items;
     }
 
     // ---- MAIN LOAD ----
@@ -366,38 +787,40 @@
         const keywords = keywordText.toLowerCase().split(/[,;\s]+/).map(k => k.trim()).filter(Boolean);
         updateSearchBanner(keywords, requestedCount, selected.length);
 
-        const fetchPromises = selected.map(async (source) => {
-          try {
-            let data;
-            if (source.type === 'semafor') {
-              // Semafor HTML scraping (fallback)
-              data = [];
-            } else if (source.type === 'reuters-html') {
-              // Reuters HTML scraping (fallback)
-              data = [];
-            } else {
-              // Cache-bust on the RSS2JSON API, not the feed URL itself
-              const cacheBuster = '&_=' + Date.now();
-              const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}${cacheBuster}`;
-              const json = await fetchJsonWithTimeout(proxy, FETCH_TIMEOUT_MS);
-              data = json.items ? json.items.slice(0, Math.max(requestedCount * 2, 50)) : [];
-            }
-            const count = Array.isArray(data) ? data.length : 0;
-            return { sourceName: source.name, items: Array.isArray(data) ? data : [], count, error: null };
-          } catch (error) {
-            console.warn(`[${source.name}] ${error.message}`);
-            return { sourceName: source.name, items: [], count: 0, error: error.message || 'Unknown error' };
-          }
-        });
+        // Fetch sources in small batches so we don't overwhelm the rate-limited proxies
+        // (firing all 24 at once caused every request to fail with "Failed to fetch").
+        const results = [];
+        const concurrency = 4;
+        let nextIndex = 0;
 
-        const results = await Promise.all(fetchPromises);
+        async function sourceWorker() {
+          while (nextIndex < selected.length) {
+            const i = nextIndex++;
+            const source = selected[i];
+            try {
+              const data = await fetchSourceItems(source, requestedCount);
+              results[i] = { sourceName: source.name, items: data, count: data.length, error: null };
+            } catch (error) {
+              console.warn(`[${source.name}] ${error.message}`);
+              results[i] = { sourceName: source.name, items: [], count: 0, error: error.message || 'Unknown error' };
+            }
+          }
+        }
+
+        const workerCount = Math.min(concurrency, selected.length);
+        await Promise.all(Array.from({ length: workerCount }, () => sourceWorker()));
 
         results.forEach(result => {
           countsBySource[result.sourceName] = result.count;
           if (result.error) errorsBySource[result.sourceName] = result.error;
           totalFetched += result.count;
+          // Carry the source's topic tags onto each story so topic-aligned
+          // sources (e.g. Mining Weekly) can contribute to relevance.
+          const srcMeta = availableSources.find(s => s.name === result.sourceName);
+          const srcTags = srcMeta && srcMeta.tags ? srcMeta.tags : [];
           result.items.forEach(item => {
             item.source = result.sourceName;
+            item.sourceTags = srcTags;
             allItems.push(item);
           });
         });
@@ -413,35 +836,49 @@
         }
         allItems = deduped;
 
-        // ---- KEYWORD FILTERING (searches title + description + content + source) ----
+        // ---- DATE SCREENING ----
+        // Drop every story that is not verifiably published within the last week:
+        // both those whose date is older than the window and those with no
+        // trustworthy date at all (undated scrapes are not assumed to be current).
+        let undatedCount = 0;
+        let staleCount = 0;
+        allItems = allItems.filter(item => {
+          const ts = itemTimestamp(item);
+          if (ts === null) { undatedCount++; return false; }
+          if (!isWithinRecencyWindow(ts)) { staleCount++; return false; }
+          item.pubTime = ts; // cache the resolved instant for scoring / display
+          return true;
+        });
+        const dateFilteredCount = undatedCount + staleCount;
+
+        // ---- KEYWORD FILTERING & RELEVANCE RANKING (NewsRanking) ----
+        // A story is kept if it satisfies at least one keyword group, then ranked
+        // by how well it actually matches the keywords (BM25 + coverage + phrases).
+        const parsedKeywords = window.NewsRanking.parseKeywords(keywordText);
         let keywordFilteredCount = 0;
-        if (keywords.length > 0) {
+        if (parsedKeywords.groups.length > 0) {
           const before = allItems.length;
-          allItems = allItems.filter(item => {
-            const text = [item.title, item.description, item.content, item.source, item.categories].filter(Boolean).join(' ').toLowerCase();
-            return keywords.some(kw => {
-              // For short keywords (≤4 chars), match as whole words only to avoid false positives
-              // e.g., "usa" should not match "thousands", "gas" should not match "Madagascar"
-              if (kw.length <= 4) {
-                const wordBoundaryRegex = new RegExp('\\b' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
-                return wordBoundaryRegex.test(text);
-              }
-              return text.includes(kw);
-            });
-          });
+          allItems = allItems.filter(item => window.NewsRanking.matchesFilter(item, parsedKeywords));
           keywordFilteredCount = before - allItems.length;
         }
 
-        // ---- SCORE & SORT ----
-        allItems = allItems.map(item => ({ ...item, importanceScore: calculateImportanceScore(item) }));
-        allItems.sort((a, b) => b.importanceScore - a.importanceScore);
+        // ---- SCORE, RANK & SORT (keyword relevance drives the order) ----
+        const credibilityOf = (name) => {
+          const src = availableSources.find(s => s.name === name);
+          return src ? src.credibility : 0;
+        };
+        const ranked = window.NewsRanking.rankItems(allItems, parsedKeywords, {
+          credibilityOf: credibilityOf,
+          importanceOf: calculateImportanceScore,
+          maxStoryAgeMs: MAX_STORY_AGE_MS
+        });
 
         // ---- STORY COUNT ----
-        const showCount = Math.min(requestedCount, allItems.length);
-        const topItems = allItems.slice(0, showCount);
+        const showCount = Math.min(requestedCount, ranked.length);
+        const topItems = ranked.slice(0, showCount);
 
         // ---- RENDER ----
-        summaryEl.innerHTML = buildNewsList(topItems);
+        summaryEl.innerHTML = buildNewsList(topItems, parsedKeywords.groups.length);
         window.clearTimeout(loadingTimer);
 
         // ---- STATUS BAR ----
@@ -449,8 +886,11 @@
         storyCountDisplay.textContent = `📊 ${topItems.length} stories shown (${allItems.length} matched, ${totalFetched} fetched)`;
 
         const filterParts = [];
+        filterParts.push(`🗓️ Within ${MAX_STORY_AGE_DAYS} days`);
         if (keywords.length > 0) filterParts.push(`🔍 Keywords: ${keywords.join(', ')}`);
+        if (parsedKeywords.groups.length > 0) filterParts.push(`🏆 Ranked by keyword relevance`);
         if (keywordFilteredCount > 0) filterParts.push(`(${keywordFilteredCount} filtered out)`);
+        if (dateFilteredCount > 0) filterParts.push(`(🗓️ ${dateFilteredCount} older/undated dropped)`);
         activeFiltersDisplay.textContent = filterParts.join(' | ');
 
         const errorSources = Object.keys(errorsBySource);
@@ -523,6 +963,22 @@
     .headline-link:hover { background: #f8f9fa; color: #007A4D; }
     .headline-title { display: inline-block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
     .headline-meta { flex-shrink: 0; color: #6c757d; font-size: 0.78rem; font-weight: 400; margin-left: 0.75rem; white-space: nowrap; }
+
+    /* Keyword-relevance meter shown on each headline when keywords are active. */
+    .relevance-meter {
+      flex-shrink: 0; align-self: center; display: inline-block;
+      width: 46px; height: 6px; margin-right: 8px;
+      background: #e9ecef; border-radius: 3px; overflow: hidden;
+    }
+    .relevance-fill {
+      display: block; height: 100%; border-radius: 3px;
+      background: linear-gradient(to right, #FFCD00, #007A4D);
+    }
+    .relevance-score {
+      flex-shrink: 0; align-self: center; width: 24px; margin-right: 8px;
+      text-align: right; font-size: 0.7rem; font-weight: 700; color: #007A4D;
+      font-variant-numeric: tabular-nums;
+    }
 
     #applyBtn:disabled { opacity: 0.7; cursor: not-allowed; }
 

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    .section-heading { border-left: 8px solid #007A4D; padding-left: 16px; font-weight: 800; margin-bottom: 1.25rem; }
+    .section-heading.gold { border-left-color: #FFCD00; }
+    .section-heading.blue { border-left-color: #002395; }
+    .section-heading.red { border-left-color: #c62828; }
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .wx-chipbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .wx-chip {
+      font-weight: 800; font-size: 0.72rem; letter-spacing: 0.03em; text-transform: uppercase;
+      padding: 7px 14px; border: 2px solid #000; background: #fff; color: #000; cursor: pointer;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .wx-chip:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #000; }
+    .wx-chip.active { background: #FFCD00; }
+    .wx-chip.active.lime { background: #007A4D; color: #fff; }
+    .wx-status {
+      display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 7px 12px; border: 2px solid #000; background: #fff;
+      box-shadow: 2px 2px 0 #000; margin-bottom: 18px;
+    }
+    .wx-status.loading { background: #FFCD00; }
+    .wx-status.error { background: #c62828; color: #fff; }
+    .wx-status.ok { background: #007A4D; color: #fff; }
+    .wx-chart-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
+    .wx-chart-card { background: #fff; border: 3px solid #000; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .wx-chart-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 10px 14px; background: #000; color: #fff; font-weight: 800; font-size: 0.78rem;
+      letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 3px solid #000;
+    }
+    .wx-chart-head .wx-unit { font-size: 0.62rem; font-weight: 400; opacity: 0.7; text-transform: none; }
+    .wx-chart-body { position: relative; height: 240px; padding: 14px; }
+    .wx-chart-body canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; padding: 14px; }
+    .wx-chart-temp { border-left: 8px solid #c62828; }
+    .wx-chart-precip { border-left: 8px solid #009fe3; }
+    .wx-chart-wind { border-left: 8px solid #007A4D; }
+    .wx-chart-humidity { border-left: 8px solid #7b1fa2; }
+    .wx-chart-pressure { border-left: 8px solid #e65100; }
+    .wx-chart-uv { border-left: 8px solid #FFCD00; }
+    .wx-now-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .wx-now-card { background: #fff; border: 3px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); padding: 12px 14px; }
+    .wx-now-city { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #007A4D; }
+    .wx-now-temp { font-size: 1.8rem; font-weight: 800; line-height: 1.1; margin: 4px 0; }
+    .wx-now-meta { font-size: 0.78rem; font-weight: 700; color: #555; margin-bottom: 6px; }
+    .wx-now-row { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.72rem; font-weight: 700; color: #333; }
+    .wx-label-row { display: flex; align-items: center; gap: 10px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #999; margin: 18px 0 8px; }
+    .wx-label-row .wx-label-box { background: #000; color: #fff; padding: 4px 10px; }
+    .windy-embed-wrap { background: #fff; border: 3px solid #000; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .windy-embed-wrap iframe { display: block; width: 100%; height: 540px; border: 0; background: #0b0b12; }
+    .wx-caption { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; background: #000; color: #FFCD00; padding: 8px 14px; }
+    .wx-tt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .wx-tt-card { background: #fff; border: 3px solid #000; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .wx-tt-title { font-weight: 800; font-size: 0.95rem; letter-spacing: 0.03em; text-transform: uppercase; }
+    .wx-tt-desc { font-size: 0.78rem; font-weight: 600; color: #666; }
+    .wx-tt-btn {
+      margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+      background: #009fe3; color: #000; border: 2px solid #000; box-shadow: 2px 2px 0 #000;
+      padding: 9px 14px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.04em;
+      text-transform: uppercase; text-decoration: none;
+    }
+    .wx-tt-btn:hover { color: #000; transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #000; }
+    .wx-units-toggle { display: inline-flex; align-items: center; gap: 4px; background: #000; color: #fff; border: 2px solid #000; padding: 6px 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; user-select: none; }
+    .wx-units-toggle .wx-units-opt { padding: 2px 6px; opacity: 0.55; }
+    .wx-units-toggle .wx-units-opt.active { opacity: 1; background: #FFCD00; color: #000; }
+    .wx-note { font-size: 0.85rem; color: #6c757d; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5 mb-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+      <div>
+        <h1 class="display-4 fw-bold text-sa-green mb-1">🌤️ Weather</h1>
+        <h5 class="text-muted">Present conditions · 15-day forecast · Southern Africa model maps</h5>
+        <p class="lead mb-0">Live Open-Meteo (GFS / ECMWF / ICON blend) for South African cities, plus the same Windy model viewer used on the simulation map. Pick any mix of cities — each selected city overlays on the six charts.</p>
+      </div>
+      <span class="wx-units-toggle" id="wxUnitsToggle" title="Switch temperature units (°C / °F)">
+        <span class="wx-units-opt wx-units-c" data-unit="c">°C</span>
+        <span class="wx-units-sep">/</span>
+        <span class="wx-units-opt wx-units-f" data-unit="f">°F</span>
+      </span>
+    </div>
+
+    <h3 class="section-heading">🌡️ Present weather</h3>
+    <p class="text-muted">Current observation at each selected city (Open-Meteo). Toggle cities below — the cards and the 15-day charts stay in step.</p>
+    <div class="wx-now-grid" id="wxNow"></div>
+
+    <h3 class="section-heading gold mt-5">📈 15-day forecasts</h3>
+    <p class="text-muted mb-3">Temperature, rain, wind, humidity, pressure and UV — next 15 days. Multi-select cities to overlay series.</p>
+    <div class="wx-chipbar" id="wxCities"></div>
+    <div class="wx-status" id="wxStatus">Loading forecasts…</div>
+    <div class="wx-chart-grid">
+      <div class="wx-chart-card wx-chart-temp">
+        <div class="wx-chart-head">🌡 Temperature <span class="wx-unit" id="tempUnitLabel">°C — daily max / min</span></div>
+        <div class="wx-chart-body"><canvas id="chart-temp">Loading chart…</canvas></div>
+      </div>
+      <div class="wx-chart-card wx-chart-precip">
+        <div class="wx-chart-head">🌧 Precipitation <span class="wx-unit">mm / day</span></div>
+        <div class="wx-chart-body"><canvas id="chart-precip">Loading chart…</canvas></div>
+      </div>
+      <div class="wx-chart-card wx-chart-wind">
+        <div class="wx-chart-head">🌬 Max Wind Speed <span class="wx-unit">km/h — 10 m gusts</span></div>
+        <div class="wx-chart-body"><canvas id="chart-wind">Loading chart…</canvas></div>
+      </div>
+      <div class="wx-chart-card wx-chart-humidity">
+        <div class="wx-chart-head">💧 Relative Humidity <span class="wx-unit">% — daily mean</span></div>
+        <div class="wx-chart-body"><canvas id="chart-humidity">Loading chart…</canvas></div>
+      </div>
+      <div class="wx-chart-card wx-chart-pressure">
+        <div class="wx-chart-head">🧭 Sea-Level Pressure <span class="wx-unit">hPa — daily mean</span></div>
+        <div class="wx-chart-body"><canvas id="chart-pressure">Loading chart…</canvas></div>
+      </div>
+      <div class="wx-chart-card wx-chart-uv">
+        <div class="wx-chart-head">☀️ UV Index <span class="wx-unit">daily max</span></div>
+        <div class="wx-chart-body"><canvas id="chart-uv">Loading chart…</canvas></div>
+      </div>
+    </div>
+
+    <h3 class="section-heading blue mt-5">🔗 Tropical Tidbits</h3>
+    <p class="text-muted">Opens in a new tab — Tropical Tidbits sends <code>X-Frame-Options: SAMEORIGIN</code> so it cannot be iframed. Model maps below use the Windy embed.</p>
+    <div class="wx-tt-grid" id="wxTtLinks"></div>
+
+    <h3 class="section-heading red mt-5">🗺️ SA model maps</h3>
+    <p class="text-muted">Same Windy viewer as the simulation dashboard map (Layers ▸ Weather ▸ Weather Model). Pick model, level and field.</p>
+    <div class="wx-label-row"><span class="wx-label-box">Model</span></div>
+    <div class="wx-chipbar" id="wxModels"></div>
+    <div class="wx-label-row"><span class="wx-label-box">Level</span></div>
+    <div class="wx-chipbar" id="wxLevels"></div>
+    <div class="wx-label-row"><span class="wx-label-box">Field</span></div>
+    <div class="wx-chipbar" id="wxFields"></div>
+    <div class="windy-embed-wrap">
+      <iframe id="windy-embed" title="Windy Southern Africa weather model" allow="fullscreen"></iframe>
+      <div class="wx-caption" id="wxWindyCaption">GFS · Surface · Wind — Southern Africa</div>
+    </div>
+    <p class="wx-note">Long-term simulation weather assumptions (Wind / Solar / Hydro resource, temperature) live on the SAWEM Weather board, not here. This page is present conditions and the 15-day outlook.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/windy.js"></script>
+  <script src="../js/weather-viewer.js"></script>
+</body>
+</html>

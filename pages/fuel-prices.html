@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuels Prices • Gas • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box.small-stat h3 { font-size: 1.5rem; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .section-heading { border-left: 8px solid #007A4D; padding-left: 16px; font-weight: 800; margin-bottom: 1.25rem; }
+    .section-heading.blue { border-left-color: #002395; }
+    .section-heading.gold { border-left-color: #FFCD00; }
+    .section-heading.red { border-left-color: #c62828; }
+    .chart-wrap { position: relative; height: 420px; width: 100%; }
+    .dot-note { font-size: 0.85rem; color: #6c757d; }
+    .price-tag { border: 2px solid #007A4D; border-radius: 6px; padding: 2px 8px; font-weight: 700; color: #007A4D; background: #f0faf4; }
+    .table-wrap { max-height: 600px; overflow-y: auto; }
+    .badge-zone { background:#002395; color:#fff; }
+    .regulation-card { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); height: 100%; }
+    .regulation-card .card-title { font-weight: 800; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="display-4 fw-bold text-sa-green">⛽ Fuels Prices</h1>
+        <h5 class="text-muted">Petrol, Diesel, Illuminating Paraffin & LPG — Current & Historical Prices</h5>
+        <p class="lead">South Africa's fuel prices are <strong>regulated by the state</strong>, not set by the market. The prices you pay at the pump are determined by a monthly government formula, announced by the Department of Mineral and Petroleum Resources (DMPR). This page scrapes and charts the full price history published by the <a href="https://fuelsindustry.org.za/consumer-information/fuel-prices-current-past/" target="_blank">Fuels Industry Association of South Africa</a>.</p>
+      </div>
+    </div>
+
+    <!-- Currency / Unit Conversion Bar -->
+    <div class="card content-card p-3 mb-4">
+      <div class="card-body">
+        <div class="row g-2 align-items-center">
+          <div class="col-auto"><strong>💱</strong></div>
+          <div class="col-auto">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-success active" id="btnZar" onclick="setCurrency('ZAR')">🇿🇦 ZAR (cents)</button>
+              <button class="btn btn-outline-primary" id="btnUsd" onclick="setCurrency('USD')">🇺🇸 USD</button>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">1 USD =</span>
+              <input type="number" id="exchangeRate" class="form-control" style="max-width:90px;" value="17.50" step="0.25" min="1" onchange="onSettingChange()">
+              <span class="input-group-text">ZAR</span>
+            </div>
+          </div>
+          <div class="col-auto"><strong>📏</strong></div>
+          <div class="col-auto">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-success active" id="btnLitre" onclick="setVolume('L')">per litre</button>
+              <button class="btn btn-outline-primary" id="btnGallon" onclick="setVolume('G')">per US gal</button>
+            </div>
+          </div>
+          <div class="col-auto ms-lg-auto"><span class="badge bg-light text-dark border" id="currencyLabel">South African Rand (c/l, c/kg)</span></div>
+        </div>
+        <p class="small text-muted mb-0 mt-2">Toggle <strong>ZAR ↔ USD</strong> to convert every price on this page, and <strong>per litre ↔ per US gallon</strong> to switch the liquid-fuel volume unit. In ZAR the data is shown in <strong>cents per litre</strong> (c/l) and <strong>cents per kilogram</strong> (c/kg); switching to USD converts it to <strong>US dollars per litre</strong> ($/l) and <strong>US dollars per kilogram</strong> ($/kg) using the exchange rate above. Liquid fuels (petrol, diesel, illuminating paraffin) can also be shown per <strong>US gallon</strong> (1 US gal = 3.7854 L). LPG is sold by weight and stays per kilogram.</p>
+      </div>
+    </div>
+
+    <!-- Key Statistics Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box small-stat">
+          <small class="text-muted">Latest 95 ULP Coastal</small>
+          <h3 id="stat-95-coastal">—</h3>
+          <small class="text-muted" id="stat-95-coastal-sub">c/l (Sep 2026)</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box small-stat">
+          <small class="text-muted">Latest 95 ULP Inland (Gauteng)</small>
+          <h3 id="stat-95-inland">—</h3>
+          <small class="text-muted" id="stat-95-inland-sub">c/l (Sep 2026)</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box small-stat">
+          <small class="text-muted">Latest Diesel 0.05% Coastal</small>
+          <h3 id="stat-diesel">—</h3>
+          <small class="text-muted" id="stat-diesel-sub">c/l (Sep 2026)</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box small-stat">
+          <small class="text-muted">Latest LPG Inland</small>
+          <h3 id="stat-lpg">—</h3>
+          <small class="text-muted" id="stat-lpg-sub">c/kg (Sep 2026)</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- How SA Regulates Fuel Prices -->
+    <h3 class="section-heading mt-5 mb-4">⚖️ How South Africa Regulates Fuel Prices</h3>
+    <p class="lead">South Africa is one of the few countries in the world that <strong>sets petrol prices by law</strong>. You cannot shop around for cheaper petrol — every station in a zone charges the same regulated price. Here's how the system works, who runs it, and what it means for you.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">🏛️ Who Sets the Price & the Legal Basis</h5>
+            <p class="small">Fuel prices in South Africa are governed by the <strong>Petroleum Products Act (Act 120 of 1977)</strong> and administered by the <strong>Department of Mineral and Petroleum Resources (DMPR)</strong> — formerly the DMRE. The Minister of Mineral and Petroleum Resources is legally responsible for setting the maximum prices of petrol, diesel, illuminating paraffin, and LPG. The Minister is advised by the <strong>Petroleum Products Pricing Committee</strong> and the <strong>Petroleum Consumer Liaison Committee</strong>. The price schedule is officially published in the <strong>Government Gazette</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">🧮 The Formula: The Basic Fuel Price (BFP)</h5>
+            <p class="small">The core of the price is the <strong>Basic Fuel Price (BFP)</strong> — the cost of importing fuel into South Africa. The country uses <strong>import parity pricing</strong>: the price is set as if every drop of fuel were imported at the international benchmark rate, even for locally-refined fuel. The BFP is calculated daily using:</p>
+            <ul class="small mb-0">
+              <li><strong>International oil prices</strong> (Platts & Argus benchmarks for petrol, diesel, jet, paraffin)</li>
+              <li><strong>The rand/US dollar exchange rate</strong> — a weaker rand automatically raises fuel prices</li>
+              <li>Ocean freight, insurance, and shipping costs to the coastal ports</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">💰 What's Added On Top: Taxes & Levies</h5>
+            <p class="small">Once the BFP is calculated, the government adds a stack of taxes and levies. These make up roughly <strong>35–40% of the pump price</strong>. They include:</p>
+            <ul class="small mb-0">
+              <li><strong>Fuel Levy</strong> — a general national levy (goes to the fiscus)</li>
+              <li><strong>Road Accident Fund (RAF) Levy</strong> — funds compensation for road crash victims</li>
+              <li><strong>Customs & Excise Duty</strong></li>
+              <li><strong>Oil Pipeline Levy</strong></li>
+              <li><strong>Petroleum Products Levy / IP Levy</strong> for diesel</li>
+              <li>Then the <strong>wholesale & retail margins</strong> and <strong>transport/zone costs</strong> are added</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">📍 Coastal vs Inland (Gauteng) — Why the Two Zones</h5>
+            <p class="small">South Africa divides the country into pricing zones. The two main ones on this data are <strong>Coastal</strong> (ocean ports where fuel lands) and <strong>Inland / Gauteng</strong> (the economic heartland, 1,500+ km from the coast). Inland prices are higher because the cost of <strong>transporting fuel by pipeline and road</strong> from the ports to inland depots is added to the price. That's why 95 ULP in Gauteng is a couple of hundred cents more per litre than at the coast.</p>
+            <p class="small mb-0">Historically, the coast used <strong>95 ULP</strong> and the inland used both <strong>93 ULP</strong> and <strong>95 ULP</strong>. Petrol comes in 93 and 95 octane; <strong>LRP (Lead Replacement Petrol)</strong> was for older engines, and <strong>ULP (Unleaded Petrol)</strong> is the modern standard.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">📅 When Prices Are Announced</h5>
+            <p class="small">Fuel prices are adjusted <strong>on the first Wednesday of every month</strong> and take effect at <strong>00:01</strong> that morning. The announcement comes from the <strong>DMPR Minister</strong> (or a senior departmental official) in the <strong>last week of the preceding month</strong> — usually on the Wednesday or Thursday before the new prices kick in. The date is fixed in the regulations, so there is no "surprise" adjustment mid-month. The schedule below shows the actual effective dates for 2024–2026.</p>
+            <div class="table-responsive mt-2">
+              <table class="table table-sm table-bordered mb-0">
+                <thead class="table-light"><tr><th>Month</th><th>2026</th><th>2025</th><th>2024</th></tr></thead>
+                <tbody>
+                  <tr><td>Jan</td><td>1 Jan</td><td>1 Jan</td><td>3 Jan</td></tr>
+                  <tr><td>Feb</td><td>4 Feb</td><td>5 Feb</td><td>7 Feb</td></tr>
+                  <tr><td>Mar</td><td>4 Mar</td><td>5 Mar</td><td>6 Mar</td></tr>
+                  <tr><td>Apr</td><td>1 Apr</td><td>2 Apr</td><td>3 Apr</td></tr>
+                  <tr><td>May</td><td>6 May</td><td>7 May</td><td>1 May</td></tr>
+                  <tr><td>Jun</td><td>3 Jun</td><td>4 Jun</td><td>5 Jun</td></tr>
+                  <tr><td>Jul</td><td>1 Jul</td><td>2 Jul</td><td>3 Jul</td></tr>
+                  <tr><td>Aug</td><td>5 Aug</td><td>6 Aug</td><td>7 Aug</td></tr>
+                  <tr><td>Sep</td><td>2 Sep</td><td>3 Sep</td><td>4 Sep</td></tr>
+                  <tr><td>Oct</td><td>7 Oct</td><td>1 Oct</td><td>2 Oct</td></tr>
+                  <tr><td>Nov</td><td>4 Nov</td><td>3 Nov</td><td>6 Nov</td></tr>
+                  <tr><td>Dec</td><td>2 Dec</td><td>3 Dec</td><td>4 Dec</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card regulation-card">
+          <div class="card-body">
+            <h5 class="card-title">🔍 What It Means For You</h5>
+            <ul class="small mb-0">
+              <li><strong>It's a maximum, not an exact price.</strong> The law sets a <em>maximum</em> retail price. Retailers may charge less (rarely) but never more.</li>
+              <li><strong>Diesel & paraffin are set at wholesale list price</strong> (per the notes), while petrol is at retail price and LPG at maximum retail price.</li>
+              <li><strong>You can't bargain at the pump.</strong> Because the price is regulated, competition is on location and service, not price.</li>
+              <li><strong>The rand and world oil price are the big drivers.</strong> When the rand weakens or crude spikes (like the 2022 Russia-Ukraine surge), pump prices jump — you see it in the 2022 spike on the charts below.</li>
+              <li><strong>Government gets a big slice.</strong> Around a third to 40% of what you pay is tax and levies.</li>
+              <li><strong>LPG is measured in cents per kilogram</strong>, not per litre, because it's sold by weight in cylinders and bulk.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <h3 class="section-heading blue mt-5 mb-4">📈 Price Trends (2012 – 2026)</h3>
+    <p class="text-muted" id="trendNote">All values in cents per litre (c/l) unless noted. LPG is cents per kilogram (c/kg). Inland/Gauteng prices are higher than Coastal due to transport costs from the ports.</p>
+
+    <div class="card content-card p-3 mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold">Petrol 95 ULP — Coastal vs Inland (Gauteng)</h5>
+        <p class="small text-muted">The price drivers: the 2020 COVID crash (prices fell to a multi-year low), the 2022 Russia-Ukraine oil spike, and the steady recovery since.</p>
+        <div class="chart-wrap"><canvas id="chartPetrol"></canvas></div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="card content-card p-3">
+          <div class="card-body">
+            <h5 class="fw-bold">Diesel 0.05% — Coastal vs Inland</h5>
+            <div class="chart-wrap"><canvas id="chartDiesel"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card content-card p-3">
+          <div class="card-body">
+            <h5 class="fw-bold">Illuminating Paraffin — Coastal vs Inland</h5>
+            <div class="chart-wrap"><canvas id="chartParaffin"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card content-card p-3 mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold">LPG (Liquefied Petroleum Gas — c/kg) — Coastal vs Inland</h5>
+        <div class="chart-wrap"><canvas id="chartLPG"></canvas></div>
+        <p class="dot-note mt-2">Note: the July 2025 Coastal value on the source site appears as "32361.00" — likely a typo for 3236.10. It has been normalised to 3236.10 to avoid distorting the chart.</p>
+      </div>
+    </div>
+
+    <h3 class="section-heading gold mt-5 mb-4">🗓️ 2026 Prices — Month by Month (Coastal)</h3>
+    <div class="card content-card p-3 mb-4">
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="chart2026"></canvas></div>
+      </div>
+    </div>
+
+    <h3 class="section-heading red mt-5 mb-4">📊 Full Data Table (2012 – 2026)</h3>
+    <div class="card content-card p-3 mb-4">
+      <div class="card-body">
+        <label class="form-label fw-bold" for="yearSelect">Select year:</label>
+        <select class="form-select mb-3" id="yearSelect" style="max-width: 220px;"></select>
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="fw-bold text-sa-green">COASTAL</h6>
+            <div class="table-wrap"><table class="table table-sm table-bordered table-striped" id="coastalTable"></table></div>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold text-sa-green">GAUTENG (INLAND)</h6>
+            <div class="table-wrap"><table class="table table-sm table-bordered table-striped" id="gautengTable"></table></div>
+          </div>
+        </div>
+        <p class="dot-note mt-2" id="tableNote">
+          * Retail price for petrol &nbsp;|&nbsp; ** Wholesale list price for Diesel & IP &nbsp;|&nbsp; *** Maximum Retail Price for LPG.
+          Values are in cents per litre (c/l) for petrol, diesel & paraffin; cents per kilogram (c/kg) for LPG.
+        </p>
+      </div>
+    </div>
+
+    <div class="alert alert-light border border-success p-4 mb-4">
+      <strong>Source:</strong> <a href="https://fuelsindustry.org.za/consumer-information/fuel-prices-current-past/" target="_blank">Fuels Industry Association of South Africa — Fuel Prices (Current & Past)</a>.
+      Scraped and charted for this dashboard. Prices are announced by the DMPR and effective the first Wednesday of each month.
+    </div>
+  </div>
+
+  <script src="../data/fuel-prices.js"></script>
+  <script>
+    // ── Currency / unit conversion state (mirrors eskom-tariffs.html) ──
+    let currency = 'ZAR';                 // 'ZAR' or 'USD'
+    let volume = 'L';                     // 'L' = per litre, 'G' = per US gallon
+    let fxRate = 17.50;                   // 1 USD = 17.50 ZAR
+    const GAL = 3.785411784;              // litres in 1 US gallon
+    const chartRefs = {};                 // holds Chart.js instances
+    let appRender = null;                 // assigned once the DOM is ready
+
+    // Convert a ZAR-cents value to the active currency + optional litres→gallons.
+    // isLiquid=true applies the gallon conversion (petrol/diesel/paraffin); LPG is per kg.
+    function convertVal(v, isLiquid) {
+      if (v == null) return null;
+      let x = currency === 'USD' ? v / (100 * fxRate) : v;
+      if (isLiquid && volume === 'G') x = x * GAL;
+      return x;
+    }
+    // 'c/l' → '$/l' (USD); then 'c/l' → 'c/gal' / '$/l' → '$/gal' when per-gallon
+    function unitLabel(base, isLiquid) {
+      let u = currency === 'USD' ? base.replace('c/', '$/') : base;
+      if (isLiquid && volume === 'G') u = u.replace('/l', '/gal');
+      return u;
+    }
+    function fmtVal(v) {
+      if (v == null) return '—';
+      return currency === 'USD' ? v.toFixed(4) : v.toFixed(2);
+    }
+    function destroyCharts() {
+      Object.keys(chartRefs).forEach(function (k) { const c = chartRefs[k]; if (c) c.destroy(); delete chartRefs[k]; });
+    }
+    function updateCurrencyLabel() {
+      const curTxt = currency === 'USD' ? 'US Dollars' : 'South African Rand';
+      const liquidUnit = volume === 'G'
+        ? (currency === 'USD' ? '$/gal' : 'c/gal')
+        : (currency === 'USD' ? '$/l' : 'c/l');
+      const lpgUnit = currency === 'USD' ? '$/kg' : 'c/kg';
+      document.getElementById('currencyLabel').textContent = curTxt + ' (' + liquidUnit + ', ' + lpgUnit + ')';
+    }
+
+    function setCurrency(cur) {
+      currency = cur;
+      const z = document.getElementById('btnZar');
+      const u = document.getElementById('btnUsd');
+      z.classList.toggle('active', cur === 'ZAR');
+      z.classList.toggle('btn-success', cur === 'ZAR');
+      z.classList.toggle('btn-outline-primary', cur !== 'ZAR');
+      u.classList.toggle('active', cur === 'USD');
+      u.classList.toggle('btn-success', cur === 'USD');
+      u.classList.toggle('btn-outline-primary', cur !== 'USD');
+      updateCurrencyLabel();
+      if (appRender) appRender();
+    }
+    function setVolume(vol) {
+      volume = vol;
+      const l = document.getElementById('btnLitre');
+      const g = document.getElementById('btnGallon');
+      l.classList.toggle('active', vol === 'L');
+      l.classList.toggle('btn-success', vol === 'L');
+      l.classList.toggle('btn-outline-primary', vol !== 'L');
+      g.classList.toggle('active', vol === 'G');
+      g.classList.toggle('btn-success', vol === 'G');
+      g.classList.toggle('btn-outline-primary', vol !== 'G');
+      updateCurrencyLabel();
+      if (appRender) appRender();
+    }
+    function onSettingChange() {
+      const el = document.getElementById('exchangeRate');
+      const parsed = parseFloat(el.value);
+      fxRate = (!isNaN(parsed) && parsed > 0) ? parsed : 17.50;
+      if (appRender) appRender();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const D = window.FUEL_PRICE_DATA;
+      if (!D) return;
+
+      const yearOrder = Object.keys(D.years);
+      const Y = D.years;
+
+      const SA_GREEN = '#007A4D';
+      const SA_GOLD = '#FFCD00';
+      const SA_BLUE = '#002395';
+      const SA_RED = '#c62828';
+
+      // Flat monthly series, values already converted for the active currency + volume
+      function buildSeries(zone, product, isLiquid) {
+        const labels = [];
+        const data = [];
+        yearOrder.forEach(function (y) {
+          const yr = Y[y];
+          const months = yr.months;
+          yr[zone][product].forEach(function (v, i) {
+            labels.push(months[i]);
+            data.push(convertVal(v, isLiquid));
+          });
+        });
+        return { labels: labels, data: data };
+      }
+
+      function baseOptions(ylabel) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: true, position: 'top' },
+            tooltip: { callbacks: { label: function (ctx) {
+              return ctx.dataset.label + ': ' + (ctx.parsed.y == null ? '—' : fmtVal(ctx.parsed.y) + ' ' + ylabel);
+            } } }
+          },
+          scales: {
+            y: { title: { display: true, text: ylabel } },
+            x: { ticks: { maxTicksLimit: 15, maxRotation: 45 } }
+          }
+        };
+      }
+
+      function makeLine(key, labels, datasets, ylabel) {
+        chartRefs[key] = new Chart(document.getElementById(key).getContext('2d'), {
+          type: 'line',
+          data: { labels: labels, datasets: datasets },
+          options: baseOptions(ylabel)
+        });
+      }
+
+      function renderStats() {
+        const y2026 = Y['2026'];
+        const coastal = y2026.coastal;
+        const gauteng = y2026.gauteng;
+        document.getElementById('stat-95-coastal').textContent = fmtVal(convertVal(coastal['95 ULP'][coastal['95 ULP'].length - 1], true));
+        document.getElementById('stat-95-inland').textContent = fmtVal(convertVal(gauteng['95 ULP'][gauteng['95 ULP'].length - 1], true));
+        document.getElementById('stat-diesel').textContent = fmtVal(convertVal(coastal['Diesel 0.05%'][coastal['Diesel 0.05%'].length - 1], true));
+        document.getElementById('stat-lpg').textContent = fmtVal(convertVal(gauteng['LPG'][gauteng['LPG'].length - 1], false));
+        document.getElementById('stat-95-coastal-sub').textContent = unitLabel('c/l', true) + ' (Sep 2026)';
+        document.getElementById('stat-95-inland-sub').textContent = unitLabel('c/l', true) + ' (Sep 2026)';
+        document.getElementById('stat-diesel-sub').textContent = unitLabel('c/l', true) + ' (Sep 2026)';
+        document.getElementById('stat-lpg-sub').textContent = unitLabel('c/kg', false) + ' (Sep 2026)';
+      }
+
+      function renderCharts() {
+        // Petrol 95 ULP
+        const pC = buildSeries('coastal', '95 ULP', true);
+        const pI = buildSeries('gauteng', '95 ULP', true);
+        makeLine('chartPetrol', pC.labels, [
+          { label: 'Coastal 95 ULP', data: pC.data, borderColor: SA_BLUE, backgroundColor: 'rgba(0,35,149,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+          { label: 'Gauteng 95 ULP', data: pI.data, borderColor: SA_GOLD, backgroundColor: 'rgba(255,205,0,0.15)', fill: false, tension: 0.3, pointRadius: 0 }
+        ], unitLabel('c/l', true));
+
+        // Diesel 0.05%
+        const dC = buildSeries('coastal', 'Diesel 0.05%', true);
+        const dI = buildSeries('gauteng', 'Diesel 0.05%', true);
+        makeLine('chartDiesel', dC.labels, [
+          { label: 'Coastal Diesel', data: dC.data, borderColor: SA_GREEN, backgroundColor: 'rgba(0,122,77,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+          { label: 'Gauteng Diesel', data: dI.data, borderColor: SA_RED, backgroundColor: 'rgba(198,40,40,0.1)', fill: false, tension: 0.3, pointRadius: 0 }
+        ], unitLabel('c/l', true));
+
+        // Paraffin
+        const pfC = buildSeries('coastal', 'Illum Paraffin', true);
+        const pfI = buildSeries('gauteng', 'Illum Paraffin', true);
+        makeLine('chartParaffin', pfC.labels, [
+          { label: 'Coastal Paraffin', data: pfC.data, borderColor: '#6a1b9a', backgroundColor: 'rgba(106,27,154,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+          { label: 'Gauteng Paraffin', data: pfI.data, borderColor: '#e65100', backgroundColor: 'rgba(230,81,0,0.1)', fill: false, tension: 0.3, pointRadius: 0 }
+        ], unitLabel('c/l', true));
+
+        // LPG
+        const lC = buildSeries('coastal', 'LPG', false);
+        const lI = buildSeries('gauteng', 'LPG', false);
+        makeLine('chartLPG', lC.labels, [
+          { label: 'Coastal LPG', data: lC.data, borderColor: '#00695c', backgroundColor: 'rgba(0,105,92,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+          { label: 'Gauteng LPG', data: lI.data, borderColor: '#f57c00', backgroundColor: 'rgba(245,124,0,0.1)', fill: false, tension: 0.3, pointRadius: 0 }
+        ], unitLabel('c/kg', false));
+
+        // 2026 Coastal grouped bar
+        const y2026 = Y['2026'];
+        const products = [
+          { name: '95 ULP', data: y2026.coastal['95 ULP'].map(function (v) { return convertVal(v, true); }), color: SA_BLUE, unit: 'c/l', liquid: true },
+          { name: 'Diesel 0.05%', data: y2026.coastal['Diesel 0.05%'].map(function (v) { return convertVal(v, true); }), color: SA_GREEN, unit: 'c/l', liquid: true },
+          { name: 'Illum Paraffin', data: y2026.coastal['Illum Paraffin'].map(function (v) { return convertVal(v, true); }), color: '#6a1b9a', unit: 'c/l', liquid: true },
+          { name: 'LPG', data: y2026.coastal['LPG'].map(function (v) { return convertVal(v, false); }), color: '#e65100', unit: 'c/kg', liquid: false }
+        ];
+        chartRefs['chart2026'] = new Chart(document.getElementById('chart2026').getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: y2026.months,
+            datasets: products.map(function (p) {
+              return { label: p.name + ' (' + unitLabel(p.unit, p.liquid) + ')', data: p.data, backgroundColor: p.color };
+            })
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top' },
+              tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + fmtVal(ctx.parsed.y); } } }
+            },
+            scales: { x: { stacked: false }, y: { title: { display: true, text: unitLabel('c', true) + ' (' + unitLabel('c/kg', false) + ')' } } }
+          }
+        });
+      }
+
+      function renderTable(tableId, zone) {
+        const table = document.getElementById(tableId);
+        const year = document.getElementById('yearSelect').value;
+        const yr = Y[year];
+        const products = yr[zone];
+        const months = yr.months;
+        let html = '<thead class="table-light"><tr><th>Product</th>';
+        months.forEach(function (m) { html += '<th>' + m + '</th>'; });
+        html += '</tr></thead><tbody>';
+        Object.keys(products).forEach(function (prod) {
+          const isLiquid = prod !== 'LPG';
+          html += '<tr><td class="fw-bold">' + prod + '</td>';
+          products[prod].forEach(function (v) {
+            html += '<td>' + fmtVal(convertVal(v, isLiquid)) + '</td>';
+          });
+          html += '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+      }
+
+      function renderAll() {
+        destroyCharts();
+        renderStats();
+        renderCharts();
+        renderTable('coastalTable', 'coastal');
+        renderTable('gautengTable', 'gauteng');
+        // Keep the descriptive notes in sync with the selected units
+        const trendNote = document.getElementById('trendNote');
+        if (trendNote) trendNote.textContent = 'All values in ' + unitLabel('c/l', true) + ' for liquid fuels unless noted; LPG in ' + unitLabel('c/kg', false) + '. Inland/Gauteng prices are higher than Coastal due to transport costs from the ports.';
+        const tableNote = document.getElementById('tableNote');
+        if (tableNote) tableNote.textContent = '* Retail price for petrol | ** Wholesale list price for Diesel & IP | *** Maximum Retail Price for LPG. Values shown in ' + unitLabel('c/l', true) + ' for petrol, diesel & paraffin; ' + unitLabel('c/kg', false) + ' for LPG.';
+      }
+
+      // Build the year selector once
+      const sel = document.getElementById('yearSelect');
+      yearOrder.forEach(function (y) {
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        sel.appendChild(opt);
+      });
+      sel.value = '2026';
+      sel.addEventListener('change', function () {
+        renderTable('coastalTable', 'coastal');
+        renderTable('gautengTable', 'gauteng');
+      });
+
+      appRender = renderAll;
+      renderAll();
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSE & SA Markets • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <style>
+    :root { --sa-green: #007A4D; --sa-gold: #FFCD00; --sa-blue: #002395; }
+    .kpi-card { background:#fff; border:none; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.06); padding:.55rem .7rem; height:100%; }
+    .kpi-card .num { font-size:1.25rem; font-weight:800; line-height:1.05; }
+    .kpi-card .num.tight { font-size:1.02rem; }
+    .kpi-card .label { font-size:.64rem; text-transform:uppercase; letter-spacing:.4px; color:#6c757d; font-weight:600; }
+    .kpi-card .sub { font-size:.68rem; color:#999; }
+    .up { color:#2e7d32; } .down { color:#c62828; } .flat { color:#6c757d; }
+    .sector-row { cursor:pointer; border-radius:6px; padding:.28rem .5rem; transition:background .2s; }
+    .sector-row:hover { background:#f1f3f5; }
+    .sector-row.active { background:#e9f5ef; border:1px solid #b7dfcd; }
+    .weight-bar { height:5px; border-radius:3px; background:#eceff1; overflow:hidden; }
+    .weight-bar > div { height:100%; border-radius:3px; }
+    .table-wrap { max-height:560px; overflow-y:auto; font-size:.8rem; border-radius:10px; border:1px solid #e9ecef; }
+    .table-wrap thead th { position:sticky; top:0; background:#f8f9fa; z-index:2; cursor:pointer; white-space:nowrap; user-select:none; font-size:.78rem; padding:.35rem .5rem; }
+    .table-wrap thead th:hover { background:#e9ecef; }
+    .table-wrap td { padding:.28rem .5rem; }
+    .table-wrap .tick { font-weight:700; }
+    .section-title { font-weight:800; font-size:1.02rem; margin:0 0 .5rem; display:flex; align-items:center; gap:.5rem; }
+    .section-title::after { content:""; flex:1; height:2px; background:linear-gradient(to right,#d3d9de,transparent); }
+    .section-title .stamp { font-weight:500; font-size:.76rem; color:#6c757d; }
+    .plot-box { border-radius:10px; border:1px solid #eef0f2; padding:.4rem; background:#fff; }
+    .advance-table td, .advance-table th { padding:.28rem .45rem; vertical-align:middle; }
+    .news-headline-list { border-top:2px solid #212529; }
+    .news-headline-link { display:flex; flex-wrap:nowrap; align-items:baseline; font-size:.88rem; line-height:1.3; padding:6px 4px; text-decoration:none; color:#212529; border-bottom:1px solid #dee2e6; overflow:hidden; white-space:nowrap; transition:background .1s; }
+    .news-headline-link:hover { background:#f8f9fa; color:#007A4D; }
+    .news-headline-title { display:inline-block; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; }
+    .news-headline-meta { flex-shrink:0; color:#6c757d; font-size:.75rem; font-weight:400; margin-left:.75rem; white-space:nowrap; }
+    .toolbar .form-control, .toolbar .form-select { font-size:.85rem; }
+    .pct-cell { font-weight:700; }
+    .mcap-cell { font-variant-numeric:tabular-nums; }
+    .range-bar { height:6px; width:60px; border-radius:3px; background:#eceff1; overflow:hidden; display:inline-block; vertical-align:middle; }
+    .range-bar > div { height:100%; background:var(--sa-green); border-radius:3px; }
+    .range-label { font-size:.66rem; color:#6c757d; margin-left:5px; }
+    .page-nav a { font-size:.82rem; text-decoration:none; color:#007A4D; font-weight:600; }
+    .page-nav a:hover { text-decoration:underline; }
+    footer { color:#adb5bd; font-size:.72rem; }
+    @media (max-width:768px) { .kpi-card .num { font-size:1.2rem; } .table-wrap { font-size:.74rem; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3 px-3 px-lg-4">
+
+    <div class="p-4 mb-3 rounded-4 text-white d-flex flex-wrap justify-content-between align-items-center gap-3"
+         style="background: linear-gradient(135deg, #0b3d2e, #007A4D 55%, #00875a);">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <h1 class="fw-bold mb-0 fs-4">💹 JSE & SA Markets</h1>
+        <table class="table table-sm table-borderless align-middle mb-0 text-white small">
+          <tbody>
+            <tr>
+              <td class="fw-semibold text-nowrap ps-0 pe-2">JSE</td>
+              <td class="text-nowrap ps-0"><span id="marketStatusLabel">status…</span>
+                <span class="opacity-75" id="marketStatusCountdown">—</span></td>
+            </tr>
+            <tr>
+              <td class="fw-semibold text-nowrap ps-0 pe-2">Equities</td>
+              <td class="ps-0" id="dataStamp">—</td>
+            </tr>
+            <tr>
+              <td class="fw-semibold text-nowrap ps-0 pe-2">Basis</td>
+              <td class="text-nowrap ps-0" id="dataModeLabel">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-sm btn-light" id="refreshAll" type="button">Refresh all</button>
+      </div>
+    </div>
+
+    <p class="text-muted small mb-2" id="sourcesSummary"></p>
+    <div id="snapshotNotice" class="mb-3"></div>
+
+    <div class="page-nav mb-3 d-flex flex-wrap gap-3">
+      <a href="#equities">Equities</a>
+      <a href="#currency">Currency</a>
+      <a href="#bonds">SA government bonds</a>
+    </div>
+
+    <div id="equitiesError"></div>
+    <div id="fxError"></div>
+    <div id="bondsError"></div>
+
+    <!-- ================= EQUITIES ================= -->
+    <div class="section-title mt-3" id="equities">📈 SA Equities — JSE last close</div>
+
+    <div class="row g-2 mb-3" id="kpiRow">
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num" id="kpiTotalCap">—</div>
+          <div class="label">Total market cap</div>
+          <div class="sub">covered universe</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num" id="kpiListings">—</div>
+          <div class="label">Listings priced</div>
+          <div class="sub" id="kpiSectorCount">across sectors</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num up" id="kpiAdvancers">—</div>
+          <div class="label">Advancers</div>
+          <div class="sub">session change > 0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num down" id="kpiDecliners">—</div>
+          <div class="label">Decliners</div>
+          <div class="sub">session change < 0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num" id="kpiMedianMcap">—</div>
+          <div class="label">Median Mkt Cap (R bn)</div>
+          <div class="sub">typical listing</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="kpi-card">
+          <div class="num tight" id="kpiLargest">—</div>
+          <div class="label">Largest Listing</div>
+          <div class="sub" id="kpiLargestName"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-8">
+        <div class="section-title">🗂️ Market Map — sector & company weights</div>
+        <div class="plot-box" id="treemapChart" style="height: 420px;"></div>
+        <p class="text-muted small mt-1 mb-0">
+          Area is market cap at the last close. Lighter shade = larger company.
+          Weights use the JSE-listed share for dual-listed groups.
+        </p>
+      </div>
+      <div class="col-lg-4">
+        <div class="section-title">🏷️ Sectors — weight, count & session signal</div>
+        <div class="d-flex flex-column gap-1" id="sectorList"></div>
+        <p class="text-muted small mt-2 mb-0">Click a sector to filter the table below.</p>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="section-title">🚀 Strongest on the day</div>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered advance-table mb-0">
+            <thead><tr><th style="width:120px;">Company</th><th class="text-end">Chg %</th><th class="text-end">Close</th></tr></thead>
+            <tbody id="moversTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="section-title">📉 Weakest on the day</div>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered advance-table mb-0">
+            <thead><tr><th style="width:120px;">Company</th><th class="text-end">Chg %</th><th class="text-end">Close</th></tr></thead>
+            <tbody id="laggardsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="section-title">🏭 Sector Market-Cap Mix</div>
+        <div class="plot-box" id="sectorPieChart" style="height: 250px;"></div>
+      </div>
+    </div>
+
+    <div class="section-title mt-4">
+      <span>📋 Full Universe — filtered & sortable (<span id="tableCount">0</span> shown)
+        · <span class="stamp" id="tableStamp">loading…</span></span>
+    </div>
+    <div class="card border-0 shadow-sm mb-2">
+      <div class="card-body p-3">
+        <div class="row g-2 toolbar align-items-end mb-2">
+          <div class="col-md-3">
+            <label class="form-label small fw-bold mb-1" for="searchInput">Search</label>
+            <input type="text" id="searchInput" class="form-control form-control-sm"
+                   placeholder="Company or ticker…" oninput="EquitiesView.applyFilters()">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small fw-bold mb-1" for="sectorFilter">Sector</label>
+            <select id="sectorFilter" class="form-select form-select-sm" onchange="EquitiesView.applyFilters()">
+              <option value="">All sectors</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small fw-bold mb-1" for="changeFilter">Session change</label>
+            <select id="changeFilter" class="form-select form-select-sm" onchange="EquitiesView.applyFilters()">
+              <option value="">Any</option>
+              <option value="up">Gainers only</option>
+              <option value="down">Decliners only</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small fw-bold mb-1" for="minCapInput">Min Mkt Cap (R bn)</label>
+            <input type="number" id="minCapInput" class="form-control form-control-sm"
+                   placeholder="e.g. 10" oninput="EquitiesView.applyFilters()">
+          </div>
+          <div class="col-md-3 d-flex gap-2 justify-content-md-end">
+            <button class="btn btn-sm btn-outline-secondary" type="button" onclick="EquitiesView.resetFilters()">↺ Reset</button>
+            <button class="btn btn-sm btn-success" type="button" onclick="EquitiesView.exportCSV()">⬇️ Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table table-hover table-sm mb-0" id="equitiesTable">
+            <thead>
+              <tr>
+                <th class="sortable" data-key="t" onclick="EquitiesView.sortBy('t')">Ticker</th>
+                <th class="sortable" data-key="n" onclick="EquitiesView.sortBy('n')">Company</th>
+                <th class="sortable text-end" data-key="p" onclick="EquitiesView.sortBy('p')">Last close (R)</th>
+                <th class="sortable text-end" data-key="c" onclick="EquitiesView.sortBy('c')">Session %</th>
+                <th class="sortable text-end" data-key="m" onclick="EquitiesView.sortBy('m')">Mkt Cap (R bn)</th>
+                <th>Sector</th>
+              </tr>
+            </thead>
+            <tbody id="equitiesTableBody"></tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0" id="coverageNote"></p>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- ================= CURRENCY ================= -->
+    <div class="section-title" id="currency">💱 Currency — ZAR crosses and history windows</div>
+    <p class="text-muted small mb-2" id="fxSummary"></p>
+
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body p-3">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Cross</th>
+                <th class="text-end">Spot</th>
+                <th class="text-end">Day</th>
+                <th class="text-end">1W</th>
+                <th class="text-end">1M</th>
+                <th class="text-end">3M</th>
+                <th class="text-end">6M</th>
+                <th class="text-end">1Y</th>
+                <th class="text-center">1Y range</th>
+                <th class="text-center">1Y trend</th>
+              </tr>
+            </thead>
+            <tbody id="fxTableBody"></tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0">
+          Returns are computed from daily closes in <strong>ZAR per unit of foreign
+          currency</strong>, so a positive figure means the rand weakened against that
+          currency. The range column shows where today sits between the 52-week low
+          and high.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-7">
+        <div class="section-title">🌍 Equal-weighted ZAR vs majors (derived)</div>
+        <div class="plot-box" id="fxIndexChart" style="height: 210px;"></div>
+        <p class="text-muted small mt-1 mb-0">
+          Derived here, not a published benchmark: each cross is rebased to 100 at
+          the start of the window, averaged, then inverted so a rising line means a
+          stronger rand.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="section-title">📐 Reading the windows</div>
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body small">
+            <ul class="mb-0 ps-3" style="line-height:1.8;">
+              <li><strong>1W</strong> — positioning and event risk around data prints.</li>
+              <li><strong>1M</strong> — the market's current narrative on the rand.</li>
+              <li><strong>3M / 6M</strong> — the medium-term trend that feeds import and
+                  input-cost assumptions.</li>
+              <li><strong>1Y</strong> — the cycle: what a rand hedge has actually returned
+                  over twelve months.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- ================= SA GOVERNMENT BONDS ================= -->
+    <div class="section-title" id="bonds">🏛️ SA Government Bonds — yields and rates down the curve</div>
+    <p class="text-muted small mb-2">
+      Curve as of <strong id="bondAsOf">—</strong>, last updated
+      <span id="bondUpdated">—</span>.
+    </p>
+
+    <div class="row g-2 mb-3">
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="kpi-card">
+          <div class="num" id="bondPolicyRate">—</div>
+          <div class="label">Policy rate</div>
+          <div class="sub" id="bondPolicyDate"></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="kpi-card">
+          <div class="num" id="bond10y">—</div>
+          <div class="label">10-year benchmark</div>
+          <div class="sub">annualised yield</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="kpi-card">
+          <div class="num" id="bond10ySpread">—</div>
+          <div class="label">10Y over policy</div>
+          <div class="sub">term premium</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="kpi-card">
+          <div class="num" id="bondPeak">—</div>
+          <div class="label">Curve peak</div>
+          <div class="sub">highest-yielding tenor</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="kpi-card">
+          <div class="num" id="bondCds">—</div>
+          <div class="label">5Y CDS</div>
+          <div class="sub">sovereign credit</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bondInversionNote" class="alert alert-secondary py-2 px-3 small mb-3"></div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-7">
+        <div class="section-title">📈 Benchmark yield curve</div>
+        <div class="plot-box" id="bondCurveChart" style="height: 320px;"></div>
+        <p class="text-muted small mt-1 mb-0">
+          Annualised yields by residual maturity, with the SARB policy rate dotted
+          for reference. Source: World Government Bonds, drawn from JSE daily
+          benchmark government bond yields.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="section-title">📋 Rates down the curve</div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr><th>Tenor</th><th class="text-end">Yield</th>
+                  <th class="text-end">vs policy</th><th>Spread</th></tr>
+            </thead>
+            <tbody id="bondLadderBody"></tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0">
+          Each benchmark's yield against the SARB policy (repo) rate. A negative
+          spread at the short end is normal: the market prices cuts.
+        </p>
+      </div>
+    </div>
+
+    <div class="section-title mt-4">📊 Curve detail — level, moves and zero-coupon pricing</div>
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body p-3">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Tenor</th>
+                <th class="text-end">Yield</th>
+                <th class="text-end">Chg 1M</th>
+                <th class="text-end">Chg 6M</th>
+                <th class="text-end">Chg 12M</th>
+                <th class="text-end">Zero-cpn price</th>
+                <th class="text-end">Capital growth</th>
+              </tr>
+            </thead>
+            <tbody id="bondCurveBody"></tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0">
+          Zero-coupon price and capital growth are per one unit of currency at the
+          stated constant maturity. Yield moves are in basis points.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-7">
+        <div class="section-title">🕰️ Curve history — where yields have been</div>
+        <div class="plot-box" id="bondHistoryChart" style="height: 300px;"></div>
+        <p class="text-muted small mt-1 mb-0">
+          Annual observations by tenor. Gaps mean the provider did not publish that
+          tenor for that year.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="section-title">🏅 Sovereign ratings</div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr><th>Agency</th><th>Rating</th><th>Outlook</th><th>As of</th></tr>
+            </thead>
+            <tbody id="bondRatingsBody"></tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2 mb-0">
+          Ratings are sub-investment grade, which is why the long end carries a wide
+          term premium over the policy rate.
+        </p>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- ================= NEWS ================= -->
+    <div class="section-title">📰 SA economy — latest stories</div>
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+          <small class="text-muted">
+            <span id="newsStripCount">0</span> stories · SA economy / markets · same
+            sources as the <a href="news.html">News</a> page
+          </small>
+          <button class="btn btn-sm btn-outline-success" id="refreshNews" type="button">🔄 Refresh news</button>
+        </div>
+        <div id="equityNewsList">
+          <div class="text-center text-muted small py-3">Loading SA economy headlines…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= METHODOLOGY ================= -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body px-4 py-3">
+        <h6 class="fw-bold mb-2">📚 Sources & methodology</h6>
+        <ul class="small text-muted mb-0 ps-3" style="line-height:1.7;">
+          <li><strong>Equities</strong> — every price, session change and market cap is
+            fetched live from Yahoo Finance's JSE feeds by the dashboard's own server
+            (<code>/api/market/equities</code>). The figures are cached on disk for 15
+            minutes, and a cached fetch is only reused while it belongs to the
+            <strong>current</strong> JSE session: once a new session opens, the cache is
+            refetched even if it is only minutes old, so a reload after the close shows
+            that close rather than the previous day's. Market caps are the provider's own
+            figures, in rand.</li>
+          <li><strong>Finding the API</strong> — the pages are usually opened from a
+            static server (Live Server, or <code>file://</code>), where this origin has
+            no <code>/api/market/*</code>. The page therefore looks for the dashboard
+            server at this origin first, then at
+            <code>http://localhost:3101</code>, and uses whichever answers. The same
+            lookup serves the headline strip's <code>/api/rss</code> proxy. Start the
+            server with <code>py server.py</code>.</li>
+          <li><strong>Stored snapshot fallback</strong> — only when no API answers
+            anywhere does the page fall back to <code>data/market-snapshot.js</code>, a
+            stored capture of the same series at its last settled close. The header
+            source line, the amber notice above and the age next to each figure all say
+            so, so a stored close is never shown as a live price. Its
+            <code>.json</code> sibling is re-read on load whenever the script copy is
+            from an earlier session, so regenerating with
+            <code>py -m market.snapshot</code> is enough — no hard reload needed.</li>
+          <li><strong>Session basis</strong> — outside JSE hours (09:00–17:00 SAST,
+            Monday–Friday) the price is the settled last close. During the session the
+            header says <em>live session (intraday)</em> and the change is measured
+            against the previous close.</li>
+          <li><strong>Coverage</strong> — a curated universe of JSE listings with SA
+            exposure across the ICB industry sectors (Technology, Telecommunications,
+            Health Care, Financials, Real Estate, Consumer Discretionary, Consumer
+            Staples, Industrials, Basic Materials, Energy, Utilities). A sector with no
+            priced member is omitted rather than shown empty. Codes the free feed does
+            not carry appear in the coverage note instead of being shown with a stale
+            price.</li>
+          <li><strong>Currency</strong> — <code>/api/market/fx</code> returns ZAR crosses
+            with 1W–1Y windows computed from one year of daily closes. The
+            equal-weighted ZAR index is derived by this dashboard and is labelled as
+            such; it is not a published benchmark.</li>
+          <li><strong>Bonds</strong> — <code>/api/market/bonds</code> returns the SA
+            sovereign curve, the same benchmarks against the SARB policy rate, the
+            annual curve history, sovereign ratings and the 5-year CDS, sourced from
+            World Government Bonds' JSE-derived daily benchmark yields.</li>
+          <li><strong>Freshness</strong> — the source line under the header names the
+            session each series belongs to, the provider that supplied it, and how long
+            ago it was captured. A reload always ends up on the current session's
+            figures: if the API hands back an earlier session's close, the page
+            re-requests it with a forced refresh before rendering anything.
+            <em>Refresh all</em> bypasses the cache outright, and retries the live API
+            when the page is running on the stored snapshot.</li>
+          <li>Market analysis only — not investment advice.</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer class="text-center mb-4">
+      ZA South Africa Dashboard · JSE equities, ZAR currency and SA government bonds ·
+      last settled close, live when <code>server.py</code> is running · times in SAST
+    </footer>
+  </div>
+
+  <script src="../js/dashboard-api.js"></script>
+  <script src="../js/jse-session.js"></script>
+  <script src="../data/market-snapshot.js"></script>
+  <script src="../js/market-api.js"></script>
+  <script src="../js/market-news.js"></script>
+  <script src="../js/equities-view.js"></script>
+  <script src="../js/fx-view.js"></script>
+  <script src="../js/bonds-view.js"></script>
+  <script src="../js/markets-page.js?v=2"></script>
+</body>
+</html>

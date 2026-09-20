@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Hydrogen & Ammonia • Economy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --gh-green: #007A4D;
+      --gh-gold:  #FFCD00;
+      --gh-blue:  #002395;
+      --gh-teal:  #00695c;
+      --gh-red:   #c62828;
+      --gh-ink:   #1f2a33;
+    }
+    body { color: var(--gh-ink); }
+
+    .gh-hero {
+      background: linear-gradient(135deg, #00341f 0%, #007A4D 45%, #0d6b4f 100%);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2.2rem 2rem;
+    }
+    .gh-hero h1 { font-weight: 800; letter-spacing: -0.5px; }
+    .gh-hero .lead { color: #d8efe4; }
+
+    .gh-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.78rem;
+      margin: 0.15rem 0.25rem 0.15rem 0;
+    }
+
+    .gh-nav .nav-link {
+      color: var(--gh-ink);
+      font-size: 0.85rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 8px;
+    }
+    .gh-nav .nav-link:hover { background: #e8f3ee; color: var(--gh-green); }
+
+    .gh-section { margin-bottom: 2.75rem; scroll-margin-top: 1rem; }
+    .gh-section > h2 {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--gh-green);
+      border-bottom: 3px solid var(--gh-gold);
+      padding-bottom: 0.45rem;
+      margin-bottom: 1.1rem;
+    }
+    .gh-section h3 {
+      font-weight: 700;
+      font-size: 1.12rem;
+      margin-top: 1.4rem;
+      color: var(--gh-blue);
+    }
+
+    .gh-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .gh-stat {
+      border-radius: 12px;
+      padding: 1rem 0.85rem;
+      height: 100%;
+      background: #f7fbf9;
+      border: 1px solid #dcece4;
+      text-align: center;
+    }
+    .gh-stat .gh-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gh-green);
+      line-height: 1.1;
+    }
+    .gh-stat .gh-lbl { font-size: 0.78rem; color: #5b6b63; margin-top: 0.3rem; }
+
+    /* Production chain flow */
+    .gh-flow { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: stretch; }
+    .gh-step {
+      flex: 1 1 150px;
+      background: #fff;
+      border: 2px solid #dcece4;
+      border-top: 5px solid var(--gh-green);
+      border-radius: 10px;
+      padding: 0.75rem 0.7rem;
+      position: relative;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    }
+    .gh-step .gh-step-no {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gh-gold);
+      background: var(--gh-green);
+      border-radius: 6px;
+      padding: 0.05rem 0.4rem;
+      display: inline-block;
+    }
+    .gh-step h6 { font-weight: 700; font-size: 0.86rem; margin: 0.4rem 0 0.3rem; }
+    .gh-step p  { font-size: 0.76rem; color: #5b6b63; margin: 0; }
+
+    .gh-eq {
+      background: #0d2b21;
+      color: #b8f2d6;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      overflow-x: auto;
+    }
+
+    .gh-table thead th {
+      background: var(--gh-green);
+      color: #fff;
+      font-size: 0.82rem;
+      vertical-align: middle;
+    }
+    .gh-table td, .gh-table th { font-size: 0.83rem; }
+
+    .gh-dl {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      border: 1px solid #dcece4;
+      border-left: 5px solid var(--gh-green);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      background: #f7fbf9;
+      margin-bottom: 0.75rem;
+    }
+    .gh-dl .gh-dl-icon { font-size: 1.5rem; line-height: 1; }
+    .gh-dl h6 { margin: 0 0 0.15rem; font-weight: 700; font-size: 0.92rem; }
+    .gh-dl p  { margin: 0 0 0.45rem; font-size: 0.79rem; color: #5b6b63; }
+
+    .gh-callout {
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.86rem;
+      border-left: 5px solid var(--gh-gold);
+      background: #fffdf2;
+    }
+    .gh-callout.warn { border-left-color: var(--gh-red); background: #fdf5f5; }
+    .gh-callout.info { border-left-color: var(--gh-blue); background: #f4f6fd; }
+
+    .gh-port {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #dcece4;
+      height: 100%;
+      background: #fff;
+    }
+    .gh-port .gh-port-head {
+      background: var(--gh-teal);
+      color: #fff;
+      padding: 0.7rem 1rem;
+      font-weight: 700;
+    }
+    .gh-port.saldanha .gh-port-head { background: #00695c; }
+    .gh-port.coega .gh-port-head    { background: #002395; }
+    .gh-port.boegoebaai .gh-port-head { background: #b8860b; }
+    .gh-port .gh-port-body { padding: 1rem; font-size: 0.85rem; }
+
+    .gh-timeline { position: relative; padding-left: 1.4rem; }
+    .gh-timeline::before {
+      content: "";
+      position: absolute;
+      left: 0.42rem; top: 0.35rem; bottom: 0.35rem;
+      width: 3px; background: linear-gradient(#007A4D, #FFCD00, #002395);
+      border-radius: 3px;
+    }
+    .gh-timeline .gh-tl-item { position: relative; margin-bottom: 1rem; }
+    .gh-timeline .gh-tl-item::before {
+      content: "";
+      position: absolute; left: -1.08rem; top: 0.32rem;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #fff; border: 3px solid var(--gh-green);
+    }
+    .gh-timeline .gh-tl-year { font-weight: 800; color: var(--gh-green); font-size: 0.86rem; }
+
+    .gh-chip {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-right: 0.3rem;
+      border: 1px solid #cfd9d4;
+      color: #42524b;
+      background: #f4f8f6;
+    }
+    .gh-chip.green { background: #e7f6ee; border-color: #b7e2cb; color: #05643f; }
+    .gh-chip.amber { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .gh-chip.red   { background: #fdeceb; border-color: #f3bdb9; color: #9c2018; }
+    .gh-chip.bluechip  { background: #eaeefb; border-color: #bcc7ef; color: #002395; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top gh-nav" style="top: 1rem;">
+          <a class="nav-link" href="#overview">🌍 Overview</a>
+          <a class="nav-link" href="#why">⚡ Why South Africa</a>
+          <a class="nav-link" href="#process">🧪 Making Green Ammonia</a>
+          <a class="nav-link" href="#supplychain">🔗 Full Supply Chain</a>
+          <a class="nav-link" href="#saldanha">⚓ Saldanha</a>
+          <a class="nav-link" href="#coega">🏭 Coega</a>
+          <a class="nav-link" href="#hubs">🧭 Other Hubs</a>
+          <a class="nav-link" href="#bunker">🚢 Bunker Carriers</a>
+          <a class="nav-link" href="#corridor">🛤️ Iron Ore Corridor</a>
+          <a class="nav-link" href="#market">📈 Market & Pricing</a>
+          <a class="nav-link" href="#policy">⚖️ Policy & Regulation</a>
+          <a class="nav-link" href="#risk">⚠️ Risks</a>
+          <a class="nav-link" href="#outlook">🔭 Outlook</a>
+          <a class="nav-link" href="#sources">📚 Documents</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <!-- ============================= HERO ============================= -->
+        <div class="gh-hero mb-4">
+          <h1 class="display-5 mb-2">Green Hydrogen & Ammonia</h1>
+          <p class="lead mb-3">
+            South Africa's oldest export economy — mining and minerals — meets its newest:
+            <strong>green hydrogen</strong> and its shippable derivative, <strong>green ammonia</strong>.
+            Produced from the country's exceptional solar and wind resource, ammonia can be burned in ship
+            engines as a zero-carbon marine fuel, used as a hydrogen carrier for export, or returned to its
+            traditional role in fertiliser and chemicals. This section covers the production process end to end,
+            the full supply chain, the anchor projects at <strong>Saldanha</strong> and <strong>Coega</strong>,
+            ammonia-fuelled bulk carriers and bunkering, the ammonia market and pricing, and the
+            <strong>South Africa–EU iron ore green corridor</strong>.
+          </p>
+          <div>
+            <span class="gh-tag">Green ammonia</span>
+            <span class="gh-tag">Green shipping corridors</span>
+            <span class="gh-tag">Bunkering hubs</span>
+            <span class="gh-tag">Iron ore exports</span>
+            <span class="gh-tag">Just Energy Transition</span>
+          </div>
+        </div>
+
+        <div class="alert alert-warning small mb-4">
+          <strong>How to read this page.</strong> Figures are drawn from three primary documents — the World Bank's
+          <em>Creating a Green Marine Fuel Market in South Africa</em> (2024), the World Economic Forum's
+          <em>Decarbonizing South Africa's Shipping and Trucking Sectors</em> (2024), and the Global Maritime Forum/RMI
+          <em>Assessing the feasibility of the South Africa-Europe iron ore green shipping corridor</em> (2025). Project
+          statuses move quickly; treat all timelines as targets and confirm the latest position with developers.
+          All three documents are downloadable at the bottom of the page.
+        </div>
+
+        <!-- ============================ OVERVIEW ========================== -->
+        <section class="gh-section" id="overview">
+          <h2>🌍 Overview</h2>
+
+          <p>
+            Green hydrogen is hydrogen produced by splitting water with renewable electricity (electrolysis) rather
+            than from fossil gas. On its own it is awkward to move — it must be compressed to 350–700 bar or cooled to
+            −253&nbsp;°C, and it has a low volumetric energy density (8.5&nbsp;MJ/l). The practical solution is to
+            <strong>convert it into a carrier molecule</strong>. The two candidates are <strong>green methanol</strong>
+            (needs a sustainable carbon source) and <strong>green ammonia</strong> (needs only nitrogen from the air).
+          </p>
+
+          <p>
+            Ammonia wins in the South African context because nitrogen is unlimited and free, ammonia is already a
+            globally traded commodity with established handling and storage infrastructure, and the same molecule can
+            be used three ways: as <strong>marine fuel</strong> for ships, as an <strong>export carrier</strong> for
+            hydrogen, and as <strong>industrial feedstock</strong> for fertiliser and chemicals. That "triple use"
+            is what makes an ammonia plant bankable — no single market has to carry the whole investment.
+          </p>
+
+          <div class="row g-3 mt-2">
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">~7 Mt/yr</div>
+                <div class="gh-lbl">South Africa's green hydrogen production opportunity by 2050 (WEF)</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">3.6%</div>
+                <div class="gh-lbl">Projected contribution of the hydrogen economy to GDP by 2050 (World Bank)</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">380,000</div>
+                <div class="gh-lbl">Jobs the hydrogen economy could support by 2050 (World Bank)</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">920 GW</div>
+                <div class="gh-lbl">Estimated wind and solar resource potential (WEF)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gh-callout info mt-4">
+            <strong>Why ammonia and not just hydrogen?</strong> Roughly <em>two tonnes of ammonia match the energy content of
+            one tonne of conventional marine fuel oil</em>. Ammonia lubricates the business case for hydrogen: the same
+            plant can sell to shipping, to fertiliser markets, and to hydrogen exporters, spreading risk across
+            several offtake sectors until each one matures.
+          </div>
+        </section>
+<!-- ============================== WHY ============================= -->
+        <section class="gh-section" id="why">
+          <h2>⚡ Why South Africa</h2>
+
+          <p>
+            Four factors combine to give South Africa an unusual position in the global hydrogen economy.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">1 · World-class renewables</h5>
+                  <p class="small mb-0">
+                    An estimated <strong>920&nbsp;GW</strong> of combined wind and solar potential, with some of the
+                    best solar irradiation on the planet concentrated in the Northern Cape. A hybrid solar-plus-wind
+                    plant can push electrolyser capacity factors towards 80% by day — the reason the economics of a
+                    coastal ammonia plant stack up where a solar-only scheme would not.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">2 · Geography on the trade lanes</h5>
+                  <p class="small mb-0">
+                    The Cape sea route between Asia and Europe runs past South Africa's west and east coasts. As
+                    shipping decarbonises, more vessels will need to refuel en route. South Africa sits "midway between
+                    the eastern and western hemispheres" — an ideal bunkering stop for ships running on fuels with
+                    roughly half the energy density of oil.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">3 · Existing industrial base</h5>
+                  <p class="small mb-0">
+                    South Africa is already one of the world's largest producers of <em>grey</em> hydrogen (from coal
+                    and gas, largely for Sasol's synfuels and petrochemicals). It has deep ammonia and fertiliser
+                    handling experience, port infrastructure, and — critically — <strong>~70% of global platinum
+                    production</strong>, the key catalyst input for electrolysers and fuel cells.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">4 · The carbon-border squeeze</h5>
+                  <p class="small mb-0">
+                    South Africa's largest trading partners are introducing carbon border taxes. Analysis presented to
+                    the WEF estimates that <strong>up to 35% of the country's export value could be at risk</strong> if
+                    decarbonisation is not pursued. Green hydrogen and ammonia turn a trade threat into an export
+                    opportunity.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The policy framework</h3>
+          <p class="small">
+            South Africa has moved from vision to implementation over the past four years. The building blocks:
+          </p>
+          <table class="table table-sm table-bordered gh-table">
+            <thead>
+              <tr><th style="width:2rem;">#</th><th>Policy / document</th><th>When</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><strong>Hydrogen Society Roadmap for South Africa</strong></td><td>Oct 2021</td><td>Sets out the vision for a domestic hydrogen economy across mobility, industry and power.</td></tr>
+              <tr><td>2</td><td><strong>Green Hydrogen Commercialisation Strategy</strong></td><td>Dec 2022</td><td>Moves the country towards implementation — targets, instruments and institutional roles.</td></tr>
+              <tr><td>3</td><td><strong>South African Renewable Energy Masterplan (SAREM)</strong></td><td>Jul 2023</td><td>Links renewable and hydrogen industry growth to industrialisation and skills — 21 SETAs involved.</td></tr>
+              <tr><td>4</td><td><strong>Green Hydrogen National Programme (GHNP)</strong></td><td>Ongoing</td><td>19 projects worth more than <strong>R300&nbsp;billion</strong>; 9 designated "Strategic Integrated Projects" fast-tracked.</td></tr>
+              <tr><td>5</td><td><strong>SA-H2 Fund</strong></td><td>2024–25</td><td>Blended-finance vehicle; PIC, DBSA and IDC committed ~US$37&nbsp;million (R657&nbsp;m) of seed capital.</td></tr>
+              <tr><td>6</td><td><strong>Just Energy Transition Investment Plan (JET-IP)</strong></td><td>2022–</td><td>Nearly <strong>R1.5&nbsp;trillion</strong> investment framework, with hydrogen as a pillar.</td></tr>
+            </tbody>
+          </table>
+
+          <div class="gh-callout mt-3">
+            <strong>Money on the table.</strong> At the June 2025 Green Hydrogen Summit the government reported that
+            <strong>more than US$83.5&nbsp;million (≈R1.49&nbsp;billion)</strong> had been invested in the Hydrogen South Africa
+            programme, and that <strong>53&nbsp;GW of renewable projects</strong> sit in the national pipeline. Globally,
+            more than <strong>1,000 hydrogen projects</strong> are planned with about <strong>US$570&nbsp;billion</strong>
+            earmarked; <strong>52 large-scale green hydrogen projects</strong> have been announced across Africa.
+          </div>
+        </section>
+
+        <!-- ============================ PROCESS ============================ -->
+        <section class="gh-section" id="process">
+          <h2>🧪 Making Zero-Emission Ammonia from Green Hydrogen</h2>
+
+          <p>
+            "Green ammonia" is ordinary ammonia (NH₃) made without fossil carbon. Chemically it is identical to the
+            ammonia used in fertiliser for a century — the difference is entirely in <em>where the hydrogen comes
+            from</em>. The conventional route ("grey" ammonia) produces hydrogen from natural gas via steam methane
+            reforming (SMR) or from coal gasification, releasing large volumes of CO₂. The green route replaces that
+            fossil hydrogen with hydrogen from renewable-powered water electrolysis.
+          </p>
+
+          <div class="gh-eq mb-3">
+Renewable electricity + H₂O  →  H₂ + ½ O₂&nbsp;&nbsp;&nbsp;&nbsp;(electrolysis)<br>
+Ambient air (78% N₂)  →  N₂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cryogenic air separation)<br>
+3 H₂ + N₂  →  2 NH₃&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Haber-Bosch synthesis, ~500 °C, high pressure)
+          </div>
+
+          <p class="small text-muted mb-3">
+            Hydrogen and nitrogen combine in a 3:1 ratio. Because losses occur at each step, the practical conversion
+            factor is roughly <strong>5.6 tonnes of ammonia per tonne of hydrogen</strong> — the World Bank reference
+            plant turns ~50,000&nbsp;t/yr of hydrogen into ~280,000&nbsp;t/yr of ammonia.
+          </p>
+
+          <h3>The six-step chain</h3>
+          <div class="gh-flow mb-3">
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 1</span>
+              <h6>Renewable power</h6>
+              <p>A hybrid solar-and-wind plant generates the electricity. Best sites sit inland where irradiation and
+              wind are strongest; the plant is typically grid-connected so surplus power can be sold back.</p>
+            </div>
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 2</span>
+              <h6>Water</h6>
+              <p>Electrolysis needs pure water — about 9&nbsp;kg per kg of hydrogen plus a margin. Coastal plants use
+              <strong>seawater desalination</strong>, avoiding competition for scarce freshwater.</p>
+            </div>
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 3</span>
+              <h6>Electrolysis</h6>
+              <p>Renewable electricity splits water into hydrogen and oxygen. Alkaline electrolysers are favoured today
+              for cost and stack life; PEM and SOEC are alternatives.</p>
+            </div>
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 4</span>
+              <h6>Air separation</h6>
+              <p>An Air Separation Unit (ASU) separates nitrogen from ambient air cryogenically — no feedstock cost,
+              abundant supply, no emissions.</p>
+            </div>
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 5</span>
+              <h6>Haber-Bosch</h6>
+              <p>Hydrogen and nitrogen are combined over a catalyst in the Haber-Bosch reactor to form ammonia. Requires
+              steady power — the synthesis plant must not thermally cycle.</p>
+            </div>
+            <div class="gh-step">
+              <span class="gh-step-no">STEP 6</span>
+              <h6>Storage & export</h6>
+              <p>Ammonia is chilled to about −33&nbsp;°C and stored in refrigerated tanks, ready for bunkering barges,
+              export tankers, or pipeline delivery.</p>
+            </div>
+          </div>
+
+          <h3>Inside the reference plant — Saldanha (World Bank case study)</h3>
+          <p class="small">
+            The World Bank modelled a full green-ammonia facility sized to a demand of ~50,000&nbsp;t/yr of hydrogen by
+            2035, producing roughly <strong>280,000&nbsp;t/yr of green ammonia</strong>. Its optimised component sizes
+            show what "industrial scale" actually looks like:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>System element</th><th>Parameter</th><th>Value</th></tr>
+              </thead>
+              <tbody>
+                <tr><td rowspan="3"><strong>Renewable plant</strong></td><td>Solar farm capacity</td><td>957 MW</td></tr>
+                <tr><td>Wind farm capacity</td><td>638 MW (about 1,595 MW total, 60/40 solar–wind)</td></tr>
+                <tr><td>Combined capacity factor</td><td>~0.27</td></tr>
+                <tr><td rowspan="3"><strong>Electrolyser</strong></td><td>Capacity</td><td>492 MW</td></tr>
+                <tr><td>Design output</td><td>150.3 t H₂ / day</td></tr>
+                <tr><td>Annual production</td><td>~52,600 t H₂ / year</td></tr>
+                <tr><td rowspan="2"><strong>Air separation unit</strong></td><td>Capacity</td><td>699 t N₂ / day</td></tr>
+                <tr><td>Annual nitrogen production</td><td>233,000 t N₂ / year</td></tr>
+                <tr><td rowspan="2"><strong>Ammonia synthesis</strong></td><td>Unit capacity</td><td>310,000 t NH₃ / year</td></tr>
+                <tr><td>Annual production</td><td>~280,270 t NH₃ / year</td></tr>
+                <tr><td><strong>Land footprint</strong></td><td>Wind / solar / electrolyser / synthesis</td><td>15,700 ha / 1,900 ha / 5 ha / 5.25 ha</td></tr>
+                <tr><td><strong>Battery</strong></td><td>Utility-scale storage</td><td>25 MW Li-ion, 200 MWh (~8 hours)</td></tr>
+                <tr><td><strong>Ammonia storage</strong></td><td>Refrigerated tank</td><td>30,000 m³ single-containment (−33 °C, ~18 days buffer)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: World Bank, <em>Creating a Green Marine Fuel Market in South Africa</em> (2024), Saldanha case study.
+            Costs are expressed in 2018 US dollars and exclude inflation.
+          </p>
+
+          <h3>Why the synthesis plant needs steady power</h3>
+          <p class="small">
+            The electrolyser is happy to follow the sun and the wind; the ammonia synthesis loop is not. Starting and
+            stopping the Haber-Bosch reactor causes "thermal cycling" that damages the catalyst and shortens equipment
+            life. Because the reactor runs at around 500&nbsp;°C, the plant needs a constant supply. The World Bank's
+            preferred solution is a <strong>grid-connected plant with a utility-scale battery</strong>: renewable power is
+            wheeled through the grid to charge batteries by day, then discharged at night to run synthesis from
+            hydrogen buffered in the pipeline. This combination is also what makes the fuel certifiable as renewable
+            under the EU's hourly matching rules.
+          </p>
+
+          <div class="gh-callout info">
+            <strong>Electrolyser technologies at a glance.</strong> <em>Alkaline</em> — mature, cheapest, longest stack
+            life, favoured today. <em>PEM</em> — more flexible, higher cost. <em>SOEC</em> — highest efficiency but still at
+            demonstration stage. South Africa's platinum endowment matters here: PGM catalysts are a key input to PEM
+            electrolysers and fuel cells.
+          </div>
+        </section>
+<!-- =========================== SUPPLY CHAIN ======================== -->
+        <section class="gh-section" id="supplychain">
+          <h2>🔗 The Full Supply Chain</h2>
+
+          <p>
+            A green ammonia industry is not one plant — it is a value chain that runs from a wind turbine blade on an
+            inland farm to a bunker barge alongside a bulk carrier at anchor. Understanding who sits where, and who
+            takes which risk, is the key to understanding why these projects take so long to reach financial close.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#00695c;color:#fff;font-weight:700;">UPSTREAM — molecules</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Renewable generation</strong> — dedicated solar PV and wind farms (often 1.5–2 GW), plus grid connection or "wheeling" arrangements.</li>
+                    <li><strong>Water</strong> — seawater desalination plants with marine intake and brine outfall.</li>
+                    <li><strong>Electrolysis</strong> — alkaline/PEM electrolyser banks producing hydrogen.</li>
+                    <li><strong>Air separation</strong> — cryogenic ASU producing nitrogen.</li>
+                    <li><strong>Battery storage</strong> — utility-scale Li-ion to steady the synthesis loop.</li>
+                    <li><strong>Pipelines</strong> — hydrogen and water pipelines linking the inland energy site to the coastal plant (often 70–100 km).</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#002395;color:#fff;font-weight:700;">MIDSTREAM — ammonia</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Haber-Bosch synthesis</strong> — the reactor that combines H₂ and N₂ into NH₃.</li>
+                    <li><strong>Refrigerated storage</strong> — cryogenic tanks at −33 °C (single-containment, ~30,000 m³ for a 280 kt/yr plant).</li>
+                    <li><strong>Loader / pipeline to berth</strong> — short cryogenic pipeline to a quay with loading arms.</li>
+                    <li><strong>Bunker vessels</strong> — small LPG-type carriers (~8,000–9,000 DWT) for ship-to-ship delivery.</li>
+                    <li><strong>Export carriers</strong> — large LPG/LR2-type tankers (up to ~120,000 DWT) for long-haul ammonia exports.</li>
+                    <li><strong>Certification</strong> — proving the molecule is renewably sourced (EU RED III, IMO rules).</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#b8860b;color:#fff;font-weight:700;">DOWNSTREAM — markets</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Marine fuel (bunkering)</strong> — ammonia-powered bulk carriers, container ships and tankers.</li>
+                    <li><strong>Exports</strong> — Japan, South Korea and Europe are the anchor buyers for South African green ammonia.</li>
+                    <li><strong>Power generation</strong> — co-firing ammonia in coal stations (Japan/Korea strategy) to cut CO₂.</li>
+                    <li><strong>Fertiliser & chemicals</strong> — the traditional, always-present ammonia market.</li>
+                    <li><strong>Green steel / DRI</strong> — hydrogen for direct-reduced iron, an important local offtake.</li>
+                    <li><strong>Hydrogen exports</strong> — ammonia as the carrier molecule for the global hydrogen trade.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Port and logistics layer</h3>
+          <p class="small">
+            Every link above meets the sea at a port. South Africa has eight commercial ports and the World Bank
+            estimates that ships calling at them could demand <strong>~56,000 tonnes of hydrogen as early as 2030</strong>,
+            rising to about <strong>530,000 tonnes by 2050</strong>. The largest demand comes from Durban and Richards Bay,
+            followed by Cape Town and Saldanha Bay. In addition, the <em>passing-by fleet</em> — vessels that never call
+            at a South African port but round the Cape of Good Hope — could add a further <strong>1.3 million tonnes of
+            green hydrogen demand by 2050</strong> if the country positions itself as a bunkering hub.
+          </p>
+
+          <div class="gh-callout">
+            <strong>The three roles a port can play</strong> (World Bank): (1) a <em>consumer</em> of hydrogen for local
+            industry, (2) a <em>bunker hub</em> supplying ships, and (3) an <em>export gateway</em> shipping ammonia and
+            hydrogen derivatives to global markets. Saldanha and Coega are pursuing all three; Boegoebaai is built
+            primarily around the export role.
+          </div>
+        </section>
+
+        <!-- ============================= SALDANHA ========================== -->
+        <section class="gh-section" id="saldanha">
+          <h2>⚓ Saldanha — The Deepwater Hub</h2>
+
+          <div class="row g-3 align-items-stretch">
+            <div class="col-lg-7">
+              <p>
+                Saldanha Bay, on the Western Cape's west coast, is the <strong>largest natural deepwater port in the
+                Southern Hemisphere</strong> and the loading point for more than <strong>90% of South Africa's iron ore
+                exports</strong>. About a fifth of that ore already sails to Europe, with Rotterdam the largest receiving
+                port. Those two facts are why Saldanha sits at the centre of both the country's green-hydrogen plans and
+                the South Africa–EU iron ore green corridor.
+              </p>
+              <p class="small">
+                The <strong>Freeport Saldanha Industrial Development Zone (IDZ)</strong> — formerly the Saldanha Bay IDZ
+                and notably the first Special Economic Zone located <em>inside</em> a port — hosts a 365-hectare footprint
+                with Customs Controlled Area status, offering tax and duty benefits to developers. It adjoins the port's
+                iron ore terminal, multi-purpose terminal, and liquid-bulk berths.
+              </p>
+              <p class="small">
+                Under the <strong>West Coast Green Hydrogen Master Plan</strong>, the region is being promoted as a hub to
+                produce zero- and low-carbon fuels and goods — for domestic use, to refuel vessels calling at the port,
+                and for export. The World Economic Forum profile of the district estimates it could produce on the order
+                of <strong>50,000 tonnes of green hydrogen a year, generating around 280,000 tonnes of green ammonia</strong>.
+              </p>
+            </div>
+            <div class="col-lg-5">
+              <div class="gh-port saldanha">
+                <div class="gh-port-head">Saldanha Bay — at a glance</div>
+                <div class="gh-port-body">
+                  <table class="table table-sm mb-2">
+                    <tbody>
+                      <tr><td class="text-muted">Province</td><td><strong>Western Cape</strong></td></tr>
+                      <tr><td class="text-muted">Port type</td><td>Natural deep-water (largest in Southern Hemisphere)</td></tr>
+                      <tr><td class="text-muted">Main export</td><td>Iron ore (>90% of SA exports)</td></tr>
+                      <tr><td class="text-muted">Share to Europe</td><td>~20%, chiefly Rotterdam</td></tr>
+                      <tr><td class="text-muted">IDZ footprint</td><td>365 ha, first SEZ inside a port</td></tr>
+                      <tr><td class="text-muted">Reference plant</td><td>~50 kt H₂/yr → ~280 kt NH₃/yr</td></tr>
+                      <tr><td class="text-muted">Corridor role</td><td>Long-term bunkering hub (2029→2035)</td></tr>
+                    </tbody>
+                  </table>
+                  <span class="gh-chip green">World Bank case study</span>
+                  <span class="gh-chip bluechip">Corridor port</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>What the World Bank designed for Saldanha</h3>
+          <p class="small">
+            The World Bank's pre-feasibility case study is the single most detailed public design for a South African
+            green-ammonia plant. Its key features:
+          </p>
+          <ul class="small">
+            <li><strong>Inland renewables, coastal synthesis.</strong> A hybrid wind/solar farm and the electrolyser sit
+            about 70–75 km inland (near Moorreesburg) where the resource is strongest; the ammonia synthesis plant,
+            storage, desalination and battery sit inside the SEZ alongside the port.</li>
+            <li><strong>73 km of pipeline</strong> carry hydrogen and water from the inland site to the coast, rather than
+            building new high-voltage powerlines — the study cites evidence that moving molecules by pipeline can be up
+            to five times more cost-effective than moving electrons.</li>
+            <li><strong>Grid-connected with battery backup</strong>, so the plant sells surplus electricity to the grid
+            (helping the national supply problem) and draws steady power for synthesis at night.</li>
+            <li><strong>Bunkering at the General Maintenance Quay (GMQ)</strong>, using existing common-user infrastructure,
+            upgraded with loading arms and a short cryogenic ammonia pipeline.</li>
+            <li><strong>Two markets by design.</strong> Ship bunkering is only expected to reach the plant's scale after
+            2030, so the facility is designed to sell into the traditional ammonia market and to hydrogen offtakers
+            (including potential green-steel production) in the interim — a "phased-in" approach the study argues is
+            essential for risk management.</li>
+          </ul>
+
+          <div class="gh-callout info">
+            <strong>Saldanha's corridor role.</strong> The Global Maritime Forum feasibility study concludes that while
+            the corridor's vessels might bunker green ammonia in Rotterdam in the early years, <strong>Saldanha is
+            well-positioned to become the long-term bunkering hub for the corridor</strong> as South African production and
+            port infrastructure come online towards 2035.
+          </div>
+        </section>
+
+        <!-- ============================== COEGA ============================ -->
+        <section class="gh-section" id="coega">
+          <h2>🏭 Coega — The Giga-Scale Ammonia Plant</h2>
+
+          <div class="row g-3 align-items-stretch">
+            <div class="col-lg-7">
+              <p>
+                If Saldanha is the commissioning gateway for marine fuel, <strong>Coega</strong> is the export engine.
+                The <strong>Coega Special Economic Zone</strong> near Gqeberha (Port Elizabeth) in the Eastern Cape is
+                South Africa's flagship industrial zone — established in 1999, around 9,000 hectares in extent, and
+                served by the deep-water <strong>Port of Ngqura</strong> (16–18 m draught), purpose-built and operational
+                since 2009. It is organised into 14 zones along cluster lines (automotive, metals, energy, chemicals,
+                logistics) with Customs Controlled Areas for export-oriented manufacturing.
+              </p>
+              <p class="small">
+                The anchor hydrogen project is the <strong>Hive Hydrogen green ammonia plant</strong>, developed by
+                Hive Energy (UK) with South African partner BuiltAfrica holding a 25% stake. Reported at roughly
+                <strong>US$5.8 billion</strong> for Phase 1, it is described as South Africa's first industrial-scale
+                green ammonia plant.
+              </p>
+            </div>
+            <div class="col-lg-5">
+              <div class="gh-port coega">
+                <div class="gh-port-head">Coega / Hive — at a glance</div>
+                <div class="gh-port-body">
+                  <table class="table table-sm mb-2">
+                    <tbody>
+                      <tr><td class="text-muted">Province</td><td><strong>Eastern Cape</strong></td></tr>
+                      <tr><td class="text-muted">SEZ size</td><td>~9,000 ha, established 1999</td></tr>
+                      <tr><td class="text-muted">Adjacent port</td><td>Port of Ngqura (16–18 m draught)</td></tr>
+                      <tr><td class="text-muted">Developer</td><td>Hive Energy UK / Hive Hydrogen SA</td></tr>
+                      <tr><td class="text-muted">Phase 1 investment</td><td>~US$5.8 billion</td></tr>
+                      <tr><td class="text-muted">Output</td><td>900,000+ t/yr NH₃ (targeting ~1 Mt/yr)</td></tr>
+                      <tr><td class="text-muted">Electrolysers</td><td>1,200 MW</td></tr>
+                      <tr><td class="text-muted">Own renewables</td><td>3.6 GW solar & wind</td></tr>
+                      <tr><td class="text-muted">Jobs</td><td>20,000+</td></tr>
+                    </tbody>
+                  </table>
+                  <span class="gh-chip bluechip">1st industrial-scale</span>
+                  <span class="gh-chip green">Export-led</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>How the Coega project is structured</h3>
+          <ul class="small">
+            <li><strong>Scale:</strong> reported output of more than <strong>900,000 tonnes of green ammonia a year</strong>
+            once complete, with the current target described as <strong>~1 million tonnes a year</strong> for export —
+            roughly three-and-a-half times the scale of the World Bank's Saldanha reference plant.</li>
+            <li><strong>Power:</strong> about <strong>1,200 MW of electrolysers</strong>, fed by the project's own
+            <strong>3.6 GW</strong> of solar and wind capacity — and designed to enable up to <strong>9 GW</strong> of
+            other independent power producer (IPP) renewables to reach the grid, which the developer argues will help
+            alleviate load-shedding.</li>
+            <li><strong>Markets:</strong> export to <strong>Japan, Korea and Europe</strong>. Japanese investors have begun
+            due diligence to take an equity stake and secure offtake. End-uses include co-firing ammonia in Japanese and
+            Korean coal power stations, and marine fuel to displace heavy fuel oil and diesel.</li>
+            <li><strong>Climate impact:</strong> reported to avoid around <strong>2.6 million tonnes of CO₂-equivalent a
+            year</strong>. Commissioning has been targeted around <strong>2028–2029</strong>.</li>
+            <li><strong>Finance:</strong> the <strong>SA-H2 Fund</strong> made its first investment — about
+            <strong>US$20 million</strong> — in development funding for the Hive Coega green ammonia project.</li>
+            <li><strong>Co-developer:</strong> BuiltAfrica, a South African renewable-energy investment and development
+            company, holds 25% of Hive Hydrogen South Africa.</li>
+          </ul>
+
+          <div class="gh-callout info">
+            <strong>Coega's dual identity.</strong> The plant is simultaneously part of the country's
+            <em>export</em> strategy (giga-scale ammonia to the Far East and Europe) and its <em>domestic</em> strategy
+            (jobs, local grid capacity, industrialisation of the Eastern Cape). It does not depend on the iron ore
+            corridor — it is the volume play, while Saldanha is the corridor play.
+          </div>
+        </section>
+<!-- ============================== HUBS ============================= -->
+        <section class="gh-section" id="hubs">
+          <h2>🧭 The Other Hydrogen Hubs</h2>
+
+          <p class="small">
+            South Africa's hydrogen programme is deliberately multi-nodal. The Department of Public Works and
+            Infrastructure has selected nine "Strategic Integrated Projects" (SIPs) for expedited approval, and the
+            World Economic Forum workshop focused on three major hub opportunities: <strong>Saldanha Bay</strong>,
+            <strong>Coega / Ngqura</strong>, and <strong>Boegoebaai</strong>, plus a <strong>Durban–Richards Bay
+            "hydrogen valley"</strong> on the east coast.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="gh-port boegoebaai h-100">
+                <div class="gh-port-head">Boegoebaai — Northern Cape</div>
+                <div class="gh-port-body">
+                  <p class="mb-2">
+                    A proposed <strong>greenfield deep-sea port</strong> in the Northern Cape, near the Orange River
+                    mouth, designed from scratch around green hydrogen and bulk exports. The WEF lists the Boegoebaai
+                    Green H₂ Programme at up to <strong>400 kt H₂/yr</strong>, and the Global Maritime Forum lists
+                    announced ammonia capacity near the port of around <strong>285 ktpa</strong> by 2035.
+                  </p>
+                  <p class="mb-0 small text-muted">
+                    Because it is greenfield, Boegoebaai can be purpose-built for high-volume export of green molecules
+                    (ammonia, hydrogen derivatives) alongside mining and agricultural products — but it must also
+                    attract the rail, road and grid infrastructure to get there. The World Bank's second case study
+                    examined green shipping fuel production at Boegoebaai alongside Saldanha.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="gh-port h-100">
+                <div class="gh-port-head" style="background:#7b1fa2;">Durban–Richards Bay Hydrogen Valley</div>
+                <div class="gh-port-body">
+                  <p class="mb-2">
+                    A proposed "hydrogen valley" running along South Africa's north-east coastline, from Durban to
+                    Richards Bay in KwaZulu-Natal. The idea is to <strong>aggregate demand</strong> across existing
+                    heavy industry — refineries, chemicals, paper and pulp, aluminium, and the ports themselves — to
+                    kick-start hydrogen production at scale.
+                  </p>
+                  <p class="mb-0 small text-muted">
+                    Richards Bay is also the site of the proposed LNG-to-power and FSRU developments, and is one of
+                    South Africa's two largest port energy-demand nodes alongside Durban.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Other announced and proposed projects</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>Project</th><th>Product</th><th>Scale</th><th>Location</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Prieska Power Reserve</strong></td><td>Ammonia</td><td>70+ kt NH₃/yr</td><td>Northern Cape</td></tr>
+                <tr><td><strong>Ubuntu Green Energy H₂</strong></td><td>Ammonia</td><td>73 kt NH₃/yr</td><td>Eastern Cape</td></tr>
+                <tr><td><strong>Boegoebaai Green H₂ Programme</strong></td><td>Hydrogen</td><td>up to 400 kt H₂/yr</td><td>Northern Cape</td></tr>
+                <tr><td><strong>Sasol HySHiFT</strong></td><td>Sustainable aviation fuel</td><td>15 kt/yr (up to 2.5 Mt/yr potential)</td><td>Gauteng / Mpumalanga</td></tr>
+                <tr><td><strong>Sasolburg Green H₂ Programme</strong></td><td>Hydrogen</td><td>~1.8 kt H₂/yr</td><td>Free State</td></tr>
+                <tr><td><strong>Anglo-American Mogalakwena</strong></td><td>Hydrogen (on-mine)</td><td>3.5 MW electrolyser</td><td>Limpopo</td></tr>
+                <tr><td><strong>Hive Hydrogen (Coega)</strong></td><td>Ammonia</td><td>900 kt–1 Mt NH₃/yr</td><td>Eastern Cape</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Sources: WEF (2024) nine fast-tracked SIP profiles; Global Maritime Forum/RMI (2025) regional project
+            capacity estimates. The list is indicative and not exhaustive.
+          </p>
+
+          <h3>Regional context — Namibia</h3>
+          <p class="small">
+            The opportunities do not stop at the border. Namibian projects near <strong>Walvis Bay</strong> and the
+            Erongo region are part of the same Southern African supply picture, with announced ammonia capacity of
+            about <strong>177 ktpa by 2035</strong>. Namibia's flagship is the <strong>Hyphen</strong> project — a
+            multi-billion-dollar solar, wind and green ammonia development. Together, announced or in-development
+            projects in South Africa's Northern and Western Cape plus Namibia's Erongo region exceed
+            <strong>700 ktpa (hydrogen equivalent)</strong>, comfortably more than the iron-ore corridor would need
+            under any demand scenario. The WEF describes the potential for a <strong>green corridor linking Southern
+            Africa's coastal ports</strong> to connect this supply with demand.
+          </p>
+        </section>
+
+        <!-- ============================= BUNKER ============================ -->
+        <section class="gh-section" id="bunker">
+          <h2>🚢 Ammonia-Fuelled Bunker Carriers & Bunkering</h2>
+
+          <p>
+            Shipping carries over 80% of world trade. It also emitted about 1.1&nbsp;Gt of greenhouse gases in 2018 —
+            roughly 3% of the global total — and 99% of commercial shipping still burns fossil bunker fuel. In July 2023
+            the International Maritime Organization (IMO) adopted an ambition of <strong>net-zero emissions for
+            international shipping by or around 2050</strong>. Meeting the interim target (zero- or near-zero-emission
+            energy making up 5–10% of the fleet's energy mix by 2030) would require <strong>at least 5 million tonnes of
+            green hydrogen for shipping alone</strong>.
+          </p>
+
+          <h3>Methanol versus ammonia as a marine fuel</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>Property</th><th>Green Methanol</th><th>Green Ammonia</th><th>Green Hydrogen</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Volumetric energy density (MJ/l)</td><td>15</td><td>12.5</td><td>8.5</td></tr>
+                <tr><td>Flammability</td><td>Highly flammable</td><td>Narrow range (18–25% in air)</td><td>Highly flammable</td></tr>
+                <tr><td>Toxicity</td><td>Toxic</td><td><strong>Highly toxic</strong></td><td>Non-toxic</td></tr>
+                <tr><td>CO₂ emissions in combustion</td><td>≈ net-zero (needs green carbon)</td><td><strong>≈ zero</strong></td><td>Zero</td></tr>
+                <tr><td>Onboard storage</td><td>Ambient conditions</td><td>−33 °C (or 8 bar)</td><td>−253 °C</td></tr>
+                <tr><td>Ship engines</td><td>Available</td><td>Commercialising from 2025+</td><td>Early</td></tr>
+                <tr><td>Port infrastructure</td><td>Established</td><td>Established commodity handling</td><td>Not established</td></tr>
+                <tr><td>Bunkering experience</td><td>Yes</td><td>Pilot stage</td><td>Small-scale pilot</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: World Bank (2024), adapting IRENA (2022), IEA (2019), IRENA & Methanol Institute (2021).
+          </p>
+
+          <p class="small">
+            Methanol is the more technologically mature near-term option — engines are already available and more than
+            200 dual-fuel methanol vessels have been ordered globally. But methanol needs a sustainable source of
+            carbon, and that is precisely where South Africa is short: there is little biogenic CO₂ available near the
+            candidate ports, and industrial CO₂ sources do not close the carbon cycle. Ammonia needs only nitrogen from
+            the air, and it can double as a hydrogen export carrier. That is why <strong>ammonia is the preferred
+            South African marine fuel</strong>, while methanol remains a complementary option.
+          </p>
+
+          <h3>How bunkering works</h3>
+          <ul class="small">
+            <li><strong>The bunker vessel / barge.</strong> A small ammonia-capable carrier — in the World Bank design,
+            a mid-size LPG-type vessel of about <strong>9,145 m³ (≈8,000 DWT)</strong> — takes ammonia from the shore
+            tank and delivers it ship-to-ship (STS) to a vessel at anchor or alongside a berth.</li>
+            <li><strong>Refrigerated transfer.</strong> Ammonia moves at about <strong>−33 °C</strong> through composite
+            flexible hoses between barge and client vessel.</li>
+            <li><strong>Parcel size.</strong> In the World Bank model each receiving vessel takes a parcel of around
+            4,573 m³, at a ship-to-ship loading rate of <strong>400 m³ per hour</strong>. Because ammonia has roughly half
+            the energy density of oil, ships must bunker <em>about twice as often</em> — which is exactly why a
+            mid-voyage bunkering stop like Saldanha becomes valuable.</li>
+            <li><strong>Regional reach.</strong> A single bunker vessel can serve both Saldanha and Cape Town (~120 km
+            apart), improving its economics.</li>
+          </ul>
+
+          <div class="gh-callout warn">
+            <strong>Safety is the gating factor.</strong> Ammonia is highly toxic. The liquid causes caustic burns on
+            contact, and a release forms a vapour cloud. Refrigerated ammonia bunkering requires quantitative risk
+            assessment: indicative safety distances at a 400 m³/h transfer rate are about <strong>153 m for the
+            10⁻⁵/year individual-risk contour</strong> and <strong>255 m for the 10⁻⁶/year contour</strong>, with a toxic
+            cloud "focus area" extending to roughly <strong>1.45 km</strong>. Standards for ammonia bunkering (like
+            Rotterdam's PGS-12) are still being written; IMO guidelines are under development. Ammonia is already
+            handled safely at about <strong>150 port terminals worldwide</strong>, moving around 20 Mt a year — so the
+            challenge is adapting existing practice to the novel act of <em>bunkering</em>, not inventing handling from
+            scratch. Engine designers must also control nitrous oxide (N₂O) "slip" — a greenhouse gas with a
+            <strong>global warming potential about 273 times that of CO₂</strong> over 100 years.
+          </div>
+
+          <h3>Where the ships are coming from</h3>
+          <p class="small">
+            Ammonia-powered ships are no longer hypothetical. Iron ore bulk carriers make up a large share of
+            ammonia-powered vessels on order globally, with <strong>15 vessels due to hit the water by 2028</strong> and
+            more expected. The Global Maritime Forum feasibility study found that up to <strong>12 of these could be
+            available to serve the South Africa–Europe iron ore corridor</strong> in its first deployment years, depending
+            on where a viable business case exists. The preferred deployment is a dedicated fleet on an "S-curve":
+            starting with one vessel in 2029 and adding three a year.
+          </p>
+        </section>
+<!-- ============================ CORRIDOR =========================== -->
+        <section class="gh-section" id="corridor">
+          <h2>🛤️ The South Africa–EU Iron Ore Green Corridor</h2>
+
+          <p>
+            A <strong>green shipping corridor</strong> is a specific trade route where governments, cargo owners, ship
+            operators, ports and fuel suppliers collaborate to make zero-emission shipping viable on that route. More
+            than 70 corridors have been announced since the Clydebank Declaration at COP26 in 2021 — but the
+            <strong>South Africa–EU iron ore corridor is one of the very few connecting the Global South to the Global
+            North</strong>.
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">Who is behind it</h5>
+                  <p class="small mb-2">
+                    A consortium convened by the <strong>Global Maritime Forum</strong>:
+                  </p>
+                  <ul class="small mb-0 ps-3">
+                    <li><strong>Anglo American</strong> — cargo owner / miner</li>
+                    <li><strong>CMB.TECH</strong> — ship technology and operator</li>
+                    <li><strong>Freeport Saldanha</strong> — port authority / industrial zone</li>
+                    <li><strong>VUKA Marine</strong> — shipping</li>
+                    <li><strong>Engie</strong> — energy</li>
+                    <li><em>Tata Steel</em> — former member</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--gh-green);font-weight:700;">The study</h5>
+                  <p class="small mb-2">
+                    The feasibility analysis was conducted by the <strong>Rocky Mountain Institute (RMI)</strong> with
+                    input from consortium members and South African stakeholders. Work kicked off at the end of 2024 and
+                    was <strong>completed in September 2025</strong>.
+                  </p>
+                  <p class="small mb-0">
+                    <strong>Route:</strong> Port of Saldanha ⇄ Port of Rotterdam, using
+                    <strong>South African-produced green ammonia</strong> as the fuel.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The decarbonisation target</h3>
+          <div class="row g-3 mb-3">
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">2029</div>
+                <div class="gh-lbl">Target for the first green-ammonia-powered bulk carriers on the route</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">2035</div>
+                <div class="gh-lbl">Target for full decarbonisation of the corridor</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">210,000 DWT</div>
+                <div class="gh-lbl">Newcastlemax bulk carriers — the reference vessel class</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gh-stat">
+                <div class="gh-num">~2,740 t</div>
+                <div class="gh-lbl">Green ammonia burned per round trip, across ~6 round trips a year</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="small">
+            In the initial years, while South African bunkering infrastructure is still being built, vessels may bunker
+            green ammonia produced elsewhere — <strong>Rotterdam</strong> is the likely early supply point. The long-term
+            plan is for the fuel to be produced and bunkered in South Africa.
+          </p>
+
+          <h3>The corridor's green ammonia demand</h3>
+          <p class="small">
+            Demand depends on how much iron ore flows from South Africa to Europe. Three scenarios were modelled to 2035:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Iron ore shipped (South Africa → Europe)</th>
+                  <th>Vessels required</th>
+                  <th>Annual green ammonia demand</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Low</strong> — faster abatement, more scrap-based steel and HBI imports</td>
+                  <td>6.8 Mtpa (DWT)</td>
+                  <td>~6 vessels</td>
+                  <td><strong>89.1 ktpa</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Medium</strong> — business as usual, volumes near today's levels</td>
+                  <td>11.3 Mtpa (DWT)</td>
+                  <td>~9 vessels</td>
+                  <td><strong>147.5 ktpa</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>High</strong> — South Africa supplies growing European demand for DR-grade ore for green steel</td>
+                  <td>26.9 Mtpa (DWT)</td>
+                  <td>~22 vessels</td>
+                  <td><strong>350.8 ktpa</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: Global Maritime Forum / RMI (2025). ktpa = kilotonnes per annum; DWT = deadweight tonnage.
+          </p>
+
+          <p class="small">
+            Translating ammonia back to hydrogen feedstock, the corridor becomes a <strong>meaningful offtaker for
+            hydrogen producers</strong> — in 2030 it could represent a larger share of shipping's green hydrogen demand
+            than the cement, mining and domestic iron sectors combined. That matters because hydrogen projects need
+            large, bankable offtake volumes to reach final investment decision (FID), and a green corridor aggregates
+            demand in a way that a fragmented domestic market cannot.
+          </p>
+
+          <h3>Vessel deployment — the three strategies</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>Strategy</th><th>How it works</th><th>Green trips by 2035 (low / med / high)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>1 · Retirements only</strong></td><td>Ammonia vessels replace trips from conventional vessels as they retire.</td><td>25% / 33% / 53%</td></tr>
+                <tr><td><strong>2 · Early displacements</strong></td><td>Conventional vessels displaced to other routes after a 12-year life; new ammonia vessels take their trips.</td><td>100% / 70% / 57%</td></tr>
+                <tr><td><strong>3 · Dedicated vessels</strong> <span class="gh-chip green">preferred</span></td><td>New ammonia vessels are dedicated to the corridor on an S-curve: 1 in 2029, 4 in 2030, 7 in 2031, rising to ~22 by 2035.</td><td><strong>100% / 100% / 100%</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">
+            Only the dedicated-fleet strategy decarbonises the entire route under every demand scenario — with full
+            decarbonisation reached by 2031 (low demand) and 2032 (medium demand). Because iron ore is currently shipped
+            on a "tramp" basis (vessels hired for individual voyages), deploying dedicated ammonia vessels does not
+            require waiting for conventional ships to retire.
+          </p>
+
+          <h3>Where the green ammonia will come from</h3>
+          <p class="small">
+            Announced or in-development green ammonia projects in the Southern African region have a combined capacity
+            of <strong>more than 700 ktpa (hydrogen equivalent) by 2035</strong>, concentrated around:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>Location</th><th>Country</th><th>Announced ammonia capacity by 2035</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Boegoebaai</strong></td><td>South Africa (Northern Cape)</td><td>285 ktpa</td></tr>
+                <tr><td><strong>Saldanha</strong></td><td>South Africa (Western Cape)</td><td>275 ktpa</td></tr>
+                <tr><td><strong>Walvis Bay / Erongo</strong></td><td>Namibia</td><td>177 ktpa</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: Global Maritime Forum / RMI (2025), drawing on the IEA Hydrogen Projects Database. Note these are
+            based on project MOUs and announcements and may not reflect actual projects coming online. As of the
+            report's publication, <strong>none of these projects had reached FID</strong> on their production plants.
+          </p>
+
+          <div class="gh-callout warn">
+            <strong>The critical risk: none is financed yet.</strong> Ammonia plants typically take five to eight years
+            from concept to commercial operation. To have green ammonia flowing on the corridor in 2029, investment
+            decisions were needed <em>yesterday</em>. Delays come from an uncertain policy landscape, permitting,
+            high capital costs, slow infrastructure development and the absence of secured offtake. Demand aggregation
+            with other buyers — not just the corridor — is likely required to get projects over the line.
+          </div>
+
+          <div class="gh-dl mt-3">
+            <div class="gh-dl-icon">📘</div>
+            <div>
+              <h6>Assessing the feasibility of the South Africa–Europe iron ore green shipping corridor</h6>
+              <p>Global Maritime Forum & Rocky Mountain Institute, September 2025. The full feasibility study — demand scenarios, cost modelling, regulatory analysis and recommendations. Downloaded and stored locally in this dashboard.</p>
+              <a class="btn btn-sm btn-success" href="../data/green-hydrogen/South-Africa-Europe-Iron-Ore-Green-Corridor.pdf" target="_blank" rel="noopener">⬇ Download the corridor report (PDF, ~4.7 MB)</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================= MARKET ============================ -->
+        <section class="gh-section" id="market">
+          <h2>📈 The Ammonia Market & Pricing</h2>
+
+          <h3>Two markets in one molecule</h3>
+          <p class="small">
+            Ammonia has been traded globally for a century, and this existing market is what de-risks the green
+            transition. There are effectively two demand pools:
+          </p>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#546e7a;color:#fff;font-weight:700;">The traditional market</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Fertiliser</strong> — by far the largest use, as a source of nitrogen for crops.</li>
+                    <li><strong>Chemicals & explosives</strong> — industrial feedstock.</li>
+                    <li><strong>Refrigeration</strong> — industrial cooling.</li>
+                    <li>Around <strong>20 million tonnes of ammonia a year</strong> is moved by ship and handled at about <strong>150 port terminals worldwide</strong>, including in South Africa.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#007A4D;color:#fff;font-weight:700;">The emerging energy market</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Marine fuel</strong> — the core opportunity for South Africa.</li>
+                    <li><strong>Co-firing in power stations</strong> — mainly Japan and Korea.</li>
+                    <li><strong>Hydrogen carrier</strong> — exporting hydrogen as ammonia.</li>
+                    <li><strong>Green steel (DRI)</strong> — hydrogen as a reducing agent.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>What drives the price</h3>
+          <p class="small">
+            <strong>Grey ammonia</strong> is priced broadly off natural gas (its main feedstock), so its cost moves with
+            gas prices. <strong>Green ammonia</strong> replaces that gas cost with the cost of renewable electricity,
+            electrolysers and capital. Because renewables and capital dominate, green ammonia's price is driven by:
+          </p>
+          <ul class="small">
+            <li><strong>Renewable energy cost</strong> — the single largest input; the reason places with world-class
+            solar and wind can compete.</li>
+            <li><strong>Electrolyser capital cost and efficiency</strong> — falling as the industry scales.</li>
+            <li><strong>Cost of capital</strong> — the Achilles' heel of emerging markets. In South Africa the cost of
+            capital for energy projects can be as high as <strong>18%</strong> (with debt up to ~12%), which is why
+            developers argue the "green premium" needs concessional finance and de-risking to close.</li>
+            <li><strong>Bunkering volume and logistics</strong> — economies of scale in port bunkering are typically
+            realised once volumes exceed <strong>200 ktpa</strong>, which is why demand aggregation matters so much.</li>
+          </ul>
+
+          <h3>The green premium in numbers — the World Bank's Saldanha analysis</h3>
+          <p class="small">
+            The World Bank ran the Saldanha project through four additive business scenarios, each adding a step of the
+            value chain and a new revenue stream. The results show precisely where the value sits today — and where it
+            does not yet exist:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>What it sells</th>
+                  <th>NPV (2025, 6% WACC)</th>
+                  <th>Payback</th>
+                  <th>IRR</th>
+                  <th>Verdict</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>A</strong></td>
+                  <td>Renewable electricity only, sold at market tariff</td>
+                  <td>+US$242m</td>
+                  <td>12 yrs</td>
+                  <td>7.2%</td>
+                  <td><span class="gh-chip green">Viable</span></td>
+                </tr>
+                <tr>
+                  <td><strong>B</strong></td>
+                  <td>Green hydrogen to local industry at US$2/kg</td>
+                  <td>−US$692m</td>
+                  <td>19 yrs</td>
+                  <td>2.7%</td>
+                  <td><span class="gh-chip red">Not viable as modelled</span></td>
+                </tr>
+                <tr>
+                  <td><strong>C</strong></td>
+                  <td>Green ammonia sold to the traditional (international) market</td>
+                  <td>+US$219m</td>
+                  <td>13 yrs</td>
+                  <td>6.8%</td>
+                  <td><span class="gh-chip green">Viable</span></td>
+                </tr>
+                <tr>
+                  <td><strong>D</strong></td>
+                  <td>Green ammonia sold to ships at the VLSFO energy-equivalent price</td>
+                  <td>−US$1,672m</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td><span class="gh-chip red">Large cost gap</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: World Bank (2024). VLSFO = very low sulphur fuel oil. Roughly two tonnes of ammonia match the
+            energy content of one tonne of conventional marine fuel.
+          </p>
+
+          <div class="gh-callout info">
+            <strong>The punchline.</strong> Selling renewable <em>electricity</em> works. Selling green <em>ammonia
+            into the traditional fertiliser/chemicals market</em> works. Selling green hydrogen as an industrial
+            feedstock at US$2/kg does <em>not</em> yet work. And selling green ammonia <em>as a marine fuel at parity
+            with oil</em> — the immature market — does not work today without policy support. This is why the industry
+            talks about a "green premium" and a "cost gap": it is the difference between what green ammonia costs to
+            make and what buyers currently pay for the fossil alternative.
+          </div>
+
+          <h3>Capital cost — the Saldanha reference plant</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>System element</th><th>CAPEX (US$)</th><th>OPEX (US$/yr)</th><th>OPEX as % of CAPEX</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Renewable energy generation plant</td><td>1,330,000,000</td><td>38,041,000</td><td>2.9%</td></tr>
+                <tr><td>Ammonia synthesis plant (ASU + Haber-Bosch)</td><td>215,603,000</td><td>8,625,000</td><td>4.0%</td></tr>
+                <tr><td>Electrolysis</td><td>202,119,000</td><td>4,044,000</td><td>2.0%</td></tr>
+                <tr><td>Hydrogen pipeline</td><td>91,874,000</td><td>7,351,000</td><td>8.0%</td></tr>
+                <tr><td>Land</td><td>55,470,000</td><td>555,000</td><td>1.0%</td></tr>
+                <tr><td>Bunker vessel</td><td>43,358,000</td><td>3,104,000</td><td>7.2%</td></tr>
+                <tr><td>Utility-scale battery</td><td>37,824,000</td><td>946,000</td><td>2.5%</td></tr>
+                <tr><td>Ammonia storage</td><td>22,955,000</td><td>919,000</td><td>4.0%</td></tr>
+                <tr><td>Water supply (desalination)</td><td>7,083,000</td><td>267,000</td><td>3.8%</td></tr>
+                <tr><td>Ammonia pipeline</td><td>781,000</td><td>63,000</td><td>8.1%</td></tr>
+                <tr><td>Berth solution (common-user)</td><td>—</td><td>2,160,000</td><td>—</td></tr>
+                <tr class="table-light"><td><strong>Total</strong></td><td><strong>2,007,067,000</strong></td><td><strong>66,075,000</strong></td><td><strong>3.3%</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: World Bank (2024). 2018 US dollars, excluding inflation and the cost of importing renewable
+            components. Note that <strong>two-thirds of all capital goes into the renewable energy plant alone</strong> —
+            the hydrogen and ammonia technology is a minority of the bill.
+          </p>
+
+          <h3>Delivered cost of green ammonia — who is cheapest?</h3>
+          <p class="small">
+            The Global Maritime Forum compared the total delivered cost of bunkering green ammonia at each end of the
+            corridor (US$ per tonne, in VLSFO-equivalent terms):
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered gh-table">
+              <thead>
+                <tr><th>Bunkering location & supply source</th><th>Delivered cost</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Saldanha — local production (medium demand)</td><td>~$2,740/mt</td><td>Lowest regional option thanks to minimal transport cost</td></tr>
+                <tr><td>Saldanha — local production (high demand)</td><td>~$2,742/mt</td><td>Economies of scale reduce production cost</td></tr>
+                <tr><td>Saldanha — from Texas (US)</td><td>~$2,000/mt</td><td>Cheapest internationally, thanks to US IRA production tax credits</td></tr>
+                <tr><td>Rotterdam — locally produced</td><td>~$2,337/mt</td><td>Higher wind capacity and lower capital costs help</td></tr>
+                <tr><td>Rotterdam — from Texas (US)</td><td>~$1,820/mt</td><td>Cheapest overall, but exposed to IRA uncertainty and trade risk</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">
+            The headline is that <strong>Saldanha remains regionally competitive</strong> — the gap to Rotterdam-based
+            production ranges from about $100 to $300 per tonne, narrow enough to be closed by factors such as labour
+            cost, land availability and the strategic value of a domestic supply chain. The US advantage depends heavily
+            on Inflation Reduction Act tax credits, which face political uncertainty; without them the comparison
+            becomes much more balanced.
+          </p>
+        </section>
+<!-- ============================= POLICY ============================ -->
+        <section class="gh-section" id="policy">
+          <h2>⚖️ Policy & Regulation</h2>
+
+          <p class="small">
+            The economics of green ammonia depend as much on regulation as on engineering. Three regulatory systems
+            matter most to a South African producer selling into the corridor.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#002395;color:#fff;font-weight:700;">EU — FuelEU Maritime & EU ETS</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>FuelEU Maritime</strong> — a greenhouse-gas fuel-intensity requirement that came into
+                    force in January 2025.</li>
+                    <li><strong>EU Emissions Trading Scheme (EU ETS)</strong> — an emissions levy expected to be fully
+                    phased in by 2026.</li>
+                    <li>Both apply to <strong>50% of voyages</strong> entering or leaving the EU, and non-compliance
+                    incurs penalties. FuelEU allows trading of over- and under-compliance between vessels.</li>
+                    <li><strong>Impact:</strong> together these regulations narrow the green ammonia cost gap by
+                    <strong>63%</strong>, materially strengthening the investment case.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#00695c;color:#fff;font-weight:700;">IMO — Net-Zero Framework</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li>Implements the 2023 IMO GHG Strategy: <strong>net-zero by 2050</strong>, with interim targets of
+                    at least <strong>20% reduction by 2030</strong> and <strong>70% by 2040</strong>.</li>
+                    <li>Agreed in April 2025; adoption was <strong>delayed in October 2025</strong> and is set to be
+                    revisited in 2026.</li>
+                    <li>A <strong>two-tier global fuel standard</strong> plus a credit-trading mechanism. Ships that
+                    over-comply can sell surplus units to those that under-comply.</li>
+                    <li>Additional rewards for "zero- and near-zero" fuels (&le;19.0 gCO₂eq/MJ vs ~93.3 today).</li>
+                    <li><strong>Impact:</strong> under the most favourable assumptions, green ammonia could be almost
+                    <strong>30% cheaper</strong> than VLSFO on a total-cost-of-ownership basis; under the least
+                    favourable, about <strong>30% more expensive</strong> — hence the uncertainty.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card gh-card h-100">
+                <div class="card-header" style="background:#b8860b;color:#fff;font-weight:700;">EU — RED III & CBAM</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Renewable Energy Directive III (RED III)</strong> requires
+                    <strong>42% of all ammonia</strong> consumed in the EU to be green by 2030 — for both domestic
+                    production <em>and imports</em>. This is a direct demand mandate for South African ammonia.</li>
+                    <li>RED III sets strict rules on "additionality", geography and temporal correlation (hourly matching
+                    from 2030) that determine whether a molecule can be certified as renewable.</li>
+                    <li><strong>CBAM</strong> — the carbon border adjustment mechanism — prices the embedded carbon in
+                    imports, putting up to 35% of South Africa's export value at risk without decarbonisation.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>South Africa's side of the bargain</h3>
+          <p class="small">
+            For the corridor and the plants to proceed, the WEF and Global Maritime Forum both stress that South Africa
+            must deliver an enabling domestic environment. The list keeps recurring:
+          </p>
+          <ul class="small">
+            <li><strong>Long-term offtake contracts.</strong> Green ammonia plants need agreements of <strong>six to ten
+            years or more</strong> to reach financial close, but today's shipping market buys fuel on the spot or on
+            contracts of under a year. <em>This mismatch is the single biggest commercial barrier.</em></li>
+            <li><strong>Concessional and blended finance</strong> to lower the cost of capital — the SA-H2 Fund is the
+            template.</li>
+            <li><strong>Port, rail and grid upgrades</strong> so that products can physically move and the plants can
+            connect.</li>
+            <li><strong>Regulatory clarity</strong> on safety, permitting (EIAs typically take around two years) and
+            certification.</li>
+            <li><strong>Skills</strong> — SAREM is coordinating 21 Sector Education and Training Authorities to build the
+            workforce.</li>
+          </ul>
+
+          <div class="gh-callout">
+            <strong>Double counting as upside.</strong> If EU regulations continue alongside the IMO framework, penalties
+            and rewards could apply in parallel — potentially doubling surplus-unit generation and strengthening the
+            business case for the South Africa–Europe route relative to competing iron ore routes such as
+            Australia–East Asia or Brazil–China.
+          </div>
+        </section>
+
+        <!-- ============================== RISKS ============================ -->
+        <section class="gh-section" id="risk">
+          <h2>⚠️ Key Risks & Challenges</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Electricity crisis and grid</h6>
+                  <p class="small mb-0">
+                    South Africa's grid operates at little more than 50% capacity and has limited headroom for new
+                    generation. Only around 30 GW of renewables can currently be absorbed, far short of the ~190 GW
+                    implied by a 2050 net-zero pathway, and at least 14,000 km of new power lines would be needed.
+                    Green hydrogen projects must add renewable capacity rather than compete for existing supply.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Port and logistics inefficiency</h6>
+                  <p class="small mb-0">
+                    Operators lack confidence in South African ports' reliability — the World Bank ranked the country's
+                    container ports at the bottom of global performance in 2021. For new commodities like ammonia, the
+                    port system faces entirely new operational and safety requirements. Protecting infrastructure and
+                    restoring efficiency is a precondition for the whole hydrogen economy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Cost of capital</h6>
+                  <p class="small mb-0">
+                    Energy projects in South Africa face a cost of capital as high as 18% (debt up to about 12%),
+                    against far lower rates in Europe and the US. This alone can make an otherwise competitive project
+                    unbankable, and it is why concessional finance, guarantees and blended structures are central to the
+                    strategy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Offtake mismatch and no FID</h6>
+                  <p class="small mb-0">
+                    Green ammonia projects need long-term offtake; shipping buys short-term. As of the corridor
+                    feasibility report, <strong>none of the announced Southern African ammonia projects had reached
+                    final investment decision</strong>. Without aggregated demand that spans sectors, projects may simply
+                    not be built in time for a 2029 corridor launch.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Ammonia safety</h6>
+                  <p class="small mb-0">
+                    Ammonia is highly toxic. Bunker-handling regulations are still being written, safety distances can be
+                    substantial, and N₂O slip from engines must be controlled to preserve the climate benefit. South
+                    Africa would be introducing a new class of port hazard close to residential areas such as Saldanha
+                    town.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card gh-card h-100">
+                <div class="card-body">
+                  <h6 class="fw-bold" style="color:var(--gh-red);">Water, land and biodiversity</h6>
+                  <p class="small mb-0">
+                    Large renewable plants need land — 15,700 ha for a wind farm alone in the Saldanha case — much of it
+                    potentially classified as Critical Biodiversity Area, triggering offset requirements. Desalination
+                    must be managed to protect marine life. Social acceptance depends on these impacts being handled
+                    well.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================= OUTLOOK =========================== -->
+        <section class="gh-section" id="outlook">
+          <h2>🔭 Outlook — The Decade That Decides It</h2>
+
+          <div class="gh-timeline">
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2025–2026</div>
+              <p class="small mb-0">
+                Corridor feasibility study completed (Sept 2025). FuelEU and EU ETS bite. IMO Net-Zero Framework
+                revisited. SA-H2 Fund deploys first capital into the Coega plant. The next 18 months are about
+                converting pre-feasibility work into bankable deals.
+              </p>
+            </div>
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2026–2028</div>
+              <p class="small mb-0">
+                Ammonia-powered vessels begin entering service (15 bulk carriers due by 2028). Saldanha bunkering studies
+                and port infrastructure design progress. Coega targets commissioning around 2028–2029. RED III's 42%
+                green ammonia mandate and hourly matching arrive in 2030, creating hard demand.
+              </p>
+            </div>
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2029</div>
+              <p class="small mb-0">
+                Corridor target year for the <strong>first green-ammonia-powered iron ore carriers</strong> on the
+                Saldanha–Rotterdam route — with fuel likely bunkered in Rotterdam initially.
+              </p>
+            </div>
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2030–2032</div>
+              <p class="small mb-0">
+                Shipping's tipping point: at least 5% of global fleet energy from scalable zero-emission fuels. Under the
+                preferred deployment strategy, the corridor could be fully decarbonised by 2031–2032 if dedicated
+                vessels are added as planned. South African bunkering at Saldanha ramps up.
+              </p>
+            </div>
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2035</div>
+              <p class="small mb-0">
+                Corridor target for <strong>full decarbonisation</strong>. Saldanha positioned as the long-term bunkering
+                hub. Regional ammonia capacity (Saldanha, Boegoebaai, Walvis Bay) could exceed 700 ktpa of hydrogen
+                equivalent — more than enough for the corridor under every demand scenario.
+              </p>
+            </div>
+            <div class="gh-tl-item">
+              <div class="gh-tl-year">2050</div>
+              <p class="small mb-0">
+                The hydrogen economy could add <strong>5.9% to GDP (roughly R500 billion)</strong> and up to
+                <strong>1.8–2 million jobs</strong> under scenarios with hydrogen exports. International shipping's
+                demand for South African hydrogen could reach <strong>~2 million tonnes a year</strong>; the passing-by
+                fleet could add another 1.3 Mt.
+              </p>
+            </div>
+          </div>
+
+          <div class="gh-callout info">
+            <strong>The single sentence version.</strong> South Africa has the renewables, the ports, the ammonia
+            handling experience and the platinum to build a world-class green ammonia industry — what it does not yet
+            have is finance at a competitive cost, ports that global shipping trusts, and offtake contracts long enough
+            to bank the plants. Those three gaps are the whole game.
+          </div>
+        </section>
+
+        <!-- ============================= SOURCES =========================== -->
+        <section class="gh-section" id="sources">
+          <h2>📚 Documents & Downloads</h2>
+          <p class="small">
+            The primary sources behind this page, stored locally in this dashboard so they remain accessible offline.
+          </p>
+
+          <div class="gh-dl">
+            <div class="gh-dl-icon">📘</div>
+            <div>
+              <h6>Assessing the feasibility of the South Africa–Europe iron ore green shipping corridor</h6>
+              <p>Global Maritime Forum & Rocky Mountain Institute (RMI), September 2025. The feasibility study for the
+              Saldanha–Rotterdam green corridor: demand scenarios, ammonia volumes, vessel deployment, cost of ownership,
+              EU/IMO regulatory impacts and the roadmap to 2029.</p>
+              <a class="btn btn-sm btn-success" href="../data/green-hydrogen/South-Africa-Europe-Iron-Ore-Green-Corridor.pdf" target="_blank" rel="noopener">⬇ Download (PDF, ~4.7 MB)</a>
+            </div>
+          </div>
+
+          <div class="gh-dl">
+            <div class="gh-dl-icon">📗</div>
+            <div>
+              <h6>Creating a Green Marine Fuel Market in South Africa</h6>
+              <p>World Bank — Salgmann, Weidenhammer & Englert (2024), Mobility and Transport Connectivity Series.
+              The Saldanha and Boegoebaai case studies: full technical design, optimised component sizing, CAPEX/OPEX,
+              financial scenarios A–D and the port-as-hub framework.</p>
+              <a class="btn btn-sm btn-success" href="../data/green-hydrogen/World-Bank-SA-Green-Hydrogen-Ammonia.pdf" target="_blank" rel="noopener">⬇ Download (PDF, ~22 MB)</a>
+            </div>
+          </div>
+
+          <div class="gh-dl">
+            <div class="gh-dl-icon">📙</div>
+            <div>
+              <h6>Decarbonizing South Africa's Shipping and Trucking Sectors</h6>
+              <p>World Economic Forum White Paper, June 2024 (First Movers Coalition). Hydrogen use-cases, the nine
+              fast-tracked green hydrogen mega-projects, financing and policy barriers, and the shipping/trucking
+              decarbonisation pathway.</p>
+              <a class="btn btn-sm btn-success" href="../data/green-hydrogen/WEF-Decarbonizing-SA-Shipping-Trucking-2024.pdf" target="_blank" rel="noopener">⬇ Download (PDF, ~3.5 MB)</a>
+            </div>
+          </div>
+
+          <h3>Other references</h3>
+          <ul class="small">
+            <li>Global Maritime Forum — <em>South Africa: fuelling the future of shipping</em> (P4G Getting to Zero Coalition Partnership).</li>
+            <li>Green Hydrogen Commercialisation Strategy for South Africa (2022); Hydrogen Society Roadmap (2021).</li>
+            <li>ESI Africa reporting on the Hive Coega green ammonia project (2023) and the Green Hydrogen Summit (June 2025).</li>
+            <li>Coega Development Corporation — Coega Special Economic Zone and Port of Ngqura.</li>
+          </ul>
+
+          <p class="small text-muted mb-0">
+            This page is a synthesis prepared for the South Africa Dashboard. Figures are reproduced from the sources
+            above and, where third-party projections are involved, are forward-looking and subject to change. Project
+            names, capacities and timelines move quickly in this sector — verify against the latest developer and
+            regulator disclosures before relying on any figure.
+          </p>
+        </section>
+
+        <hr>
+        <div class="d-flex justify-content-between small text-muted mb-4">
+          <a href="economy.html" class="btn btn-outline-secondary btn-sm">&larr; Back to Economy Overview</a>
+          <a href="sez.html" class="btn btn-outline-success btn-sm">Special Economic Zones &#8599;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

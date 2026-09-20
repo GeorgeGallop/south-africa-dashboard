@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transnet Data • Transnet • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box.neg h3 { color: #c62828; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .chart-card { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); border-radius: 0; }
+    .chart-card .card-header { background: #002395; color: white; font-weight: 800; border-bottom: none; }
+    .chart-canvas { position: relative; height: 300px; width: 100%; }
+    .metric-box { border: 3px solid #000; padding: 1.1rem; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); height: 100%; }
+    .section-tag { display: inline-block; padding: 0.25rem 0.75rem; border: 2px solid #000; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .data-note { background: #fff8e1; border-left: 6px solid #e65100; padding: 1rem; }
+    .phase-box { border: 3px solid #000; padding: 1.25rem; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); height: 100%; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transnet.html" class="btn btn-light btn-sm">🚂 Transnet</a>
+        <a href="terminal-operators.html" class="btn btn-light btn-sm">⚓ Terminal Operators</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #007A4D;">📊 Transnet Data</h1>
+    <h5 class="text-muted mb-4">How the Company Makes Money, What Went Wrong, and Where It Stands Now — With Charts</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">Transnet is South Africa's freight logistics backbone — but it is also a company in crisis. This page tells that story with data and charts: <strong>how it earns revenue</strong> (rail tariffs, port terminal handling, port "landlord" fees, pipeline fees), <strong>what went wrong</strong> (a collapse in volumes driven by state capture, underinvestment, cable theft and poor maintenance), and <strong>where it stands now</strong> (revenue up but still loss-making; volumes recovering off a very low base; a historic reform programme underway).</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Latest FY:</strong> 2024/25<br>
+          <strong>Revenue:</strong> ~R78 billion<br>
+          <strong>Rail network:</strong> 20,000+ km<br>
+          <strong>Commercial ports:</strong> 8<br>
+          <strong>Employees:</strong> ~48,000<br>
+          <strong>Pipelines:</strong> ~3,000 km
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== HOW TRANSNET MAKES MONEY ========== -->
+    <h3 class="fw-bold mt-4 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">How Transnet Makes Money — The Business Model</h3>
+    <p class="lead mb-4">Transnet is a vertically-integrated state monopoly with five revenue-generating divisions. It earns money by charging for access to and use of national freight infrastructure.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="metric-box" style="border-color:#002395;">
+          <span class="section-tag" style="border-color:#002395; color:#002395;">Largest Stream</span>
+          <h6 class="fw-bold mt-2" style="color:#002395;">🚂 Rail tariffs (TFR/TRIM)</h6>
+          <p class="small mb-0">The biggest revenue source. Charges mining houses and manufacturers per tonne-km to move bulk commodities — coal, iron ore, manganese, chrome — plus containers and general freight. Rail pricing is regulated (was self-set; now set via the TRIM Network Statement and, soon, the Transport Economic Regulator).</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="metric-box" style="border-color:#007A4D;">
+          <span class="section-tag text-success" style="border-color:#007A4D;">Landlord Fees</span>
+          <h6 class="fw-bold text-success mt-2">🏗️ Port authority fees (TNPA)</h6>
+          <p class="small mb-0">TNPA is the "landlord" of the 8 commercial ports. It charges ship dues, port tariffs, berth and quay lease fees for the use of channels, breakwaters, berths and harbour infrastructure — regardless of who operates the terminals.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="metric-box" style="border-color:#e65100;">
+          <span class="section-tag" style="border-color:#e65100; color:#e65100;">Handling Fees</span>
+          <h6 class="fw-bold mt-2" style="color:#e65100;">📦 Terminal handling (TPT)</h6>
+          <p class="small mb-0">Transnet Port Terminals charges cargo-handling fees for loading/unloading containers, bulk and break-bulk at the terminals. This is the monopoly being opened to private operators (ICTSI at Durban, etc.).</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="metric-box" style="border-color:#1565c0;">
+          <span class="section-tag" style="border-color:#1565c0; color:#1565c0;">Pipeline Tariffs</span>
+          <h6 class="fw-bold mt-2" style="color:#1565c0;">🛢️ Pipeline transport</h6>
+          <p class="small mb-0">Transnet Pipelines (~3,000 km) moves crude oil, refined products and gas from Durban inland. It charges regulated pipeline tariffs — critical to national energy security.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue mix doughnut -->
+    <div class="chart-card card mb-5">
+      <div class="card-header">Revenue Mix — How the R78 billion is earned (FY2024/25, approximate split)</div>
+      <div class="card-body">
+        <div class="row g-3 align-items-center">
+          <div class="col-lg-6"><div class="chart-canvas"><canvas id="revenueMixChart"></canvas></div></div>
+          <div class="col-lg-6">
+            <p class="small mb-2">Transnet's revenue is dominated by <strong>rail freight</strong>, with ports and terminals the next largest. The split reflects a company whose fortunes are tied to bulk commodity exports — which is why the collapse in mining volumes hit it so hard.</p>
+            <table class="table table-sm table-bordered small mb-0">
+              <thead class="table-light"><tr><th>Division</th><th>Approx. share</th></tr></thead>
+              <tbody>
+                <tr><td>Transnet Freight Rail</td><td class="fw-bold">~50%</td></tr>
+                <tr><td>National Ports Authority (fees)</td><td class="fw-bold">~18%</td></tr>
+                <tr><td>Port Terminals (handling)</td><td class="fw-bold">~18%</td></tr>
+                <tr><td>Pipelines</td><td class="fw-bold">~9%</td></tr>
+                <tr><td>Engineering & other</td><td class="fw-bold">~5%</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-muted mt-2 mb-0">Approximate composition compiled from Transnet results & division reports.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== REVENUE & PROFIT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">The Money Picture — Revenue Up, Profit Collapsed</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="chart-card card">
+          <div class="card-header">Group Revenue (R billion) — long-run trajectory</div>
+          <div class="card-body"><div class="chart-canvas"><canvas id="revenueChart"></canvas></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="chart-card card">
+          <div class="card-header">Net Result (R billion) — from profit to loss</div>
+          <div class="card-body"><div class="chart-canvas"><canvas id="profitChart"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="small text-muted">The revenue line rises steadily, but the bottom line has swung deep into loss. This is the core paradox: Transnet earns <em>more</em> than ever (tariff hikes, volume recovery) yet is <em>less profitable</em> — because debt service, maintenance backlog and operational collapse ate the margin. FY2023/24 figures are audited (revenue R76,699m; loss R7,327m).</p>
+
+    <!-- ========== WHAT WENT WRONG ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">What Went Wrong — The Volume Collapse</h3>
+    <p class="lead mb-4">Transnet's business model depends on moving bulk commodities at scale. When volumes collapsed, so did the foundation of the business.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="chart-card card">
+          <div class="card-header">Rail Freight Volumes (Mt per annum) — the collapse & recovery</div>
+          <div class="card-body">
+            <div class="chart-canvas"><canvas id="railVolumeChart"></canvas></div>
+            <p class="small text-muted mt-2 mb-0">Rail volumes fell from the 226 Mt peak (2017/18) to under 150 Mt — a third of the business gone — while market demand kept growing to ~280 Mt. Trucks absorbed the gap. The dotted line shows the 2030 target of 250 Mt.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="chart-card card">
+          <div class="card-header">Richards Bay Coal Exports (Mt) — the export engine stalled</div>
+          <div class="card-body">
+            <div class="chart-canvas"><canvas id="coalChart"></canvas></div>
+            <p class="small text-muted mt-2 mb-0">Coal is South Africa's highest-value bulk export. Throughput at Richards Bay Coal Terminal collapsed from ~76 Mt (pre-2018) to ~47 Mt (2023) before recovering to 52.08 Mt in 2024. Each lost million tonnes is hundreds of millions in lost export revenue.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why it happened -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="phase-box" style="border-color:#c62828;">
+          <h6 class="fw-bold text-danger">1. State capture (2010s)</h6>
+          <p class="small mb-0">The Zondo Commission documented how the Gupta-Zuma era looted Transnet — the ~R50bn locomotive procurement scandal (1,064 locomotives, ~R16bn overpriced) being the centrepiece. Procurement was rigged, competent engineers sidelined, and the board captured.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="phase-box" style="border-color:#e65100;">
+          <h6 class="fw-bold" style="color:#e65100;">2. Underinvestment & maintenance backlog</h6>
+          <p class="small mb-0">Decades of deferred maintenance and capital under-spend left the network decaying — ageing locomotives, poor track, obsolete signalling. Private operators cannot run fast/heavy trains on track that isn't maintained.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="phase-box" style="border-color:#002395;">
+          <h6 class="fw-bold" style="color:#002395;">3. Cable theft & vandalism</h6>
+          <p class="small mb-0">Organised cable theft and vandalism crippled lines, rendering corridors inoperable. Security is a precondition for any reliable operation — public or private.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="phase-box" style="border-color:#007A4D;">
+          <h6 class="fw-bold text-success">4. COVID & locomotive availability</h6>
+          <p class="small mb-0">COVID-19 exacerbated pre-existing problems, and chronic locomotive availability failures meant trains weren't running even where track was sound. The result: hundreds of billions in lost mining export revenue and the shift of freight to roads.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== DEBT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #e65100; padding-left: 16px;">The Balance Sheet Strain — Debt & Guarantees</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-lg-8">
+        <div class="chart-card card">
+          <div class="card-header">Debt trajectory (R billion) + state guarantees</div>
+          <div class="card-body"><div class="chart-canvas"><canvas id="debtChart"></canvas></div></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="content-card card p-4 h-100">
+          <h6 class="fw-bold">What this means</h6>
+          <p class="small">Debt ballooned past <strong>R130 billion</strong>, forcing repeated government guarantees — <strong>R51 billion</strong> in 2025 alone. Debt service is a major drag on a company already unable to fund its own maintenance. The balance sheet, not the network, became Transnet's most urgent constraint.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== WHERE THEY ARE NOW ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Where They Are Now — The Reform Story</h3>
+    <p class="lead mb-4">The crisis forced a structural response: not privatisation, but <strong>breaking up the monopoly and opening access</strong>.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="stat-box">
+          <small class="text-muted">Recovery</small>
+          <h3>+10%</h3>
+          <small class="text-muted">RBCT coal exports (2024)</small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-box">
+          <small class="text-muted">Rail Volumes</small>
+          <h3>~165 Mt</h3>
+          <small class="text-muted">Recovering from <150 Mt trough</small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-box neg">
+          <small class="text-muted">Still Loss-Making</small>
+          <h3>-R7.3bn</h3>
+          <small class="text-muted">FY2023/24 net result</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card card p-4 mb-4">
+      <h6 class="fw-bold">The structural reform underway</h6>
+      <ul class="small mb-0">
+        <li><strong>Vertical separation</strong> — <a href="transnet-rail-manager.html">TRIM</a> (the Rail Infrastructure Manager) now owns/manages the network, separate from train operations. <a href="train-operating-companies.html">11 private train operating companies</a> signed Rail Access Agreements in May 2026.</li>
+        <li><strong>Open access & third-party operators</strong> — rail and ports are being opened to competitive private operators; ICTSI is already partnering on the Durban Container Terminal.</li>
+        <li><strong>Independent regulation</strong> — the <a href="economic-regulation-transport.html">Economic Regulation of Transport Act (2024)</a> creates the Transport Economic Regulator to set access tariffs and enforce non-discriminatory access, taking pricing out of Transnet's hands.</li>
+        <li><strong>Target</strong> — rail volumes recovering toward <strong>250 Mt by 2030</strong>, and terminal operations opened to private participation under the landlord port model (see <a href="terminal-operators.html">Terminal Operators</a>).</li>
+      </ul>
+    </div>
+
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D; background: #f0faf4;">
+      <h6 class="fw-bold text-success">The honest picture</h6>
+      <p class="mb-0">Transnet is simultaneously <strong>generating more revenue and losing more money</strong>, carrying an unsustainable R130bn+ debt load, and moving a third less freight than at its peak — while economy-wide demand has grown. The recovery is real but off a very low base. The structural reform (separation, open access, independent regulation, private terminal operators) is the answer to a problem that financial rescue alone cannot fix. Whether the 250 Mt target is hit by 2030 depends on operators executing and the network being maintained and funded — but the governance architecture is now in place.</p>
+    </div>
+
+    <!-- ========== DATA NOTE ========== -->
+    <div class="data-note mb-4">
+      <strong>Data & methodology note:</strong> FY2023/24 revenue (R76,699m) and net loss (R7,327m) are from Transnet's audited annual financial statements. FY2024/25 revenue (~R78bn), rail volumes, debt levels and rail network figures are compiled from Transnet annual reports, results announcements and public reporting; earlier-year revenue/figures are approximate and included to show trajectory. RBCT coal export figures (2018–2024) are from Richards Bay Coal Terminal / Reuters public reporting. Where figures are approximated, they are labelled as such and should not be treated as audited. Verify against Transnet's official annual reports for precise values.
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="https://www.transnet.net/InvestorRelations/AnnualReports.aspx" target="_blank">Transnet Annual Reports & Results</a></li>
+      <li><a href="https://www.sustainabilityreports.com/transnet/2024/annual-financial-statements/" target="_blank">Transnet 2024 Annual Financial Statements (summary)</a></li>
+      <li><a href="https://www.mining.com/web/s-africas-richards-bay-exports-up-10-in-2024-amid-rail-improvement/" target="_blank">Reuters — RBCT exports up 10% in 2024</a></li>
+      <li><a href="transnet.html">Transnet SOC Ltd — Overview</a></li>
+      <li><a href="transnet-rail-manager.html">Transnet Rail Infrastructure Manager (TRIM)</a></li>
+      <li><a href="train-operating-companies.html">Train Operating Companies (TOCs)</a></li>
+      <li><a href="terminal-operators.html">Terminal Operators</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const green = '#007A4D', gold = '#FFCD00', blue = '#002395', red = '#c62828', orange = '#e65100', teal = '#00888c';
+
+    // Helper for Chart.js defaults
+    Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+    Chart.defaults.color = '#333';
+
+    // 1. Revenue mix doughnut
+    new Chart(document.getElementById('revenueMixChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Freight Rail', 'Port Terminals', 'Ports Authority', 'Pipelines', 'Engineering & other'],
+        datasets: [{ data: [50, 18, 18, 9, 5], backgroundColor: [green, orange, blue, gold, '#6c757d'], borderWidth: 2, borderColor: '#000' }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 2. Revenue trajectory (approximate)
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'bar',
+      data: {
+        labels: ['FY12', 'FY14', 'FY16', 'FY18', 'FY20', 'FY22', 'FY24', 'FY25'],
+        datasets: [{
+          label: 'Revenue (R billion)', data: [42, 48, 52, 57, 61, 63, 76.7, 78],
+          backgroundColor: green, borderColor: '#000', borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'R billion' } } }
+      }
+    });
+
+    // 3. Net result (profit -> loss)
+    new Chart(document.getElementById('profitChart'), {
+      type: 'bar',
+      data: {
+        labels: ['FY18', 'FY20', 'FY22', 'FY23', 'FY24'],
+        datasets: [{
+          label: 'Net result (R billion)', data: [7, -3, -5, -9, -7.3],
+          backgroundColor: [green, red, red, red, red], borderColor: '#000', borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { title: { display: true, text: 'R billion' } } }
+      }
+    });
+
+    // 4. Rail volume collapse & recovery (line)
+    new Chart(document.getElementById('railVolumeChart'), {
+      type: 'line',
+      data: {
+        labels: ['2017/18', '2018/19', '2019/20', '2020/21', '2021/22', '2022/23', '2023/24', '2024/25', '2030 target'],
+        datasets: [
+          {
+            label: 'Rail volumes (Mt)', data: [226, 216, 188, 177, 167, 152, 157, 165, 250],
+            borderColor: blue, backgroundColor: blue, fill: false, tension: 0.2, pointBackgroundColor: blue, pointRadius: 5
+          },
+          {
+            label: 'Market demand (~280 Mt)', data: [280, 280, 280, 280, 280, 280, 280, 280, 280],
+            borderColor: '#999', borderDash: [6,4], fill: false, pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { min: 100, title: { display: true, text: 'Million tonnes (Mt)' } } }
+      }
+    });
+
+    // 5. RBCT coal exports (bar)
+    new Chart(document.getElementById('coalChart'), {
+      type: 'bar',
+      data: {
+        labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+        datasets: [{
+          label: 'Coal exports (Mt)', data: [76, 66, 65, 58, 50, 47, 52.08],
+          backgroundColor: (ctx) => ctx.raw >= 70 ? green : (ctx.raw >= 55 ? gold : red),
+          borderColor: '#000', borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Million tonnes' } } }
+      }
+    });
+
+    // 6. Debt trajectory
+    new Chart(document.getElementById('debtChart'), {
+      type: 'bar',
+      data: {
+        labels: ['FY2022', 'FY2023', 'FY2024', 'Guarantee 2025'],
+        datasets: [{
+          label: 'Debt (R billion)', data: [105, 120, 130, 51],
+          backgroundColor: [orange, orange, red, gold], borderColor: '#000', borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'R billion' } } }
+      }
+    });
+  </script>
+</body>
+</html>

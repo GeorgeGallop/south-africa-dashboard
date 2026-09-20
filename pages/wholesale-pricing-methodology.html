@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wholesale Electricity Pricing Methodology • Bills &amp; Legislation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .status-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+    .status-open { background: #198754; color: #fff; }
+    .status-consolidation { background: #ffc107; color: #212529; }
+    .status-approved { background: #0d6efd; color: #fff; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 34%; background: #f8f9fa; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="bills.html" class="btn btn-light btn-sm">📄 Bills</a>
+        <a href="policy-tracker.html" class="btn btn-light btn-sm">📋 Tracker</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <p class="small text-muted mb-1"><a href="bills.html">Bills &amp; Legislation</a> · NERSA</p>
+    <h1 class="display-6 fw-bold text-sa-green">Wholesale Electricity Pricing Methodology</h1>
+    <p class="lead">The recipe that turns allowed generation revenue into a wholesale energy price, a capacity charge and a legacy charge.</p>
+    <p class="mb-4"><span class="status-badge status-consolidation">Input consolidation</span></p>
+
+    <table class="table table-bordered fact mb-4">
+      <tbody>
+                <tr><th>Authority</th><td>NERSA</td></tr>
+        <tr><th>Issued</th><td>18 May 2026 (Gazette 54738)</td></tr>
+        <tr><th>Comments closed</th><td>4 August 2026 (extended from 26 June)</td></tr>
+        <tr><th>Public hearing</th><td><strong>14 August 2026</strong>, 09:30–12:00, MS Teams — this hearing ran</td></tr>
+        <tr><th>Next step</th><td>ELS recommendation, then Energy Regulator decision — no date published</td></tr>
+        <tr><th>PDF</th><td><a href='https://energycouncil.org.za/wp-content/uploads/2026/05/Consultation-document-Wholesale-tariff-methodology.pdf' target='_blank' rel='noreferrer'>Consultation document</a></td></tr>
+      </tbody>
+    </table>
+
+    
+    <div class="card mb-3"><div class="card-body">
+      <h2 class="h5 fw-bold">What it is</h2>
+      <p>In a competitive market you still need a regulated wholesale tariff for the part of the system that is not yet fully merchant: Eskom Generation during the transition, legacy IPPs, and residual supply to distributors. This methodology unbundles that tariff.</p>
+      <h2 class="h5 fw-bold mt-4">The three building blocks</h2>
+      <ul>
+        <li><strong>Wholesale energy (R/MWh)</strong> — time-of-use, seasonal. Recovers generation costs not picked up by the other two charges.</li>
+        <li><strong>Generation capacity charge</strong> — pays for keeping plant available.</li>
+        <li><strong>Legacy charge</strong> — section 34 PPA costs, stranded-asset or subsidy amounts that should not sit in the competitive energy price.</li>
+      </ul>
+      <p>NERSA illustrated the idea with a R250 billion MYPD 6 generation-revenue split across TOU periods. Stakeholders were asked whether that allocation is the right one.</p>
+      <h2 class="h5 fw-bold mt-4">What to watch</h2>
+      <p class="mb-0">The 14 August hearing was the oral-input step, not the decision. Pair this page with the <a href="transitional-generation-pricing.html">transitional generation pricing and vesting framework</a> (the hedge that sits on top of these prices) and <a href="epp-2026.html">EPP 2026</a> (the policy that will govern the next methodology review).</p>
+    </div></div>
+    
+
+    <hr>
+    <a href="bills.html" class="btn btn-outline-secondary">← All bills</a>
+    <a href="policy-tracker.html" class="btn btn-outline-secondary ms-2">Policy Tracker</a>
+    <a href="transitional-generation-pricing.html" class="btn btn-outline-dark ms-2">Vesting framework</a>
+  </div>
+</body>
+</html>

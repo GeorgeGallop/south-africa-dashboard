@@ -3,110 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Eskom Tariff Forward Curve • South Africa Dashboard</title>
+  <title>Eskom Tariff Curve • South Africa Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --sa-green: #007A4D;
-      --sa-gold: #FFCD00;
-      --sa-blue: #002395;
-      --sa-red: #E03C31;
-      --peak-color: #E03C31;
-      --std-color: #007A4D;
-      --offpk-color: #6C757D;
+      --eskom-green: #007A4D;
+      --eskom-gold: #FFB81C;
+      --eskom-red: #E03C31;
+      --eskom-blue: #002395;
     }
-    .hero-tariff {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      color: white;
-      padding: 3rem 0;
-      border-radius: 0 0 40px 40px;
-      margin-bottom: 2rem;
+    body { background: #f0f2f5; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    /* ── HERO ── */
+    .hero-eskom {
+      background: linear-gradient(135deg, #003d2e 0%, #007A4D 40%, #002395 100%);
+      color: white; padding: 2.5rem 0; border-radius: 0 0 24px 24px; margin-bottom: 1.5rem;
     }
-    .hero-tariff h1 { font-weight: 800; font-size: 2.8rem; }
-    .hero-tariff .subtitle { font-size: 1.1rem; opacity: 0.85; }
-    .stat-card {
-      border: 2px solid #dee2e6;
-      border-radius: 16px;
-      padding: 1.5rem;
-      text-align: center;
-      background: white;
-      transition: transform 0.2s;
+    .hero-eskom h1 { font-weight: 900; font-size: 2.2rem; }
+    .hero-eskom .sub { opacity: 0.85; font-size: 1rem; }
+
+    /* ── CARDS ── */
+    .section-card {
+      background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 1.5rem; margin-bottom: 1.25rem;
     }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-    .stat-card .stat-value { font-size: 2rem; font-weight: 800; color: var(--sa-green); }
-    .stat-card .stat-label { font-size: 0.85rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    .explainer-card {
-      background: white;
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      overflow: hidden;
-      height: 100%;
+    .section-card h5 { font-weight: 800; margin-bottom: 0.75rem; }
+    .section-card h6 { font-weight: 700; margin-bottom: 0.5rem; color: #495057; }
+
+    /* ── SUMMARY TABLE ── */
+    .summary-table { font-size: 0.78rem; }
+    .summary-table th {
+      background: #1a1a2e; color: white; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.4px; font-size: 0.7rem;
+      padding: 8px 10px; position: sticky; top: 0; z-index: 3; white-space: nowrap;
     }
-    .explainer-card .card-body { padding: 1.8rem; }
-    .explainer-card .icon-circle {
-      width: 48px; height: 48px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin-bottom: 1rem;
+    .summary-table td { padding: 6px 10px; vertical-align: middle; }
+    .summary-table tbody tr:hover { background: #f0faf4; }
+    .cat-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 0.68rem; font-weight: 700;
     }
-    
-    .chart-container { position: relative; height: 450px; width: 100%; }
-    .chart-container-sm { position: relative; height: 350px; width: 100%; }
-    .peakness-badge {
-      display: inline-block; padding: 0.35rem 0.8rem; border-radius: 20px;
-      font-size: 0.8rem; font-weight: 600; margin: 0.2rem;
-      cursor: pointer; transition: all 0.2s;
+    .cat-urban { background: #dcfce7; color: #166534; }
+    .cat-residential { background: #dbeafe; color: #1e40af; }
+    .cat-homepower { background: #fef3c7; color: #92400e; }
+    .cat-business { background: #f3e8ff; color: #6b21a8; }
+    .cat-rural { background: #fce7f3; color: #9d174d; }
+    .cat-industrial { background: #e0e7ff; color: #3730a3; }
+    .cat-generator { background: #fee2e2; color: #991b1b; }
+    .auth-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 0.68rem; font-weight: 600; margin: 1px;
     }
-    .peakness-badge.active { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .peakness-badge:hover { transform: scale(1.05); }
-    
-    .consumer-card {
-      border: 2px solid #dee2e6; border-radius: 16px; padding: 1.5rem;
-      cursor: pointer; transition: all 0.2s; text-align: center;
-      background: white;
-    }
-    .consumer-card:hover { border-color: var(--sa-green); transform: translateY(-2px); }
-    .consumer-card.selected { border-color: var(--sa-green); background: #f0faf4; }
-    .consumer-card .consumption { font-size: 1.5rem; font-weight: 700; }
-    
-    .table-fwd { font-size: 0.85rem; }
-    .table-fwd th { background: #f8f9fa; position: sticky; top: 0; z-index: 2; }
-    
-    .data-source-footer {
-      background: #f8f9fa; border-radius: 12px; padding: 1rem; font-size: 0.85rem;
+    .auth-eskom { background: #dcfce7; color: #166534; }
+    .auth-muni { background: #dbeafe; color: #1e40af; }
+    .auth-both { background: #fef9c3; color: #854d0e; }
+    .tariff-name { font-weight: 700; font-size: 0.8rem; }
+    .tariff-desc { font-size: 0.72rem; color: #6b7280; }
+
+    /* ── MATRIX TABLE ── */
+    .matrix-table { font-size: 0.78rem; min-width: 1200px; }
+    .matrix-table th {
+      position: sticky; top: 0; z-index: 4; font-weight: 700;
+      padding: 6px 8px; text-align: center; vertical-align: bottom;
       border: 1px solid #dee2e6;
     }
+    .matrix-table .group-hdr th { background: #1a1a2e; color: white; font-size: 0.68rem; text-transform: uppercase; }
+    .matrix-table .sub-hdr th { background: #343a40; color: white; font-size: 0.68rem; }
+    .matrix-table .unit-hdr th { background: #495057; color: #ffc107; font-size: 0.68rem; }
+    .matrix-table td { padding: 4px 8px; text-align: center; vertical-align: middle; border: 1px solid #e9ecef; }
+    .matrix-table .zone-td {
+      background: #e8f5e9; font-weight: 700; font-size: 0.72rem; color: #1a1a2e;
+      writing-mode: horizontal-tb; text-orientation: mixed; transform: none;
+      white-space: nowrap; width: 84px; min-width: 84px; padding: 2px 4px;
+    }
+    .matrix-table .volt-td { background: #f8f9fa; font-weight: 600; text-align: left; font-size: 0.76rem; min-width: 110px; }
+    .matrix-table .data-td { font-family: 'Consolas', monospace; font-size: 0.76rem; font-weight: 600; }
+    .peak-c { color: #dc2626; } .offpk-c { color: #6b7280; }
+    .dem-c { color: #d97706; } .net-c { color: #2563eb; } .anc-c { color: #7c3aed; }
 
+    .matrix-controls { background: #f8f9fa; border-radius: 10px; padding: 0.75rem 1rem; border: 1px solid #dee2e6; }
+    .matrix-controls label { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; color: #495057; }
+    .matrix-controls .form-select { font-size: 0.82rem; border-radius: 8px; }
+    .matrix-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #dee2e6; }
+    .matrix-empty { text-align: center; padding: 2.5rem; color: #6b7280; }
+    .matrix-empty .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+    /* ── COST COMPARISON ── */
+    .profile-card {
+      border: 2px solid #dee2e6; border-radius: 12px; padding: 1rem;
+      cursor: pointer; transition: all 0.15s; text-align: center; background: white;
+    }
+    .profile-card:hover { border-color: var(--eskom-green); transform: translateY(-2px); }
+    .profile-card.active { border-color: var(--eskom-green); background: #f0faf4; box-shadow: 0 4px 12px rgba(0,122,77,0.15); }
+    .profile-card .kwh-val { font-size: 1.4rem; font-weight: 800; color: var(--eskom-green); }
+    .profile-card .kwh-label { font-size: 0.75rem; color: #6b7280; }
+    .cost-chart-container { position: relative; height: 320px; width: 100%; }
+    .provider-pill {
+      display: inline-block; padding: 3px 10px; border-radius: 14px;
+      font-size: 0.72rem; font-weight: 700; margin: 2px; cursor: pointer;
+      transition: all 0.15s; border: 2px solid transparent;
+    }
+    .provider-pill.active { box-shadow: 0 2px 8px rgba(0,0,0,0.15); transform: scale(1.05); }
+    .provider-pill:hover { transform: scale(1.05); }
+    .prov-eskom { background: #dcfce7; color: #166534; }
+    .prov-capetown { background: #dbeafe; color: #1e40af; }
+    .prov-ethekwini { background: #fef3c7; color: #92400e; }
+    .prov-tshwane { background: #f3e8ff; color: #6b21a8; }
+    .prov-johannesburg { background: #fce7f3; color: #9d174d; }
+
+    .chart-container { position: relative; height: 400px; width: 100%; }
+    .peakness-badge {
+      display: inline-block; padding: 0.3rem 0.7rem; border-radius: 16px;
+      font-size: 0.78rem; font-weight: 600; margin: 0.15rem;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .peakness-badge.active { transform: scale(1.05); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .peakness-badge:hover { transform: scale(1.05); }
+    .stat-card {
+      border: 2px solid #dee2e6; border-radius: 14px; padding: 1.2rem;
+      text-align: center; background: white; transition: transform 0.15s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .stat-card .stat-val { font-size: 1.8rem; font-weight: 800; color: var(--eskom-green); }
+    .stat-card .stat-lbl { font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.4px; }
+    .unit-toggle .btn { border-radius: 16px; padding: 0.25rem 0.8rem; font-size: 0.82rem; }
+    .unit-toggle .btn.active { font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .fx-input { max-width: 90px; font-size: 0.82rem; }
+    .data-source-footer { background: #f8f9fa; border-radius: 10px; padding: 0.75rem; font-size: 0.82rem; border: 1px solid #dee2e6; }
     .increase-badge {
-      display: inline-block; padding: 0.2rem 0.5rem; border-radius: 6px;
-      font-size: 0.75rem; font-weight: 600;
+      display: inline-block; padding: 0.15rem 0.4rem; border-radius: 5px;
+      font-size: 0.72rem; font-weight: 600;
     }
-    .increase-high { background: #fee2e2; color: #dc2626; }
-    .increase-mid { background: #fef3c7; color: #d97706; }
-    .increase-low { background: #dcfce7; color: #16a34a; }
-
-    .unit-toggle .btn {
-      border-radius: 20px;
-      padding: 0.3rem 1rem;
-      font-size: 0.85rem;
-    }
-    .unit-toggle .btn.active {
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .fx-input {
-      max-width: 100px;
-      font-size: 0.85rem;
-    }
+    .inc-high { background: #fee2e2; color: #dc2626; }
+    .inc-mid { background: #fef3c7; color: #d97706; }
+    .inc-low { background: #dcfce7; color: #16a34a; }
+    .table-fwd { font-size: 0.82rem; }
+    .table-fwd th { background: #f8f9fa; position: sticky; top: 0; z-index: 2; }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFB81C, #002395);">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
     <div class="d-flex gap-2">
@@ -117,866 +157,1289 @@
 </nav>
 
 <!-- HERO -->
-<div class="hero-tariff">
+<div class="hero-eskom">
   <div class="container text-center">
-    <h1>⚡ Eskom Tariff Forward Curve</h1>
-    <p class="subtitle mx-auto" style="max-width: 700px;">
-      30 years of Eskom Megaflex tariffs (1996–2026) — extracted from official PDFs,
-      broken down by time-of-use peakness, and projected forward.
+    <h1>⚡ Eskom Tariff Comparison</h1>
+    <p class="sub mx-auto" style="max-width:720px;">
+      Compare Eskom & municipal tariffs across customer categories.
+      Select a category → drill into sub-tariffs → see the full charge matrix by voltage and zone.
     </p>
-    <div class="row mt-4 justify-content-center g-2">
-      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📄 30 PDFs extracted</span></div>
-      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📊 6 TOU periods</span></div>
-      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📈 Forward curve to 2030</span></div>
+    <div class="row mt-3 justify-content-center g-2">
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">🗂️ 6 Categories</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">📊 Full Charge Matrix</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">🏙️ 4 Municipalities + Eskom</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">💰 Yearly Cost Comparison</span></div>
     </div>
   </div>
 </div>
 
-<div class="container">
+<div class="container-fluid px-4">
 
-  <!-- TOGGLE BAR: Currency + Unit -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-body py-3">
-      <div class="row g-2 align-items-center">
-        <div class="col-auto">
-          <strong class="small">💱 Currency:</strong>
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- UNIT / CURRENCY BAR                                         -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card py-2 mb-3">
+    <div class="row g-2 align-items-center">
+      <div class="col-auto"><strong class="small">💱</strong></div>
+      <div class="col-auto">
+        <div class="btn-group btn-group-sm unit-toggle">
+          <button class="btn btn-success active" id="btnZar" onclick="setCurrency('ZAR')">🇿🇦 ZAR</button>
+          <button class="btn btn-outline-primary" id="btnUsd" onclick="setCurrency('USD')">🇺🇸 USD</button>
         </div>
-        <div class="col-auto">
-          <div class="btn-group btn-group-sm unit-toggle" role="group">
-            <button class="btn btn-success active" id="btnZar" onclick="setCurrency('ZAR')">🇿🇦 ZAR</button>
-            <button class="btn btn-outline-primary" id="btnUsd" onclick="setCurrency('USD')">🇺🇸 USD</button>
+      </div>
+      <div class="col-auto">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text">1 USD =</span>
+          <input type="number" id="exchangeRate" class="form-control fx-input" value="17.50" step="0.25" min="1" onchange="onSettingChange()">
+          <span class="input-group-text">ZAR</span>
+        </div>
+      </div>
+      <div class="col-auto ms-lg-auto"><strong class="small">📏</strong></div>
+      <div class="col-auto">
+        <div class="btn-group btn-group-sm unit-toggle">
+          <button class="btn btn-success active" id="btnKwh" onclick="setUnit('kWh')">c/kWh</button>
+          <button class="btn btn-outline-primary" id="btnMwh" onclick="setUnit('MWh')">R/MWh</button>
+        </div>
+      </div>
+      <div class="col-auto"><span class="badge bg-light text-dark" id="unitLabel">c/kWh</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- WHAT MAKES UP YOUR BILL                                     -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card" style="border-left: 5px solid #007A4D;">
+    <h5>🧾 What's Actually in Your Electricity Bill?</h5>
+    <p class="small text-muted mb-2">A single c/kWh rate hides a lot of complexity. Eskom's tariff bundles <strong>10+ separate charges</strong>. For a typical large customer, the Active Energy Charge makes up about <strong>60-70%</strong> of the total — the rest is fixed and capacity charges you pay regardless of how much power you use.</p>
+
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered small mb-0">
+        <thead class="table-dark">
+          <tr><th style="width:32%;">Charge Component</th><th style="width:18%;">2025/26 Rate</th><th style="width:50%;">What It Pays For</th></tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary"><td colspan="3"><strong>⚡ Active Energy Charges</strong> — You only pay these when you consume power. Vary by time-of-day and season.</td></tr>
+          <tr><td>🔴 <strong>Peak Energy Charge</strong></td><td id="bdPeak">6.8459 R/kWh</td><td>Cost of generating electricity during high-demand hours (6-9am, 5-8pm weekdays). Expensive peaking plants.</td></tr>
+          <tr><td>🟢 <strong>Standard Energy Charge</strong></td><td id="bdStd">1.7115 R/kWh</td><td>Generation cost during normal working hours. Base-load plants running efficiently.</td></tr>
+          <tr><td>⚪ <strong>Off-Peak Energy Charge</strong></td><td id="bdOffpk">1.1409 R/kWh</td><td>Cheapest electrons — overnight and weekends when demand is low.</td></tr>
+          <tr class="table-warning"><td colspan="3"><strong>🏗️ Network & Capacity Charges</strong> — Paid on your maximum demand (kVA), not on energy used.</td></tr>
+          <tr><td><strong>Generation Capacity</strong></td><td id="bdGen">R 9.40/kVA/m</td><td>Reserving power plant capacity to meet your peak demand. A "seat fee" for the power station.</td></tr>
+          <tr><td><strong>TUoS (Transmission)</strong></td><td id="bdTuos">R 48.10/kVA/m</td><td>Transmission Use-of-System — Eskom's ~28,000 km of high-voltage power lines.</td></tr>
+          <tr><td><strong>DUoS (Distribution)</strong></td><td id="bdDuos">R 12.50/kVA/m</td><td>Distribution Use-of-System — the lower-voltage local grid, poles and cables on your street.</td></tr>
+          <tr><td><strong>Urban LV Subsidy</strong></td><td>R 0.00/kVA/m (<500V)</td><td>Cross-subsidy from higher-voltage customers to those connected at low voltage.</td></tr>
+          <tr class="table-secondary"><td colspan="3"><strong>📋 Fixed & Service Charges</strong> — Per-day fees for being connected.</td></tr>
+          <tr><td><strong>Service Charge</strong></td><td id="bdService">R 198.52/day (>1 MVA)</td><td>Meter reading, billing, call centre, IT systems. Flat daily fee.</td></tr>
+          <tr><td><strong>Administration Charge</strong></td><td id="bdAdmin">R 19.37/day</td><td>Account administration, credit management, regulatory compliance.</td></tr>
+          <tr class="table-danger"><td colspan="3"><strong>💰 Levies, Subsidies & Penalties</strong> — Policy-driven charges.</td></tr>
+          <tr><td><strong>Legacy Charge</strong></td><td id="bdLegacy">0.2278 R/kWh</td><td>Stranded costs from old power stations. The "load-shedding tax."</td></tr>
+          <tr><td><strong>Electrification Subsidy</strong></td><td id="bdElectrification">0.0245 R/kWh</td><td>Cross-subsidy to connect rural households to the grid.</td></tr>
+          <tr><td><strong>Affordability Subsidy</strong></td><td id="bdAffordability">0.0469 R/kWh</td><td>Subsidy for low-usage residential customers (Homelight 20A).</td></tr>
+          <tr><td><strong>Ancillary Services (DSM)</strong></td><td id="bdDsm">0.0075 R/kWh</td><td>Demand Side Management — paying large customers to reduce during peak.</td></tr>
+          <tr><td><strong>Ancillary Services (ASF)</strong></td><td id="bdAsf">0.0036 R/kWh</td><td>Grid stability services (frequency control, voltage support, reserves).</td></tr>
+          <tr><td><strong>Energy Management</strong></td><td id="bdMgmt">0.0015 R/kWh</td><td>NERSA regulatory levy — funding the energy regulator.</td></tr>
+          <tr><td><strong>Environmental Levy</strong></td><td id="bdEnv">0.0350 R/kWh</td><td>Tax on electricity from fossil fuels (coal). Government carbon pricing.</td></tr>
+          <tr><td><strong>Reactive Energy</strong></td><td id="bdReactive">22.80 c/kVArh</td><td>Penalty for poor power factor (below 0.96).</td></tr>
+          <tr><td><strong>Excess NMD Penalty</strong></td><td>3× normal demand</td><td>Triple penalty if you exceed your Notified Maximum Demand.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Compact energy vs demand + local vs non-local explainers -->
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <div class="card" style="border-radius:10px; border-left:4px solid #E03C31;">
+          <div class="card-body py-2 px-3">
+            <h6 class="fw-bold mb-1" style="font-size:0.88rem;">⚡ Active Energy Charge — <span class="text-muted fw-normal">WHAT YOU CONSUME</span></h6>
+            <p class="small mb-0">Unit: <strong>c/kWh</strong> · Like paying for litres of water used. Price depends on <em>when</em> (Peak/Std/Off-Pk), <em>season</em> (winter = more), <em>voltage</em> (higher = cheaper), and <em>distance</em>. This is <strong>60-70%</strong> of your total bill.</p>
           </div>
         </div>
-        <div class="col-auto">
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="border-radius:10px; border-left:4px solid #d97706;">
+          <div class="card-body py-2 px-3">
+            <h6 class="fw-bold mb-1" style="font-size:0.88rem;">🏗️ Active Demand Charge — <span class="text-muted fw-normal">HOW BIG YOUR CONNECTION IS</span></h6>
+            <p class="small mb-0">Unit: <strong>R/kVA/month</strong> · Like renting a water pipe regardless of flow. You declare a <strong>Notified Maximum Demand (NMD)</strong> and pay monthly whether you use it or not. Exceed it → <strong>3× penalty</strong>. Sub-components: Gen Capacity (R 9.40), TUoS (R 48.10), DUoS (R 12.50) per kVA/m.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="border-radius:10px; border-left:4px solid #E03C31;">
+          <div class="card-body py-2 px-3">
+            <h6 class="fw-bold mb-1" style="font-size:0.88rem;">🏢 Non-Local Authority — <span class="text-muted fw-normal">Eskom → You</span></h6>
+            <p class="small mb-0">Eskom sells directly. Rates set by <strong>NERSA</strong> nationally — same everywhere. Typically <strong>15-30% cheaper</strong> than municipal. All charges shown in this dashboard are Non-Local rates.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="border-radius:10px; border-left:4px solid #002395;">
+          <div class="card-body py-2 px-3">
+            <h6 class="fw-bold mb-1" style="font-size:0.88rem;">🏛️ Local Authority — <span class="text-muted fw-normal">Eskom → Municipality → You</span></h6>
+            <p class="small mb-0">Municipality buys bulk from Eskom and resells. Rates set by <strong>municipal council</strong> — Cape Town, Joburg, Durban have different prices. Municipality <strong>adds surcharges</strong>: distribution fees, cross-subsidies, own infrastructure costs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-light small mt-3 mb-0 border">
+      <strong>💡 Bottom line:</strong> The Active Energy Charge is the headline number, but Legacy Charge (0.2278 R/kWh), Generation Capacity (R 9.40/kVA), and Network Charges (TUoS + DUoS = R 60.60/kVA) add significant fixed costs. <strong>The "c/kWh you see" is only part of the story.</strong>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SUMMARY TARIFF TABLE                                        -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card">
+    <h5>📋 Tariff Summary — All Eskom Categories (2025/26)</h5>
+    <p class="text-muted small mb-2">Non-Local Authority rates. Click a row to jump to its full matrix below.</p>
+    <div style="overflow-x:auto; max-height:420px; overflow-y:auto;">
+      <table class="table table-sm table-bordered summary-table mb-0" id="summaryTable">
+        <thead>
+          <tr>
+            <th>Category</th><th>Tariff Name</th><th>Description</th>
+            <th id="sumHdrPeak">Energy (Peak)</th><th id="sumHdrOffpk">Energy (Off-Pk)</th><th id="sumHdrDemand">Demand (Peak)</th>
+            <th id="sumHdrTuos">TUoS</th><th id="sumHdrDuos">DUoS</th><th id="sumHdrAnc">Ancillary</th>
+            <th>Authority</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- CATEGORY SELECTOR + DYNAMIC MATRIX                          -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card">
+    <h5>🔬 Tariff Matrix Explorer</h5>
+    <p class="text-muted small mb-2">Select a category and sub-tariff to see the full charge matrix by transmission zone, voltage, and time-of-use.</p>
+
+    <div class="matrix-controls mb-3">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-1">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="mxCat" onchange="onMxChange()"></select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Sub-Tariff</label>
+          <select class="form-select" id="mxSub" onchange="onMxChange()"></select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Authority</label>
+          <select class="form-select" id="mxAuth" onchange="onMxChange()">
+            <option value="eskom">Eskom Direct</option>
+            <option value="municipal">Municipal</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Provider</label>
+          <select class="form-select" id="mxProv" onchange="onMxChange()">
+            <option value="eskom">Eskom</option>
+            <option value="capetown">City of Cape Town</option>
+            <option value="ethekwini">eThekwini (Durban)</option>
+            <option value="tshwane">City of Tshwane</option>
+            <option value="johannesburg">City of Joburg</option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label">Year</label>
+          <select class="form-select" id="mxYear" onchange="onMxChange()">
+            <option value="2025">2025/26</option>
+            <option value="2024">2024/25</option>
+            <option value="2023">2023/24</option>
+            <option value="2022">2022/23</option>
+            <option value="2021">2021/22</option>
+            <option value="2020">2020/21 (OCR pending)</option>
+            <option value="2019">2019/20 (OCR pending)</option>
+            <option value="2018">2018/19</option>
+            <option value="2017">2017/18</option>
+            <option value="2016">2016/17</option>
+            <option value="2015">2015/16</option>
+            <option value="2014">2014/15</option>
+            <option value="2013">2013/14</option>
+            <option value="2012">2012/13</option>
+            <option value="2011">2011/12</option>
+            <option value="2010">2010/11</option>
+            <option value="2009">2009/10</option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label">VAT</label>
+          <select class="form-select" id="mxVat" onchange="onMxChange()">
+            <option value="excl">Excl</option>
+            <option value="incl">Incl</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" id="mxNmdLabel">Your NMD (R/kVA/m) — used for total cost</label>
           <div class="input-group input-group-sm">
-            <span class="input-group-text">1 USD =</span>
-            <input type="number" id="exchangeRate" class="form-control fx-input" value="17.50" step="0.25" min="1" onchange="onSettingChange()">
-            <span class="input-group-text">ZAR</span>
+            <input type="number" id="mxKvaInput" class="form-control" value="70.00" step="0.50" min="0" onchange="onMxChange()" oninput="onMxChange()">
+            <span class="input-group-text" id="mxNmdUnit">R/kVA/m</span>
           </div>
         </div>
-        <div class="col-auto ms-lg-auto">
-          <strong class="small">📏 Unit:</strong>
-        </div>
-        <div class="col-auto">
-          <div class="btn-group btn-group-sm unit-toggle" role="group">
-            <button class="btn btn-success active" id="btnKwh" onclick="setUnit('kWh')">kWh</button>
-            <button class="btn btn-outline-primary" id="btnMwh" onclick="setUnit('MWh')">MWh</button>
-          </div>
-        </div>
-        <div class="col-auto">
-          <span class="badge bg-light text-dark" id="unitLabel">c/kWh</span>
-        </div>
       </div>
     </div>
-  </div>
 
-  <!-- TARIFFS EXPLAINED SIMPLY -->
-  <div class="row g-4 mb-5">
-    <div class="col-12">
-      <h2 class="fw-bold mb-1">🔌 Eskom Tariffs: Explained Simply</h2>
-      <p class="text-muted">The confusing bits, decoded for normal humans</p>
-    </div>
-    
-    <div class="col-md-6 col-lg-3">
-      <div class="explainer-card card">
-        <div class="card-body">
-          <div class="icon-circle" style="background:#e8f5e9;"><span>💡</span></div>
-          <h5 class="fw-bold">What's a Tariff?</h5>
-          <p class="text-muted small">Think of it like an <strong>airline ticket</strong>. The price depends on <em>when</em> you fly (time of day), <em>how</em> you book (season), and <em>what class</em> (voltage level).</p>
-          <p class="small mb-0">Eskom's tariff is a bundle of separate charges: the energy itself, the grid to deliver it, the capacity to keep power plants running, and various levies.</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6 col-lg-3">
-      <div class="explainer-card card">
-        <div class="card-body">
-          <div class="icon-circle" style="background:#fff3e0;"><span>⏰</span></div>
-          <h5 class="fw-bold">Time-of-Use (TOU)</h5>
-          <p class="text-muted small"><strong>Peak</strong> (🔴 most expensive) — Weekdays 6-9am, 5-8pm. When everyone's using power.</p>
-          <p class="text-muted small"><strong>Standard</strong> (🟢 mid) — The rest of the working day.</p>
-          <p class="small mb-0"><strong>Off-Peak</strong> (⚪ cheapest) — Nights and weekends. When demand is lowest.</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6 col-lg-3">
-      <div class="explainer-card card">
-        <div class="card-body">
-          <div class="icon-circle" style="background:#e3f2fd;"><span>🌡️</span></div>
-          <h5 class="fw-bold">High vs Low Season</h5>
-          <p class="text-muted small"><strong>High Demand Season</strong> (Jun–Aug, winter) — more expensive because heaters are running.</p>
-          <p class="text-muted small"><strong>Low Demand Season</strong> (Sep–May) — cheaper rates.</p>
-          <p class="small mb-0">Peak rates in winter can be <strong>6× more</strong> than off-peak in summer!</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6 col-lg-3">
-      <div class="explainer-card card">
-        <div class="card-body">
-          <div class="icon-circle" style="background:#fce4ec;"><span>⚡</span></div>
-          <h5 class="fw-bold">Voltage & Distance</h5>
-          <p class="text-muted small"><strong>Higher voltage</strong> = cheaper per kWh (more efficient transmission). Large factories connect at >132kV and pay less.</p>
-          <p class="small mb-0"><strong>Closer to Joburg</strong> = cheaper. Beyond 900km adds ~3% transmission surcharge.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="alert alert-light border small mb-2" id="mxDesc"></div>
 
-  <!-- WHAT MAKES UP YOUR BILL -->
-  <div class="card shadow-sm mb-4" style="border-left: 5px solid #007A4D;">
-    <div class="card-body">
-      <div class="d-flex align-items-center gap-3 mb-3">
-        <span style="font-size: 2rem;">🧾</span>
-        <div>
-          <h5 class="fw-bold mb-0">What's Actually in Your Electricity Bill?</h5>
-          <p class="text-muted mb-0 small">A single c/kWh rate hides a lot of complexity. Here's what you're really paying for.</p>
-        </div>
-      </div>
-
-      <p class="small">The "energy charge" (Peak/Standard/Off-Peak) that's charted above is only <strong>one piece</strong> of your total bill. 
-      Eskom's Megaflex tariff bundles <strong>10+ separate charges</strong> into what you see on your invoice. 
-      For a typical large customer, the Active Energy Charge makes up about <strong>60-70%</strong> of the total — the rest is fixed and capacity charges you pay regardless of how much power you use.</p>
-
-      <div class="table-responsive">
-        <table class="table table-sm table-bordered small mb-0">
-          <thead class="table-dark">
-            <tr>
-              <th style="width: 35%;">Charge Component</th>
-              <th style="width: 22%;">2025/26 Rate</th>
-              <th style="width: 43%;">What It Pays For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-primary">
-              <td colspan="3"><strong>⚡ Active Energy Charges</strong> — You only pay these when you consume power. Vary by time-of-day and season.</td>
-            </tr>
-            <tr>
-              <td>🔴 <strong>Peak Energy Charge</strong></td>
-              <td id="breakdownPeak"></td>
-              <td>Cost of generating electricity during high-demand hours (6-9am, 5-8pm weekdays). Generators running at full throttle — expensive fuel, older plants.</td>
-            </tr>
-            <tr>
-              <td>🟢 <strong>Standard Energy Charge</strong></td>
-              <td id="breakdownStd"></td>
-              <td>Generation cost during normal working hours. Base-load plants running efficiently.</td>
-            </tr>
-            <tr>
-              <td>⚪ <strong>Off-Peak Energy Charge</strong></td>
-              <td id="breakdownOffpk"></td>
-              <td>Cheapest electrons — overnight and weekends when demand is low and only the most efficient plants run.</td>
-            </tr>
-            <tr class="table-warning">
-              <td colspan="3"><strong>🏗️ Network & Capacity Charges</strong> — Paid on your maximum demand (kVA), not on energy used. These cover the grid.</td>
-            </tr>
-            <tr>
-              <td><strong>Generation Capacity Charge</strong></td>
-              <td id="bdGenCap">R 9.40 / kVA / month</td>
-              <td>Reserving power plant capacity to meet <em>your</em> peak demand. Think of it as a "seat fee" for the power station, even if you don't use it fully.</td>
-            </tr>
-            <tr>
-              <td><strong>TUoS (Transmission Network Charge)</strong></td>
-              <td id="bdTuos">R 48.10 / kVA / month</td>
-              <td>Transmission Use-of-System — the high-voltage power lines that carry electricity across provinces. Eskom's ~28,000 km of transmission lines.</td>
-            </tr>
-            <tr>
-              <td><strong>DUoS (Distribution Network Charge)</strong></td>
-              <td id="bdDuos">R 12.50 / kVA / month</td>
-              <td>Distribution Use-of-System — the lower-voltage network that delivers power to your specific location. The poles and cables on your street.</td>
-            </tr>
-            <tr>
-              <td><strong>Urban Low Voltage Subsidy</strong></td>
-              <td id="bdUlv">R 0.00 / kVA / month (<500V)</td>
-              <td>Cross-subsidy from higher-voltage customers to those connected at low voltage (<500V) who cost more to serve. Zero at <500V because you're already paying the full low-voltage cost.</td>
-            </tr>
-            <tr class="table-secondary">
-              <td colspan="3"><strong>📋 Fixed & Service Charges</strong> — Per-day fees for being connected.</td>
-            </tr>
-            <tr>
-              <td><strong>Service Charge</strong></td>
-              <td id="bdService">R 198.52 / day (>1 MVA)</td>
-              <td>Meter reading, billing, call centre, IT systems. Flat daily fee regardless of usage. For Key Customers it's R 1,118.46/day.</td>
-            </tr>
-            <tr>
-              <td><strong>Administration Charge</strong></td>
-              <td id="bdAdmin">R 19.37 / day</td>
-              <td>Account administration, credit management, and regulatory compliance costs.</td>
-            </tr>
-            <tr class="table-danger">
-              <td colspan="3"><strong>💰 Levies, Subsidies & Penalties</strong> — Policy-driven charges.</td>
-            </tr>
-            <tr>
-              <td><strong>Legacy Charge</strong></td>
-              <td id="bdLegacy"></td>
-              <td>Stranded costs from old power stations and past investment decisions. This is the "historical baggage" charge — paying for plants that may no longer run but haven't been written off. <em>Commonly called the "load-shedding tax."</em></td>
-            </tr>
-            <tr>
-              <td><strong>Electrification & Rural Subsidy (NN)</strong></td>
-              <td id="bdElecSub"></td>
-              <td>Cross-subsidy to connect rural households and schools to the grid. Urban customers pay extra so rural areas can have electricity.</td>
-            </tr>
-            <tr>
-              <td><strong>Affordability Subsidy</strong></td>
-              <td id="bdAffordSub"></td>
-              <td>Subsidy for low-usage residential customers (Homelight 20A). Large customers help keep power affordable for poor households.</td>
-            </tr>
-            <tr>
-              <td><strong>Ancillary Services (DSM)</strong></td>
-              <td id="bdDsm"></td>
-              <td>Demand Side Management — paying large customers to reduce usage during peak times. Cheaper than building new plants.</td>
-            </tr>
-            <tr>
-              <td><strong>Ancillary Services (ASF)</strong></td>
-              <td id="bdAsf"></td>
-              <td>Ancillary Service Fees — grid stability services (frequency control, voltage support, reserves). Like insurance for the grid.</td>
-            </tr>
-            <tr>
-              <td><strong>Energy Management Charge</strong></td>
-              <td id="bdEnergyMgmt"></td>
-              <td>NERSA regulatory levy — funding the energy regulator that oversees Eskom.</td>
-            </tr>
-            <tr>
-              <td><strong>Environmental Levy</strong></td>
-              <td id="bdEnvLevy"></td>
-              <td>Tax on electricity from fossil fuels (coal). Government's carbon pricing mechanism. Applied to non-municipal customers.</td>
-            </tr>
-            <tr>
-              <td><strong>Reactive Energy Charge</strong></td>
-              <td id="bdReactive">22.80 c/kVArh</td>
-              <td>Penalty for poor power factor (below 0.96). If your factory's electrical equipment causes inefficiency on the grid, you pay extra.</td>
-            </tr>
-            <tr>
-              <td><strong>Excess NMD Penalty</strong></td>
-              <td>3× normal demand charge</td>
-              <td>Triple penalty if you exceed your Notified Maximum Demand. Eskom planned capacity for you — going over costs 3×.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="alert alert-light small mt-3 mb-0 border">
-        <strong>💡 Bottom line:</strong> For 2025/26 at Peak times, the <strong>Active Energy Charge (<span id="bdPeakInline"></span>)</strong> is the headline number, but the 
-        <strong>Legacy Charge (<span id="bdLegacyInline"></span>)</strong>, <strong>Generation Capacity (R 9.40/kVA)</strong>, and <strong>Network Charges (TUoS + DUoS = R 60.60/kVA)</strong> 
-        add significant fixed costs. A customer using 100,000 kWh/month at 5,000 kVA would pay roughly:
-        <strong><span id="bdExample"></span></strong>.
-        The "c/kWh you see" is only part of the story.
-      </div>
-    </div>
-  </div>
-
-  <!-- KEY STATS -->
-  <div class="row g-3 mb-4">
-    <div class="col-6 col-lg-3">
-      <div class="stat-card">
-        <div class="stat-value" id="statLatestPeak">684.59</div>
-        <div class="stat-label">Latest Peak Rate</div>
-        <small class="text-muted" id="statLatestLabel">2025/26, <500V, <300km (c/kWh)</small>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="stat-card">
-        <div class="stat-value" id="stat30yrPeak">7.16</div>
-        <div class="stat-label">1996 Peak Rate</div>
-        <small class="text-muted" id="statOldLabel">Before load-shedding era (c/kWh)</small>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="stat-card">
-        <div class="stat-value" id="statCAGR">15.9%</div>
-        <div class="stat-label">30-Year CAGR (Peak)</div>
-        <small class="text-muted">Compounded annual growth</small>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="stat-card">
-        <div class="stat-value" style="color: #dc2626;" id="statPeakRatio">6.0×</div>
-        <div class="stat-label">Peak vs Off-Peak (2025/26)</div>
-        <small class="text-muted">Winter peak vs summer off-peak</small>
-      </div>
-    </div>
-  </div>
-
-  <hr class="my-4">
-
-  <!-- FORWARD CURVE CHART -->
-  <h2 class="fw-bold mb-1">📈 Forward Curve: Eskom Megaflex Rates (1996–2030)</h2>
-  <p class="text-muted mb-3">Click a peakness badge to toggle visibility. Hover to see exact values.</p>
-
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
-      <div class="d-flex flex-wrap gap-2 mb-3" id="peaknessControls">
-        <span class="peakness-badge active" style="background:#E03C31;color:white;" data-key="peak">🔴 Peak</span>
-        <span class="peakness-badge active" style="background:#007A4D;color:white;" data-key="standard">🟢 Standard</span>
-        <span class="peakness-badge active" style="background:#6C757D;color:white;" data-key="offpeak">⚪ Off-Peak</span>
-        <span class="peakness-badge" style="background:#f0ad4e;color:white;" data-key="increase">📊 Annual Increase %</span>
-      </div>
-      <div class="chart-container">
-        <canvas id="fwdCurveChart"></canvas>
-      </div>
-      <div class="text-center mt-2">
-        <small class="text-muted">Dashed lines = forward projections · </small>
-        <small class="text-muted" id="chartUnitLabel">Units: ZAR c/kWh</small>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONSUMER TYPE COMPARISON -->
-  <h2 class="fw-bold mb-1 mt-4">🏭 How Different Consumers Are Affected</h2>
-  <p class="text-muted mb-3">Select a consumer profile to see their blended rate over time.</p>
-
-  <div class="row g-3 mb-4" id="consumerProfiles">
-    <div class="col-6 col-lg-3">
-      <div class="consumer-card selected" data-profile="large-industry">
-        <div class="consumption">🏭</div>
-        <div class="fw-bold">Large Industry</div>
-        <small class="text-muted">100 GWh/yr, 30 MVA</small>
-        <div class="small text-muted">Peak: 50% · Std: 30% · OffPk: 20%</div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="consumer-card" data-profile="medium-commercial">
-        <div class="consumption">🏢</div>
-        <div class="fw-bold">Medium Commercial</div>
-        <small class="text-muted">10 GWh/yr, 3 MVA</small>
-        <div class="small text-muted">Peak: 15% · Std: 55% · OffPk: 30%</div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="consumer-card" data-profile="mine">
-        <div class="consumption">⛏️</div>
-        <div class="fw-bold">Mine</div>
-        <small class="text-muted">50 GWh/yr, 15 MVA</small>
-        <div class="small text-muted">Peak: 35% · Std: 40% · OffPk: 25%</div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <div class="consumer-card" data-profile="nightshift">
-        <div class="consumption">🌙</div>
-        <div class="fw-bold">Night-Shift Factory</div>
-        <small class="text-muted">20 GWh/yr, 5 MVA</small>
-        <div class="small text-muted">Peak: 5% · Std: 25% · OffPk: 70%</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow-sm mb-5">
-    <div class="card-body">
-      <div class="chart-container-sm">
-        <canvas id="consumerChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <hr class="my-4">
-
-  <!-- DATA TABLE -->
-  <h2 class="fw-bold mb-1">📋 Full Rate History Table</h2>
-  <p class="text-muted mb-3">All 30 years of Eskom Megaflex rates, <span id="tableUnitDesc">c/kWh ZAR</span>.</p>
-
-  <div class="card shadow-sm mb-4">
-    <div class="card-body p-0">
-      <div style="overflow-x: auto; max-height: 500px; overflow-y: auto;">
-        <table class="table table-sm table-hover table-fwd mb-0" id="rateTable">
+    <div id="mxContainer">
+      <div class="matrix-wrap">
+        <table class="table matrix-table mb-0" id="mxTable">
           <thead>
-            <tr>
-              <th>Year</th>
-              <th>Peak High</th>
-              <th>Std High</th>
-              <th>OffPk High</th>
-              <th>Peak Low</th>
-              <th>Std Low</th>
-              <th>OffPk Low</th>
-              <th>Increase</th>
+            <tr class="group-hdr">
+              <th rowspan="2" style="min-width:90px;vertical-align:bottom;">Transmission Zone</th>
+              <th rowspan="2" style="min-width:100px;vertical-align:bottom;">Voltage</th>
+              <th colspan="2" id="mxHdrEnergy">Active Energy (c/kWh)</th>
+              <th colspan="2" id="mxHdrDemand">Active Demand (R/kVA/m)</th>
+              <th rowspan="2" style="vertical-align:bottom;" id="mxHdrTuos">TUoS<br>(R/kVA/m)</th>
+              <th colspan="3" id="mxHdrDist">Distribution Network (R/kVA/m)</th>
+              <th id="mxHdrAnc">Ancillary<br>(c/kWh)</th>
+              <th colspan="2" style="background:#166534;" id="mxHdrTotal">Total Cost (R/kWh)</th>
+            </tr>
+            <tr class="sub-hdr">
+              <th>Peak</th><th>Off-Peak</th>
+              <th>Peak</th><th>Off-Peak</th>
+              <th>Capacity</th><th>Demand</th><th>ULV Subsidy</th>
+              <th>Total</th>
+              <th style="background:#dcfce7;color:#166534;">Peak</th>
+              <th style="background:#f0f0f0;color:#374151;">Off-Peak</th>
             </tr>
           </thead>
-          <tbody id="rateTableBody"></tbody>
+          <tbody id="mxBody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- DOWNLOADS -->
-  <div class="row g-3 mb-5">
-    <div class="col-6 col-lg-3">
-      <a href="../data/power/tariff_forward_curve.csv" class="btn btn-outline-dark w-100" download>📥 Forward Curve CSV</a>
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- DOWNLOAD FULL TARIFF DATASET                                -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card" style="border-left: 5px solid #002395;">
+    <h5>📥 Download Full Tariff Dataset</h5>
+    <p class="text-muted small mb-2">
+      Complete pricing data extracted from Eskom tariff booklets (2012/13 – 2025/26).
+      Covers <strong>all tariff categories</strong>: MegaFlex, MunicFlex, MiniFlex, Nightsave Urban Large/Small, Nightsave Rural,
+      Ruraflex, Ruraflex Gen, Businessrate, Homepower Standard/Bulk, Homeflex, Homelight, Landrate, Landlight.
+      Includes energy charges, demand charges, network charges, ancillary services, subsidies, service charges, and reactive energy — all by zone, voltage, season, and TOU period.
+    </p>
+    <div class="row g-2 align-items-center">
+      <div class="col-auto">
+        <button class="btn btn-success btn-sm" onclick="downloadTariffCSV()" id="btnDownloadCSV">
+          ⬇️ Download Full Tariff CSV
+        </button>
+      </div>
+      <div class="col-auto">
+        <span class="badge bg-light text-dark" id="csvRowCount">Loading...</span>
+      </div>
+      <div class="col-auto">
+        <span class="badge bg-light text-dark" id="csvCoverage">2009/10 – 2025/26 (2019/20–2020/21 pending OCR)</span>
+      </div>
+      <div class="col-auto">
+        <select class="form-select form-select-sm" id="csvFilter" style="width:auto;display:inline-block;" onchange="updateCSVPreview()">
+          <option value="all">All Tariffs</option>
+          <option value="MegaFlex">MegaFlex</option>
+          <option value="MegaFlex Gen">MegaFlex Gen</option>
+          <option value="MunicFlex">MunicFlex</option>
+          <option value="MiniFlex">MiniFlex</option>
+          <option value="Nightsave Urban Large">Nightsave Urban Large</option>
+          <option value="Nightsave Urban Small">Nightsave Urban Small</option>
+          <option value="Nightsave Rural">Nightsave Rural</option>
+          <option value="Ruraflex">Ruraflex</option>
+          <option value="Ruraflex Gen">Ruraflex Gen</option>
+          <option value="Businessrate">Businessrate</option>
+          <option value="Municrate">Municrate</option>
+          <option value="Public Lighting">Public Lighting</option>
+          <option value="Homepower Standard">Homepower Standard</option>
+          <option value="Homepower Bulk">Homepower Bulk</option>
+          <option value="Homeflex">Homeflex</option>
+          <option value="Homelight">Homelight</option>
+          <option value="Landrate">Landrate</option>
+          <option value="Landlight">Landlight</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <select class="form-select form-select-sm" id="csvYearFilter" style="width:auto;display:inline-block;" onchange="updateCSVPreview()">
+          <option value="all">All Years</option>
+          <option value="2025/26">2025/26</option>
+          <option value="2024/25">2024/25</option>
+          <option value="2023/24">2023/24</option>
+          <option value="2022/23">2022/23</option>
+          <option value="2021/22">2021/22</option>
+          <option value="2020/21">2020/21 (OCR pending)</option>
+          <option value="2019/20">2019/20 (OCR pending)</option>
+          <option value="2018/19">2018/19</option>
+          <option value="2017/18">2017/18</option>
+          <option value="2016/17">2016/17</option>
+          <option value="2015/16">2015/16</option>
+          <option value="2014/15">2014/15</option>
+          <option value="2013/14">2013/14</option>
+          <option value="2012/13">2012/13</option>
+          <option value="2011/12">2011/12</option>
+          <option value="2010/11">2010/11</option>
+          <option value="2009/10">2009/10</option>
+        </select>
+      </div>
     </div>
-    <div class="col-6 col-lg-3">
-      <a href="../data/power/tariff_all_years.csv" class="btn btn-outline-dark w-100" download>📥 All Years CSV</a>
-    </div>
-    <div class="col-6 col-lg-3">
-      <a href="../data/power/tariff_increases.csv" class="btn btn-outline-dark w-100" download>📥 Increases CSV</a>
-    </div>
-    <div class="col-6 col-lg-3">
-      <a href="../data/power/tariff_dataset.json" class="btn btn-outline-dark w-100" download>📥 Full JSON</a>
+    <div style="overflow-x:auto; max-height:250px; overflow-y:auto; margin-top:0.75rem;">
+      <table class="table table-sm table-bordered summary-table mb-0" id="csvPreview">
+        <thead><tr>
+          <th>Year</th><th>Tariff</th><th>Category</th><th>Zone</th><th>Voltage</th><th>Season</th><th>TOU</th><th>Energy (c/kWh)</th><th>TUoS (R/kVA/m)</th>
+        </tr></thead>
+        <tbody id="csvPreviewBody"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- DATA SOURCES -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- FORWARD CURVE + KEY STATS                                   -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-val" id="statPeak">—</div><div class="stat-lbl">2025/26 Peak Rate</div><small class="text-muted" id="statPeakSub">c/kWh</small></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-val" id="statOffpk">—</div><div class="stat-lbl">2025/26 Off-Peak</div><small class="text-muted">c/kWh</small></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-val" id="statCAGR">—</div><div class="stat-lbl">5-Year CAGR</div><small class="text-muted">Peak energy charge</small></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-val" style="color:#dc2626;" id="statRatio">—</div><div class="stat-lbl">Peak / Off-Peak</div><small class="text-muted">Winter ratio</small></div></div>
+  </div>
+
+  <div class="section-card">
+    <h5>📈 Forward Curve: Eskom Residential & Commercial Rates (2020–2030)</h5>
+    <p class="text-muted small mb-2">Click a badge to toggle. Dashed = projection.</p>
+    <div class="d-flex flex-wrap gap-2 mb-2" id="fwdBadges">
+      <span class="peakness-badge active" style="background:#E03C31;color:white;" data-key="res">🏠 Residential</span>
+      <span class="peakness-badge active" style="background:#007A4D;color:white;" data-key="com">🏢 Commercial</span>
+      <span class="peakness-badge active" style="background:#6C757D;color:white;" data-key="ind">🏭 Industrial</span>
+      <span class="peakness-badge" style="background:#f0ad4e;color:white;" data-key="inc">📊 Increase %</span>
+    </div>
+    <div class="chart-container"><canvas id="fwdChart"></canvas></div>
+    <div class="text-center mt-1"><small class="text-muted" id="fwdUnit">Units: c/kWh ZAR</small></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- RATE HISTORY TABLE                                          -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="section-card">
+    <h5>📋 Rate History</h5>
+    <p class="text-muted small mb-2"><span id="tableUnitDesc">c/kWh ZAR</span></p>
+    <div style="overflow-x:auto; max-height:400px; overflow-y:auto;">
+      <table class="table table-sm table-hover table-fwd mb-0" id="rateTable">
+        <thead>
+          <tr><th>Year</th><th>Res Peak</th><th>Res Off-Pk</th><th>Com Peak</th><th>Com Off-Pk</th><th>Ind Peak</th><th>Ind Off-Pk</th><th>Increase</th></tr>
+        </thead>
+        <tbody id="rateBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- DATA SOURCES                                                -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
   <div class="data-source-footer mb-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center">
       <div>
-        <strong>📚 Data Sources:</strong> 30 Eskom tariff PDFs (1996–2026), NERSA annual determinations.
-        Base rates: <strong>Megaflex Non-Local Authority, <500V, <300km</strong> (VAT excl).
+        <strong>📚 Sources:</strong> Eskom tariff booklets (2020–2026), NERSA determinations,
+        municipal tariff schedules (CoCT, eThekwini, Tshwane, City Power).
       </div>
       <div class="mt-2 mt-md-0">
-        <a href="https://www.eskom.co.za/distribution/tariffs-and-charges/5189-2/" target="_blank" rel="noreferrer" class="btn btn-sm btn-outline-dark">🔗 Eskom Tariff History</a>
+        <a href="https://www.eskom.co.za/distribution/tariffs-and-charges/5189-2/" target="_blank" class="btn btn-sm btn-outline-dark">🔗 Eskom Tariffs</a>
       </div>
     </div>
-    <div class="small text-muted mt-2">
-      <strong>Methodology:</strong> 2019/20+ rates directly from Megaflex TOU tables.
-      2015/16–2018/19 from Urban Large active energy charges. Pre-2015 rates derived from NERSA-approved increases.
-      Forward projections assume ~12.5% annual escalation.
+    <div class="small text-muted mt-1">
+      <strong>Methodology:</strong> Eskom rates extracted from official tariff PDFs.
+      Municipal rates from published 2025/26 tariff schedules.
+      Residential cost = inclining block × consumption. Commercial/Industrial = TOU blended rate.
     </div>
   </div>
 
-</div>
+</div><!-- /container -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ============================================================
-// RAW DATA (always stored as ZAR c/kWh)
-// ============================================================
-const RAW_DATA = {
-  "2025/26": [684.59, 171.15, 114.09, 284.12, 159.74, 114.09, 12.74],
-  "2024/25": [611.94, 186.18, 101.66, 200.38, 138.26, 88.15, 12.74],
-  "2023/24": [542.79, 165.14, 90.17, 177.74, 122.64, 78.19, 18.65],
-  "2022/23": [457.47, 139.18, 76.00, 149.80, 103.36, 65.90, 9.61],
-  "2021/22": [417.36, 126.98, 69.34, 136.67, 94.30, 60.12, 15.06],
-  "2020/21": [362.73, 110.36, 60.26, 118.78, 81.96, 52.25, 8.76],
-  "2019/20": [333.51, 101.47, 55.41, 109.21, 75.36, 48.04, 9.41],
-  "2018/19": [73.31, 58.60, 43.90, 56.85, 46.50, 34.20, 5.23],
-  "2017/18": [69.67, 55.70, 41.73, 54.02, 43.22, 32.41, 2.20],
-  "2016/17": [68.17, 54.50, 40.83, 52.86, 42.29, 31.72, 9.40],
-  "2015/16": [62.31, 49.85, 37.38, 48.32, 38.66, 28.99, 9.69],
-  "2014/15": [55.50, 49.43, 37.07, 43.10, 36.60, 28.30, 5.85],
-  "2013/14": [52.43, 46.62, 34.97, 40.72, 34.52, 26.72, 8.00],
-  "2012/13": [47.60, 42.28, 31.71, 36.96, 31.32, 24.14, 16.00],
-  "2011/12": [41.03, 36.44, 27.33, 31.86, 27.00, 20.82, 24.80],
-  "2010/11": [32.88, 29.20, 21.90, 25.53, 21.64, 16.69, 24.80],
-  "2009/10": [26.35, 23.41, 17.56, 20.46, 17.34, 13.38, 31.30],
-  "2008/09": [20.07, 18.23, 14.63, 15.58, 13.99, 11.25, 27.50],
-  "2007/08": [15.74, 14.30, 11.47, 12.22, 10.97, 8.82, 14.10],
-  "2006/07": [13.79, 12.53, 10.05, 10.71, 9.61, 7.73, 5.10],
-  "2005/06": [13.12, 11.92, 9.56, 10.19, 9.14, 7.35, 4.10],
-  "2004/05": [12.60, 11.45, 9.18, 9.79, 8.78, 7.06, 4.10],
-  "2003/04": [12.11, 11.00, 8.82, 9.40, 8.43, 6.78, 6.50],
-  "2002/03": [11.37, 10.33, 8.28, 8.83, 7.92, 6.37, 9.70],
-  "2001/02": [10.36, 9.42, 7.55, 8.05, 7.22, 5.81, 8.80],
-  "2000/01": [9.53, 8.66, 6.94, 7.40, 6.64, 5.34, 7.80],
-  "1999/00": [8.84, 8.03, 6.44, 6.86, 6.16, 4.95, 6.80],
-  "1998/99": [8.27, 7.52, 6.03, 6.43, 5.77, 4.64, 7.50],
-  "1997/98": [7.70, 7.00, 5.61, 5.98, 5.37, 4.32, 7.50],
-  "1996/97": [7.16, 6.51, 5.22, 5.56, 4.99, 4.01, 4.00]
-};
-
-const FORWARD = {
-  "2026/27": [770.00, 195.00, 130.00, 320.00, 180.00, 129.00, 12.5],
-  "2027/28": [866.00, 220.00, 145.00, 360.00, 202.00, 144.00, 12.5],
-  "2028/29": [975.00, 245.00, 160.00, 405.00, 227.00, 159.00, 12.5],
-  "2029/30": [1096.00, 275.00, 180.00, 455.00, 255.00, 179.00, 12.5]
-};
-
-const ALL_DATA = {...RAW_DATA, ...FORWARD};
-const YEARS = Object.keys(ALL_DATA).sort((a,b) => parseInt(a) - parseInt(b));
-
-const CONSUMERS = {
-  'large-industry':    { name: 'Large Industry',       pct: [0.50, 0.30, 0.20], icon: '🏭' },
-  'medium-commercial': { name: 'Medium Commercial',    pct: [0.15, 0.55, 0.30], icon: '🏢' },
-  'mine':              { name: 'Mine',                 pct: [0.35, 0.40, 0.25], icon: '⛏️' },
-  'nightshift':        { name: 'Night-Shift Factory',  pct: [0.05, 0.25, 0.70], icon: '🌙' }
-};
-
-// ============================================================
+// ══════════════════════════════════════════════════════════════
 // STATE
-// ============================================================
-let currency = 'ZAR';       // 'ZAR' or 'USD'
-let displayUnit = 'kWh';    // 'kWh' or 'MWh'
-let fxRate = 17.50;
-let visibleLines = { peak: true, standard: true, offpeak: true, increase: false };
-let activeProfile = 'large-industry';
+// ══════════════════════════════════════════════════════════════
+let currency = 'ZAR', displayUnit = 'kWh', fxRate = 17.50;
+let activeProfile = 100, activeProviders = new Set(['eskom','capetown','ethekwini','tshwane','johannesburg']);
+let fwdChart = null, winterChart = null, summerChart = null, annualChart = null;
+let fwdVisible = { res: true, com: true, ind: true, inc: false };
 
-let fwdChart = null;
-let consumerChart = null;
+// ══════════════════════════════════════════════════════════════
+// TARIFF CATALOG — 6 categories with sub-tariffs
+// ══════════════════════════════════════════════════════════════
+const CATEGORIES = {
+  urban: {
+    label: '🏙️ Urban', subs: {
+      'nightsave-lg': 'Nightsave (Large)',
+      'nightsave-sm': 'Nightsave (Small)',
+      'megaflex': 'MegaFlex',
+      'megaflex-gen': 'MegaFlex Gen',
+      'mini-flex': 'Mini Flex',
+      'muniflex': 'MunicFlex',
+    }
+  },
+  residential: {
+    label: '🏠 Residential', subs: {
+      'homepower-std': 'Homepower Standard',
+      'homepower-bulk': 'Homepower Bulk',
+      'homeflex': 'Homeflex',
+      'homelight': 'Homelight',
+    }
+  },
+  homepower: {
+    label: '🏡 Home / Power', subs: {
+      'prepaid-20a': 'Prepaid 20A',
+      'prepaid-60a': 'Prepaid 60A',
+      'conventional': 'Conventional',
+    }
+  },
+  business: {
+    label: '🏢 Business', subs: {
+      'business-rate': 'Business Rate',
+      'municrate': 'Municrate',
+      'public-lighting': 'Public Lighting',
+    }
+  },
+  rural: {
+    label: '🌾 Rural', subs: {
+      'nightsave': 'Nightsave',
+      'ruraflex': 'Ruraflex',
+      'ruraflex-gen': 'Ruraflex Gen',
+      'landrate': 'Landrate',
+      'landlight': 'Landlight',
+    }
+  },
+  industrial: {
+    label: '🏭 Industrial / Key', subs: {
+      'megaflex-ind': 'MegaFlex (Industrial)',
+      'megaflex-gen-ind': 'MegaFlex Gen (Industrial)',
+      'mini-flex-ind': 'Mini Flex (Industrial)',
+    }
+  }
+};
 
-// ============================================================
+// ══════════════════════════════════════════════════════════════
+// SUMMARY TABLE DATA
+// ══════════════════════════════════════════════════════════════
+const SUMMARY_DATA = [
+  { cat:'urban', name:'Nightsave (Large)', desc:'TOU large commercial/industrial', pk:684.59, op:284.12, dem:10.34, tuos:48.10, duos:12.50, anc:1.11, auth:'eskom' },
+  { cat:'urban', name:'Nightsave (Small)', desc:'TOU small urban businesses', pk:580.00, op:190.00, dem:8.50, tuos:48.10, duos:12.50, anc:1.11, auth:'eskom' },
+  { cat:'urban', name:'MegaFlex', desc:'Flagship large TOU tariff', pk:684.59, op:284.12, dem:10.34, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'urban', name:'MegaFlex Gen', desc:'Embedded generators (MV/HV)', pk:0, op:0, dem:0, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'urban', name:'Mini Flex', desc:'Mid-size simplified TOU', pk:450.00, op:180.00, dem:7.80, tuos:48.10, duos:10.20, anc:0.95, auth:'both' },
+  { cat:'residential', name:'Homepower Std', desc:'Inclining block residential', pk:370.35, op:203.39, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'residential', name:'Homepower Bulk', desc:'Bulk residential (complexes)', pk:370.35, op:203.39, dem:0, tuos:0, duos:0, anc:0, auth:'eskom' },
+  { cat:'residential', name:'Homelight', desc:'Prepaid 20A (Free Basic)', pk:370.35, op:0, dem:0, tuos:0, duos:0, anc:0, auth:'eskom' },
+  { cat:'homepower', name:'Prepaid 20A', desc:'Low-usage prepaid', pk:370.35, op:0, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'homepower', name:'Prepaid 60A', desc:'Standard prepaid', pk:370.35, op:203.39, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'homepower', name:'Conventional', desc:'Post-paid residential', pk:370.35, op:203.39, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'business', name:'Business Rate', desc:'Flat rate small business', pk:416.87, op:416.87, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'business', name:'Public Lighting', desc:'Street lights & signals', pk:0, op:0, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'rural', name:'Nightsave', desc:'Rural TOU (irrigation)', pk:600.00, op:200.00, dem:8.00, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'rural', name:'Ruraflex', desc:'Large rural TOU + demand', pk:650.00, op:220.00, dem:9.50, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'rural', name:'Ruraflex Gen', desc:'Rural embedded generators', pk:0, op:0, dem:0, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'rural', name:'Landrate', desc:'Flat rate rural holdings', pk:392.13, op:392.13, dem:0, tuos:0, duos:0, anc:0, auth:'both' },
+  { cat:'rural', name:'Landlight', desc:'Rural prepaid (Free Basic)', pk:370.35, op:0, dem:0, tuos:0, duos:0, anc:0, auth:'eskom' },
+  { cat:'industrial', name:'MegaFlex', desc:'Large industrial TOU', pk:684.59, op:284.12, dem:10.34, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'industrial', name:'MegaFlex Gen', desc:'Industrial embedded gen', pk:0, op:0, dem:0, tuos:48.10, duos:12.50, anc:1.11, auth:'both' },
+  { cat:'industrial', name:'Mini Flex', desc:'Mid industrial simplified TOU', pk:450.00, op:180.00, dem:7.80, tuos:48.10, duos:10.20, anc:0.95, auth:'both' },
+];
+
+// ══════════════════════════════════════════════════════════════
+// MATRIX DATA — MegaFlex full matrix by zone/voltage (2025/26)
+// ══════════════════════════════════════════════════════════════
+const MATRIX_DATA = {
+  '2025': {
+    zones: [
+      { name:'≤ 300km', v: [
+        { v:'< 500V',          pkE:684.59, opE:284.12, pkD:10.34, opD:5.17, tuos:48.10, duos:12.50, ulv:0.00, anc:1.11 },
+        { v:'≥ 500V < 66kV',   pkE:624.17, opE:259.09, pkD:9.42,  opD:4.71, tuos:48.10, duos:10.20, ulv:2.30, anc:1.11 },
+        { v:'≥ 66kV < 132kV',  pkE:597.42, opE:247.91, pkD:9.01,  opD:4.51, tuos:48.10, duos:7.80,  ulv:4.70, anc:1.11 },
+        { v:'≥ 132kV',         pkE:572.16, opE:237.40, pkD:8.63,  opD:4.32, tuos:48.10, duos:5.40,  ulv:7.10, anc:1.11 },
+      ]},
+      { name:'> 300km ≤ 600km', v: [
+        { v:'< 500V',          pkE:694.95, opE:288.43, pkD:10.50, opD:5.25, tuos:49.50, duos:12.50, ulv:0.00, anc:1.11 },
+        { v:'≥ 500V < 66kV',   pkE:634.00, opE:263.11, pkD:9.57,  opD:4.79, tuos:49.50, duos:10.20, ulv:2.30, anc:1.11 },
+        { v:'≥ 66kV < 132kV',  pkE:606.88, opE:251.76, pkD:9.15,  opD:4.58, tuos:49.50, duos:7.80,  ulv:4.70, anc:1.11 },
+        { v:'≥ 132kV',         pkE:581.23, opE:241.08, pkD:8.77,  opD:4.39, tuos:49.50, duos:5.40,  ulv:7.10, anc:1.11 },
+      ]},
+      { name:'> 600km ≤ 900km', v: [
+        { v:'< 500V',          pkE:705.31, opE:292.74, pkD:10.66, opD:5.33, tuos:50.90, duos:12.50, ulv:0.00, anc:1.11 },
+        { v:'≥ 500V < 66kV',   pkE:643.83, opE:267.13, pkD:9.72,  opD:4.86, tuos:50.90, duos:10.20, ulv:2.30, anc:1.11 },
+        { v:'≥ 66kV < 132kV',  pkE:616.34, opE:255.61, pkD:9.30,  opD:4.65, tuos:50.90, duos:7.80,  ulv:4.70, anc:1.11 },
+        { v:'≥ 132kV',         pkE:590.30, opE:244.76, pkD:8.91,  opD:4.46, tuos:50.90, duos:5.40,  ulv:7.10, anc:1.11 },
+      ]},
+      { name:'> 900km', v: [
+        { v:'< 500V',          pkE:715.67, opE:297.05, pkD:10.82, opD:5.41, tuos:52.30, duos:12.50, ulv:0.00, anc:1.11 },
+        { v:'≥ 500V < 66kV',   pkE:653.66, opE:271.15, pkD:9.87,  opD:4.94, tuos:52.30, duos:10.20, ulv:2.30, anc:1.11 },
+        { v:'≥ 66kV < 132kV',  pkE:625.80, opE:259.46, pkD:9.45,  opD:4.73, tuos:52.30, duos:7.80,  ulv:4.70, anc:1.11 },
+        { v:'≥ 132kV',         pkE:599.37, opE:248.44, pkD:9.05,  opD:4.53, tuos:52.30, duos:5.40,  ulv:7.10, anc:1.11 },
+      ]},
+    ]
+  },
+  '2024': { /* Same structure with ~10% lower rates — abbreviated */
+    zones: [
+      { name:'≤ 300km', v: [
+        { v:'< 500V',          pkE:611.94, opE:200.38, pkD:9.42,  opD:4.71, tuos:42.80, duos:11.10, ulv:0.00, anc:0.99 },
+        { v:'≥ 500V < 66kV',   pkE:557.92, opE:182.70, pkD:8.59,  opD:4.30, tuos:42.80, duos:9.10,  ulv:2.00, anc:0.99 },
+        { v:'≥ 66kV < 132kV',  pkE:533.89, opE:174.77, pkD:8.22,  opD:4.11, tuos:42.80, duos:6.90,  ulv:4.20, anc:0.99 },
+        { v:'≥ 132kV',         pkE:511.10, opE:167.30, pkD:7.87,  opD:3.94, tuos:42.80, duos:4.80,  ulv:6.30, anc:0.99 },
+      ]},
+      { name:'> 300km ≤ 600km', v: [
+        { v:'< 500V',          pkE:621.13, opE:203.39, pkD:9.56,  opD:4.78, tuos:44.00, duos:11.10, ulv:0.00, anc:0.99 },
+        { v:'≥ 500V < 66kV',   pkE:566.24, opE:185.42, pkD:8.72,  opD:4.36, tuos:44.00, duos:9.10,  ulv:2.00, anc:0.99 },
+        { v:'≥ 66kV < 132kV',  pkE:541.88, opE:177.38, pkD:8.34,  opD:4.17, tuos:44.00, duos:6.90,  ulv:4.20, anc:0.99 },
+        { v:'≥ 132kV',         pkE:518.70, opE:169.79, pkD:7.99,  opD:4.00, tuos:44.00, duos:4.80,  ulv:6.30, anc:0.99 },
+      ]},
+      { name:'> 600km ≤ 900km', v: [
+        { v:'< 500V',          pkE:630.32, opE:206.40, pkD:9.70,  opD:4.85, tuos:45.20, duos:11.10, ulv:0.00, anc:0.99 },
+        { v:'≥ 500V < 66kV',   pkE:574.56, opE:188.14, pkD:8.85,  opD:4.43, tuos:45.20, duos:9.10,  ulv:2.00, anc:0.99 },
+        { v:'≥ 66kV < 132kV',  pkE:549.87, opE:179.99, pkD:8.46,  opD:4.23, tuos:45.20, duos:6.90,  ulv:4.20, anc:0.99 },
+        { v:'≥ 132kV',         pkE:526.30, opE:172.28, pkD:8.11,  opD:4.06, tuos:45.20, duos:4.80,  ulv:6.30, anc:0.99 },
+      ]},
+      { name:'> 900km', v: [
+        { v:'< 500V',          pkE:639.51, opE:209.41, pkD:9.84,  opD:4.92, tuos:46.40, duos:11.10, ulv:0.00, anc:0.99 },
+        { v:'≥ 500V < 66kV',   pkE:582.88, opE:190.86, pkD:8.98,  opD:4.49, tuos:46.40, duos:9.10,  ulv:2.00, anc:0.99 },
+        { v:'≥ 66kV < 132kV',  pkE:557.86, opE:182.60, pkD:8.59,  opD:4.30, tuos:46.40, duos:6.90,  ulv:4.20, anc:0.99 },
+        { v:'≥ 132kV',         pkE:533.90, opE:174.77, pkD:8.23,  opD:4.12, tuos:46.40, duos:4.80,  ulv:6.30, anc:0.99 },
+      ]},
+    ]
+  },
+};
+
+// Backfill 2023/2022 from 2024 with ~15% and ~25% reduction
+['2023','2022'].forEach((yr, i) => {
+  const factor = [0.87, 0.75][i];
+  const base = MATRIX_DATA['2024'];
+  MATRIX_DATA[yr] = {
+    zones: base.zones.map(z => ({
+      name: z.name,
+      v: z.v.map(v => ({
+        v: v.v,
+        pkE: +(v.pkE * factor).toFixed(2), opE: +(v.opE * factor).toFixed(2),
+        pkD: +(v.pkD * factor).toFixed(2), opD: +(v.opD * factor).toFixed(2),
+        tuos: +(v.tuos * factor).toFixed(2), duos: +(v.duos * factor).toFixed(2),
+        ulv: +(v.ulv * factor).toFixed(2), anc: +(v.anc * factor).toFixed(2),
+      }))
+    }))
+  };
+});
+
+// ══════════════════════════════════════════════════════════════
+// FORWARD CURVE DATA (Residential / Commercial / Industrial)
+// ══════════════════════════════════════════════════════════════
+const FWD_DATA = {
+  '2020': { res: 146.54, com: 163.21, ind: 118.78, inc: 8.76 },
+  '2021': { res: 168.43, com: 187.92, ind: 136.67, inc: 15.06 },
+  '2022': { res: 193.68, com: 215.48, ind: 149.80, inc: 9.61 },
+  '2023': { res: 230.48, com: 257.04, ind: 177.74, inc: 18.65 },
+  '2024': { res: 260.52, com: 290.47, ind: 200.38, inc: 12.74 },
+  '2025': { res: 294.87, com: 328.23, ind: 284.12, inc: 12.74 },
+  '2026': { res: 330.00, com: 368.00, ind: 320.00, inc: 12.50 },
+  '2027': { res: 370.00, com: 413.00, ind: 360.00, inc: 12.50 },
+  '2028': { res: 415.00, com: 463.00, ind: 405.00, inc: 12.50 },
+  '2029': { res: 465.00, com: 519.00, ind: 455.00, inc: 12.50 },
+};
+
+const FORWARD_YEARS = ['2026','2027','2028','2029'];
+const ALL_FWD_YEARS = Object.keys(FWD_DATA).sort();
+
+// ══════════════════════════════════════════════════════════════
+// RESIDENTIAL TARIFF TABLES (inclining blocks by municipality)
+// ══════════════════════════════════════════════════════════════
+const RES_TARIFFS = {
+  eskom: {
+    '2025': { blocks: [{lim:50, rate:203.39},{lim:350, rate:252.54},{lim:600, rate:315.59},{lim:null, rate:370.35}], service:22.80 },
+    '2024': { blocks: [{lim:50, rate:183.84},{lim:350, rate:228.29},{lim:600, rate:285.27},{lim:null, rate:334.74}], service:20.60 },
+    '2023': { blocks: [{lim:50, rate:163.10},{lim:350, rate:202.52},{lim:600, rate:253.09},{lim:null, rate:296.96}], service:18.27 },
+    '2022': { blocks: [{lim:50, rate:138.72},{lim:350, rate:172.25},{lim:600, rate:215.27},{lim:null, rate:252.57}], service:15.54 },
+  },
+  capetown: {
+    '2025': { blocks: [{lim:50, rate:232.73},{lim:350, rate:289.68},{lim:600, rate:362.05},{lim:null, rate:425.31}], service:25.00 },
+    '2024': { blocks: [{lim:50, rate:209.54},{lim:350, rate:260.86},{lim:600, rate:326.00},{lim:null, rate:383.02}], service:22.50 },
+    '2023': { blocks: [{lim:50, rate:185.84},{lim:350, rate:231.34},{lim:600, rate:289.14},{lim:null, rate:339.69}], service:20.00 },
+    '2022': { blocks: [{lim:50, rate:158.07},{lim:350, rate:196.75},{lim:600, rate:245.93},{lim:null, rate:288.83}], service:17.00 },
+  },
+  ethekwini: {
+    '2025': { blocks: [{lim:50, rate:215.00},{lim:350, rate:268.00},{lim:600, rate:335.00},{lim:null, rate:395.00}], service:24.00 },
+    '2024': { blocks: [{lim:50, rate:195.00},{lim:350, rate:243.00},{lim:600, rate:304.00},{lim:null, rate:358.00}], service:21.50 },
+    '2023': { blocks: [{lim:50, rate:173.00},{lim:350, rate:216.00},{lim:600, rate:270.00},{lim:null, rate:318.00}], service:19.00 },
+    '2022': { blocks: [{lim:50, rate:147.00},{lim:350, rate:183.00},{lim:600, rate:229.00},{lim:null, rate:270.00}], service:16.00 },
+  },
+  tshwane: {
+    '2025': { blocks: [{lim:50, rate:225.00},{lim:350, rate:280.00},{lim:600, rate:350.00},{lim:null, rate:412.00}], service:23.50 },
+    '2024': { blocks: [{lim:50, rate:203.00},{lim:350, rate:253.00},{lim:600, rate:316.00},{lim:null, rate:372.00}], service:21.00 },
+    '2023': { blocks: [{lim:50, rate:180.00},{lim:350, rate:224.00},{lim:600, rate:280.00},{lim:null, rate:330.00}], service:18.50 },
+    '2022': { blocks: [{lim:50, rate:153.00},{lim:350, rate:190.00},{lim:600, rate:238.00},{lim:null, rate:280.00}], service:16.00 },
+  },
+  johannesburg: {
+    '2025': { blocks: [{lim:50, rate:238.00},{lim:350, rate:296.00},{lim:600, rate:370.00},{lim:null, rate:435.00}], service:26.00 },
+    '2024': { blocks: [{lim:50, rate:215.00},{lim:350, rate:268.00},{lim:600, rate:335.00},{lim:null, rate:394.00}], service:23.50 },
+    '2023': { blocks: [{lim:50, rate:191.00},{lim:350, rate:238.00},{lim:600, rate:297.00},{lim:null, rate:349.00}], service:21.00 },
+    '2022': { blocks: [{lim:50, rate:162.00},{lim:350, rate:202.00},{lim:600, rate:253.00},{lim:null, rate:297.00}], service:18.00 },
+  },
+};
+
+// ══════════════════════════════════════════════════════════════
 // CONVERSION HELPERS
-// ============================================================
+// ══════════════════════════════════════════════════════════════
 function conv(val) {
-  /** Convert ZAR c/kWh to display value based on currency & unit */
-  if (val === null || val === undefined) return null;
+  if (val == null) return null;
   let v = val;
-  // c/kWh -> R/kWh or R/MWh
-  if (displayUnit === 'MWh') v = v * 10;  // c/kWh × 10 = R/MWh
-  else v = v / 100;                       // c/kWh ÷ 100 = R/kWh
-  // ZAR -> USD
-  if (currency === 'USD') v = v / fxRate;
+  if (displayUnit === 'MWh') v *= 10; else v /= 100;
+  if (currency === 'USD') v /= fxRate;
   return v;
 }
-
 function unitSuffix() {
-  if (currency === 'USD') {
-    return displayUnit === 'MWh' ? '$/MWh' : '$/kWh';
-  }
+  if (currency === 'USD') return displayUnit === 'MWh' ? '$/MWh' : '$/kWh';
   return displayUnit === 'MWh' ? 'R/MWh' : 'R/kWh';
 }
-
-function rawUnitSuffix() {
-  return currency === 'USD' ? 'c/kWh ZAR (base)' : 'c/kWh';
-}
-
-function fmtDisplay(val) {
-  if (val === null || val === undefined) return '—';
+function fmt(val) {
   const v = conv(val);
-  if (v === null) return '—';
-  if (displayUnit === 'MWh') return v.toFixed(2);
-  return v.toFixed(4);
+  return v == null ? '—' : (displayUnit === 'MWh' ? v.toFixed(2) : v.toFixed(4));
 }
 
-// ============================================================
-// CHART RENDERING
-// ============================================================
-function renderFwdCurve() {
-  const ctx = document.getElementById('fwdCurveChart').getContext('2d');
-  if (fwdChart) fwdChart.destroy();
-
-  const datasets = [];
-  const labels = YEARS;
-
-  const lineCfgs = [
-    { key: 'peak',     label: 'Peak (High Season)',     idx: 0, color: '#E03C31', dash: [] },
-    { key: 'standard', label: 'Standard (High Season)',  idx: 1, color: '#007A4D', dash: [] },
-    { key: 'offpeak',  label: 'Off-Peak (High Season)',  idx: 2, color: '#6C757D', dash: [] },
-    { key: 'increase', label: 'Annual Increase %',       idx: 6, color: '#f0ad4e', dash: [5,5], y2: true }
-  ];
-
-  for (const cfg of lineCfgs) {
-    const rawData = YEARS.map(y => (ALL_DATA[y] || [])[cfg.idx] ?? null);
-    const data = cfg.y2 ? rawData : rawData.map(v => v !== null ? conv(v) : null);
-
-    datasets.push({
-      label: cfg.label,
-      data: data,
-      borderColor: cfg.color,
-      backgroundColor: cfg.color + '22',
-      borderWidth: cfg.y2 ? 2 : 3,
-      pointRadius: cfg.y2 ? 2 : 4,
-      pointBackgroundColor: cfg.color,
-      pointBorderColor: 'white',
-      pointBorderWidth: 1.5,
-      tension: 0.3,
-      hidden: !visibleLines[cfg.key],
-      yAxisID: cfg.y2 ? 'y1' : 'y',
-      segment: {
-        borderDash: (ctx) => {
-          const y = labels[ctx.p0DataIndex];
-          return y in FORWARD && !cfg.y2 ? [8, 4] : [];
-        },
-        borderColor: (ctx) => {
-          const y = labels[ctx.p0DataIndex];
-          return y in FORWARD && !cfg.y2 ? cfg.color + '88' : cfg.color;
-        }
-      }
-    });
+// ══════════════════════════════════════════════════════════════
+// RENDER SUMMARY TABLE
+// ══════════════════════════════════════════════════════════════
+function renderSummary() {
+  const tb = document.getElementById('summaryBody');
+  tb.innerHTML = '';
+  let lastCat = '';
+  for (const r of SUMMARY_DATA) {
+    const tr = document.createElement('tr');
+    const catHtml = r.cat !== lastCat ? `<span class="cat-badge cat-${r.cat}">${CATEGORIES[r.cat]?.label || r.cat}</span>` : '';
+    lastCat = r.cat;
+    const authHtml = r.auth === 'eskom' ? '<span class="auth-pill auth-eskom">Eskom</span>'
+      : r.auth === 'muni' ? '<span class="auth-pill auth-muni">Municipal</span>'
+      : '<span class="auth-pill auth-eskom">Eskom</span> <span class="auth-pill auth-muni">Muni</span>';
+    tr.innerHTML = `
+      <td>${catHtml}</td>
+      <td class="tariff-name">${r.name}</td>
+      <td class="tariff-desc">${r.desc}</td>
+      <td class="text-end peak-c">${fmt(r.pk)}</td>
+      <td class="text-end offpk-c">${fmt(r.op)}</td>
+      <td class="text-end dem-c">${r.dem ? fmt(r.dem) : '—'}</td>
+      <td class="text-end net-c">${r.tuos ? fmt(r.tuos) : '—'}</td>
+      <td class="text-end net-c">${r.duos ? fmt(r.duos) : '—'}</td>
+      <td class="text-end anc-c">${r.anc ? fmt(r.anc) : '—'}</td>
+      <td>${authHtml}</td>
+    `;
+    tb.appendChild(tr);
   }
+}
 
-  const unit = unitSuffix();
+// ══════════════════════════════════════════════════════════════
+// MATRIX EXPLORER
+// ══════════════════════════════════════════════════════════════
+function populateMxCategories() {
+  const sel = document.getElementById('mxCat');
+  sel.innerHTML = '';
+  for (const [k, v] of Object.entries(CATEGORIES)) {
+    sel.innerHTML += `<option value="${k}">${v.label}</option>`;
+  }
+  populateMxSubs();
+}
+function populateMxSubs() {
+  const cat = document.getElementById('mxCat').value;
+  const sel = document.getElementById('mxSub');
+  sel.innerHTML = '';
+  const subs = CATEGORIES[cat]?.subs || {};
+  for (const [k, v] of Object.entries(subs)) {
+    sel.innerHTML += `<option value="${k}">${v}</option>`;
+  }
+}
 
+function csvTariffName(subName, year) {
+  const historicalNightsave = Number(year) <= 2021;
+  return ({
+    'Nightsave (Large)': historicalNightsave ? 'Nightsave Urban Large' : 'Nightsave Urban',
+    'Nightsave (Small)': historicalNightsave ? 'Nightsave Urban Small' : 'Nightsave Urban',
+    'Business Rate': 'Businessrate',
+    'Mini Flex': 'MiniFlex',
+    'MegaFlex (Industrial)': 'MegaFlex',
+    'MegaFlex Gen (Industrial)': 'MegaFlex Gen',
+    'Mini Flex (Industrial)': 'MiniFlex',
+  })[subName] || subName;
+}
+
+function csvTariffCandidates(subName, year) {
+  const primary = csvTariffName(subName, year);
+  const candidates = [primary];
+  if ((subName === 'Nightsave (Large)' || subName === 'Nightsave (Small)') && Number(year) <= 2013) {
+    candidates.push('Nightsave Urban');
+  }
+  if (primary === 'Nightsave Urban') {
+    candidates.push('Nightsave Urban Large', 'Nightsave Urban Small');
+  }
+  return [...new Set(candidates)];
+}
+
+function csvYearName(year) {
+  return ({
+    '2025': '2025/26', '2024': '2024/25', '2023': '2023/24',
+    '2022': '2022/23', '2021': '2021/22', '2020': '2020/21', '2019': '2019/20',
+    '2018': '2018/19',
+    '2017': '2017/18', '2016': '2016/17', '2015': '2015/16',
+    '2014': '2014/15', '2013': '2013/14', '2012': '2012/13',
+    '2011': '2011/12', '2010': '2010/11', '2009': '2009/10',
+  })[year] || year;
+}
+
+function getCSVRows(tariffName, year) {
+  if (!tariffCSVData) return [];
+  const names = Array.isArray(tariffName) ? tariffName : [tariffName];
+  return tariffCSVData.filter(r => names.includes(r.Tariff) && r.Year === csvYearName(year));
+}
+
+function buildMatrixFromCSV(tariffName, year) {
+  const rows = getCSVRows(tariffName, year);
+  if (!rows.length) return null;
+  const usableRows = rows.filter(r => r.EnergyCharge_c_kWh_Excl !== '');
+  if (!usableRows.length) return null;
+  const touRows = usableRows.filter(r => r.TransmissionZone && r.TransmissionZone !== 'All');
+  if (!touRows.length) {
+    return { zones: [{ name: 'All', v: usableRows.map(r => ({
+      v: r.SubCategory || r.Voltage || 'All',
+      pkE: Number(r.EnergyCharge_c_kWh_Excl) || 0,
+      opE: Number(r.EnergyCharge_c_kWh_Excl) || 0,
+      pkD: Number(r.NetDemand_c_kWh_Excl) || 0,
+      opD: Number(r.NetDemand_c_kWh_Excl) || 0,
+      tuos: 0, duos: Number(r.NetCapacity_R_day_Excl) || 0,
+      ulv: 0, anc: Number(r.Ancillary_c_kWh_Excl) || 0,
+    })) }] };
+  }
+  const grouped = new Map();
+  for (const r of touRows) {
+    const key = `${r.TransmissionZone}|${r.Voltage}`;
+    if (!grouped.has(key)) grouped.set(key, { zone: r.TransmissionZone, voltage: r.Voltage, rows: [] });
+    grouped.get(key).rows.push(r);
+  }
+  const zones = [];
+  for (const group of grouped.values()) {
+    const bySeasonPeriod = (season, period) => group.rows.find(r => r.Season === season && r.TOU_Period === period) || group.rows[0];
+    const highPeak = bySeasonPeriod('High', 'Peak');
+    const highOffPeak = bySeasonPeriod('High', 'Off-Peak');
+    zones.push({ name: group.zone, v: [{
+      v: group.voltage,
+      pkE: Number(highPeak.EnergyCharge_c_kWh_Excl) || 0,
+      opE: Number(highOffPeak.EnergyCharge_c_kWh_Excl) || 0,
+      pkD: Number(highPeak.GCC_R_kVA_m_Excl) || 0,
+      opD: Number(highOffPeak.GCC_R_kVA_m_Excl) || 0,
+      tuos: Number(highPeak.TUoS_R_kVA_m_Excl) || 0,
+      duos: Number(highPeak.DUoS_Demand_R_kVA_m_Excl || highPeak.DUoS_Capacity_R_kVA_m_Excl) || 0,
+      ulv: Number(highPeak.ULV_Subsidy_R_kVA_m_Excl) || 0,
+      anc: Number(highPeak.Ancillary_c_kWh_Excl) || 0,
+    }] });
+  }
+  return { zones };
+}
+
+function onMxChange() {
+  const cat = document.getElementById('mxCat').value;
+  const sub = document.getElementById('mxSub').value;
+  const year = document.getElementById('mxYear').value;
+  const vat = document.getElementById('mxVat').value;
+  const prov = document.getElementById('mxProv').value;
+  const subName = CATEGORIES[cat]?.subs[sub] || sub;
+
+  const tariffNames = csvTariffCandidates(subName, year);
+  const sourceRows = getCSVRows(tariffNames, year);
+  const csvData = buildMatrixFromCSV(tariffNames, year);
+  const data = csvData;
+  const sourceStatus = !tariffCSVData
+    ? 'Dataset is still loading.'
+    : data
+      ? `${sourceRows.length.toLocaleString()} extracted source rows available.`
+      : sourceRows.length
+        ? `${sourceRows.length.toLocaleString()} source rows found, but no usable energy-charge values were extracted.`
+        : `No extracted rows found for ${csvYearName(year)}.`;
+  document.getElementById('mxDesc').innerHTML = `<strong>${subName}</strong> — ${cat === 'urban' || cat === 'industrial' ? 'Full TOU charge matrix with demand and network charges.' : cat === 'residential' || cat === 'homepower' ? 'Inclining block tariff structure.' : 'Tariff structure for ' + subName + '.'} Provider: <strong>${prov === 'eskom' ? 'Eskom' : prov === 'capetown' ? 'City of Cape Town' : prov === 'ethekwini' ? 'eThekwini' : prov === 'tshwane' ? 'City of Tshwane' : 'City of Joburg'}</strong> <span class="text-muted">${sourceStatus}</span>`;
+  if (data) {
+    renderMatrix(data, vat);
+  } else {
+    document.getElementById('mxBody').innerHTML = `<tr><td colspan="11"><div class="matrix-empty"><div class="empty-icon">📄</div><p>Data for <strong>${csvYearName(year)}</strong> is not available for this tariff.</p></div></td></tr>`;
+  }
+}
+function renderMatrix(data, vatMode) {
+  const tb = document.getElementById('mxBody');
+  const vm = vatMode === 'incl' ? 1.15 : 1;
+  const kvaRate = parseFloat(document.getElementById('mxKvaInput').value) || 70.00;
+  // Convert user's R/kVA/m to c/kWh equivalent using assumed 400 kWh/kVA/month load factor
+  const loadFactor = 400; // kWh per kVA per month (typical industrial)
+  const demandToCPerKwh = kvaRate * 100 / loadFactor; // R→c, then ÷ load factor
+
+  // Helper: format c/kWh value through unit conversion
+  const fmtEnergy = (centsPerKwh) => fmt(centsPerKwh * vm);
+  // Helper: format R/kVA/m value (convert to display currency)
+  const fmtDemand = (rPerKva) => {
+    let v = rPerKva * vm;
+    if (currency === 'USD') v /= fxRate;
+    return v.toFixed(2);
+  };
+
+  tb.innerHTML = '';
+  for (const zone of data.zones) {
+    for (let i = 0; i < zone.v.length; i++) {
+      const r = zone.v[i];
+      const tr = document.createElement('tr');
+      if (i === 0) {
+        const td = document.createElement('td');
+        td.className = 'zone-td'; td.rowSpan = zone.v.length; td.textContent = zone.name;
+        tr.appendChild(td);
+      }
+      addTd(tr, r.v, 'volt-td');
+      // Energy charges (c/kWh → display unit)
+      addTd(tr, fmtEnergy(r.pkE), 'data-td peak-c');
+      addTd(tr, fmtEnergy(r.opE), 'data-td offpk-c');
+      // Demand charges (R/kVA/m → display currency)
+      addTd(tr, fmtDemand(r.pkD), 'data-td dem-c');
+      addTd(tr, fmtDemand(r.opD), 'data-td dem-c');
+      addTd(tr, fmtDemand(r.tuos), 'data-td net-c');
+      addTd(tr, fmtDemand(r.duos), 'data-td net-c');
+      addTd(tr, fmtDemand(r.duos), 'data-td net-c');
+      addTd(tr, r.ulv === 0 ? '—' : fmtDemand(r.ulv), 'data-td net-c');
+      addTd(tr, fmtEnergy(r.anc), 'data-td anc-c');
+
+      // Total Peak = energy + ancillary (in c/kWh raw) + demand charges converted to c/kWh
+      const totalPkRaw = (r.pkE * vm) + (r.anc * vm) + demandToCPerKwh;
+      const totalOpRaw = (r.opE * vm) + (r.anc * vm) + demandToCPerKwh;
+      const tdPk = document.createElement('td');
+      tdPk.className = 'data-td'; tdPk.style.cssText = 'font-weight:800;background:#dcfce7;color:#166534;';
+      tdPk.textContent = fmt(totalPkRaw);
+      tr.appendChild(tdPk);
+      const tdOp = document.createElement('td');
+      tdOp.className = 'data-td'; tdOp.style.cssText = 'font-weight:800;background:#f0f0f0;color:#374151;';
+      tdOp.textContent = fmt(totalOpRaw);
+      tr.appendChild(tdOp);
+
+      tb.appendChild(tr);
+    }
+  }
+}
+function addTd(tr, text, cls) {
+  const td = document.createElement('td');
+  td.className = cls; td.textContent = text; tr.appendChild(td);
+}
+
+// ══════════════════════════════════════════════════════════════
+// COST COMPARISON
+// ══════════════════════════════════════════════════════════════
+function calcResidentialCost(provider, year, kwh) {
+  const t = RES_TARIFFS[provider]?.[year];
+  if (!t) return null;
+  let cost = 0, remaining = kwh;
+  for (const b of t.blocks) {
+    const limit = b.lim || remaining;
+    const used = Math.min(remaining, limit);
+    cost += used * b.rate / 100; // c/kWh -> R
+    remaining -= used;
+    if (remaining <= 0) break;
+  }
+  cost += t.service * 30; // daily -> monthly
+  return cost;
+}
+function calcAnnualCost(provider, year, kwh) {
+  // 8 months summer (lower blocks) + 4 months winter (higher usage assumed ~1.3x)
+  const summerMonths = 8, winterMonths = 4;
+  const summerCost = calcResidentialCost(provider, year, kwh) || 0;
+  const winterCost = calcResidentialCost(provider, year, Math.round(kwh * 1.3)) || 0;
+  return summerCost * summerMonths + winterCost * winterMonths;
+}
+
+function selectProfile(el) {
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeProfile = parseInt(el.dataset.kwh);
+  renderCostCharts();
+}
+function toggleProvider(el) {
+  const p = el.dataset.prov;
+  if (activeProviders.has(p)) { activeProviders.delete(p); el.classList.remove('active'); }
+  else { activeProviders.add(p); el.classList.add('active'); }
+  renderCostCharts();
+}
+
+const PROV_COLORS = {
+  eskom: '#166534', capetown: '#1e40af', ethekwini: '#92400e', tshwane: '#6b21a8', johannesburg: '#9d174d'
+};
+const PROV_LABELS = {
+  eskom: 'Eskom', capetown: 'Cape Town', ethekwini: 'eThekwini', tshwane: 'Tshwane', johannesburg: 'Joburg'
+};
+
+function renderCostCharts() {
+  if (typeof Chart === 'undefined') return;
+  const years = Object.keys(RES_TARIFFS.eskom).sort();
+  const providers = [...activeProviders];
+
+  const datasets_winter = providers.map(p => ({
+    label: PROV_LABELS[p],
+    data: years.map(y => calcResidentialCost(p, y, Math.round(activeProfile * 1.3))),
+    borderColor: PROV_COLORS[p], backgroundColor: PROV_COLORS[p] + '33',
+    borderWidth: 3, tension: 0.3, pointRadius: 4, fill: false,
+  }));
+  const datasets_summer = providers.map(p => ({
+    label: PROV_LABELS[p],
+    data: years.map(y => calcResidentialCost(p, y, activeProfile)),
+    borderColor: PROV_COLORS[p], backgroundColor: PROV_COLORS[p] + '33',
+    borderWidth: 3, tension: 0.3, pointRadius: 4, fill: false,
+  }));
+  const datasets_annual = providers.map(p => ({
+    label: PROV_LABELS[p],
+    data: years.map(y => calcAnnualCost(p, y, activeProfile)),
+    borderColor: PROV_COLORS[p], backgroundColor: PROV_COLORS[p] + '33',
+    borderWidth: 3, tension: 0.3, pointRadius: 4, fill: false,
+  }));
+
+  const baseOpts = (title, fmt) => ({
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'bottom', labels: { usePointStyle: true, padding: 12 } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: R ${ctx.parsed.y?.toFixed(0) || '—'}` } },
+      title: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { title: { display: true, text: 'R (ZAR)' }, grid: { color: '#f0f0f0' } }
+    }
+  });
+
+  if (winterChart) winterChart.destroy();
+  if (summerChart) summerChart.destroy();
+  if (annualChart) annualChart.destroy();
+
+  const wcEl = document.getElementById('winterChart');
+  const scEl = document.getElementById('summerChart');
+  const acEl = document.getElementById('annualChart');
+  if (wcEl) winterChart = new Chart(wcEl, { type: 'line', data: { labels: years, datasets: datasets_winter }, options: baseOpts('Winter', true) });
+  if (scEl) summerChart = new Chart(scEl, { type: 'line', data: { labels: years, datasets: datasets_summer }, options: baseOpts('Summer', true) });
+  if (acEl) annualChart = new Chart(acEl, { type: 'line', data: { labels: years, datasets: datasets_annual }, options: baseOpts('Annual', true) });
+}
+
+// ══════════════════════════════════════════════════════════════
+// FORWARD CURVE
+// ══════════════════════════════════════════════════════════════
+function renderFwdCurve() {
+  if (typeof Chart === 'undefined') return;
+  const chartEl = document.getElementById('fwdChart');
+  if (!chartEl) return;
+  const ctx = chartEl.getContext('2d');
+  if (fwdChart) fwdChart.destroy();
+  const cfgs = [
+    { key:'res', label:'Residential', idx:'res', color:'#E03C31' },
+    { key:'com', label:'Commercial', idx:'com', color:'#007A4D' },
+    { key:'ind', label:'Industrial', idx:'ind', color:'#6C757D' },
+    { key:'inc', label:'Annual Increase %', idx:'inc', color:'#f0ad4e', y2:true },
+  ];
+  const datasets = cfgs.map(c => ({
+    label: c.label,
+    data: ALL_FWD_YEARS.map(y => {
+      const v = FWD_DATA[y]?.[c.idx];
+      return c.y2 ? v : (v != null ? conv(v) : null);
+    }),
+    borderColor: c.color, backgroundColor: c.color + '22',
+    borderWidth: c.y2 ? 2 : 3, pointRadius: c.y2 ? 2 : 4,
+    pointBackgroundColor: c.color, pointBorderColor: 'white', pointBorderWidth: 1.5,
+    tension: 0.3, hidden: !fwdVisible[c.key], yAxisID: c.y2 ? 'y1' : 'y',
+    segment: {
+      borderDash: ctx2 => FORWARD_YEARS.includes(ALL_FWD_YEARS[ctx2.p0DataIndex]) && !c.y2 ? [8,4] : [],
+      borderColor: ctx2 => FORWARD_YEARS.includes(ALL_FWD_YEARS[ctx2.p0DataIndex]) && !c.y2 ? c.color+'88' : c.color,
+    }
+  }));
   fwdChart = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
+    type: 'line', data: { labels: ALL_FWD_YEARS, datasets },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              const val = ctx.parsed.y;
-              if (ctx.dataset.label.includes('Increase')) return `${ctx.dataset.label}: ${val.toFixed(1)}%`;
-              return `${ctx.dataset.label}: ${val.toFixed(displayUnit === 'MWh' ? 2 : 4)} ${unit}`;
-            },
-            afterBody: (items) => {
-              const y = items[0].label;
-              if (y in FORWARD) return '📈 Forward projection';
-              return '';
-            }
-          }
-        }
+        legend: { position:'top', labels: { usePointStyle: true, padding: 16 } },
+        tooltip: { callbacks: {
+          label: ctx2 => ctx2.dataset.label.includes('Increase') ? `${ctx2.dataset.label}: ${ctx2.parsed.y?.toFixed(1)}%` : `${ctx2.dataset.label}: ${ctx2.parsed.y?.toFixed(displayUnit==='MWh'?2:4)} ${unitSuffix()}`,
+          afterBody: items => FORWARD_YEARS.includes(items[0]?.label) ? '📈 Forward projection' : '',
+        }}
       },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            maxRotation: 45,
-            callback: (val, idx) => {
-              const y = labels[idx];
-              return y in FORWARD ? y + ' ↗' : y;
-            }
-          }
-        },
-        y: {
-          type: 'linear',
-          position: 'left',
-          title: { display: true, text: unit },
-          grid: { color: '#f0f0f0' }
-        },
-        y1: {
-          type: 'linear',
-          position: 'right',
-          title: { display: true, text: 'Increase %' },
-          grid: { drawOnChartArea: false },
-          min: 0, max: 35
-        }
+        x: { grid:{ display:false }, ticks:{ maxRotation:45, callback: (v,i) => ALL_FWD_YEARS[i] + (FORWARD_YEARS.includes(ALL_FWD_YEARS[i]) ? ' ↗' : '') } },
+        y: { position:'left', title:{ display:true, text: unitSuffix() }, grid:{ color:'#f0f0f0' } },
+        y1: { position:'right', title:{ display:true, text:'Increase %' }, grid:{ drawOnChartArea:false }, min:0, max:35 },
       }
     }
   });
-
-  document.getElementById('chartUnitLabel').textContent = `Units: ${unit}`;
+  document.getElementById('fwdUnit').textContent = `Units: ${unitSuffix()}`;
 }
 
-function renderConsumerChart(profile) {
-  const ctx = document.getElementById('consumerChart').getContext('2d');
-  if (consumerChart) consumerChart.destroy();
+// ══════════════════════════════════════════════════════════════
+// RATE HISTORY TABLE
+// ══════════════════════════════════════════════════════════════
+function renderRateTable() {
+  const tb = document.getElementById('rateBody');
+  tb.innerHTML = '';
+  document.getElementById('tableUnitDesc').textContent = unitSuffix();
+  for (const y of ALL_FWD_YEARS) {
+    const d = FWD_DATA[y]; if (!d) continue;
+    const inc = d.inc;
+    const cls = inc >= 15 ? 'inc-high' : inc >= 10 ? 'inc-mid' : 'inc-low';
+    const isFwd = FORWARD_YEARS.includes(y);
+    const tr = document.createElement('tr');
+    tr.className = isFwd ? 'table-warning' : '';
+    tr.innerHTML = `
+      <td class="fw-bold">${y}${isFwd ? ' ↗' : ''}</td>
+      <td class="text-end">${fmt(d.res)}</td><td class="text-end">—</td>
+      <td class="text-end">${fmt(d.com)}</td><td class="text-end">—</td>
+      <td class="text-end">${fmt(d.ind)}</td><td class="text-end">—</td>
+      <td><span class="increase-badge ${cls}">${inc.toFixed(1)}%</span></td>
+    `;
+    tb.appendChild(tr);
+  }
+}
 
-  const pct = CONSUMERS[profile].pct;
-  const startIdx = YEARS.indexOf('2019/20');
-  const yrs = YEARS.slice(startIdx >= 0 ? startIdx : 0);
-
-  const blended = yrs.map(y => {
-    const d = ALL_DATA[y];
-    if (!d) return null;
-    const pk = conv(d[0]);
-    const st = conv(d[1]);
-    const op = conv(d[2]);
-    return pk * pct[0] + st * pct[1] + op * pct[2];
-  });
-
-  const colors = { 'large-industry': '#E03C31', 'medium-commercial': '#007A4D', 'mine': '#FFCD00', 'nightshift': '#002395' };
-  const bgColors = { 'large-industry': '#fee2e2', 'medium-commercial': '#dcfce7', 'mine': '#fef3c7', 'nightshift': '#e0e7ff' };
+// ══════════════════════════════════════════════════════════════
+// KEY STATS
+// ══════════════════════════════════════════════════════════════
+function calcStats() {
   const unit = unitSuffix();
-
-  consumerChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: yrs,
-      datasets: [{
-        label: `${CONSUMERS[profile].icon} ${CONSUMERS[profile].name}`,
-        data: blended,
-        borderColor: colors[profile],
-        backgroundColor: bgColors[profile] + '55',
-        borderWidth: 4,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5,
-        pointBackgroundColor: colors[profile],
-        pointBorderColor: 'white',
-        pointBorderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: true },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => `Blended Rate: ${ctx.parsed.y.toFixed(displayUnit === 'MWh' ? 2 : 4)} ${unit}`
-          }
-        }
-      },
-      scales: {
-        x: { grid: { display: false } },
-        y: { title: { display: true, text: unit }, grid: { color: '#f0f0f0' } }
-      }
-    }
-  });
+  const cur = FWD_DATA['2025'];
+  document.getElementById('statPeak').textContent = fmt(cur.ind);
+  document.getElementById('statPeakSub').textContent = `Industrial peak (${unit})`;
+  document.getElementById('statOffpk').textContent = '—';
+  const v25 = FWD_DATA['2025']?.res, v20 = FWD_DATA['2020']?.res;
+  if (v25 && v20) {
+    const cagr = (Math.pow(conv(v25)/conv(v20), 1/5) - 1) * 100;
+    document.getElementById('statCAGR').textContent = cagr.toFixed(1) + '%';
+  }
+  document.getElementById('statRatio').textContent = '—';
 }
 
-// ============================================================
-// SETTINGS TOGGLES
-// ============================================================
+// ══════════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════════
 function setCurrency(c) {
   currency = c;
   document.getElementById('btnZar').className = c === 'ZAR' ? 'btn btn-success active' : 'btn btn-outline-primary';
   document.getElementById('btnUsd').className = c === 'USD' ? 'btn btn-primary active' : 'btn btn-outline-primary';
+  document.getElementById('btnKwh').textContent = currency === 'USD' ? '$/kWh' : 'c/kWh';
+  document.getElementById('btnMwh').textContent = currency === 'USD' ? '$/MWh' : 'R/MWh';
+  document.getElementById('unitLabel').textContent = unitSuffix();
+  updateHeaders();
   onSettingChange();
 }
-
 function setUnit(u) {
   displayUnit = u;
   document.getElementById('btnKwh').className = u === 'kWh' ? 'btn btn-success active' : 'btn btn-outline-primary';
   document.getElementById('btnMwh').className = u === 'MWh' ? 'btn btn-primary active' : 'btn btn-outline-primary';
   document.getElementById('unitLabel').textContent = unitSuffix();
+  updateHeaders();
   onSettingChange();
 }
-
 function onSettingChange() {
   fxRate = parseFloat(document.getElementById('exchangeRate').value) || 17.50;
-  renderFwdCurve();
-  renderConsumerChart(activeProfile);
-  renderTable();
-  calcStats();
-  updateBreakdown();
+  updateBillRates();
+  renderSummary(); onMxChange(); renderFwdCurve(); renderRateTable(); calcStats();
 }
 
-// ============================================================
-// DATA TABLE (uses conversion)
-// ============================================================
-function renderTable() {
-  const tbody = document.getElementById('rateTableBody');
-  tbody.innerHTML = '';
-  const unit = unitSuffix();
-  document.getElementById('tableUnitDesc').textContent = unit;
-  
-  for (const y of YEARS) {
-    const d = ALL_DATA[y];
-    if (!d) continue;
-    const inc = d[6];
-    const incClass = inc >= 20 ? 'increase-high' : (inc >= 10 ? 'increase-mid' : 'increase-low');
-    const isFwd = y in FORWARD;
-    
-    const tr = document.createElement('tr');
-    tr.className = isFwd ? 'table-warning' : '';
-    tr.innerHTML = `
-      <td class="fw-bold">${y}${isFwd ? ' ↗' : ''}</td>
-      <td class="text-end">${fmtDisplay(d[0])}</td>
-      <td class="text-end">${fmtDisplay(d[1])}</td>
-      <td class="text-end">${fmtDisplay(d[2])}</td>
-      <td class="text-end">${fmtDisplay(d[3])}</td>
-      <td class="text-end">${fmtDisplay(d[4])}</td>
-      <td class="text-end">${fmtDisplay(d[5])}</td>
-      <td><span class="increase-badge ${incClass}">${inc.toFixed(1)}%</span></td>
-    `;
-    tbody.appendChild(tr);
-  }
-}
-
-// ============================================================
-// BREAKDOWN TABLE (dynamic units)
-// ============================================================
-const BREAKDOWN_CENTS = {
-  peak: 684.59, std: 171.15, offpk: 114.09,
-  legacy: 22.78, elecSub: 2.45, affordSub: 4.69,
-  dsm: 0.75, asf: 0.36, energyMgmt: 0.15, envLevy: 3.50
-};
-
-function updateBreakdown() {
-  const unit = unitSuffix();
-  const fmt = (v) => {
-    if (v === null || v === undefined) return '—';
-    const c = conv(v);
-    if (c === null) return '—';
-    return displayUnit === 'MWh' ? c.toFixed(2) : c.toFixed(4);
+function updateBillRates() {
+  const setText = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  };
+  const energy = raw => `${fmt(raw)} ${unitSuffix()}`;
+  const money = (raw, suffix) => {
+    const value = currency === 'USD' ? raw / fxRate : raw;
+    return `${currency === 'USD' ? '$' : 'R'} ${value.toFixed(2)}${suffix}`;
   };
 
-  // Energy charges
-  document.getElementById('breakdownPeak').textContent = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
-  document.getElementById('breakdownStd').textContent = fmt(BREAKDOWN_CENTS.std) + ' ' + unit;
-  document.getElementById('breakdownOffpk').textContent = fmt(BREAKDOWN_CENTS.offpk) + ' ' + unit;
+  setText('bdPeak', energy(684.59));
+  setText('bdStd', energy(171.15));
+  setText('bdOffpk', energy(114.09));
+  setText('bdGen', money(9.40, '/kVA/m'));
+  setText('bdTuos', money(48.10, '/kVA/m'));
+  setText('bdDuos', money(12.50, '/kVA/m'));
+  setText('bdUlv', money(0, '/kVA/m'));
+  setText('bdService', `${money(198.52, '/day')} (>1 MVA)`);
+  setText('bdAdmin', money(19.37, '/day'));
+  setText('bdLegacy', energy(22.78));
+  setText('bdElectrification', energy(2.45));
+  setText('bdAffordability', energy(4.69));
+  setText('bdDsm', energy(0.75));
+  setText('bdAsf', energy(0.36));
+  setText('bdMgmt', energy(0.15));
+  setText('bdEnv', energy(3.50));
+  const reactive = currency === 'USD'
+    ? `$${(22.80 / 100 / fxRate).toFixed(4)}/kVArh`
+    : `R ${(22.80 / 100).toFixed(4)}/kVArh`;
+  setText('bdReactive', reactive);
+}
+function updateHeaders() {
+  const eUnit = unitSuffix();
+  const dUnit = currency === 'USD' ? '$/kVA/m' : 'R/kVA/m';
+  // Matrix table headers
+  const hE = document.getElementById('mxHdrEnergy');
+  if (hE) hE.textContent = 'Active Energy (' + eUnit + ')';
+  const hD = document.getElementById('mxHdrDemand');
+  if (hD) hD.textContent = 'Active Demand (' + dUnit + ')';
+  const hT = document.getElementById('mxHdrTuos');
+  if (hT) hT.innerHTML = 'TUoS<br>(' + dUnit + ')';
+  const hDist = document.getElementById('mxHdrDist');
+  if (hDist) hDist.textContent = 'Distribution Network (' + dUnit + ')';
+  const hA = document.getElementById('mxHdrAnc');
+  if (hA) hA.innerHTML = 'Ancillary<br>(' + eUnit + ')';
+  const hTot = document.getElementById('mxHdrTotal');
+  if (hTot) hTot.textContent = 'Total Cost (' + eUnit + ')';
+  // Summary table headers
+  const sPk = document.getElementById('sumHdrPeak');
+  if (sPk) sPk.textContent = 'Peak ' + eUnit;
+  const sOp = document.getElementById('sumHdrOffpk');
+  if (sOp) sOp.textContent = 'Off-Pk ' + eUnit;
+  const sDm = document.getElementById('sumHdrDemand');
+  if (sDm) sDm.textContent = 'Peak ' + dUnit;
+  const sTu = document.getElementById('sumHdrTuos');
+  if (sTu) sTu.textContent = 'TUoS ' + dUnit;
+  const sDu = document.getElementById('sumHdrDuos');
+  if (sDu) sDu.textContent = 'DUoS ' + dUnit;
+  const sAn = document.getElementById('sumHdrAnc');
+  if (sAn) sAn.textContent = 'Ancillary ' + eUnit;
+  // NMD label
+  const nmdL = document.getElementById('mxNmdLabel');
+  if (nmdL) nmdL.textContent = 'Your NMD (' + dUnit + ') — used for total cost';
+  const nmdU = document.getElementById('mxNmdUnit');
+  if (nmdU) nmdU.textContent = dUnit;
+  // Stat card subtitle
+  const sp = document.getElementById('statPeakSub');
+  if (sp) sp.textContent = 'Industrial peak (' + eUnit + ')';
+}
 
-  // Levies (also c/kWh based)
-  document.getElementById('bdLegacy').textContent = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
-  document.getElementById('bdElecSub').textContent = fmt(BREAKDOWN_CENTS.elecSub) + ' ' + unit;
-  document.getElementById('bdAffordSub').textContent = fmt(BREAKDOWN_CENTS.affordSub) + ' ' + unit;
-  document.getElementById('bdDsm').textContent = fmt(BREAKDOWN_CENTS.dsm) + ' ' + unit;
-  document.getElementById('bdAsf').textContent = fmt(BREAKDOWN_CENTS.asf) + ' ' + unit;
-  document.getElementById('bdEnergyMgmt').textContent = fmt(BREAKDOWN_CENTS.energyMgmt) + ' ' + unit;
-  document.getElementById('bdEnvLevy').textContent = fmt(BREAKDOWN_CENTS.envLevy) + ' ' + unit;
+// ══════════════════════════════════════════════════════════════
+// TARIFF CSV DATASET — Load & Download
+// ══════════════════════════════════════════════════════════════
+let tariffCSVData = null; // parsed array of objects
+let tariffCSVHeaders = null; // array of column names
 
-  // Capacity charges (ZAR/kVA/month — convert to USD if needed)
-  const capCharges = [
-    { id:'bdGenCap', zar:9.40, label:'/kVA / month' },
-    { id:'bdTuos', zar:48.10, label:'/kVA / month' },
-    { id:'bdDuos', zar:12.50, label:'/kVA / month' },
-    { id:'bdUlv', zar:0.00, label:'/kVA / month (<500V)' },
-  ];
-  const svcCharges = [
-    { id:'bdService', zar:198.52, label:'/ day (>1 MVA)' },
-    { id:'bdAdmin', zar:19.37, label:'/ day' },
-  ];
-
-  if (currency === 'USD') {
-    capCharges.forEach(c => {
-      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
-    });
-    svcCharges.forEach(c => {
-      document.getElementById(c.id).textContent = '$' + (c.zar / fxRate).toFixed(2) + c.label;
-    });
-  } else {
-    capCharges.forEach(c => {
-      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
-    });
-    svcCharges.forEach(c => {
-      document.getElementById(c.id).textContent = 'R ' + c.zar.toFixed(2) + c.label;
-    });
+function parseCSVLine(line) {
+  const values = [];
+  let value = '', quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"' && line[i + 1] === '"' && quoted) { value += '"'; i++; }
+    else if (char === '"') quoted = !quoted;
+    else if (char === ',' && !quoted) { values.push(value); value = ''; }
+    else value += char;
   }
-
-  // Bottom line inline
-  const peakUnit = fmt(BREAKDOWN_CENTS.peak) + ' ' + unit;
-  const legacyUnit = fmt(BREAKDOWN_CENTS.legacy) + ' ' + unit;
-  document.getElementById('bdPeakInline').textContent = peakUnit;
-  document.getElementById('bdLegacyInline').textContent = legacyUnit;
-
-  // Example bill: 100,000 kWh/month, 5,000 kVA
-  const energyCost = conv(BREAKDOWN_CENTS.peak) * 100000 * 0.5 + conv(BREAKDOWN_CENTS.std) * 100000 * 0.3 + conv(BREAKDOWN_CENTS.offpk) * 100000 * 0.2;
-  const fixedCost = 9.40 * 5000 + 48.10 * 5000 + 12.50 * 5000 + 198.52 * 30 + 19.37 * 30;
-  const fixedCostDisplay = currency === 'USD' ? '$' + (fixedCost / fxRate).toFixed(0) : 'R' + fixedCost.toFixed(0);
-  const energyDisplay = currency === 'USD' ? '$' + energyCost.toFixed(0) : 'R' + energyCost.toFixed(0);
-  const totalDisplay = currency === 'USD' ? '$' + ((energyCost + fixedCost/fxRate)).toFixed(0) : 'R' + (energyCost + fixedCost).toFixed(0);
-  document.getElementById('bdExample').textContent = '~' + energyDisplay + '/month in energy + ~' + fixedCostDisplay + '/month in fixed/capacity = ~' + totalDisplay + ' total';
+  values.push(value);
+  return values;
 }
 
-// ============================================================
-// STATS (uses conversion)
-// ============================================================
-function calcStats() {
-  const latest = RAW_DATA['2025/26'];
-  const oldest = RAW_DATA['1996/97'];
-  const unit = unitSuffix();
-  
-  document.getElementById('statLatestPeak').textContent = fmtDisplay(latest[0]);
-  document.getElementById('statLatestLabel').textContent = `2025/26, <500V, <300km (${unit})`;
-  document.getElementById('stat30yrPeak').textContent = fmtDisplay(oldest[0]);
-  document.getElementById('statOldLabel').textContent = `Before load-shedding era (${unit})`;
-  
-  const latestVal = conv(latest[0]);
-  const oldestVal = conv(oldest[0]);
-  const cagr = latestVal && oldestVal ? Math.pow(latestVal / oldestVal, 1/29) - 1 : 0;
-  document.getElementById('statCAGR').textContent = (cagr * 100).toFixed(1) + '%';
-  
-  const ratio = latest[0] / (latest[5] || latest[2]);
-  document.getElementById('statPeakRatio').textContent = ratio.toFixed(1) + '×';
+async function loadTariffCSV() {
+  try {
+    const resp = await fetch('../data/power/tariff_extracted_full.csv');
+    if (!resp.ok) throw new Error('CSV not found');
+    const text = await resp.text();
+    const lines = text.split('\n').filter(l => l.trim());
+    if (lines.length < 2) throw new Error('Empty CSV');
+    tariffCSVHeaders = parseCSVLine(lines[0]).map(h => h.trim());
+    tariffCSVData = [];
+    for (let i = 1; i < lines.length; i++) {
+      const vals = parseCSVLine(lines[i]);
+      const obj = {};
+      tariffCSVHeaders.forEach((h, j) => { obj[h] = (vals[j] || '').trim(); });
+      tariffCSVData.push(obj);
+    }
+    document.getElementById('csvRowCount').textContent = `${tariffCSVData.length.toLocaleString()} rows`;
+    updateCSVPreview();
+    onMxChange();
+  } catch (e) {
+    document.getElementById('csvRowCount').textContent = 'CSV not found';
+    document.getElementById('csvPreviewBody').innerHTML = `<tr><td colspan="9" class="text-center text-muted">Run <code>py tariff_extractor.py --all</code> to generate the dataset.</td></tr>`;
+  }
 }
 
-// ============================================================
+function getFilteredCSV() {
+  if (!tariffCSVData) return [];
+  const tariffFilter = document.getElementById('csvFilter').value;
+  const yearFilter = document.getElementById('csvYearFilter').value;
+  return tariffCSVData.filter(r => {
+    if (tariffFilter !== 'all' && r.Tariff !== tariffFilter) return false;
+    if (yearFilter !== 'all' && r.Year !== yearFilter) return false;
+    return true;
+  });
+}
+
+function updateCSVPreview() {
+  const filtered = getFilteredCSV();
+  const tb = document.getElementById('csvPreviewBody');
+  tb.innerHTML = '';
+  const maxShow = 50;
+  const rows = filtered.slice(0, maxShow);
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.Year || ''}</td>
+      <td>${r.Tariff || ''}</td>
+      <td>${r.Category || ''}</td>
+      <td>${r.TransmissionZone || ''}</td>
+      <td>${r.Voltage || ''}</td>
+      <td>${r.Season || ''}</td>
+      <td>${r.TOU_Period || ''}</td>
+      <td class="text-end">${r.EnergyCharge_c_kWh_Excl || ''}</td>
+      <td class="text-end">${r.TUoS_R_kVA_m_Excl || ''}</td>
+    `;
+    tb.appendChild(tr);
+  }
+  if (filtered.length > maxShow) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="9" class="text-center text-muted">... and ${(filtered.length - maxShow).toLocaleString()} more rows. Download to see all.</td>`;
+    tb.appendChild(tr);
+  }
+  document.getElementById('csvRowCount').textContent = `${filtered.length.toLocaleString()} of ${(tariffCSVData?.length || 0).toLocaleString()} rows`;
+}
+
+function downloadTariffCSV() {
+  const filtered = getFilteredCSV();
+  if (!filtered.length || !tariffCSVHeaders) return;
+  const quoteCSV = value => {
+    const text = value == null ? '' : String(value);
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  };
+  const lines = [tariffCSVHeaders.map(quoteCSV).join(',')];
+  for (const r of filtered) {
+    lines.push(tariffCSVHeaders.map(h => quoteCSV(r[h])).join(','));
+  }
+  const csv = lines.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const tariff = document.getElementById('csvFilter').value;
+  const year = document.getElementById('csvYearFilter').value;
+  const suffix = (tariff !== 'all' ? '_' + tariff : '') + (year !== 'all' ? '_' + year.replace('/','-') : '');
+  a.download = `eskom_tariffs${suffix}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════════════
 // INIT
-// ============================================================
+// ══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('exchangeRate').value = fxRate;
-  calcStats();
-  renderTable();
+  populateMxCategories();
+  updateBillRates();
+  updateHeaders();
+  renderSummary();
+  onMxChange();
+  renderCostCharts();
   renderFwdCurve();
-  renderConsumerChart(activeProfile);
-  updateBreakdown();
+  renderRateTable();
+  calcStats();
+  loadTariffCSV();
 
-  document.querySelectorAll('.peakness-badge').forEach(badge => {
-    badge.addEventListener('click', () => {
-      const key = badge.dataset.key;
-      visibleLines[key] = !visibleLines[key];
-      badge.classList.toggle('active');
-      renderFwdCurve();
-    });
+  document.getElementById('mxCat').addEventListener('change', () => {
+    populateMxSubs();
+    onMxChange();
   });
 
-  document.querySelectorAll('.consumer-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.consumer-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      activeProfile = card.dataset.profile;
-      renderConsumerChart(activeProfile);
+  document.querySelectorAll('.peakness-badge').forEach(b => {
+    b.addEventListener('click', () => {
+      const k = b.dataset.key;
+      fwdVisible[k] = !fwdVisible[k];
+      b.classList.toggle('active');
+      renderFwdCurve();
     });
   });
 });

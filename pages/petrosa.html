@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PetroSA • CEF • SOEs • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 4px; background: #007A4D; }
+    .timeline-dot { position: absolute; left: 6px; width: 22px; height: 22px; background: #FFCD00; border: 4px solid #002395; border-radius: 50%; }
+    .sa-green { color: #007A4D; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .asset-card { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); border-radius: 0; height: 100%; }
+    .right-card { border-left: 8px solid #007A4D; }
+    .wrong-card { border-left: 8px solid #c62828; }
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <p class="text-muted small mb-2"><a href="cef.html">CEF</a> · PetroSA</p>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <a href="cef.html" class="btn btn-sm btn-outline-success">CEF Overview</a>
+      <a href="petrosa.html" class="btn btn-sm btn-success">PetroSA</a>
+      <a href="sff.html" class="btn btn-sm btn-outline-success">SFF</a>
+      <a href="igas.html" class="btn btn-sm btn-outline-success">iGas</a>
+      <a href="sanpc.html" class="btn btn-sm btn-outline-success">SANPC</a>
+      <a href="pasa.html" class="btn btn-sm btn-outline-success">PASA</a>
+      <a href="aemfc.html" class="btn btn-sm btn-outline-success">AEMFC</a>
+      <a href="sapref.html" class="btn btn-sm btn-outline-success">SAPREF</a>
+    </div>
+    <h1 class="display-4 fw-bold text-sa-green">PetroSA</h1>
+    <h5 class="text-muted">Petroleum Oil and Gas Corporation of South Africa (SOC) Ltd — CEF's largest subsidiary</h5>
+    <p class="lead">PetroSA is South Africa's state-owned oil and gas company, born in 2002 from the merger of <strong>Mossgas</strong>, <strong>Soekor</strong>, and parts of the <strong>Strategic Fuel Fund</strong>. It was a world pioneer: it built the largest commercial gas-to-liquids (GTL) refinery on Earth and discovered the country's first producing offshore oilfields. But a mixture of depleted gas reservoirs, failed partnerships, and years of governance failure have left it technically insolvent — a cautionary tale of a South African SOE that went from world-beater to bailout case.</p>
+
+    <!-- Key Statistics Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Founded</small>
+          <h3>2002</h3>
+          <small class="text-muted">Merger of Mossgas + Soekor</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Accumulated Losses</small>
+          <h3>R14.5B</h3>
+          <small class="text-muted">Effectively insolvent</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">SARS Tax Debt</small>
+          <h3>R4.5B</h3>
+          <small class="text-muted">Asset seizure pending</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <small class="text-muted">Refinery</small>
+          <h3>Mossel Bay</h3>
+          <small class="text-muted">Care & maintenance since 2020</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-md-7">
+        <div class="alert alert-light border border-success p-4">
+          <strong>Sector:</strong> Oil & Gas — Exploration, Production, Gas-to-Liquids Refining<br>
+          <strong>Founded:</strong> January 2002 (merger of Mossgas (Pty) Ltd, Soekor (Pty) Ltd, and parts of the Strategic Fuel Fund Association)<br>
+          <strong>Owner:</strong> Government of South Africa (100%), held via the Central Energy Fund (CEF)<br>
+          <strong>Head Office:</strong> Cape Town, Western Cape<br>
+          <strong>Core Asset:</strong> Mossel Bay Gas-to-Liquids (GTL) Refinery<br>
+          <strong>Audited Financials:</strong> None published since 2020<br>
+          <strong>Auditor-General status:</strong> Flagged as a going-concern risk
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center py-5" style="background: #f0faf4; border-radius: 8px;">
+            <h1 class="display-1 mb-3">🛢️</h1>
+            <h5 class="card-title text-sa-green">PetroSA</h5>
+            <p class="card-text text-muted small">Petroleum Oil and Gas Corporation of South Africa (SOC) Ltd — the State's energy arm</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Historical Timeline -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #002395; padding-left: 16px;">Entire History — From First Oil Search to State Capture</h3>
+    <div class="content-card card p-4 mb-4">
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1965: The First Land Oil Search</strong>
+        <p class="mt-2">Following the establishment of <strong>Soekor</strong> (the state's oil exploration company), the first land search for oil commenced at <strong>Beaufort West</strong> in the Western Cape. Small accumulations of oil were found, but they were non-commercial. This was South Africa's first systematic attempt to find domestic hydrocarbons.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1969: First Offshore Well & the Discovery of Gas</strong>
+        <p class="mt-2">The first offshore well was drilled by the <strong>Superior Group</strong>. Natural gas deposits were discovered in the continental shelf complex off the Southern Cape coast — the geological seed of everything PetroSA would eventually build.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1980: Discovery of the FA Gas Field</strong>
+        <p class="mt-2">The <strong>FA gas field</strong> was discovered in Block 9 of the Bredasdorp Basin, off the Southern Cape coast. Soekor and other parties drilled 48 boreholes — discovering gas in 25 of them and oil in 7. This was the anchor asset for the Mossel Bay project.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1983: Discovery of the EM Field</strong>
+        <p class="mt-2">The <strong>EM field</strong> was discovered, which together with the FA field, provided the foundation for establishing the gas-to-liquids (GTL) project in Mossel Bay. These two fields gave the state enough gas to justify building a refinery offshore-driven.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1988: Discovery of Oryx</strong>
+        <p class="mt-2"><strong>Oryx</strong> was discovered — the first of South Africa's current oil-producing fields, and it is <strong>100% owned by PetroSA</strong>. This marked the beginning of domestic oil production for the country.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1990: Discovery of Oribi</strong>
+        <p class="mt-2"><strong>Oribi (E-BT1)</strong> oilfield was discovered about 140 km southwest of Mossel Bay. It is owned <strong>80% by PetroSA and 20% by Energy Africa Limited</strong>. The first oil was produced from the E-AG1 and E-AR1 boreholes during extended well tests, and the yield was sold on the local market.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">1992: The World's Largest GTL Refinery Starts Producing</strong>
+        <p class="mt-2">The <strong>FA fields</strong> and the <strong>Mossel Bay Gas-to-Liquids (GTL) refinery</strong> began producing (the plant was originally built as Mossgas). At the time, Mossel Bay was the <strong>world's largest commercial GTL refinery</strong> — a genuine global first for South Africa, converting offshore natural gas into ultra-clean synthetic fuels.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2002: PetroSA is Born</strong>
+        <p class="mt-2"><strong>PetroSA was formed in January 2002</strong> from the merger of three previous entities: <strong>Mossgas (Pty) Limited</strong>, <strong>Soekor (Pty) Limited</strong>, and parts of the <strong>Strategic Fuel Fund Association</strong>. The new entity consolidated the state's entire upstream oil & gas and GTL refining interests into a single national oil company.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2010: The FO Gas Project Is Initiated</strong>
+        <p class="mt-2">The <strong>FO gas project</strong> was initiated to augment the gas feedstock supply to the GTL refinery — an early warning sign that the original FA/EM reservoirs were beginning to deplete.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2013: Ikhwezi Starts Producing</strong>
+        <p class="mt-2">The <strong>Ikhwezi</strong> gas project began producing, feeding additional gas into the Mossel Bay refinery to extend its life. It was a short-term fix rather than a long-term solution.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2019–2020: Brulpadda & Luiperd Discovered — But Not by PetroSA</strong>
+        <p class="mt-2">The major <strong>Brulpadda (2019)</strong> and <strong>Luiperd (2020)</strong> discoveries were made in the ER67 block off the Southern Cape coast. Critically, these were discovered and operated by <strong>TotalEnergies</strong>, not PetroSA. While they are a national gas prize, they highlight how PetroSA had lost its exploration edge — the big finds were being made by international majors.</p>
+      </div>
+      <div class="timeline-item mb-4">
+        <div class="timeline-dot"></div>
+        <strong class="fs-5">2020–2021: The Mossel Bay Refinery Goes Dark</strong>
+        <p class="mt-2">With gas reserves at the FA/EM fields depleted, the feedstock for the refinery ran out. The <strong>Mossel Bay GTL refinery was placed on care and maintenance</strong> — effectively shut down. This was the moment PetroSA's core revenue engine stopped. No audited financial statements have been produced since 2020.</p>
+      </div>
+    </div>
+
+    <!-- What PetroSA Owns -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #007A4D; padding-left: 16px;">What PetroSA Owns</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🛢️ Mossel Bay GTL Refinery</h5>
+            <p class="small">The crown jewel — and now the biggest problem. A world-first commercial gas-to-liquids refinery that convert natural gas into ultra-clean, low-sulphur synthetic petrol, diesel, and high-value products via the Fischer-Tropsch process. When operational it ranked among the largest GTL plants globally. It has been on care & maintenance since 2020.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">⛽ FA & EM Gas Fields</h5>
+            <p class="small">The offshore gas fields (Block 9, Bredasdorp Basin) that fed the refinery. Historically the backbone of PetroSA's feedstock — now substantially depleted. Gas production from these fields has fallen to the point where they can no longer sustain the refinery.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🛢️ Oryx Oilfield (100%)</h5>
+            <p class="small">The first of South Africa's current oil-producing fields, discovered in 1988. <strong>100% owned by PetroSA</strong>. It has produced crude oil off the Southern Cape coast and remains one of the few outright-owned producing assets in the company's portfolio.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🛢️ Oribi Oilfield (80%)</h5>
+            <p class="small">Discovered in 1990, ~140 km southwest of Mossel Bay. Owned <strong>80% by PetroSA and 20% by Energy Africa</strong>. A producing oilfield that has helped supply the local market with crude.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🌊 Ikhwezi / FO Gas Project</h5>
+            <p class="small">The FO field was developed through the <strong>Ikhwezi project</strong>, which started producing in 2013. It was designed to augment gas feedstock to the GTL refinery, but ultimately could not prevent the feedstock collapse.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🏛️ Strategic Fuel Fund Assets</h5>
+            <p class="small">As part of its 2002 merger, PetroSA absorbed parts of the <strong>Strategic Fuel Fund Association</strong> — the state's strategic oil stockpiling operation. This gives it a role in national fuel security, including strategic crude reserves and storage infrastructure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What Went Right -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #007A4D; padding-left: 16px;">What Went Right</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card content-card right-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">A World-First: Gas-to-Liquids Pioneer</h6>
+            <p class="small">PetroSA (via Mossgas) built the <strong>largest commercial GTL refinery in the world</strong> when it came online in 1992 — a genuinely pioneering engineering achievement. It proved that natural gas could be converted into high-quality synthetic fuels at commercial scale, putting South Africa on the map as a GTL innovator.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card right-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">Discovered South Africa's First Oil Fields</h6>
+            <p class="small">Soekor's exploration paid off: <strong>Oryx (1988)</strong> and <strong>Oribi (1990)</strong> were the first fields to kick-start domestic crude oil production. PetroSA became the state's vehicle for actually producing oil on South Africa's continental shelf.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card right-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">Ultra-Clean Synthetic Fuels</h6>
+            <p class="small">The GTL refinery produced <strong>ultra-clean, low-sulphur, low-aromatic fuels</strong> — a premium product at a time when environmental standards were tightening globally. It fed the domestic market and demonstrated the value of synthetic fuel technology.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card right-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">Diesel Sales to Eskom — The Lifeline</h6>
+            <p class="small">During the height of load shedding, PetroSA supplied <strong>diesel to Eskom</strong> for its open-cycle gas turbines. This was one of the few revenue streams keeping the company afloat — an ironic twist where a struggling SOE found a short-term market in another struggling SOE's emergency fuel burn.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What Went Wrong -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #c62828; padding-left: 16px;">What Went Wrong</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">Depleted Gas Reserves</h6>
+            <p class="small">The root of everything. The FA/EM fields and the Ikhwezi (FO) project could not sustain the refinery's feedstock demand. As the gas ran out, the refinery was forced to shut. <strong>Gas reserves at Mossel Bay are effectively depleted.</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">No Audited Financials Since 2020</h6>
+            <p class="small">PetroSA has not produced audited financial statements since 2020. This is a red flag for any SOE — it means the true state of the company's finances is opaque, and the Auditor-General has flagged it as a <strong>going-concern risk</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">R14.5 Billion in Accumulated Losses</h6>
+            <p class="small">The company has accumulated <strong>R14.5 billion in losses</strong> and is effectively technically insolvent. It has continued to draw state resources without producing returns.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">The Failed Gazprombank Deal</h6>
+            <p class="small">In December 2023, Cabinet approved <strong>Gazprombank Africa</strong> as an investment partner to revive the Mossel Bay refinery. The plan was to secure a <strong>R3.7 billion</strong> investment. But <strong>the funds never materialised</strong>, and the deal reportedly neared collapse. Worse, engaging with a sanctioned Russian entity exposed PetroSA to <strong>potential secondary sanctions</strong>, undermining the financial and operational feasibility of the restart.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">Governance Failure & Politically-Tainted Deals</h6>
+            <p class="small">Investigative reporting has documented a history of <strong>mismanagement and politically-tainted deals</strong>. The company became a patronage vehicle rather than a commercial operator, and the failed plans left the Mossgas plant unable to generate revenue.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card wrong-card h-100 p-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">Lost the Exploration Crown to the Majors</h6>
+            <p class="small">While PetroSA was imploding, <strong>TotalEnergies</strong> made the biggest gas discoveries of the century in South African waters — Brulpadda (2019) and Luiperd (2020) — in the same basin. The state's own oil company was no longer the one making the headline finds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Current Crisis -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #c62828; padding-left: 16px;">The Current Crisis (2024–2026)</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>PetroSA is in a fight for survival. The company is effectively <strong>non-functional</strong> — its main refinery is offline, its gas is depleted, and it is drowning in debt. Key developments:</p>
+      <ul>
+        <li><strong>SARS pursuit:</strong> The South African Revenue Service is seeking to recover <strong>R4.5 billion in unpaid taxes</strong> — a debt PetroSA has admitted it cannot settle. In December 2025, SARS moved to <strong>seize the Mossel Bay refinery assets</strong> to recover the liability.</li>
+        <li><strong>Urgent negotiations:</strong> As of February 2026, PetroSA is in urgent negotiations with SARS over the R4.5bn tax debt that could determine the future of the Mossel Bay GTL refinery and further strain the ailing company's finances.</li>
+        <li><strong>Going concern:</strong> The Auditor-General has flagged PetroSA as a going concern. With no audited financials since 2020 and R14.5bn in losses, the company is technically insolvent.</li>
+        <li><strong>Political calls to wind it down:</strong> The DA has called for <strong>PetroSA to be shut down and its assets sold to the private sector</strong>, arguing that mismanagement and failed deals have blocked the plant from generating revenue.</li>
+        <li><strong>Sanctions risk:</strong> The Gazprombank entanglement left the company exposed to secondary sanctions, making it harder to secure Western financing or partners.</li>
+      </ul>
+    </div>
+
+    <!-- Forecast & The Road Ahead -->
+    <h3 class="fw-bold mt-5 mb-4" style="border-left: 8px solid #FFCD00; padding-left: 16px;">Forecast: What PetroSA Could Still Become</h3>
+    <p class="lead">PetroSA's future is a question of whether it can find new feedstock and a credible partner — or whether it will be broken up and sold. These are the assets and revenue streams analysts and the company itself are betting on going forward:</p>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🔄 A Refinery Restart</h5>
+            <p class="small">The <strong>Mossel Bay GTL refinery</strong> is the single biggest potential value unlock. The GTL plant was built to produce ultra-clean synthetic fuels — if a partner (Russian, Middle Eastern, or Chinese) can be found to fund a restart and secure new feedstock, it could return to production. However, the Gazprombank failure shows how hard that is. The refinery's future is directly tied to the SARS negotiations.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">⚡ Diesel to Eskom & Fuel Security</h5>
+            <p class="small">PetroSA's continuing role as a <strong>strategic fuel supplier</strong> — especially diesel to Eskom during power shortages — gives it a revenue lifeline. As a state entity with Strategic Fuel Fund assets, it remains central to the country's fuel security architecture.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🌊 Gas-to-Power & New Offshore Finds</h5>
+            <p class="small">The <strong>Brulpadda and Luiperd</strong> discoveries in the same basin hold enough gas to change the picture — if developed. PetroSA (as the state's energy company) could participate in a gas-to-power or LNG project. This is the more speculative, longer-term upside: turning the basin's stranded gas into electricity and feedstock.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card asset-card">
+          <div class="card-body">
+            <h5 class="fw-bold">🏛️ Privatisation or Break-Up</h5>
+            <p class="small">The most likely near-term outcome, per opposition parties and some economists, is that <strong>PetroSA is wound down and its assets sold</strong> — the refinery, oilfields, and Strategic Fuel Fund stockpiles. When a state-owned company is technically insolvent and cannot produce audited accounts, liquidation and asset disposal is the realistic endgame.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Statistics -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Key Statistics</h5>
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr><th>Metric</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Founded</td><td>January 2002 (merger of Mossgas, Soekor, and parts of the Strategic Fuel Fund)</td></tr>
+            <tr><td>Owner</td><td>Government of South Africa (100%) — via the Central Energy Fund (CEF)</td></tr>
+            <tr><td>Core asset</td><td>Mossel Bay Gas-to-Liquids (GTL) Refinery — once world's largest commercial GTL plant</td></tr>
+            <tr><td>Refinery status</td><td>Care and maintenance (offline) since 2020</td></tr>
+            <tr><td>Oilfields</td><td>Oryx (100%), Oribi (80%)</td></tr>
+            <tr><td>Gas fields</td><td>FA, EM (depleted); Ikhwezi/FO</td></tr>
+            <tr><td>Accumulated losses</td><td>~R14.5 billion</td></tr>
+            <tr><td>SARS tax debt</td><td>~R4.5 billion (asset seizure pending)</td></tr>
+            <tr><td>Audited financials</td><td>None published since 2020</td></tr>
+            <tr><td>Auditor-General status</td><td>Going-concern risk</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="https://www.petrosa.co.za/history.html" target="_blank">PetroSA Official History</a></li>
+      <li><a href="https://www.petrosa.co.za/gtl.html" target="_blank">PetroSA — Gas & Liquid Manufacturing (GTL Refinery)</a></li>
+      <li><a href="https://www.greenbuildingafrica.co.za/petrosa-faces-collapse-as-sars-moves-to-recover-r4-5-billion-debt/" target="_blank">PetroSA faces collapse as SARS moves to recover R4.5 billion debt</a></li>
+      <li><a href="https://liveafricanews.com/2025/12/09/south-africas-petrosa-faces-mounting-crisis-as-sars-seeks-to-seize-refinery-assets/" target="_blank">SARS seeks to seize PetroSA refinery assets</a></li>
+      <li><a href="https://www.da.org.za/2025/12/the-taxman-is-hunting-petrosas-assets/" target="_blank">DA — The taxman is hunting PetroSA's assets</a></li>
+      <li><a href="https://amabhungane.org/category/stories/petrosa/" target="_blank">amaBhungane — PetroSA investigations</a></li>
+      <li><a href="https://www.thegremlin.co.za/2026/02/03/petrosa-in-urgent-negotiations-with-the-south-african-revenue-service/" target="_blank">PetroSA in urgent negotiations with SARS (Feb 2026)</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terminal Operators • Transnet • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .stat-box { background: #f8f9fa; border: 3px solid #000; padding: 1.25rem; text-align: center; box-shadow: 6px 6px 0 rgba(0,0,0,0.12); }
+    .stat-box h3 { font-weight: 800; margin: 0; color: #007A4D; }
+    .stat-box small { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-box { border: 3px solid #000; padding: 1.5rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .operator-card { border: 3px solid #000; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); border-radius: 0; height: 100%; }
+    .operator-card:hover { box-shadow: 8px 8px 0 rgba(0,0,0,0.2); }
+    .model-step { border: 3px solid #000; padding: 1.25rem; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); height: 100%; }
+    .quote-box { border-left: 8px solid #007A4D; background: #f0faf4; padding: 1.25rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="transnet.html" class="btn btn-light btn-sm">🚂 Transnet</a>
+        <a href="transnet-data.html" class="btn btn-light btn-sm">📊 Data</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #007A4D;">⚓ Terminal Operators</h1>
+    <h5 class="text-muted mb-4">Who Runs South Africa's Ports & LNG Terminals — and the Fight Over the Landlord Port Model & Private Participation</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">South Africa's ports are in crisis, and terminal operations are at the centre of it. The state-owned <strong>Transnet Port Terminals (TPT)</strong> operates the country's cargo-handling terminals while <strong>Transnet National Ports Authority (TNPA)</strong> acts as the "landlord" that owns the infrastructure. But as performance collapses, the <strong>Democratic Alliance (DA)</strong>, business, and even Transnet itself are pushing to open terminal operations to <strong>private participation under the landlord port model</strong> — the same model that is being applied to the <strong>LNG terminals</strong> being built to import gas. This page maps who is involved, how they connect to the LNG build-out, how <strong>NERSA</strong> backs third-party access to gas infrastructure, and why the DA insists the ports must open up.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Ports Authority:</strong> TNPA (landlord)<br>
+          <strong>Terminal Operator:</strong> TPT (state) → ICTSI, DP World, APM (private)<br>
+          <strong>Key LNG sites:</strong> Saldanha Bay, Ngqura, Richards Bay, Durban<br>
+          <strong>Gas Regulator:</strong> NERSA (Gas Act 2001)<br>
+          <strong>Key push:</strong> Landlord port model + private participation
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 1: WHO IS INVOLVED ========== -->
+    <h3 class="fw-bold mt-4 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Who Is Involved — The Cast of Terminal Operations</h3>
+    <p class="lead mb-4">Terminal operations were historically a closed state monopoly. That is breaking apart.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="operator-card" style="border-color: #002395;">
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:#002395;">🏗️ TNPA — The Landlord</h6>
+            <p class="small mb-0"><strong>Transnet National Ports Authority</strong> owns and manages the physical port infrastructure — channels, breakwaters, berths, quays, navigational aids. It does not handle cargo itself. Under the landlord model, TNPA is the "real estate owner" that leases terminal operations to operators. It is also the site planner and marine-safety authority for new infrastructure like LNG berths.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="operator-card" style="border-color: #007A4D;">
+          <div class="card-body">
+            <h6 class="fw-bold text-success">📦 TPT — The State Operator</h6>
+            <p class="small mb-0"><strong>Transnet Port Terminals</strong> is the state-owned cargo-handling operator — containers, bulk commodities, automotive, break-bulk. It holds the terminal monopoly inside the ports. Its bottlenecks (especially at Durban) have caused shipping delays, demurrage costs and ruined export competitiveness. This is the terminal monopoly the DA wants broken open.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="operator-card" style="border-color: #e65100;">
+          <div class="card-body">
+            <h6 class="fw-bold" style="color:#e65100;">🌍 ICTSI — the Private Entrant</h6>
+            <p class="small mb-0"><strong>International Container Terminal Services Inc</strong> (Philippines-based, one of the world's largest terminal operators) partnered with Transnet to develop and manage the <strong>Durban Container Terminal</strong>. The DA welcomed this as aligned with its policy of "opening up the SOE sector to private sector investment."</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="operator-card" style="border-color: #c62828;">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger">🚢 DP World & APM Terminals</h6>
+            <p class="small mb-0">Two of the world's largest terminal operators are engaged in <strong>port terminal concessions</strong> that would give them control of container and bulk handling at Durban, Ngqura and other ports — breaking TPT's terminal monopoly from the ports side, mirroring how private rail operators are entering the rail market.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LNG Operators -->
+    <h4 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">The LNG Terminal Operators — Where Gas Meets the Ports</h4>
+    <div class="content-card card p-4 mb-4">
+      <p class="small">The LNG import terminals being built as part of the Gas Master Plan are essentially a new class of port terminal — and they bring a fresh set of operators, developers and offtakers. Because LNG terminals are licensed and tariffed by NERSA (as gas regulator), they sit at the intersection of the <em>port</em> reform and <em>gas</em> reform stories.</p>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#007A4D;">
+            <h6 class="fw-bold text-success">Karpowership (FSRU)</h6>
+            <p class="small mb-0">Turkish powership and FSRU developer in active discussions for FSRU-based gas-to-power, including at Richards Bay. FSRUs are the fast-track way to get LNG into the grid without a full onshore terminal.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#002395;">
+            <h6 class="fw-bold" style="color:#002395;">Golar LNG (FSRU)</h6>
+            <p class="small mb-0">Leading global FSRU operator with vessels that could be redeployed to South African waters on medium-term charters — the same model used in many emerging gas markets.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#e65100;">
+            <h6 class="fw-bold" style="color:#e65100;">TotalEnergies & Shell</h6>
+            <p class="small mb-0">The international majors with the most South African gas interest. TotalEnergies is active in Mozambique's Rovuma LNG and could supply LNG while participating in terminal and power plant development; Shell has global LNG trading capability.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#1565c0;">
+            <h6 class="fw-bold" style="color:#1565c0;">Transnet Pipelines & TNPA</h6>
+            <p class="small mb-0">Transnet Pipelines is a potential operator/partner for the gas pipeline network; TNPA provides the jetty, berthing, dredging and marine infrastructure for LNG carriers — the port services any LNG terminal depends on.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#007A4D;">
+            <h6 class="fw-bold text-success">DMRE / iGas / PetroSA</h6>
+            <p class="small mb-0">The Department of Mineral Resources & Energy sets the gas policy (Gas Master Plan); iGas and PetroSA are state entities involved in gas infrastructure planning and potential equity participation in terminals.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="highlight-box h-100" style="border-color:#c62828;">
+            <h6 class="fw-bold text-danger">NERSA — the Gas Regulator</h6>
+            <p class="small mb-0">Licences LNG operations (regasification, storage, transmission, trading), sets gas tariffs, approves import/export applications, and enforces third-party access to gas infrastructure — the regulatory backbone for any LNG terminal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PART 2: THE LANDLORD PORT MODEL ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">The Landlord Port Model — Explained</h3>
+    <p class="lead mb-4">This is the model the DA is pushing, and it is already being piloted. Under it, the state keeps ownership of strategic infrastructure while private operators run the terminals.</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="model-step" style="border-color:#002395;">
+          <h1 class="display-4" style="color:#002395;">1</h1>
+          <h6 class="fw-bold" style="color:#002395;">The State Remains Landlord</h6>
+          <p class="small mb-0">TNPA (or the corporatised Ports Authority) retains ownership of the port infrastructure — channels, quays, berths, breakwaters. This is the "strategic infrastructure" that stays in state hands.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="model-step" style="border-color:#007A4D;">
+          <h1 class="display-4 text-success">2</h1>
+          <h6 class="fw-bold text-success">Private Operators Run Terminals</h6>
+          <p class="small mb-0">Private terminal operators (ICTSI, DP World, APM, or consortia) lease terminal operations under long-term concessions — bringing capital, skills and competitive pressure. They pay a concession fee to the landlord.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="model-step" style="border-color:#e65100;">
+          <h1 class="display-4" style="color:#e65100;">3</h1>
+          <h6 class="fw-bold" style="color:#e65100;">An Independent Regulator Sets Rules</h6>
+          <p class="small mb-0">The <strong>Transport Economic Regulator</strong> (under the Economic Regulation of Transport Act 2024) sets tariffs, enforces non-discriminatory access, and holds both the landlord and operators accountable. The DA wants this Regulator empowered with <strong>binding tariff-setting powers, independent of Transnet</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-box mb-4">
+      <p class="mb-2"><em>"Private participation under the landlord model keeps strategic infrastructure in state hands while introducing competition, capital and skills that terminal operations badly need. It is a practical model used successfully across Europe and Latin America."</em></p>
+      <p class="small mb-0 text-muted">— Democratic Alliance, <strong>August 2026</strong>, "Government must now open ports to greater private participation"</p>
+    </div>
+
+    <div class="content-card card p-4 mb-4">
+      <h6 class="fw-bold">The DA's concrete demands (August 2026)</h6>
+      <p class="small">In its statement on the launch of Phase 3 of the Government-Business Partnership, the DA argued the government "must now turn this acknowledgement into action" and deliver — not repeat — reforms. Concretely, the DA demanded government must:</p>
+      <ul class="small">
+        <li><strong>Fast-track the landlord port model</strong> — scale it from the Cape Town Multipurpose Terminal's <strong>25-year concession</strong> to <strong>Durban's Pier 1</strong>, the <strong>Ngqura container terminal</strong> and <strong>Richards Bay</strong>.</li>
+        <li><strong>Finalise TNPA's structural and financial separation</strong> from Transnet Port Terminals — "promised since 2021 but still incomplete."</li>
+        <li><strong>Empower the Ports Regulator with binding tariff-setting powers</strong>, independent of Transnet.</li>
+        <li><strong>Publish quarterly, terminal-by-terminal KPIs</strong> — vessel turnaround time, gross crane moves per hour, and truck turnaround time — so importers, exporters, farmers and miners can hold operators accountable.</li>
+      </ul>
+      <p class="small mb-0">The DA noted President Ramaphosa had acknowledged that "the decline in rail and port performance has been arrested" and that freight volumes are recovering — but that "recovery off a low base is not competitiveness."</p>
+    </div>
+
+    <!-- ========== PART 3: NERSA & THIRD-PARTY ACCESS ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">How NERSA Backs Third-Party Access to LNG / Gas Infrastructure</h3>
+    <p class="lead mb-4">The same open-access principle being applied to rail and ports is already embedded in the Gas Act — and enforced by NERSA.</p>
+
+    <div class="content-card card p-4 mb-4">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color:#007A4D;">
+            <h6 class="fw-bold text-success">🔓 Third-Party Access to Gas Infrastructure (Gas Act s.21)</h6>
+            <p class="small mb-0">The <a href="gas-act.html">Gas Act, 2001</a> requires the Gas Regulator (now NERSA) to impose licence conditions that give:</p>
+            <ul class="small mt-1">
+              <li><strong>Third-party access on commercially reasonable terms</strong> to <em>uncommitted capacity</em> in transmission pipelines and storage facilities.</li>
+              <li><strong>Interconnection</strong> with the facilities of suppliers, transmitters, storage companies, distributors, reticulators and eligible customers where technically feasible.</li>
+              <li><strong>No cross-subsidisation</strong> — vertically integrated companies must keep separate accounts for transmission, storage, distribution, trading, liquefaction and re-gasification.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="highlight-box h-100" style="border-color:#002395;">
+            <h6 class="fw-bold" style="color:#002395;">⚖️ NERSA as Gas Regulator (Gas Act s.4)</h6>
+            <p class="small mb-0">NERSA's functions under the Act include issuing licences for gas transmission, storage, distribution, <strong>liquefaction and re-gasification</strong> (i.e. LNG terminals), and trading; it:</p>
+            <ul class="small mt-1">
+              <li><strong>Regulates prices</strong> and monitors/approves transmission & storage tariffs, taking action to ensure they are applied <strong>non-discriminatorily</strong>.</li>
+              <li><strong>Promotes competition</strong> in the gas industry.</li>
+              <li>Approves gas <strong>import and export</strong> applications — the gateway for LNG.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h6 class="fw-bold mt-4 mb-2">What this means for LNG terminals</h6>
+      <p class="small">Under the Gas Act, any LNG regasification terminal, storage facility or pipeline is licensed by NERSA, and its operator must allow third parties access to <strong>uncommitted capacity</strong> on commercially reasonable terms. This is the gas-sector equivalent of the rail/port open-access reform — it prevents a single LNG terminal owner from monopolising imports, and it mirrors the third-party access provisions the government is building into rail (TRIM) and ports (the landlord model). NERSA's <strong>Gas Licensing Framework is under active update</strong> precisely because LNG import infrastructure (Richards Bay, Coega/Ngqura, Saldanha) and gas-to-power licences are being evaluated. See <a href="nersa.html">NERSA</a> and <a href="gas-act.html">Gas Act</a>.</p>
+    </div>
+
+    <!-- ========== PART 4: THE LNG ASSETS BEING BUILT ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #FFCD00; padding-left: 16px;">The LNG Assets Being Built — Where Terminal Operators Fit</h3>
+    <div class="content-card card p-4 mb-4">
+      <p class="small">The <a href="gas_master_plan.html">Gas Master Plan (2024)</a> identifies LNG import and regasification as the near-term anchor of the gas strategy. The terminal operators engaged with these assets are exactly the same private participants the DA wants in the ports.</p>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered small">
+          <thead class="table-light">
+            <tr><th>Site</th><th>Proposed LNG Asset</th><th>Terminal / Operator Landscape</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="fw-bold">Saldanha Bay (Western Cape)</td><td>Priority large-scale onshore LNG import terminal & gas hub</td><td>Onshore regasification terminal; Karpowership/Golar FSRU options; TotalEnergies/Shell supply; NERSA licence required</td></tr>
+            <tr><td class="fw-bold">Ngqura / Coega (Eastern Cape)</td><td>LNG import terminal (early-proposed site, FSRU-based)</td><td>FSRU or land-based; connects to PetroSA network; DA wants landlord model scaled here (Ngqura container terminal)</td></tr>
+            <tr><td class="fw-bold">Richards Bay (KwaZulu-Natal)</td><td>FSRU-based LNG terminal for the 3,000 MW gas-to-power project</td><td>Karpowership/Golar; TNPA port infrastructure; Transnet Pipelines for gas transmission; DA wants landlord model here</td></tr>
+            <tr><td class="fw-bold">Durban (KwaZulu-Natal)</td><td>Additional regas capacity for the petrochemical cluster</td><td>ICTSI Durban Container Terminal partnership; additional terminal capacity for coastal demand</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small mb-0 text-muted">In each case, the operator model mirrors the port reform: the state (TNPA) provides the port infrastructure "landlord" services, while private terminal operators (or the state operator under licence) run the LNG facility under a NERSA licence with third-party access obligations.</p>
+    </div>
+
+    <!-- ========== PART 5: GOVERNMENT DOCUMENT PROOF ========== -->
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Government Document Proof — The Legal & Policy Backing</h3>
+    <div class="content-card card p-4 mb-4">
+      <table class="table table-sm table-bordered small">
+        <thead class="table-light">
+          <tr><th>Document</th><th>What It Provides</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="economic-regulation-transport.html"><strong>Economic Regulation of Transport Act (2024)</strong></a></td><td>Establishes the <strong>Transport Economic Regulator</strong> with authority over port infrastructure & services and pipelines. Powers include setting access tariffs, enforcing open access, investigating anti-competitive conduct and imposing remedies — the statutory teeth that make the landlord port model and private terminal participation enforceable. <a href="../data/economic-regulation-transport-act-2024.pdf">PDF ↓</a></td></tr>
+          <tr><td><a href="national-rail-policy.html"><strong>National Rail Policy (2022)</strong></a></td><td>The foundational policy committing to vertical separation, open access and independent regulation — the philosophical blueprint that extends the same logic to ports.</td></tr>
+          <tr><td><a href="operation-vulindlela-freight.html"><strong>Operation Vulindlela — Freight Logistics</strong></a></td><td>Documents TNPA <strong>corporatisation</strong> — "separating the ports authority from terminal operations to enable competition and private investment in ports" — with an implementation plan developed. The DA cites this as the unfinished separation promised since 2021.</td></tr>
+          <tr><td><a href="gas-act.html"><strong>Gas Act, 2001</strong></a></td><td>The statute that makes NERSA the gas regulator and mandates third-party access to gas transmission/storage capacity, non-discrimination and no cross-subsidisation — the legal basis for open-access LNG infrastructure.</td></tr>
+          <tr><td><a href="gas_master_plan.html"><strong>Gas Master Plan (2024)</strong></a></td><td>The DMRE roadmap that identifies Saldanha Bay and Richards Bay as priority LNG import terminals and calls for regulatory reforms including third-party access to pipelines and a harmonised gas licensing framework.</td></tr>
+          <tr><td><a href="transnet.html"><strong>Transnet / Freight Logistics Roadmap</strong></a></td><td>The operational programme, coordinated through the National Logistics Crisis Committee, delivering vertical separation for rail and ports and introducing private participation.</td></tr>
+        </tbody>
+      </table>
+      <p class="small mb-0">These documents together form a consistent reform architecture across <strong>rail, ports and gas</strong>: keep the strategic infrastructure in public ownership, open its use to competitive private operators, and regulate access through an independent, statutorily empowered body.</p>
+    </div>
+
+    <div class="content-card card p-4 mb-4" style="border-color: #007A4D; background: #f0faf4;">
+      <h6 class="fw-bold text-success">Why it all fits together</h6>
+      <p class="mb-0">The DA's landlord port model and NERSA's third-party access to gas infrastructure are the <strong>same principle applied to two different network industries</strong>. In ports, TNPA stays the landlord and private operators (ICTSI, DP World, APM) run terminals under a Transport Economic Regulator. In gas, the state retains the licensing framework while NERSA forces LNG terminal owners to share uncommitted capacity with third parties. Both are built on the idea that <em>ownership of a strategic asset need not mean a monopoly over its use</em>. The LNG build-out — Saldanha, Ngqura, Richards Bay — is the first place where the port reform and the gas reform genuinely collide, and it is exactly where the landlord model and NERSA's access rules will be tested together.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources & Further Reading:</strong></p>
+    <ul>
+      <li><a href="https://www.da.org.za/2026/08/government-must-now-open-ports-to-greater-private-participation" target="_blank">DA (Aug 2026) — Government must now open ports to greater private participation</a></li>
+      <li><a href="https://www.da.org.za/2026/07/privatising-one-cape-town-port-terminal-must-open-floodgate-to-full-port-privatisation/" target="_blank">DA (Jul 2026) — Privatising one Cape Town port terminal must open floodgate</a></li>
+      <li><a href="transnet.html">Transnet SOC Ltd — Overview</a></li>
+      <li><a href="transnet-data.html">Transnet Data</a></li>
+      <li><a href="nersa.html">NERSA — National Energy Regulator</a></li>
+      <li><a href="gas-act.html">Gas Act (2001)</a></li>
+      <li><a href="gas_master_plan.html">Gas Master Plan (2024)</a></li>
+      <li><a href="richards-bay-lng.html">Richards Bay LNG-to-Power Project</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transmission System Basics • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --sa-green: #007A4D;
+      --sa-gold: #FFCD00;
+      --sa-blue: #002395;
+      --sa-red: #E03C31;
+    }
+    .t-hero {
+      background: linear-gradient(135deg, #0d3b66 0%, #1b5e20 55%, #2e7d32 100%);
+      color: white;
+      padding: 3.5rem 0;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 2rem;
+    }
+    .t-hero h1 { font-weight: 800; font-size: 2.8rem; }
+    .t-hero .subtitle { font-size: 1.1rem; opacity: 0.92; max-width: 780px; }
+    .stat-card {
+      border: 2px solid #dee2e6;
+      border-radius: 16px;
+      padding: 1.4rem;
+      text-align: center;
+      background: white;
+      transition: transform 0.2s;
+      height: 100%;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .stat-card .stat-value { font-size: 1.55rem; font-weight: 800; color: var(--sa-green); }
+    .stat-card .stat-label { font-size: 0.82rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .stat-note { font-size: 0.74rem; color: #999; }
+    .section-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 2rem;
+    }
+    .section-card .card-header {
+      border-radius: 16px 16px 0 0;
+      font-weight: 700;
+    }
+    .equip-card {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.2rem;
+      background: white;
+      height: 100%;
+      transition: all 0.2s;
+    }
+    .equip-card:hover { border-color: var(--sa-green); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .equip-card .equip-icon { font-size: 1.6rem; }
+    .equip-card h5 { font-weight: 700; font-size: 1rem; margin-top: 0.5rem; }
+    .equip-card p { font-size: 0.85rem; color: #555; }
+    .equip-card .equip-tag { font-size: 0.7rem; background: #eaf6f0; color: var(--sa-green); padding: 0.15rem 0.5rem; border-radius: 20px; font-weight: 600; }
+    .key-box {
+      background: #fff8e1;
+      border-left: 4px solid #ffb300;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+    .fix-box {
+      background: #e8f5e9;
+      border-left: 4px solid #43a047;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+    .cost-box {
+      background: #fce4ec;
+      border-left: 4px solid #c62828;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    .table-header-green th { background: var(--sa-green); color: white; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .table-header-blue th { background: var(--sa-blue); color: white; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .table-header-dark th { background: #37474f; color: white; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .chart-container { position: relative; height: 360px; width: 100%; }
+    .chart-container-sm { position: relative; height: 300px; width: 100%; }
+    .oem-badge { background: var(--sa-green); color: white; font-size: 0.7rem; padding: 0.3rem 0.7rem; border-radius: 20px; display: inline-block; margin-bottom: 0.35rem; }
+    .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 1rem; border-left: 3px solid var(--sa-green); }
+    .timeline-item .year { font-weight: 700; color: var(--sa-green); }
+    .flow-step {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    }
+    .flow-step .step {
+      background: white; border: 2px solid #dee2e6; border-radius: 12px;
+      padding: 0.9rem 1.2rem; text-align: center; font-weight: 600; max-width: 280px; position: relative;
+    }
+    .flow-step .arrow { font-size: 1.4rem; color: #999; }
+    .supply-box {
+      background: #f5f0f7; border-radius: 12px; padding: 1rem; border: 1px solid #e8dff0; height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+    <div class="d-flex gap-2">
+      <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+      <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      <a href="power.html" class="btn btn-light btn-sm">&#9889; Power</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="t-hero">
+  <div class="container text-center">
+    <h1>&#128508; Transmission System Basics</h1>
+    <p class="subtitle mx-auto">
+      The high-voltage "muscle" of the electricity system. Transmission moves bulk power at
+      <strong>132 kV to 765 kV</strong> from where it is generated to where it is consumed — across
+      thousands of kilometres, through some of the largest and most expensive electromechanical
+      equipment in the industrial world. In South Africa, the grid is owned and operated by the
+      <strong>NTCSA</strong> (National Transmission Company of South Africa), separated from Eskom.
+    </p>
+    <div class="row mt-4 justify-content-center g-2">
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">&#128373;&#65039; ~33,000 km of HV lines</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">&#9889; 765 kV backbone</span></div>
+      <div class="col-auto"><span class="badge bg-light text-dark p-2 px-3">&#128200; 1,900 MW HVDC import</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ============================================================ -->
+  <!-- THE BIG PICTURE                                                -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-3">&#129309; What Is the Transmission System?</h4>
+      <p>
+        Electricity moves in three stages. <strong>Generation</strong> produces power at a power station
+        (up to ~24 kV for a generator). <strong>Transmission</strong> steps that voltage up to
+        132–765 kV and moves it long distances with minimal loss. <strong>Distribution</strong> steps it
+        back down to 11 kV / 400 V / 230 V for homes and businesses. The transmission system is the
+        <em>national highway network</em> of the grid — the distribution network is the local road system.
+      </p>
+      <p>
+        In South Africa, the Transmission System Operator (TSO) is the <strong>NTCSA</strong>, created by the
+        unbundling of Eskom under the Electricity Regulation Amendment Act (2024). It owns and operates the
+        entire national high-voltage grid, connects generators (Eskom coal, IPP wind/solar, hydro, nuclear)
+        to the network, and — since the launch of SAWEM — also operates the wholesale electricity market.
+        It is the largest single owner of transmission assets in Africa.
+      </p>
+
+      <div class="row g-3 mt-2">
+        <div class="col-lg-4">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#9889; Generation</h6>
+            <p class="small mb-0">Produces electrical power. Generators output at 11–24 kV. Large synchronous machines combine a turbine (steam, gas, hydro, wind) with an alternator. <strong>Eskom Generation, IPPs, private embedded</strong>.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="supply-box" style="border-color:#007A4D;">
+            <h6 class="fw-bold" style="color:#007A4D;">&#127917; Transmission (the focus here)</h6>
+            <p class="small mb-0">Steps voltage up (132→400→765 kV) and ships bulk power long distances. Transformers, towers, conductors, switchgear, HVDC. <strong>Operated by the NTCSA</strong>.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#127968; Distribution</h6>
+            <p class="small mb-0">Steps voltage down (132→66→33→11→0.4 kV) and delivers to end users. <strong>Eskom Distribution + 160+ municipal distributors</strong>. This is where most outages (load shedding) physically occur.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="key-box mt-4">
+        <strong>&#128161; Why high voltage?</strong> Power loss in a conductor is proportional to the square of
+        the current (P&nbsp;=&nbsp;I&sup2;R). By stepping voltage up 30&times; (e.g. 11 kV → 400 kV), current drops
+        30&times;, and losses drop ~900&times; for the same power. That's why we transmit at 400 kV and 765 kV rather
+        than just running a thick cable from the power station to the city.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SA NETWORK AT A GLANCE                                         -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-3">&#128202; The South African Grid at a Glance</h4>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-value">~33,000 km</div>
+            <div class="stat-label">High-Voltage Lines</div>
+            <div class="stat-note">132 kV and above</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-value" style="color:#002395;">~1,500 km</div>
+            <div class="stat-label">765 kV Corridor</div>
+            <div class="stat-note">Medupi–Kusile–Matimba backbone</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-value" style="color:#e65100;">~250+</div>
+            <div class="stat-label">Major Substations</div>
+            <div class="stat-note">Transmission voltage level</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-value" style="color:#c62828;">~1,900 MW</div>
+            <div class="stat-label">HVDC Import</div>
+            <div class="stat-note">Cahora Bassa (Mozambique) → Apollo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Transmission Voltages</div>
+            <div class="stat-note">765, 400, 275, 220, 132, 88 kV</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-value">~1,300+</div>
+            <div class="stat-label">Large Power Transformers</div>
+            <div class="stat-note">>132 kV, the grid's most valuable assets</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-value" style="color:#002395;">1</div>
+            <div class="stat-label">System Operator</div>
+            <div class="stat-note">NTCSA — TSO & Market Operator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- WHAT GOES INTO IT: EQUIPMENT                                   -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-3">&#129520; What Goes Into the Transmission System</h4>
+      <p class="text-muted">The transmission grid is built from a small set of repeating building blocks,
+        each a heavy, specialised, high-value asset. These are the components and what they do.</p>
+
+      <div class="row g-3">
+        <!-- Towers & Lines -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#127959;&#65039;</span>
+              <span class="equip-tag">The backbone</span>
+            </div>
+            <h5>Overhead Lines & Towers</h5>
+            <p><strong>What:</strong> Steel lattice towers holding <strong>ACSR conductors</strong>
+              (Aluminium Conductor Steel Reinforced) on glass/ceramic/polymer insulators.</p>
+            <p><strong>What it does:</strong> Carries bulk power. A single 400 kV circuit can move
+              <strong>~1,000–1,400 MW</strong>; a 765 kV line up to <strong>~2,500 MW</strong>. SA is one of
+              the few countries in the world using 765 kV.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> ~R8–15 M/km for a 400 kV line (towers,
+              conductor, insulators), plus land and civil works.</p>
+          </div>
+        </div>
+
+        <!-- Transformers -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#9889;</span>
+              <span class="equip-tag" style="background:#fce4ec; color:#c62828;">Most expensive single asset</span>
+            </div>
+            <h5>Power Transformers</h5>
+            <p><strong>What:</strong> Static electromagnetic devices that change voltage between circuits.
+              <strong>Step-up</strong> transformers at generation, <strong>auto-transformers</strong> coupling
+              400/275/132 kV levels, <strong>step-down</strong> at substations.</p>
+            <p><strong>What it does:</strong> The heart of every substation. A single 400 kV
+              auto-transformer can handle <strong>~500–1,000 MVA</strong> (enough for a mid-sized city).</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> R150–400 M each. Global lead times blew
+              out to <strong>3–5 years</strong> during the 2022–24 supply crunch.</p>
+          </div>
+        </div>
+
+        <!-- Substations & Switchgear -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#127982;</span>
+              <span class="equip-tag">The hub</span>
+            </div>
+            <h5>Substations & Switchgear</h5>
+            <p><strong>What:</strong> A substation is the node where circuits meet — busbars, circuit
+              breakers, disconnectors, instrument transformers, surge arresters. <strong>GIS</strong>
+              (gas-insulated, SF6) or <strong>AIS</strong> (air-insulated).</p>
+            <p><strong>What it does:</strong> Routes, protects, and switches the network. <strong>Circuit
+              breakers</strong> interrupt fault currents in milliseconds; <strong>disconnectors</strong>
+              provide visible isolation for maintenance.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> A full 400 kV GIS substation can cost
+              <strong>R500 M–R1.5 B</strong>; a single 400 kV breaker ~R10–30 M.</p>
+          </div>
+        </div>
+
+        <!-- Reactive Power -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#128295;</span>
+              <span class="equip-tag">Voltage control</span>
+            </div>
+            <h5>Reactive Power Compensation</h5>
+            <p><strong>What:</strong> <strong>Shunt reactors</strong> (absorb MVAr), <strong>shunt
+              capacitors</strong> (inject MVAr), and dynamic devices — <strong>STATCOMs</strong> and
+              <strong>SVCs</strong> (Static Var Compensators).</p>
+            <p><strong>What it does:</strong> Keeps voltage within limits. Long lightly-loaded lines "charge
+              up" (Ferranti effect) and need reactors; heavily-loaded lines sag and need capacitors.
+              STATCOMs can swing both ways in <strong>milliseconds</strong>.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> SH reactors R20–80 M; STATCOM/SVC
+              <strong>R150–400 M</strong> per installation.</p>
+          </div>
+        </div>
+
+        <!-- Series Compensation -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#127775;</span>
+              <span class="equip-tag">Throughput</span>
+            </div>
+            <h5>Series Compensation</h5>
+            <p><strong>What:</strong> <strong>Series capacitors</strong> installed <em>in series</em> with a
+              transmission line, plus metal-oxide varistors (MOVs) and by-pass breakers for protection.</p>
+            <p><strong>What it does:</strong> Cancels part of the line's inductive reactance, effectively
+              shortening it. This raises the <strong>power transfer limit</strong> of a long line by
+              <strong>30–50%</strong> without building a new line. Widely used on SA's long 400 kV and 765 kV
+              interconnectors.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> ~R40–100 M per series capacitor bank.</p>
+          </div>
+        </div>
+
+        <!-- Protection/Control -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#129504;</span>
+              <span class="equip-tag">The brain</span>
+            </div>
+            <h5>Protection, Control & SCADA</h5>
+            <p><strong>What:</strong> <strong>Numerical relays</strong> (distance, differential, overcurrent),
+              <strong>SCADA/EMS</strong> (Supervisory Control & Data Acquisition / Energy Management
+              System) in the National Control Centre, and communication networks.</p>
+            <p><strong>What it does:</strong> Detects faults in <strong>~50–80 milliseconds</strong> and
+              trips the right breakers to isolate a faulted line, protecting equipment and people. SCADA lets
+              operators monitor and control the whole national grid from one room.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> Relays R1–5 M per bay; a National Control
+              Centre upgrade can run to hundreds of millions.</p>
+          </div>
+        </div>
+
+        <!-- HVDC -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#128640;</span>
+              <span class="equip-tag">Cross-border</span>
+            </div>
+            <h5>HVDC Converter Stations</h5>
+            <p><strong>What:</strong> High-Voltage Direct Current systems convert AC→DC→AC to move power over
+              very long distances or between asynchronous grids. In SA this is the
+              <strong>Apollo converter station</strong> (near Johannesburg) receiving from
+              <strong>Cahora Bassa in Mozambique</strong>.</p>
+            <p><strong>What it does:</strong> The <strong>±533 kV, ~1,400 km</strong> HVDC line was the
+              longest in the world when built, delivering up to <strong>1,920 MW</strong> into the SA grid
+              from the Zambezi hydro complex.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> Converter stations run to
+              <strong>R2–4 B+</strong> — among the most capital-intensive transmission assets ever built.</p>
+          </div>
+        </div>
+
+        <!-- Telecom -->
+        <div class="col-md-6 col-lg-4">
+          <div class="equip-card">
+            <div class="d-flex justify-content-between">
+              <span class="equip-icon">&#128225;</span>
+              <span class="equip-tag">The nervous system</span>
+            </div>
+            <h5>Telecommunication</h5>
+            <p><strong>What:</strong> <strong>OPGW</strong> (Optical Ground Wire) embedded in the earth wire of
+              transmission towers, plus microwave links, PLC (power-line carrier), and fibre.</p>
+            <p><strong>What it does:</strong> Carries the protection signalling, SCADA data, and voice
+              between substations and the National Control Centre. Reliable telecom is critical — protection
+              schemes cannot operate without it.</p>
+            <p class="small text-muted mb-0"><strong>Cost:</strong> OP GW ~R1–2 M per km installed; part of
+              every new line and substation build.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- EQUIPMENT FUNCTION QUICK REFERENCE                             -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-header table-header-green">&#128203; Quick Reference — Equipment, Function & Cost</div>
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Equipment</th>
+              <th>What it does</th>
+              <th>Typical Voltage</th>
+              <th>Indicative Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>765 kV Overhead Line</strong></td>
+              <td>Ultra-high-capacity backbone transfer (~2,500 MW/circuit)</td>
+              <td>765 kV</td>
+              <td>~R10–18 M/km</td>
+            </tr>
+            <tr>
+              <td><strong>400 kV Overhead Line</strong></td>
+              <td>Main transmission artery (~1,000–1,400 MW/circuit)</td>
+              <td>400 kV</td>
+              <td>~R8–15 M/km</td>
+            </tr>
+            <tr>
+              <td><strong>Power Auto-Transformer</strong></td>
+              <td>Interconnects 400/275/132 kV levels</td>
+              <td>400 kV</td>
+              <td><strong>R150–400 M each</strong></td>
+            </tr>
+            <tr>
+              <td><strong>GIS Substation (full)</strong></td>
+              <td>Routes & protects multiple circuits</td>
+              <td>400 kV</td>
+              <td>R500 M–R1.5 B</td>
+            </tr>
+            <tr>
+              <td><strong>Circuit Breaker</strong></td>
+              <td>Interrupts fault current</td>
+              <td>400 kV</td>
+              <td>R10–30 M each</td>
+            </tr>
+            <tr>
+              <td><strong>STATCOM / SVC</strong></td>
+              <td>Dynamic voltage & reactive-power control</td>
+              <td>132–400 kV</td>
+              <td>R150–400 M</td>
+            </tr>
+            <tr>
+              <td><strong>Synchronous Condenser</strong></td>
+              <td>Rotating inertia + reactive power support</td>
+              <td>132–400 kV</td>
+              <td>R200–400 M</td>
+            </tr>
+            <tr>
+              <td><strong>Series Capacitor Bank</strong></td>
+              <td>Raises transfer limit of long lines 30–50%</td>
+              <td>400–765 kV</td>
+              <td>R40–100 M</td>
+            </tr>
+            <tr>
+              <td><strong>Shunt Reactor</strong></td>
+              <td>Absorbs excess MVAr (voltage control)</td>
+              <td>275–400 kV</td>
+              <td>R20–80 M</td>
+            </tr>
+            <tr>
+              <td><strong>Protection Relay (per bay)</strong></td>
+              <td>Detects faults & trips breakers in ms</td>
+              <td>Any</td>
+              <td>R1–5 M</td>
+            </tr>
+            <tr>
+              <td><strong>HVDC Converter Station</strong></td>
+              <td>AC↔DC conversion for long-distance transfer</td>
+              <td>±533 kV DC</td>
+              <td><strong>R2–4 B+</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small text-muted mt-2 mb-0">
+        <strong>Note:</strong> Costs are indicative 2025/26 estimates and vary widely with specification,
+        site conditions, and the global commodity/supply cycle. They do not include civil works, land, or
+        commissioning.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- THE MOST EXPENSIVE                                               -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <h4 class="fw-bold mb-2">&#128176; What's the Most Expensive?</h4>
+          <p class="text-muted">Ranked by single-asset cost (excluding civil works), the transmission
+            "big-ticket" items are clear:</p>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-container-sm" style="height: 260px;">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-box mt-3">
+        <strong>&#9888;&#65039; The #1 single asset: the big power transformer.</strong>
+        A large 400 kV auto-transformer — the component that couples the entire transmission voltage
+        ladder together — is the priciest <em>discrete piece of equipment</em> in the grid, at
+        <strong>R150–400 million</strong> each. Anything more expensive is a full system (an HVDC converter
+        station, a GIS substation) rather than a single device. Transformer lead times were the single
+        biggest bottleneck in the global energy transition, stretching to 3–5 years at the 2022–24 peak.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LEAD TIMES                                                      -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-header table-header-blue">&#9200; Lead Times — and Why They Matter</div>
+    <div class="card-body p-4">
+      <p class="text-muted">
+        Lead time is the elapsed time between <strong>placing an order</strong> and <strong>receiving the
+        equipment</strong> — it does not include design, civil works, installation, or commissioning. Lead
+        times exploded globally from 2022 to 2024 as the energy transition, data-centre demand, and
+        post-COVID supply chains collided. They are now easing but remain far above pre-2020 norms.
+      </p>
+
+      <div class="row g-3 align-items-center">
+        <div class="col-lg-5">
+          <div class="chart-container">
+            <canvas id="leadTimeChart"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Equipment</th>
+                  <th>Typical Lead Time</th>
+                  <th>Demand Driver</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Power Transformers</strong></td>
+                  <td><strong>24–40+ months</strong></td>
+                  <td>Global crunch — highest demand in decades</td>
+                </tr>
+                <tr>
+                  <td><strong>HVDC Converter / Valves</strong></td>
+                  <td><strong>36–48 months</strong></td>
+                  <td>Very few suppliers; project-specific</td>
+                </tr>
+                <tr>
+                  <td><strong>GIS Switchgear</strong></td>
+                  <td>18–30 months</td>
+                  <td>Grid expansion & urban reinforcement</td>
+                </tr>
+                <tr>
+                  <td><strong>STATCOM / SVC</strong></td>
+                  <td>18–30 months</td>
+                  <td>Renewables integration, voltage support</td>
+                </tr>
+                <tr>
+                  <td><strong>Synchronous Condenser</strong></td>
+                  <td>24–36 months</td>
+                  <td>Grid inertia & stability</td>
+                </tr>
+                <tr>
+                  <td><strong>Circuit Breakers (400 kV)</strong></td>
+                  <td>12–24 months</td>
+                  <td>Substation refurbishment</td>
+                </tr>
+                <tr>
+                  <td><strong>Conductors (ACSR)</strong></td>
+                  <td>6–12 months</td>
+                  <td>Aluminium commodity + capacity</td>
+                </tr>
+                <tr>
+                  <td><strong>Tower Steel</strong></td>
+                  <td>6–12 months</td>
+                  <td>Fabrication capacity</td>
+                </tr>
+                <tr>
+                  <td><strong>Insulators</strong></td>
+                  <td>6–12 months</td>
+                  <td>Ceramic/glass/polymer supply</td>
+                </tr>
+                <tr>
+                  <td><strong>Protection & Control</strong></td>
+                  <td>6–12 months</td>
+                  <td>Semiconductor & relay supply</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="fix-box mt-3">
+        <strong>&#9989; What this means for South Africa.</strong> The NTCSA's grid expansion and
+        connection-queue work — needed to connect the ~19,600&nbsp;MW of new private capacity — is
+        <em>serially constrained by transformer and switchgear lead times</em>. A project that needs a
+        new 400 kV substation realistically takes <strong>4–6 years from concept to energisation</strong>.
+        This is why contemporary planning emphasises: (1) <strong>ordering equipment early</strong> (long-lead
+        procurement), (2) reusing existing corridors, and (3) <strong>cable / underground options</strong>
+        where overhead routing is blocked.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- WHO MAKES IT                                                     -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-3">&#127981; Who Makes It? The Manufacturers</h4>
+      <p class="text-muted">Transmission equipment is a highly consolidated, global oligopoly. A handful of
+        OEMs dominate, with a thin tier of specialised component suppliers beneath them. South Africa has
+        meaningful local content in some segments but imports nearly all of the heaviest, most valuable items.</p>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#9889; Power Transformers</h6>
+            <p class="small mb-0"><strong>Global leaders:</strong> Hitachi Energy (formerly ABB), Siemens
+              Energy, GE Vernova, CG Power, Hyundai Electric, Mitsubishi Electric, Toshiba, Prolec GE, WEG,
+              BHEL.<br>
+              <strong>South African local content:</strong> <strong>ACTOM</strong> (largest local transformer
+              maker, Johannesburg) and smaller specialist shops. Historically a strong local base, now
+              concentrated in lower-voltage and distribution units.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#127982; Switchgear & GIS</h6>
+            <p class="small mb-0"><strong>Global leaders:</strong> Hitachi Energy, Siemens Energy, GE Vernova,
+              Schneider Electric, Mitsubishi Electric, Toshiba.<br>
+              <strong>South African local content:</strong> <strong>ACTOM</strong> switchgear, local
+              assembly/panel-building for LV and some MV, but 400 kV GIS is almost entirely imported from
+              Europe/Asia.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#127959;&#65039; Conductors & Cables</h6>
+            <p class="small mb-0"><strong>Global leaders:</strong> Prysmian, Nexans, Sumitomo, Southwire,
+              CTC Global (ACCC), General Cable.<br>
+              <strong>South African local content:</strong> <strong>Aberdare Cables</strong> (SA) produces
+              ACSR and XLPE cable locally; SA also has strong aluminium-industry ties (Hulamin) that supply
+              the metal.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#128295; Reactive Power & HVDC</h6>
+            <p class="small mb-0"><strong>STATCOM/SVC:</strong> Hitachi Energy, Siemens Energy, GE Vernova,
+              Mitsubishi Electric. <strong>HVDC:</strong> Hitachi Energy (historic technology leader on
+              Cahora Bassa), Siemens Energy, GE Vernova, Mitsubishi. <strong>Synchronous condensers:</strong>
+              GE, Siemens, WEG, Andritz.<br>
+              <strong>South African local content:</strong> minimal — these are bespoke imported systems.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#129504; Protection, Relays & SCADA</h6>
+            <p class="small mb-0"><strong>Global leaders:</strong> Siemens, Hitachi Energy, GE, SEL
+              (Schweitzer), Schneider Electric.<br>
+              <strong>South African local content:</strong> local engineering/integration, panel
+              manufacturing, and SCADA deployment — the <strong>National Control Centre</strong> uses
+              internationally-sourced EMS platforms integrated by local teams.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#127960;&#65039; Towers, Insulators & Steelwork</h6>
+            <p class="small mb-0"><strong>Towers:</strong> local SA steel fabricators plus international
+              suppliers (Valmont, Sabre). <strong>Insulators:</strong> NGK Insulators (Japan), Lapp, Seves,
+              Sediver (glass), CTC Global.<br>
+              <strong>South African local content:</strong> significant — SA has a strong structural steel
+              and galvanising industry that fabricates lattice towers and substation steel locally.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- KEY SUPPLIERS TABLE                                             -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-header table-header-dark">&#128203; Key Suppliers in the Value Chain</div>
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>HQ</th>
+              <th>Role</th>
+              <th>Products / Competence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Hitachi Energy</strong></td><td>Switzerland</td><td>OEM</td><td>Power transformers, GIS/HGIS, HVDC (technology leader on Cahora Bassa), STATCOM, protection relays</td></tr>
+            <tr><td><strong>Siemens Energy</strong></td><td>Germany</td><td>OEM</td><td>Transformers, GIS, HVDC, grid automation, SCADA/EMS (Omnivise)</td></tr>
+            <tr><td><strong>GE Vernova</strong></td><td>USA</td><td>OEM</td><td>Transformers, GIS, HVDC, synchronous condensers, grid solutions</td></tr>
+            <tr><td><strong>Mitsubishi Electric</strong></td><td>Japan</td><td>OEM</td><td>GIS, transformers, STATCOM/SVC, protection</td></tr>
+            <tr><td><strong>CG Power</strong></td><td>India</td><td>OEM</td><td>Power transformers, switchgear — strong value-for-money segment</td></tr>
+            <tr><td><strong>Hyundai Electric</strong></td><td>South Korea</td><td>OEM</td><td>Large power transformers, GIS</td></tr>
+            <tr><td><strong>Prysmian / Nexans</strong></td><td>Italy / France</td><td>Tier 1</td><td>High-voltage cables, ACSR/ACCC conductors</td></tr>
+            <tr><td><strong>NGK Insulators</strong></td><td>Japan</td><td>Tier 1</td><td>Porcelain & polymer insulators for HV lines and substations</td></tr>
+            <tr><td><strong>Schweitzer (SEL)</strong></td><td>USA</td><td>Tier 1</td><td>Protection relays, wide-area monitoring systems</td></tr>
+            <tr><td><strong>ACTOM</strong></td><td>South Africa</td><td>Local OEM</td><td>Transformers, switchgear, LV/MV panels — SA's main local manufacturer</td></tr>
+            <tr><td><strong>Aberdare Cables</strong></td><td>South Africa</td><td>Local OEM</td><td>ACSR conductor and XLPE cable manufacturing</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key-box mt-3">
+        <strong>&#128161; Localisation reality-check.</strong> South Africa can fabricate tower steel, ACSR
+        conductor, and lower-voltage switchgear locally. But the <strong>heavy, high-value items — large power
+        transformers, 400 kV GIS, HVDC converters, STATCOMs — are all imported</strong>. That makes the
+        country exposed to global lead times, currency swings, and a small number of foreign suppliers.
+        Local manufacturing capacity exists but is concentrated at the lower end of the voltage ladder.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STRATEGIC CONTEXT                                               -->
+  <!-- ============================================================ -->
+  <div class="section-card card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-3">&#127758; Transmission & the Energy Transition</h4>
+      <p class="text-muted">Transmission is the quiet bottleneck of the energy transition. You can build
+        all the solar and wind you want — but without transmission capacity to move it, it cannot reach the
+        load.</p>
+
+      <div class="row g-2">
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#128200; Connection Queue</h6>
+            <p class="small mb-0">The NTCSA's Generation Connection Capacity Assessment (GCCA) repeatedly
+              flags limited available capacity on key 400 kV corridors. Thousands of megawatts of private
+              and IPP generation are queued, waiting for either a new line or network reinforcement. The
+              <strong>grid, not generation, is often the binding constraint</strong>.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#9889; Renewable Hotspots</h6>
+            <p class="small mb-0">SA's best solar and wind resources are in the <strong>Northern Cape, North
+              West, and Western Cape</strong> — far from the coal-belt load centres of Gauteng and Mpumalanga.
+              Moving that renewable energy <strong>requires long 400 kV and 765 kV lines</strong>, which take
+              the longest to build and face the hardest environmental and land-access hurdles.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#128737;&#65039; Cable Theft</h6>
+            <p class="small mb-0">Copper and aluminium theft — including from transmission lines and
+              substations — is a chronic operational burden. The NTCSA has spent hundreds of millions on
+              security, aluminium-replacement, and surveillance. It is one of the most under-appreciated
+              threats to transmission reliability in South Africa.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="supply-box">
+            <h6 class="fw-bold">&#128640; Long-Lead Procurement</h6>
+            <p class="small mb-0">Because transformers and switchgear take 2–4 years, the NTCSA must place
+              orders <strong>years ahead</strong> of when capacity is actually needed. This is why modern
+              planning is as much about <strong>supply-chain management</strong> as about power-system
+              engineering — and why early ordering is the single most effective de-risking lever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- NAVIGATION                                                      -->
+  <!-- ============================================================ -->
+  <div class="card border-0 mt-4 mb-4" style="background: #f0f4f8;">
+    <div class="card-body">
+      <div class="row g-2 small text-center">
+        <div class="col">
+          <a href="power.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#9889; Power Overview</a>
+        </div>
+        <div class="col">
+          <a href="sawem-market-structure.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#128200; Market Structure</a>
+        </div>
+        <div class="col">
+          <a href="eskom-history.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127963; Eskom History</a>
+        </div>
+        <div class="col">
+          <a href="ntcsa.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; NTCSA</a>
+        </div>
+        <div class="col">
+          <a href="distributed-generation.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127758; Distributed Generation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SOURCES                                                         -->
+  <!-- ============================================================ -->
+  <div class="data-source-footer mb-4">
+    <strong>&#128214; Sources:</strong>
+    <ul class="small mb-0 mt-1">
+      <li>NTCSA / Eskom Transmission — Transmission Development Plan (TDP) and Grid Capacity Assessment publications</li>
+      <li>Generation Connection Capacity Assessment (GCCA) — NTCSA</li>
+      <li>Electricity Regulation Amendment Act 38 of 2024 (Eskom unbundling & NTCSA establishment)</li>
+      <li>Global transformer/switchgear supply-chain reporting (2024–2026)</li>
+      <li>OEM public specifications — Hitachi Energy, Siemens Energy, GE Vernova</li>
+      <li>Cahora Bassa HVDC technical literature (Apollo & Songo converter stations)</li>
+    </ul>
+    <p class="small text-muted mt-2 mb-0">
+      <strong>Note:</strong> Cost and lead-time figures are indicative estimates compiled from public
+      industry reporting and OEM data. They vary with specification, site conditions and the global supply
+      cycle, and should be treated as order-of-magnitude guidance rather than quotations.
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// COST CHART — Most expensive single assets (R million)
+// ============================================================
+const costCtx = document.getElementById('costChart').getContext('2d');
+new Chart(costCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'HVDC Converter\nStation (system)',
+      'GIS Substation\n(full)',
+      'Power\nTransformer',
+      'Synchronous\nCondenser',
+      'STATCOM /\nSVC',
+      'Series Capacitor\nBank',
+      'Shunt\nReactor',
+      '400 kV Circuit\nBreaker'
+    ],
+    datasets: [{
+      label: 'Indicative cost (R million)',
+      data: [3000, 1000, 275, 300, 275, 70, 50, 20],
+      backgroundColor: ['#c62828', '#e65100', '#f57f17', '#f9a825', '#c0ca33', '#7cb342', '#43a047', '#66bb6a'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => '~R' + ctx.parsed.x.toLocaleString() + ' million'
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'R million (log-friendly, indicative)' },
+        grid: { color: '#f0f0f0' },
+        ticks: { callback: (v) => v.toLocaleString() }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ============================================================
+// LEAD TIME CHART — months (typical)
+// ============================================================
+const ltCtx = document.getElementById('leadTimeChart').getContext('2d');
+new Chart(ltCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'HVDC Converter',
+      'Power Transformer',
+      'Synchronous Condenser',
+      'GIS Switchgear',
+      'STATCOM / SVC',
+      'Circuit Breaker',
+      'Tower Steel',
+      'Conductors (ACSR)',
+      'Insulators',
+      'Protection & Control'
+    ],
+    datasets: [{
+      label: 'Typical lead time (months)',
+      data: [42, 32, 30, 24, 24, 18, 9, 9, 9, 9],
+      backgroundColor: ['#002395', '#1565c0', '#1976d2', '#1e88e5', '#42a5f5', '#64b5f6', '#90caf9', '#90caf9', '#90caf9', '#90caf9'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => '~' + ctx.parsed.x + ' months'
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Months (typical, 2024–26)' },
+        grid: { color: '#f0f0f0' },
+        max: 48
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

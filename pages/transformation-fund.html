@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transformation Fund • Economy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --tf-green: #007A4D;
+      --tf-gold:  #FFCD00;
+      --tf-blue:  #002395;
+      --tf-red:   #c62828;
+      --tf-ink:   #1f2a33;
+      --tf-teal:  #00695c;
+      --tf-plum:  #6a1b4d;
+    }
+    body { color: var(--tf-ink); }
+
+    .tf-hero {
+      background: linear-gradient(135deg, #00341f 0%, #007A4D 48%, #0d6b4f 100%);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2.2rem 2rem;
+    }
+    .tf-hero h1 { font-weight: 800; letter-spacing: -0.5px; }
+    .tf-hero .lead { color: #d8efe4; }
+
+    .tf-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.78rem;
+      margin: 0.15rem 0.25rem 0.15rem 0;
+    }
+
+    /* Inline icon used in nav and headings */
+    .tf-ico {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.14em;
+      margin-right: 0.4rem;
+      flex: none;
+    }
+    .tf-nav .nav-link {
+      color: var(--tf-ink);
+      font-size: 0.85rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .tf-nav .nav-link:hover { background: #e8f3ee; color: var(--tf-green); }
+
+    .tf-section { margin-bottom: 2.75rem; scroll-margin-top: 1rem; }
+    .tf-section > h2 {
+      font-weight: 800;
+      font-size: 1.55rem;
+      color: var(--tf-green);
+      border-bottom: 3px solid var(--tf-gold);
+      padding-bottom: 0.45rem;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+    .tf-section h2 .tf-ico { width: 1.05em; height: 1.05em; }
+    .tf-section h3 {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      color: var(--tf-blue);
+    }
+
+    .tf-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .tf-stat {
+      border-radius: 12px;
+      padding: 1rem 0.85rem;
+      height: 100%;
+      background: #f7fbf9;
+      border: 1px solid #dcece4;
+      text-align: center;
+    }
+    .tf-stat .tf-num {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--tf-green);
+      line-height: 1.1;
+    }
+    .tf-stat .tf-lbl { font-size: 0.77rem; color: #5b6b63; margin-top: 0.3rem; }
+
+    .tf-table thead th {
+      background: var(--tf-green);
+      color: #fff;
+      font-size: 0.82rem;
+      vertical-align: middle;
+    }
+    .tf-table td, .tf-table th { font-size: 0.83rem; vertical-align: top; }
+    .tf-table tbody tr:nth-child(even) { background: #f7fbf9; }
+
+    .tf-callout {
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.86rem;
+      border-left: 5px solid var(--tf-gold);
+      background: #fffdf2;
+    }
+    .tf-callout.warn { border-left-color: var(--tf-red); background: #fdf5f5; }
+    .tf-callout.info { border-left-color: var(--tf-blue); background: #f4f6fd; }
+    .tf-callout.ok   { border-left-color: var(--tf-green); background: #f2faf6; }
+
+    /* Money-flow columns */
+    .tf-flow { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: stretch; }
+    .tf-flow-step {
+      flex: 1 1 190px;
+      background: #fff;
+      border: 2px solid #dcece4;
+      border-top: 5px solid var(--tf-green);
+      border-radius: 10px;
+      padding: 0.8rem 0.8rem;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    }
+    .tf-flow-step .tf-step-no {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #00341f;
+      background: var(--tf-gold);
+      border-radius: 6px;
+      padding: 0.05rem 0.42rem;
+      display: inline-block;
+      letter-spacing: 0.04em;
+    }
+    .tf-flow-step h6 { font-weight: 700; font-size: 0.88rem; margin: 0.45rem 0 0.3rem; color: var(--tf-blue); }
+    .tf-flow-step p  { font-size: 0.77rem; color: #5b6b63; margin: 0; }
+    .tf-flow-step .tf-amt {
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: 800;
+      font-size: 0.86rem;
+      color: var(--tf-green);
+    }
+
+    /* Actor cards */
+    .tf-actor { border-radius: 12px; overflow: hidden; border: 1px solid #dcece4; height: 100%; background: #fff; }
+    .tf-actor .tf-actor-head {
+      background: var(--tf-teal);
+      color: #fff;
+      padding: 0.65rem 1rem;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .tf-actor.gov  .tf-actor-head { background: #007A4D; }
+    .tf-actor.dfi  .tf-actor-head { background: #002395; }
+    .tf-actor.priv .tf-actor-head { background: #6a1b4d; }
+    .tf-actor.own  .tf-actor-head { background: #b8860b; }
+    .tf-actor .tf-actor-body { padding: 0.9rem 1rem; font-size: 0.83rem; }
+
+    .tf-timeline { position: relative; padding-left: 1.5rem; }
+    .tf-timeline::before {
+      content: "";
+      position: absolute;
+      left: 0.42rem; top: 0.35rem; bottom: 0.35rem;
+      width: 3px; background: linear-gradient(#007A4D, #FFCD00, #002395);
+      border-radius: 3px;
+    }
+    .tf-timeline .tf-tl-item { position: relative; margin-bottom: 1.05rem; }
+    .tf-timeline .tf-tl-item::before {
+      content: "";
+      position: absolute; left: -1.16rem; top: 0.3rem;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #fff; border: 3px solid var(--tf-green);
+    }
+    .tf-timeline .tf-tl-date { font-weight: 800; color: var(--tf-green); font-size: 0.86rem; }
+
+    .tf-chip {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-right: 0.3rem;
+      border: 1px solid #cfd9d4;
+      color: #42524b;
+      background: #f4f8f6;
+    }
+    .tf-chip.green { background: #e7f6ee; border-color: #b7e2cb; color: #05643f; }
+    .tf-chip.amber { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .tf-chip.red   { background: #fdeceb; border-color: #f3bdb9; color: #9c2018; }
+    .tf-chip.blue  { background: #eaeefb; border-color: #bcc7ef; color: #002395; }
+
+    .tf-source {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      border: 1px solid #dcece4;
+      border-left: 5px solid var(--tf-green);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      background: #f7fbf9;
+      margin-bottom: 0.75rem;
+    }
+    .tf-source h6 { margin: 0 0 0.2rem; font-weight: 700; font-size: 0.92rem; }
+    .tf-source p { margin: 0 0 0.5rem; font-size: 0.79rem; color: #5b6b63; }
+
+    .tf-org { list-style: none; padding-left: 0; }
+    .tf-org li {
+      position: relative;
+      padding-left: 1.1rem;
+      font-size: 0.83rem;
+      margin-bottom: 0.3rem;
+    }
+    .tf-org li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.45em;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--tf-gold);
+      border: 1.5px solid var(--tf-green);
+    }
+    .tf-org .tf-lvl2 { margin-left: 1rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top tf-nav" style="top: 1rem;">
+          <a class="nav-link" href="#overview">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 2.6 15.2 0 18M12 3c-2.6 2.8-2.6 15.2 0 18"/></svg>
+            Overview</a>
+          <a class="nav-link" href="#who">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 11.5a3.5 3.5 0 0 0 0-7M21 20v-1.5a4 4 0 0 0-3-3.9"/></svg>
+            Who is involved</a>
+          <a class="nav-link" href="#money">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/></svg>
+            Where the money comes from</a>
+          <a class="nav-link" href="#flow">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h12l-3.5-3.5M21 17H9l3.5 3.5"/></svg>
+            How the money flows</a>
+          <a class="nav-link" href="#sectors">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M4 21V10l5 3V10l5 3V7l6 3v11"/><path d="M8 21v-3M13 21v-3M18 21v-3"/></svg>
+            Sectors affected</a>
+          <a class="nav-link" href="#township">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l1.6-5h14.8L21 9"/><path d="M4.5 9v11h15V9"/><path d="M9.5 20v-6h5v6"/></svg>
+            Township & rural</a>
+          <a class="nav-link" href="#governance">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            Governance</a>
+          <a class="nav-link" href="#law">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v16M7 20h10M4 8h16"/><path d="M7.5 8L5 13.5h5L7.5 8zM16.5 8L14 13.5h5L16.5 8z"/></svg>
+            Legal framework</a>
+          <a class="nav-link" href="#timeline">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            Timeline</a>
+          <a class="nav-link" href="#impact">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 20h18"/><path d="M6 20v-6M11 20V6M16 20v-9M21 20V4"/></svg>
+            Industry impact</a>
+          <a class="nav-link" href="#risks">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17h.01"/></svg>
+            Risks & open questions</a>
+          <a class="nav-link" href="#sources">
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 3v18"/></svg>
+            Documents</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <!-- ============================= HERO ============================= -->
+        <div class="tf-hero mb-4">
+          <h1 class="display-5 mb-2">The Transformation Fund</h1>
+          <p class="lead mb-3">
+            A <strong>R100&nbsp;billion</strong> aggregated fund to finance businesses owned and managed by black
+            entrepreneurs — <strong>R20&nbsp;billion a year for five years</strong>. It is the dtic's flagbearer
+            transformation instrument, built on the B-BBEE Act rather than on new taxes, and administered through a
+            ring-fenced Special Purpose Vehicle. This page sets out who is involved, exactly where the money comes from
+            and where it goes, the governance and legal scaffolding around it, and which South African industries it
+            will reshape — plus where it is likely to affect sectors not named in the draft.
+          </p>
+          <div>
+            <span class="tf-tag">R100bn aggregate target</span>
+            <span class="tf-tag">R20bn a year, five years</span>
+            <span class="tf-tag">Led by the dtic</span>
+            <span class="tf-tag">Delivered with the NEF</span>
+            <span class="tf-tag">SPV + ring-fenced account</span>
+            <span class="tf-tag">B-BBEE Code 400 credits</span>
+            <span class="tf-tag">Township & rural ring-fence</span>
+          </div>
+        </div>
+
+        <div class="alert alert-warning small mb-4">
+          <strong>Status and how to read this page.</strong> The Fund is <em>not yet a finished institution</em>. The
+          founding text is still the <em>Draft Transformation Fund Concept Document</em> published by the Department of
+          Trade, Industry and Competition (the dtic) in March 2025 for public comment, with the comment period extended
+          to 28 May 2025. Capital-raising began after that: by August 2026 the dtic reported partnerships with the
+          Unemployment Insurance Fund, the Development Bank of Southern Africa, Vodacom and IBM. Everything labelled
+          <span class="tf-chip amber">draft</span> below is a proposal in that document, not settled policy; everything
+          labelled <span class="tf-chip green">reported</span> comes from dtic media statements. Sector GDP and
+          employment shares are rounded Stats&nbsp;SA approximations included for scale only. Verify against the latest
+          dtic disclosure before relying on any figure.
+        </div>
+
+        <!-- ============================ OVERVIEW ========================== -->
+        <section class="tf-section" id="overview">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 2.6 15.2 0 18M12 3c-2.6 2.8-2.6 15.2 0 18"/></svg>
+            Overview</h2>
+
+          <p>
+            The Transformation Fund is an <strong>aggregated national fund</strong> — not a new tax, and not a new
+            department. Its purpose is to fix a specific and well-documented failure: majority black-owned businesses
+            cannot get affordable finance, cannot get post-investment support, and cannot get into the supply chains
+            that actually pay. Government's instrument of choice is to <em>pool the money that already exists</em> for
+            transformation — corporate enterprise and supplier development spend, multinational equity-equivalent
+            obligations, competition-merger commitments and departmental sector budgets — into one professionally
+            managed vehicle.
+          </p>
+
+          <p>
+            The legal foundation is deliberately B-BBEE, not fiscal. Section&nbsp;7(2) and section&nbsp;9(2) of the
+            Constitution require the state to promote equality and to adopt measures advancing people disadvantaged by
+            unfair discrimination. Section&nbsp;2(h) of the B-BBEE Act obliges government to increase the effective
+            economic participation of majority black-owned and managed enterprises — including SMMEs — and to enhance
+            their access to financial and non-financial support. Section&nbsp;11(2)(b) requires a plan for financing
+            B-BBEE, including incentive schemes. The Fund is presented as the mechanism that discharges those duties.
+          </p>
+
+          <div class="row g-3 mt-2">
+            <div class="col-6 col-md-3">
+              <div class="tf-stat">
+                <div class="tf-num">R100bn</div>
+                <div class="tf-lbl">Aggregated fund target</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="tf-stat">
+                <div class="tf-num">R20bn/yr</div>
+                <div class="tf-lbl">Capitalisation pace over five years</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="tf-stat">
+                <div class="tf-num">25%</div>
+                <div class="tf-lbl">Equity Equivalent set-aside — share of a multinational's SA operations value</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="tf-stat">
+                <div class="tf-num">R1.37bn</div>
+                <div class="tf-lbl">Reported first-wave capital commitments (UIF, DBSA, Vodacom, IBM), Aug 2026</div>
+              </div>
+            </div>
+          </div>
+
+          <h3>What the Fund is — and what it explicitly is not</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--tf-green);font-weight:700;">What it is</h5>
+                  <ul class="small mb-0 ps-3">
+                    <li>An <strong>aggregated fund</strong> pulling transformation money into one pool instead of dozens of fragmented ESD programmes.</li>
+                    <li>Administered through a <strong>Special Purpose Vehicle (SPV)</strong> with a ring-fenced bank account, separately accounted for.</li>
+                    <li>A <strong>tax-exempt</strong> vehicle, so contributions can be redeployed into the market in full rather than eroded by tax.</li>
+                    <li>Deployed through <strong>debt, grants and equity</strong> — including start-up grants and listed shares for broad-based equity structures.</li>
+                    <li>Both <strong>wholesale and direct lending</strong>, so it can fund through intermediaries and deal directly with large transactions.</li>
+                    <li>A contributor of <strong>non-financial support</strong> — business planning, feasibility and environmental impact studies, accreditation, training, export readiness, mentorship.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title" style="color:var(--tf-red);font-weight:700;">What it is not</h5>
+                  <ul class="small mb-0 ps-3">
+                    <li><strong>Not a new tax.</strong> The dtic has stated the Fund imposes no additional tax burden or requirements beyond mechanisms already in the B-BBEE Act.</li>
+                    <li><strong>Not repayable.</strong> Contributions from measured entities are irrevocable and unconditional; the Fund has no obligation to repay a contributor.</li>
+                    <li><strong>Not a sector-specific fund</strong> of the kind already in existence — it is designed around key sectors and impact transactions, not a single funding threshold.</li>
+                    <li><strong>Not unaccounted.</strong> The SPV must table an annual report on funds under management, investments made and performance, and reports to Parliament through the Minister of Trade, Industry and Competition.</li>
+                    <li><strong>Not a standalone idea.</strong> It sits alongside the NEF, IDC, DBSA, SEDFA and the Black Industrialists programme rather than replacing them.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-callout info mt-3">
+            <strong>The design idea in one line.</strong> Make contributing to transformation <em>easier and more
+            valuable</em> for a company than running its own ESD programme — one contribution, an immediate B-BBEE
+            Code&nbsp;400 credit, an income-tax deduction under section&nbsp;18A, and exemption from donations tax under
+            section&nbsp;56(1)(h) — and the money aggregates itself.
+          </div>
+
+          <h3>Why the dtic says intervention is needed</h3>
+          <p class="small">
+            The concept document rests its case on a compliance study by the B-BBEE Commission, which found that
+            measured entities were consistently failing to hit their Enterprise and Supplier Development targets. The
+            achievement rates it cites:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th>Year</th><th>Share of ESD targets achieved</th><th>Reading</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>2017</td><td>44%</td><td>Less than half of the obligation converted into spending.</td></tr>
+                <tr><td>2018</td><td>60%</td><td>Improvement, still a 40% shortfall.</td></tr>
+                <tr><td>2019</td><td>51%</td><td>Regression.</td></tr>
+                <tr><td>2020</td><td>61%</td><td>Improvement during the pandemic year.</td></tr>
+                <tr><td>2021</td><td>61%</td><td>Flat — no further closing of the gap.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: B-BBEE Commission study, 2022, as reproduced in the Draft Transformation Fund Concept Document.
+            The document's argument is not that the money is missing, but that the <em>delivery mechanism</em> is
+            leaking: funds raised through ESD contributions do not reach marginalised groups — particularly SMMEs —
+            in the way the legislation intended.
+          </p>
+        </section>
+<!-- ============================== WHO ============================= -->
+        <section class="tf-section" id="who">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 11.5a3.5 3.5 0 0 0 0-7M21 20v-1.5a4 4 0 0 0-3-3.9"/></svg>
+            Who is involved</h2>
+
+          <p>
+            Three groups have to make this work at the same time: <strong>the state</strong> (policy, appointment power
+            and seed money), <strong>the financial system</strong> (fund management, co-lending and distribution) and
+            <strong>the private sector money being redirected</strong> (corporate ESD budgets, multinational equity
+            equivalents, institutional capital). The draft sets out exactly how the first group is wired into the
+            vehicle, and the second and third have been filling in through public announcements since mid-2025.
+          </p>
+
+          <h3>The state side</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="tf-actor gov">
+                <div class="tf-actor-head">The dtic — custodian and promoter</div>
+                <div class="tf-actor-body">
+                  <p class="mb-2">The Department of Trade, Industry and Competition owns the policy, published the draft
+                  concept document, and is named as the institution that would appoint the SPV board and the oversight
+                  committee.</p>
+                  <ul class="tf-org mb-0">
+                    <li><strong>Minister Parks Tau</strong> — publishes the Fund documents, appoints the Board and Oversight Committee, and carries the SPV's reporting line to Parliament.</li>
+                    <li><strong>Deputy Minister Zuko Godlimpi</strong> — led the delegation briefing the Portfolio Committee on Trade and Industry in June 2025.</li>
+                    <li><strong>Ms Susan Mangole</strong>, Acting DDG: Transformation and Competition — lead official on the Fund's design and on the public-comment process.</li>
+                    <li><strong>DDG: Transformation and Competition</strong> — the desk that has engaged the private investment sector directly.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="tf-actor dfi">
+                <div class="tf-actor-head">The NEF — implementing partner</div>
+                <div class="tf-actor-body">
+                  <p class="mb-2">The National Empowerment Fund SOC Limited is the operational partner named in the
+                  Fund's public communications. It brings the thing the Fund most needs: an existing credit and
+                  business-support machine for majority black-owned businesses.</p>
+                  <ul class="tf-org mb-0">
+                    <li>Established under the <strong>National Empowerment Fund Act 105 of 1998</strong> to promote economic ownership of income-generating assets by historically disadvantaged persons.</li>
+                    <li>Authorised Financial Services Provider (<strong>FSP 55436</strong>) under FAIS, and a licensed credit provider (<strong>NCRCP 21442</strong>) under the National Credit Act — so it can already lend and advise lawfully.</li>
+                    <li><strong>Mr Mzi Dayimane</strong>, CEO, is the public face of the NEF's involvement.</li>
+                    <li>Brings product know-how from the iMbewu, uMnotho, Women Empowerment, Rural/Township and Strategic Projects funds.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The funder side</h3>
+          <p class="small">
+            These are the capital commitments the dtic itself reported in August 2026, plus the first named private
+            investment manager to partner publicly on the vehicle.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th>Contributor</th><th>Type</th><th style="width:8rem;">Reported amount</th><th>What it brings beyond cash</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Unemployment Insurance Fund</strong></td>
+                  <td>State fund</td>
+                  <td>R500 million</td>
+                  <td>Alignment with job-creation mandates; the UIF's interest is employment outcomes, not financial return alone.</td>
+                </tr>
+                <tr>
+                  <td><strong>Vodacom</strong></td>
+                  <td>Corporate (B-BBEE measured entity)</td>
+                  <td>R400 million</td>
+                  <td>Digital and connectivity expertise, plus a large supplier-development network.</td>
+                </tr>
+                <tr>
+                  <td><strong>Development Bank of Southern Africa</strong></td>
+                  <td>DFI</td>
+                  <td>R250 million</td>
+                  <td>Project preparation capability, infrastructure pipeline and municipal reach.</td>
+                </tr>
+                <tr>
+                  <td><strong>IBM</strong></td>
+                  <td>Multinational</td>
+                  <td>R220 million</td>
+                  <td>EEIP-type contribution: a route for a multinational to meet transformation obligations without diluting ownership. Technology and skills capacity.</td>
+                </tr>
+                <tr>
+                  <td><strong>27four Investment Managers</strong></td>
+                  <td>Private investment manager</td>
+                  <td>Not disclosed</td>
+                  <td>Fund-management capability and — critically — access to retirement fund capital. Announced August 2025.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: dtic media statements, 8 August 2025 and 12 August 2026. The four disclosed amounts total
+            <strong>R1.37 billion</strong> — roughly 1.4% of the R100 billion target, which shows how early in the
+            capital-raising cycle the Fund still is.
+          </p>
+
+          <h3>The money side — who else is expected to pay in</h3>
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-actor priv h-100">
+                <div class="tf-actor-head">Measured entities</div>
+                <div class="tf-actor-body">
+                  Every company with a B-BBEE scorecard and ESD obligations. They become contributors, and receive
+                  Code&nbsp;400 credits, a section&nbsp;18A deduction and section&nbsp;56(1)(h) exemption in return.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-actor priv h-100">
+                <div class="tf-actor-head">Multinationals</div>
+                <div class="tf-actor-body">
+                  Firms that cannot meet the ownership element of the Codes. The Codes let them set aside
+                  <strong>25% of the value of their South African operations</strong> — the EEIP route — which the draft
+                  directs into the Fund.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-actor own h-100">
+                <div class="tf-actor-head">Institutional capital</div>
+                <div class="tf-actor-body">
+                  Retirement funds and asset managers, courted through a high-level engagement hosted by 27four and
+                  attended by the Minister and the NEF CEO. This is the most plausible source of the scale the Fund
+                  needs.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-actor gov h-100">
+                <div class="tf-actor-head">Other state sources</div>
+                <div class="tf-actor-body">
+                  Sector budgets from national and provincial departments — Tourism, Rural Development, Agriculture,
+                  provincial economic development — plus the <strong>Competition Commission's public interest
+                  commitments</strong> from merger conditions, and donors and development banks.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The governance bodies — who actually decides</h3>
+          <p class="small">
+            The draft concentrates appointment power in the Minister's office and then splits oversight across three
+            layers. Every layer below is a <span class="tf-chip amber">draft proposal</span> in the March 2025 concept
+            document.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th>Body</th><th>Composition</th><th>Appointed by</th><th>Job</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Oversight Committee</strong></td>
+                  <td>9 members — a Chairperson, three ministers, and five members drawn from business and social groups</td>
+                  <td>The Minister</td>
+                  <td>Oversees the Board. The Board reports to it quarterly, or as and when required.</td>
+                </tr>
+                <tr>
+                  <td><strong>SPV Board of Directors</strong></td>
+                  <td>8 members — 4 public-sector representatives and 4 private-sector representatives</td>
+                  <td>The Minister</td>
+                  <td>Provides strategy, oversees the fund manager, meets at least quarterly, receives quarterly investment reports. Governed by a Board Charter.</td>
+                </tr>
+                <tr>
+                  <td><strong>Investment Committee</strong></td>
+                  <td>4 representatives per sector; two private-sector and two public-sector representatives sit on it when Transformation Fund transactions are considered</td>
+                  <td>—</td>
+                  <td>Considers and approves transactions. The private and public representatives hold <strong>voting rights</strong>. Regulated by an Investment Charter.</td>
+                </tr>
+                <tr>
+                  <td><strong>SPV fund manager</strong></td>
+                  <td>Management team inside the SPV</td>
+                  <td>—</td>
+                  <td>Day-to-day investment and administration; expected to register as a Financial Services Provider to become an entity of choice for advisory and intermediary mandates.</td>
+                </tr>
+                <tr>
+                  <td><strong>Annual General Meeting</strong></td>
+                  <td>All stakeholders</td>
+                  <td>Convened by the SPV</td>
+                  <td>Reports on the SPV's activities to all stakeholders.</td>
+                </tr>
+                <tr>
+                  <td><strong>Parliament</strong></td>
+                  <td>Portfolio Committee on Trade and Industry</td>
+                  <td>—</td>
+                  <td>The SPV reports to Parliament <em>through the Minister of Trade, Industry and Competition</em>.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tf-callout">
+            <strong>The structural detail that matters most.</strong> The Fund is not a trust, not a government
+            department and not a bank. It is an SPV with <em>its own ring-fenced bank account</em>, whose proceeds are
+            separately accounted for and cannot be mixed with the SPV's other operations — and which is
+            <em>tax-exempt</em>, so a rand contributed arrives in the market as a full rand. That combination is what
+            lets the dtic promise contributors an immediate scorecard benefit without asking for a tax increase.
+          </div>
+        </section>
+<!-- ============================= MONEY ============================ -->
+        <section class="tf-section" id="money">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/></svg>
+            Where the money comes from</h2>
+
+          <p>
+            This is the most important — and most misunderstood — part of the design. The R100&nbsp;billion is
+            <strong>not appropriated from the fiscus and it is not a new levy</strong>. It is assembled from four
+            channels that already exist in law or in corporate budgets, redirected into one pool. Understanding which
+            channel each rand comes from tells you who actually bears the cost, and therefore how likely the Fund is to
+            reach its target.
+          </p>
+
+          <div class="tf-flow mb-3">
+            <div class="tf-flow-step">
+              <span class="tf-step-no">CHANNEL 1</span>
+              <h6>Enterprise & Supplier Development</h6>
+              <p>The largest expected channel. Companies with a B-BBEE scorecard currently spend on their own ESD
+              programmes. The proposal is to amend the Codes so that a contribution to the Transformation Fund earns
+              B-BBEE points <em>immediately</em>, making the Fund a simpler route than running a programme in-house.
+              ESD money paid across is not repayable to the contributing entity.</p>
+              <span class="tf-amt">Expected to dominate the R100bn</span>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">CHANNEL 2</span>
+              <h6>Equity Equivalent Investment Programme</h6>
+              <p>Multinationals often cannot meet the ownership element of the Codes without selling equity. The Codes
+              allow them instead to set aside <strong>25% of the value of their South African operations</strong> for
+              transformation. The draft channels EEIP funds into the Fund so they reach a broader set of beneficiaries
+              than each firm could reach alone.</p>
+              <span class="tf-amt">Coverage: 25% of SA operations value</span>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">CHANNEL 3</span>
+              <h6>Competition Commission commitments</h6>
+              <p>Public-interest conditions attached to merger approvals — employment, supplier development, local
+              procurement, enterprise funding — become a source of capital for the Fund instead of sitting with
+              individual merger parties.</p>
+              <span class="tf-amt">Merger-condition derived</span>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">CHANNEL 4</span>
+              <h6>Government & public entities</h6>
+              <p>Seed capital from national and provincial departments and organs of state — the dtic frames departmental
+              sector funding as seed money intended to <em>attract</em> private contributions, not to carry the Fund.
+              Includes DFIs and state funds such as the UIF, IDC, DBSA and SEDFA.</p>
+              <span class="tf-amt">R1.37bn reported to date</span>
+            </div>
+          </div>
+
+          <h3>Channel by channel — who pays, and under what authority</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr>
+                  <th style="width:12rem;">Source</th>
+                  <th>Who is actually paying</th>
+                  <th>Legal or policy hook</th>
+                  <th style="width:7rem;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ESD contributions</strong></td>
+                  <td>Large private companies and state-owned entities with B-BBEE scorecards</td>
+                  <td>B-BBEE Codes of Good Practice, Code 400. Requires a proposed amendment so contributions earn points immediately.</td>
+                  <td><span class="tf-chip amber">Draft</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Equity Equivalent Investments</strong></td>
+                  <td>Multinationals unable to meet the ownership element</td>
+                  <td>B-BBEE Codes — EEIP provision allowing a 25% set-aside of SA operations value</td>
+                  <td><span class="tf-chip amber">Draft</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Public interest commitments</strong></td>
+                  <td>Merging parties, via Competition Commission conditions</td>
+                  <td>Competition Act merger conditions, as summarised by the dtic in June 2025</td>
+                  <td><span class="tf-chip green">Reported</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Departmental sector budgets</strong></td>
+                  <td>National and provincial departments — Tourism, Rural Development, Agriculture, provincial economic development</td>
+                  <td>Section 2(h) and 11(2)(b) of the B-BBEE Act; annual budget allocations</td>
+                  <td><span class="tf-chip amber">Draft</span></td>
+                </tr>
+                <tr>
+                  <td><strong>State funds and DFIs</strong></td>
+                  <td>UIF (R500m), DBSA (R250m); IDC, SEDFA and others in the wider DFI family</td>
+                  <td>Their own founding Acts and investment mandates</td>
+                  <td><span class="tf-chip green">Reported</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Corporate contributors</strong></td>
+                  <td>Vodacom (R400m), IBM (R220m)</td>
+                  <td>Voluntary contribution under a Participation Agreement, backed by Code 400 credits and tax treatment</td>
+                  <td><span class="tf-chip green">Reported</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Donors and development partners</strong></td>
+                  <td>International organisations, development banks, philanthropic foundations</td>
+                  <td>Funding agreements; targeted where initiatives have social or environmental impact goals</td>
+                  <td><span class="tf-chip amber">Draft</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Recycled returns</strong></td>
+                  <td>Beneficiaries repaying debt or paying dividends</td>
+                  <td>Any returns or repayments are paid back into the Fund and reinvested — creating a second, revolving source of capital</td>
+                  <td><span class="tf-chip amber">Draft</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tf-callout warn">
+            <strong>The honest reading.</strong> Because the R100&nbsp;billion is assembled from money that is
+            <em>already</em> committed to transformation in some form, the Fund's real effect is to change
+            <em>how</em> that money is deployed — not to add R100&nbsp;billion of new capital to the economy. Whether the
+            total actually grows depends on two things: whether contributors add to their existing spend, and whether
+            the Fund attracts genuinely new institutional capital (pension funds, development banks, offshore
+            investors) that was never B-BBEE money at all. The 27four engagement with retirement fund managers is
+            aimed squarely at the second.
+          </div>
+
+          <h3>What makes it worth a contributor's while</h3>
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-3">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Scorecard credits</h6>
+                  <p class="small mb-0">Contributors would receive <strong>ESD credits under Code&nbsp;400</strong> of the
+                  Codes — and the draft proposes an amendment so points are earned <em>immediately upon contribution</em>,
+                  rather than after years of programme administration.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Tax treatment</h6>
+                  <p class="small mb-0">Contributions are generally <strong>exempt under section 56(1)(h)</strong> of the
+                  Income Tax Act, 1962 — so no donations tax — and qualify for a <strong>deduction under
+                  section&nbsp;18A</strong> once a receipt is issued confirming the contribution.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">No repayment obligation</h6>
+                  <p class="small mb-0">Contributions are <strong>irrevocable and unconditional</strong>, and the Fund has
+                  no obligation to repay them. In exchange, the contributor gives up control of how the money is
+                  deployed — the central trade-off of the design.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">A single counterparty</h6>
+                  <p class="small mb-0">One Participation Agreement replaces a portfolio of ESD relationships, and the
+                  Fund does the sourcing, due diligence and post-investment support that corporates say they find
+                  hardest to resource.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-callout info mt-3">
+            <strong>What the public comments asked for.</strong> After the draft was published, the dtic summarised the
+            inputs it received: clarity on how the Fund will work with existing — and well-functioning — ESD funds; a
+            clear transformation index to measure impact; and a requirement that big corporations complement the money
+            with market access, technical skills development and infrastructure support. Those three asks map directly
+            onto the risks section below.
+          </div>
+        </section>
+
+        <!-- ============================== FLOW ============================ -->
+        <section class="tf-section" id="flow">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h12l-3.5-3.5M21 17H9l3.5 3.5"/></svg>
+            How the money flows</h2>
+
+          <p>
+            The mechanics are deliberately simple. A contributor signs one agreement; the money lands in a ring-fenced
+            account; the SPV invests it; whatever comes back is recycled into the next investment. The complexity sits
+            in the governance around the middle step, not in the plumbing.
+          </p>
+
+          <div class="tf-flow mb-3">
+            <div class="tf-flow-step">
+              <span class="tf-step-no">STEP 1</span>
+              <h6>Participation Agreement</h6>
+              <p>A measured entity, department, donor or corporate decides to contribute and signs a Participation
+              Agreement with the SPV. This regulates the terms of the contribution and the uses to which the SPV may put
+              it in qualifying development initiatives.</p>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">STEP 2</span>
+              <h6>Ring-fenced account</h6>
+              <p>Contributions are paid into a bank account in the name of the SPV. Those proceeds are
+              <strong>ring-fenced</strong> from the SPV's other accounts and operations and separately accounted for. The
+              SPV is tax-exempt, so nothing leaks to tax.</p>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">STEP 3</span>
+              <h6>Investment</h6>
+              <p>The fund manager and Investment Committee deploy capital — directly or through intermediaries — into
+              majority black-owned and black women-owned enterprises by way of debt, grants and equity.</p>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">STEP 4</span>
+              <h6>Recycling</h6>
+              <p>Where investments earn returns or are repayable, the proceeds are paid back into the Fund and
+              <strong>reinvested</strong>, creating an additional source of funding for further investments. Over time
+              this is what turns a fixed pool into a revolving facility.</p>
+            </div>
+            <div class="tf-flow-step">
+              <span class="tf-step-no">STEP 5</span>
+              <h6>Reporting</h6>
+              <p>Quarterly investment reports to the Board; quarterly reports from the Board to the Oversight Committee;
+              an annual report on funds under management, investments made and performance; and an AGM for all
+              stakeholders. The SPV reports to Parliament through the Minister.</p>
+            </div>
+          </div>
+
+          <h3>Key terms of the Participation Agreement</h3>
+          <p class="small">
+            The concept document summarises the model agreement it intends to offer contributors. These terms are what
+            a company's treasury and legal team would actually be signing up to.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th style="width:13rem;">Term</th><th>Proposed position</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>The contributor</strong></td><td>Measured entities, government departments, private-sector ESD contributions, equity equivalents, donors.</td></tr>
+                <tr><td><strong>The recipient</strong></td><td>The Transformation Fund, operating through the SPV.</td></tr>
+                <tr><td><strong>Nature of the fund</strong></td><td>A segregated fund supported by a bank account in the SPV's name. Proceeds ring-fenced from the SPV's other accounts and separately accounted for.</td></tr>
+                <tr><td><strong>The contributions</strong></td><td>Irrevocable and unconditional. The Fund has no obligation to repay contributions to measured entities.</td></tr>
+                <tr><td><strong>Term of the fund</strong></td><td>A prescribed term per contributor, with an option to extend for an agreed period. At the end of the term any surplus proceeds are <em>wholly reinvested</em> into the Fund.</td></tr>
+                <tr><td><strong>Currency</strong></td><td>A South African Rand-denominated fund. Investments, distributions and related expenses are all made in Rand.</td></tr>
+                <tr><td><strong>Minimum commitment</strong></td><td>The document does not set a hard floor in the public summary; the fund is structured with "no funding limit especially for impact-creating transactions" on the deployment side.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>The allocation rules — who gets served</h3>
+          <p class="small">
+            The draft does not simply say "majority black-owned". It layers specific set-asides on top, which is what
+            determines which businesses actually see money.
+          </p>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Designated groups</h6>
+                  <p class="small mb-2">The distribution rules would mandate that a
+                  <strong>prescribed amount of available resources</strong> be allocated to entities owned by majority
+                  black designated groups:</p>
+                  <ul class="small mb-0 ps-3">
+                    <li>Black women-owned businesses — framed in the draft as the critical priority for redressing gender disparities</li>
+                    <li>Youth-owned businesses</li>
+                    <li>Businesses owned by people living with disabilities</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Township and rural ring-fence</h6>
+                  <p class="small mb-2">A portion of the Fund is set aside <strong>exclusively</strong> for entities based
+                  in township and rural areas. The conditions are strict and testable:</p>
+                  <ul class="small mb-0 ps-3">
+                    <li>The business must be <strong>located</strong> in a township or rural area</li>
+                    <li>It must <strong>mainly employ people from those areas</strong></li>
+                    <li>Grants and concessionary funding are explicitly contemplated for riskier rural and township businesses — unlike existing ESD funds, which lend only</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Black Industrialists</h6>
+                  <p class="small mb-0">A portion of the distribution is reserved exclusively for entities that meet the
+                  definition of <strong>Black Industrialists</strong> under the Black Industrialist Policy — the
+                  manufacturing and value-adding end of the economy, rather than services alone.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Stage and condition of business</h6>
+                  <p class="small mb-0">All majority black-owned entities qualify regardless of stage:
+                  <strong>greenfield and brownfield projects</strong>, <strong>venture capital projects</strong>, and
+                  <strong>distressed clients</strong> in need of revitalisation. That last category is unusual — most
+                  public funds avoid distressed businesses.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>How the Fund differs from the ESD funds that exist today</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th>Existing ESD / third-party funds</th><th>The proposed Transformation Fund</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Exclusive loan funding</td><td>Funds set aside for <strong>grants and concessionary funding</strong> for risky rural and township businesses</td></tr>
+                <tr><td>Sector-specific funds, allocated</td><td><strong>Key sectors and impact funds</strong> made available</td></tr>
+                <tr><td>Limited resources, set by funding thresholds</td><td><strong>No funding limit</strong>, especially for impact-creating transactions</td></tr>
+                <tr><td>Little or no dedicated research budget</td><td>Dedicated <strong>research funds</strong> for market intelligence and foresight</td></tr>
+                <tr><td>Adequate funds for project preparation and early-stage investment, constrained by limited resources</td><td><strong>Funds allocated</strong> for project preparation and early-stage investment</td></tr>
+                <tr><td>Uses intermediaries for fund raising, but only at small scale</td><td>Uses intermediaries to <strong>augment fund-raising capacity</strong></td></tr>
+                <tr><td>Limited relations with provincial government agencies</td><td>Works closely with <strong>provincial and local government agencies</strong> in implementation</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted">
+            Source: Draft Transformation Fund Concept Document, section 3 ("Key Differentiators from Other Existing
+            Funds"). The "no funding limit" and "grants for risky township businesses" differences are the two that most
+            change behaviour: the first allows the Fund to anchor very large transactions, the second lets it fund
+            businesses that cannot service debt at all.
+          </p>
+        </section>
+<!-- ============================ SECTORS =========================== -->
+        <section class="tf-section" id="sectors">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M4 21V10l5 3V10l5 3V7l6 3v11"/><path d="M8 21v-3M13 21v-3M18 21v-3"/></svg>
+            Which sectors it affects — and how</h2>
+
+          <p>
+            The concept document names sectors in four different places, and it is worth separating them because they
+            are not the same list. What the Fund says it will <em>fund</em>, which sectors it says are <em>strategic</em>,
+            and which it treats as <em>productive</em> by contribution to GDP and employment are three overlapping but
+            distinct groups. The sectors below are grouped by what the document actually says about each.
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-stat">
+                <div class="tf-num">5</div>
+                <div class="tf-lbl">Productive sectors named by GDP and employment contribution: agriculture & agro-processing, mining & minerals beneficiation, manufacturing, services, infrastructure</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-stat">
+                <div class="tf-num">5</div>
+                <div class="tf-lbl">Strategic sectors named for diversification and innovation: renewable energy, manufacturing, agriculture, technology, green industries</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-stat">
+                <div class="tf-num">6</div>
+                <div class="tf-lbl">Township economic development opportunities identified: retail, informal services, digital & financial services, small business, real estate & housing, agriculture & food</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="tf-stat">
+                <div class="tf-num">~150,000</div>
+                <div class="tf-lbl">Spaza shops the document cites as contributing significantly to the economy</div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Industry by industry</h3>
+          <p class="small">
+            The final column is the part the document does not spell out: what actually changes inside each industry if
+            the Fund works as designed. GDP shares are rounded Stats&nbsp;SA approximations, included for scale only —
+            they are not from the concept document.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr>
+                  <th style="width:11rem;">Industry</th>
+                  <th style="width:7rem;">≈ GDP share</th>
+                  <th>What the Fund says about it</th>
+                  <th>What changes on the ground</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agriculture & agro-processing</strong></td>
+                  <td>≈2.5% (farming); agro-processing sits inside manufacturing</td>
+                  <td>Named both as a <em>productive sector</em> by GDP and employment contribution and as a
+                  <em>strategic sector</em> for diversification. Also one of the departments whose sector budgets are
+                  meant to seed the Fund.</td>
+                  <td>Small-scale and secondary-economy farmers get development finance and offtake routes into
+                  established retailers' supply chains — the document explicitly proposes improving small farmers'
+                  market access to reduce value-chain disruption. Agro-processing plants become bankable because
+                  <strong>project preparation and feasibility studies can be funded</strong> before a loan is even
+                  considered.</td>
+                </tr>
+                <tr>
+                  <td><strong>Mining & minerals beneficiation</strong></td>
+                  <td>≈6–7%</td>
+                  <td>Named as a productive sector by GDP and employment contribution. Beneficiation — processing here
+                  rather than exporting raw — is the strategic prize.</td>
+                  <td>Supplier and services businesses inside mine value chains get capital they currently cannot raise.
+                  Beneficiation projects (smelting, alloying, downstream metal fabrication) fit the Black Industrialist
+                  ring-fence, which is where the largest tickets sit. Mining-adjacent engineering firms gain the
+                  accreditation support the document promises for specialised industries.</td>
+                </tr>
+                <tr>
+                  <td><strong>Manufacturing</strong></td>
+                  <td>≈12–13%</td>
+                  <td>Named as a productive sector <em>and</em> a strategic sector. The Black Industrialist Policy
+                  definition governs a reserved portion of the Fund.</td>
+                  <td>Greenfield and brownfield plant get equity and concessionary debt where commercial banks will not
+                  go. The "no funding limit" rule matters most here — it lets the Fund anchor transactions large enough
+                  to build an actual factory rather than a workshop. Capital goods, components and contract manufacturing
+                  are the downstream beneficiaries.</td>
+                </tr>
+                <tr>
+                  <td><strong>Services</strong></td>
+                  <td>Finance & business services ≈22%; trade, catering & accommodation ≈15%; transport &
+                  communication ≈9%</td>
+                  <td>Named twice: as a productive sector by GDP, and as a priority sector for deployment ("services
+                  industry").</td>
+                  <td>The services economy is where most black-owned businesses already operate, so it is where the money
+                  can move fastest. Professional services — advisory, engineering consultancies, IT, logistics — are
+                  direct beneficiaries. The document also funds <strong>accreditations for specialised services like
+                  ICT and engineering</strong>, which unlocks work that is otherwise closed by certification barriers.</td>
+                </tr>
+                <tr>
+                  <td><strong>Infrastructure</strong></td>
+                  <td>Construction ≈2.5%</td>
+                  <td>Listed as a productive sector in its own right, with project preparation funding explicitly
+                  allocated for early-stage investment.</td>
+                  <td>Contractors and construction firms gain a route into projects they currently cannot pre-develop.
+                  The DBSA's R250m contribution matters disproportionately here — a development bank brings project
+                  preparation capability, not just money. This also links the Fund to the wider infrastructure push in
+                  Operation Vulindlela and the Top 12 priority projects.</td>
+                </tr>
+                <tr>
+                  <td><strong>Renewable energy & green industries</strong></td>
+                  <td>Electricity, gas & water ≈2.5%</td>
+                  <td>Named as a strategic sector for diversification and innovation, tied to the transition to a
+                  low-carbon, knowledge-based economy.</td>
+                  <td>Component manufacturing, installation, operations and maintenance, and energy services firms.
+                  Black-owned participation in the renewables build-out — historically concentrated in a small number of
+                  large developers — becomes an explicit objective rather than a by-product.</td>
+                </tr>
+                <tr>
+                  <td><strong>Technology & digital</strong></td>
+                  <td>Part of finance & business services and communication</td>
+                  <td>Named as a strategic sector. ICT accreditations are called out specifically as a non-financial
+                  support the Fund will fund.</td>
+                  <td>Software, data, fintech and digital-payment businesses — with
+                  <strong>Vodacom and IBM as contributors</strong>, this is unavoidably one of the sectors where the Fund
+                  has both money and technical capability behind it. The document identifies township digital and
+                  financial services as a specific gap: high mobile penetration, but little financial infrastructure.</td>
+                </tr>
+                <tr>
+                  <td><strong>Tourism</strong></td>
+                  <td>Inside trade, catering & accommodation</td>
+                  <td>Named as a priority sector for deployment, and one of the departments expected to contribute sector
+                  funding.</td>
+                  <td>An existing channel is extended rather than invented — the NEF already runs a Tourism
+                  Transformation Fund. Marginal tourism businesses gain access to a much larger pool, and the
+                  Fund's grants-for-risky-businesses rule suits small accommodation and hospitality operators that
+                  cannot service debt.</td>
+                </tr>
+                <tr>
+                  <td><strong>Retail & wholesale</strong></td>
+                  <td>≈15% including hospitality</td>
+                  <td>Not named as a strategic sector, but township retail is treated at length as an economic
+                  development opportunity.</td>
+                  <td>Spaza shops, small-format retailers and township convenience trade. The document's most concrete
+                  mechanism here is indirect: using the <strong>purchasing power of established retailers</strong> the
+                  Fund supports to improve the margins and sustainability of informal traders, plus ESD-funded training
+                  to formalise them.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>The industries the draft does not name — but which will be affected immediately</h3>
+          <p class="small">
+            This is the part worth flagging. Because the Fund raises capital through intermediaries, invests directly
+            <em>and</em> wholesale, and pays for feasibility studies, environmental impact assessments, accreditations,
+            training and post-investment support, it creates demand in the financial and professional services economy
+            before a single beneficiary is funded.
+          </p>
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Banking & DFIs</h6>
+                  <p class="small mb-0">A R100&nbsp;billion pool is a wholesale funding opportunity. Banks and development
+                  finance institutions become co-lenders, intermediaries and distribution channels — and compete for the
+                  Fund's mandate.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Asset & fund management</h6>
+                  <p class="small mb-0">The SPV intends to register as a Financial Services Provider. That creates a new
+                  institutional mandate — the 27four partnership is the template — and pulls pension-fund capital into
+                  transformation investing.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Legal, advisory & transaction services</h6>
+                  <p class="small mb-0">Participation Agreements, due diligence, structuring, Investment Charter and Board
+                  Charter compliance. Every contribution and every investment is a transaction that needs professional
+                  execution.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Engineering, EIA & feasibility consulting</h6>
+                  <p class="small mb-0">The Fund funds business planning, feasibility and environmental impact studies
+                  directly. That is paid work for consulting engineers and environmental practitioners — and it is what
+                  turns an idea into a bankable project.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Assurance, audit & impact measurement</h6>
+                  <p class="small mb-0">A quarterly reporting cycle, an annual report and a proposed
+                  <strong>Transformation Index</strong> as a benchmark all need measurement infrastructure. This is a new
+                  reporting market, and it is what will determine whether the Fund's claims are verifiable.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-blue);font-weight:700;">Training & business development</h6>
+                  <p class="small mb-0">Business training, financial management training, export readiness, mentorship and
+                  the formalisation of informal traders. Skills providers, SETAs and business development services
+                  become delivery partners.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-callout info mt-3">
+            <strong>The pattern to watch.</strong> Nearly every named sector is one where South Africa already has
+            substantial industrial capability but skewed ownership. The Fund's bet is that capital plus market access —
+            not capital alone — is what changes ownership. That is why the draft says access to markets and technical
+            support will be <em>"prioritised and adequately funded above all pillars of the Fund"</em>, and why the
+            public comments pushed so hard on requiring large corporates to open their supply chains, not just their
+            cheque books.
+          </div>
+        </section>
+
+        <!-- ============================ TOWNSHIP ========================== -->
+        <section class="tf-section" id="township">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l1.6-5h14.8L21 9"/><path d="M4.5 9v11h15V9"/><path d="M9.5 20v-6h5v6"/></svg>
+            The township and rural economy</h2>
+
+          <p>
+            This is the most distinctive part of the Fund's design, and the part that most clearly separates it from the
+            ESD programmes it is meant to aggregate. A portion of the Fund is set aside <strong>exclusively</strong> for
+            businesses in township and rural areas — and the test is strict: the business must be
+            <strong>located</strong> in those areas and must <strong>mainly employ people from those areas</strong>.
+            That rules out an urban company with a satellite branch.
+          </p>
+
+          <p>
+            The reasoning in the document is blunt: means of production and economic activity in South Africa are
+            heavily skewed towards urban areas, and a centralised fund spread evenly is not the same as a fund that
+            deliberately corrects that skew. Rural and township economies are largely informal, which is precisely why
+            they are under-financed — informal businesses cannot service conventional debt.
+          </p>
+
+          <h3>The six township opportunities the document identifies</h3>
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Retail & convenience shops</h6>
+                  <p class="small mb-0">Around <strong>150,000 spaza shops</strong> contribute significantly to the
+                  economy, and large retailers are moving in with smaller-format stores. Competition is intensifying, and
+                  the Fund's interest is in who owns and supplies them — not only who shops there.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Informal services</h6>
+                  <p class="small mb-0">Fast-food outlets, bakeries, shebeens, hawkers, minibus taxi operators, mechanics
+                  and hair salons. These meet essential needs in the community and are the largest single employer bloc in
+                  township economies — and the hardest to finance conventionally.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Digital & financial services</h6>
+                  <p class="small mb-0">Despite high mobile penetration there is a lack of financial infrastructure in
+                  townships. The document frames this as an opening for <strong>fintech solutions and digital payment
+                  systems</strong> — improving both safety and convenience.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Entrepreneurship & small business</h6>
+                  <p class="small mb-0">The general case: training, funding and market access for local entrepreneurs.
+                  This is where the Fund's grants and concessionary instruments do the work that loans cannot.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Real estate & housing</h6>
+                  <p class="small mb-0">Backroom rentals, student accommodation (including commercial properties) and
+                  affordable housing. High demand for accommodation in townships, and a sector with room for developers
+                  who can get finance.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Agriculture & food production</h6>
+                  <p class="small mb-0">Urban farming and local food production to improve food security and create
+                  employment — supporting small-scale farmers and food producers that operate within township settings.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The five proposed strategies</h3>
+          <ul class="small">
+            <li><strong>Train, upskill and formalise</strong> informal traders through ESD initiatives, in collaboration
+            with relevant government agencies — moving businesses from informal to bankable.</li>
+            <li><strong>Improve profit margins and sustainability</strong> of informal traders by using the purchasing
+            power of the more established retailers that the Fund may support. This is the mechanism that makes
+            "market access" concrete rather than rhetorical.</li>
+            <li><strong>Develop small-scale farmers</strong> operating in the secondary economy who supply fresh produce,
+            which would potentially minimise value-chain disruptions.</li>
+            <li><strong>Localise ownership</strong> of land, retail and production — shifting who owns the assets in a
+            township economy, not just who trades in it.</li>
+            <li><strong>Digitise</strong> economic activity in townships as an enabler, rather than treating technology as
+            a separate sector.</li>
+          </ul>
+
+          <div class="tf-callout ok">
+            <strong>Why this is the section that will decide whether the Fund works.</strong> Large transactions are
+            easier to write, easier to report and easier to defend — and they are where the headlines come from. The
+            township and rural ring-fence is where the Fund's own stated purpose lives, and it requires the hardest work:
+            small tickets, informal counterparties, grant instruments, and local employment verification. If the
+            township allocation is quietly absorbed into a handful of larger urban deals, the Fund will have failed on
+            its own terms regardless of how much money it raises.
+          </div>
+        </section>
+<!-- ========================== GOVERNANCE ========================== -->
+        <section class="tf-section" id="governance">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            Governance — who is accountable to whom</h2>
+
+          <p>
+            The Fund's governance model is a deliberate blend of public accountability and private-sector discipline.
+            Policy and appointment power sit with the Minister; strategy sits with a board that is half public and half
+            private; and transaction decisions sit with an investment committee on which private and public
+            representatives both hold voting rights. In principle that is a structure designed so that neither side can
+            capture the Fund alone.
+          </p>
+
+          <div class="row g-4">
+            <div class="col-lg-5">
+              <h3 class="mt-0">The structure</h3>
+              <ul class="tf-org">
+                <li><strong>Minister of Trade, Industry and Competition</strong> — appoints the Board and the Oversight
+                Committee; holds the reporting line to Parliament.</li>
+                <li class="tf-lvl2"><strong>Oversight Committee</strong> — 9 members: a Chairperson, three ministers, and
+                five members from business and social groups. Overseas the Board.</li>
+                <li class="tf-lvl2"><strong>SPV Board of Directors</strong> — 8 members: four public-sector and four
+                private-sector representatives. Sets strategy and oversees the fund manager. Meets at least quarterly.</li>
+                <li class="tf-lvl2"><strong>SPV fund manager</strong> — the executive that runs the Fund day to day and
+                executes transactions.</li>
+                <li class="tf-lvl2"><strong>Investment Committee</strong> — four representatives per sector. When
+                Transformation Fund transactions are considered, two private-sector and two public-sector
+                representatives sit on it <em>with voting rights</em>.</li>
+                <li><strong>Parliament</strong> — the Portfolio Committee on Trade and Industry receives the SPV's
+                reporting through the Minister.</li>
+                <li><strong>Annual General Meeting</strong> — convened by the SPV to report on activities to all
+                stakeholders.</li>
+              </ul>
+
+              <div class="tf-callout mt-3">
+                <strong>Ring-fencing is the control that matters most.</strong> The Fund's proceeds sit in a bank
+                account held in the SPV's name but <em>ring-fenced</em> from the SPV's other accounts and operations,
+                and separately accounted for. Combined with tax-exempt status, that means a contributor can trace a rand
+                from their Participation Agreement into a specific, separately reported investment pool.
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <h3 class="mt-0">Reporting cadence</h3>
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered tf-table mb-3">
+                  <thead>
+                    <tr><th>Report</th><th>From → to</th><th style="width:8rem;">Frequency</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Investment activity report</td><td>Fund manager → Board</td><td>Quarterly</td></tr>
+                    <tr><td>Board report</td><td>Board → Oversight Committee</td><td>Quarterly, or as and when required</td></tr>
+                    <tr><td>Board meetings</td><td>Board</td><td>At least quarterly</td></tr>
+                    <tr><td>Annual report on funds under management, investments made and performance</td><td>Fund → contributors and public</td><td>Annually</td></tr>
+                    <tr><td>Stakeholder reporting</td><td>SPV → all stakeholders</td><td>Annual General Meeting</td></tr>
+                    <tr><td>Parliamentary reporting</td><td>SPV → Parliament, via the Minister</td><td>As directed</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Governing documents</h3>
+              <ul class="small">
+                <li><strong>Participation Agreement</strong> — the contract between each contributor and the SPV. The
+                model agreement is to be made available to prospective contributors and their advisers before they
+                decide whether to contribute.</li>
+                <li><strong>Board Charter</strong> — governs how the Board operates in relation to its functions.</li>
+                <li><strong>Investment Charter</strong> — regulates all the activities of the Fund, including how
+                transactions are approved.</li>
+                <li><strong>ESG Policy</strong> — drafted and approved by the SPV, setting the framework for responsible
+                corporate conduct, aligned to NEMA.</li>
+              </ul>
+
+              <div class="tf-callout info">
+                <strong>Why the two-tier oversight exists.</strong> A single board appointed by a Minister carries
+                concentration-of-power risk. Adding an Oversight Committee above it — with three ministers plus five
+                business and social group members — inserts a second, differently composed layer between the Fund and
+                the executive. Whether it works depends entirely on who is appointed and whether the Committee is
+                willing to challenge the Board. Neither the document nor anything published since sets out an
+                appointment process, a conflict-of-interest policy or a fit-and-proper test.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================== LAW ============================= -->
+        <section class="tf-section" id="law">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v16M7 20h10M4 8h16"/><path d="M7.5 8L5 13.5h5L7.5 8zM16.5 8L14 13.5h5L16.5 8z"/></svg>
+            Legal and regulatory framework</h2>
+
+          <p>
+            The Fund has to comply with a wide regulatory universe simultaneously. The document splits it into a
+            <strong>primary legislative base</strong> (what creates the obligation), a <strong>functional
+            framework</strong> (how the entity must behave), and a <strong>supporting environment</strong> (the wider
+            small-business and competition law it must work within).
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th style="width:15rem;">Act / instrument</th><th>Why it applies</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="2" style="background:#e8f3ee;font-weight:700;color:#05643f;">Primary legislation — the basis for the Fund</td></tr>
+                <tr>
+                  <td><strong>B-BBEE Codes of Good Practice</strong> ("the Codes")</td>
+                  <td>Set the interpretive principles of B-BBEE and the basis for determining compliance. Compliance with the Codes is the <em>primary basis</em> on which the Fund is established.</td>
+                </tr>
+                <tr><td colspan="2" style="background:#e8f3ee;font-weight:700;color:#05643f;">Functional legislation — how the entity must operate</td></tr>
+                <tr>
+                  <td><strong>National Empowerment Fund Act 105 of 1998</strong></td>
+                  <td>Establishes the NEF trust and its objects — promoting economic ownership of income-generating assets by historically disadvantaged persons, and providing for control, management and dissolution of the trust.</td>
+                </tr>
+                <tr>
+                  <td><strong>Industrial Development Act 22 of 1940</strong></td>
+                  <td>Promotes the establishment of new industries and industrial undertakings and the development of existing ones — the industrial-policy hook.</td>
+                </tr>
+                <tr>
+                  <td><strong>B-BBEE Act 53 of 2003</strong>, as amended</td>
+                  <td>Establishes the legislative framework for B-BBEE; empowers the Minister to issue codes of good practice and publish transformation charters; establishes the B-BBEE Advisory Council.</td>
+                </tr>
+                <tr>
+                  <td><strong>Public Finance Management Act 1 of 1999 (PFMA)</strong></td>
+                  <td>Regulates financial management in national and provincial government, and the responsibilities of persons entrusted with it. Applies given the state's involvement and the SPV's public reporting line.</td>
+                </tr>
+                <tr>
+                  <td><strong>Companies Act 71 of 2008</strong></td>
+                  <td>Governs the formation and maintenance of the SPV as a company, and sets corporate governance standards.</td>
+                </tr>
+                <tr>
+                  <td><strong>Financial Intelligence Centre Act 38 of 2001 (FICA)</strong></td>
+                  <td>Anti-money-laundering and terrorist-financing duties. The document notes the NEF is an accountable institution under FICA as a money remitter, and that stringent requirements apply to the SPV.</td>
+                </tr>
+                <tr>
+                  <td><strong>Public Procurement Act of 2024</strong></td>
+                  <td>Consolidates previously fragmented procurement law; section 217(1) of the Constitution requires procurement to be fair, equitable, transparent, competitive and cost-effective. Introduces a tribunal and processes to investigate and charge contraventions.</td>
+                </tr>
+                <tr><td colspan="2" style="background:#e8f3ee;font-weight:700;color:#05643f;">Supporting environment — the wider small-business and competition framework</td></tr>
+                <tr>
+                  <td><strong>National Small Enterprise Amendment Act 21 of 2024</strong></td>
+                  <td>Establishes the Small Enterprise Development Finance Agency (<strong>SEDFA</strong>) to provide financial and non-financial support to small enterprises; allows the Minister to set criteria for classifying micro, small and medium enterprises.</td>
+                </tr>
+                <tr>
+                  <td><strong>SMME Block Exemptions Regulations 2024</strong></td>
+                  <td>Previously the Competition Act prohibited certain agreements and practices between SMMEs; these block exemptions now permit them, with prior approval from the Competition Commission. This is what makes collective action by small suppliers lawful.</td>
+                </tr>
+                <tr><td colspan="2" style="background:#e8f3ee;font-weight:700;color:#05643f;">Financial-sector licensing — because the SPV will itself be a financial institution</td></tr>
+                <tr>
+                  <td><strong>Financial Advisory and Intermediary Services Act 37 of 2002 (FAIS)</strong></td>
+                  <td>The SPV has undertaken to register and obtain an <strong>FSP licence</strong>. This is what would position it as an entity of choice for government departments and large private companies wanting partner with SOEs for financial advisory and intermediary services.</td>
+                </tr>
+                <tr>
+                  <td><strong>Financial Sector Regulation Act 9 of 2017 (FSRA)</strong></td>
+                  <td>Establishes the Prudential Authority and the Financial Sector Conduct Authority. As an FSP, the SPV must subscribe to the <strong>Treating Customers Fairly</strong> principles.</td>
+                </tr>
+                <tr>
+                  <td><strong>National Environmental Management Act 107 of 1998 (NEMA)</strong></td>
+                  <td>Promotes co-operative governance and ensures people's rights are upheld while recognising the necessity of economic development. The SPV has drafted and approved its own ESG Policy under this framework.</td>
+                </tr>
+                <tr>
+                  <td><strong>Collective Investment Schemes Control Act 45 of 2002 (CISCA)</strong></td>
+                  <td>Governs collective investment schemes, in which two or more members of the public pool money or assets. The document notes the SPV has discussed entering this space via savings vehicles for staff and investees — <strong>including stokvels</strong> — which would require licensing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Tax treatment of contributions</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Section 56(1)(h) — Income Tax Act, 1962</h6>
+                  <p class="small mb-0">Contributions made to the Transformation Fund will generally be
+                  <strong>exempt</strong> under section 56(1)(h). For a corporate contributor, this removes donations tax
+                  as a cost of contributing.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-green);font-weight:700;">Section 18A — Income Tax Act, 1962</h6>
+                  <p class="small mb-0">Contributions qualify for a <strong>deduction</strong> under section 18A upon
+                  issuing of a confirmation of receipt in respect of contributions made to the Fund. Practically, the
+                  contribution is treated like an approved public benefit donation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>The Transformation Index</h3>
+          <p class="small">
+            The document proposes a <strong>Transformation Fund Index</strong> as a benchmark to measure and track the
+            Fund's impact — focusing on inclusivity and compliance with B-BBEE objectives. This is a direct response to
+            public-comment feedback asking for a clear way to measure impact, and it is the mechanism that would let an
+            outsider judge the Fund's claims rather than accept them.
+          </p>
+
+          <div class="tf-callout warn">
+            <strong>The regulatory gap worth naming.</strong> The document is explicit that the Fund's design
+            <em>requires an amendment to the B-BBEE Codes</em> — specifically so entities can contribute to the Fund and
+            earn B-BBEE points immediately. Until that amendment is made, the single strongest incentive in the whole
+            design does not exist. Everything else in the structure can be built first; this cannot be worked around.
+          </div>
+        </section>
+
+        <!-- =========================== TIMELINE =========================== -->
+        <section class="tf-section" id="timeline">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            Timeline — what has actually happened</h2>
+
+          <p class="small">
+            Announced early in 2025, the Fund has moved through consultation and into capital raising. The pace is the
+            story: the concept document has not been replaced by a final policy document, and the disclosed capital
+            commitments remain a small fraction of the target.
+          </p>
+
+          <div class="tf-timeline">
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">February 2025</div>
+              <p class="small mb-0">President Cyril Ramaphosa announces the establishment of the Fund. The dtic later
+              describes this announcement as the origin point of the initiative.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">19 March 2025</div>
+              <p class="small mb-0">Minister Parks Tau publishes the <strong>Draft Transformation Fund Concept
+              Document</strong> for public comment, with inputs directed to a dedicated dtic email address. The document
+              sets out the R100&nbsp;billion target, the R20&nbsp;billion-per-annum capitalisation plan, the funding
+              channels, the investment approach and the proposed governance structure.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">24 April 2025</div>
+              <p class="small mb-0">The public commentary deadline is extended — first to 7 May, then to
+              <strong>28 May 2025</strong> — to allow stakeholders more time.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">3 June 2025</div>
+              <p class="small mb-0">A delegation led by Deputy Minister Zuko Godlimpi briefs the Portfolio Committee on
+              Trade and Industry on the work done to set up the Fund. The dtic confirms the R100&nbsp;billion will be
+              sourced from <strong>Competition Commission public interest commitments, ESD funds, Equity Equivalent
+              Investments from multinationals, and other government funding initiatives</strong> — and states plainly
+              that the Fund imposes no additional tax burden. An oversight committee of nine members from government and
+              the private sector is confirmed.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">8 August 2025</div>
+              <p class="small mb-0">The dtic and <strong>27four Investment Managers</strong> publicly reaffirm their
+              commitment to the Fund following a high-level engagement hosted by 27four and attended by the Minister,
+              the NEF CEO Mr Mzi Dayimane and the dtic's DDG for Transformation and Competition. Retirement fund
+              managers are the target audience — the first serious attempt to pull institutional capital into the
+              vehicle.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">25 February 2026</div>
+              <p class="small mb-0">The dtic convenes all 11 B-BBEE Sector Charter Councils collectively for the first
+              time. The session agrees a three-point action approach — <strong>address funding mechanisms, optimise
+              implementation within the current legal framework, and review institutional architecture where systems are
+              not working</strong> — and the outcomes are to be consolidated for Cabinet as part of a wider B-BBEE
+              framework review. Data presented shows black ownership at approximately 29%, JSE-listed companies at 31%
+              black ownership, black women's ownership around 12%, management control between 39% and 51%, and
+              transaction values of roughly R600&nbsp;billion.</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">12 August 2026</div>
+              <p class="small mb-0">Speaking at the Black Business Council's Annual Summit, Minister Tau reports the
+              Fund's first disclosed capital partnerships: <strong>UIF (R500m), DBSA (R250m), Vodacom (R400m) and IBM
+              (R220m)</strong> — R1.37&nbsp;billion in total. He also reports that the <strong>IDC facilitated
+              R26.6&nbsp;billion in transformation funding</strong>, of which approximately R5.6&nbsp;billion went to
+              women entrepreneurs and women-empowered businesses, and describes the Transformation Fund as "South
+              Africa's Transformation Jet Engine".</p>
+            </div>
+            <div class="tf-tl-item">
+              <div class="tf-tl-date">Still outstanding</div>
+              <p class="small mb-0">No public announcement of the SPV's registration, the appointment of the Board or
+              Oversight Committee, the adoption of the Investment Charter, or the amendment to the B-BBEE Codes that
+              would let contributions earn points immediately. No final (non-draft) Transformation Fund policy document
+              has been published. These are the milestones to watch.</p>
+            </div>
+          </div>
+
+          <div class="tf-callout ok">
+            <strong>Where that leaves the Fund.</strong> Roughly eighteen months from announcement to the first
+            disclosed capital commitments, with the founding document still in draft. That is not unusual for a vehicle
+            of this complexity, but it does mean that any assessment of the Fund today is an assessment of a
+            <em>design</em> — not of a track record.
+          </div>
+        </section>
+<!-- ============================= IMPACT =========================== -->
+        <section class="tf-section" id="impact">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 20h18"/><path d="M6 20v-6M11 20V6M16 20v-9M21 20V4"/></svg>
+            Industry impact — who gains, and who has to adjust</h2>
+
+          <p>
+            A fund that aggregates R100&nbsp;billion of transformation spend does not create a level playing field — it
+            changes which players hold the advantage. The table below separates the clear beneficiaries from the
+            industries whose business model has to change, because that distinction is where most of the practical
+            consequence sits.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-lg-6">
+              <div class="card tf-card h-100">
+                <div class="card-header" style="background:#007A4D;color:#fff;font-weight:700;">Clear beneficiaries</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Majority black-owned businesses in named sectors</strong> — agriculture and agro-processing, mining services and beneficiation, manufacturing, services, infrastructure, tourism, renewables and technology.</li>
+                    <li><strong>Township and rural businesses</strong> — the only channel in the system that contemplates <em>grants and concessionary funding</em> rather than debt, and the only one with a geographic ring-fence.</li>
+                    <li><strong>Black women-owned businesses</strong> — a mandated prescribed allocation, and the group the document singles out as the priority for redressing gender disparities.</li>
+                    <li><strong>Youth- and disability-owned businesses</strong> — designated groups with prescribed allocation rules.</li>
+                    <li><strong>Black industrialists</strong> — a reserved portion of the distribution, with no funding limit for impact transactions. This is where the largest tickets will go.</li>
+                    <li><strong>Early-stage and pre-feasibility projects</strong> — the Fund pays for business planning, feasibility studies and environmental impact assessments, which is precisely the stage at which most projects currently die.</li>
+                    <li><strong>Distressed businesses</strong> — explicitly qualifying for support, which almost no commercial fund will offer.</li>
+                    <li><strong>Asset managers and fund managers</strong> — a new institutional mandate, with 27four as the early mover.</li>
+                    <li><strong>Banks and DFIs</strong> — co-lending, wholesale funding lines and distribution roles.</li>
+                    <li><strong>Professional services</strong> — legal, advisory, engineering, environmental, assurance and business development services.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card tf-card h-100">
+                <div class="card-header" style="background:#b8860b;color:#fff;font-weight:700;">Industries that have to adjust</div>
+                <div class="card-body small">
+                  <ul class="mb-0 ps-3">
+                    <li><strong>Large corporates running in-house ESD programmes.</strong> The Fund's entire value proposition is that one contribution is easier than administering a programme. Corporate ESD teams, supplier development functions and their internal budgets are directly in the path of that shift.</li>
+                    <li><strong>Established ESD intermediaries and third-party fund managers.</strong> If ESD spend redirects into a single national pool, the organisations currently managing that money for corporates face a smaller market — this was raised explicitly in the public comments, which asked for clarity on how the Fund works with <em>well-functioning</em> existing ESD funds.</li>
+                    <li><strong>Providers that corporate ESD currently funds</strong> — training companies, incubators, business development services and existing supplier-development beneficiaries. They may gain from the Fund's larger pool, or lose their direct corporate relationship, depending on how implementation lands.</li>
+                    <li><strong>Multinationals relying on the EEIP route.</strong> The 25%-of-SA-operations set-aside becomes a contribution to a central fund rather than a self-designed programme — less control, less visibility of their own brand on the outcome.</li>
+                    <li><strong>Commercial lenders to SMMEs.</strong> A public fund willing to take equity risk, fund distressed businesses and lend concessionally below market pulls the floor out from under high-margin lending to the same borrowers.</li>
+                    <li><strong>Competition-affected sectors.</strong> Where merger public-interest commitments are redirected to the Fund, the merger parties lose the ability to point to (and control) their own remedies.</li>
+                    <li><strong>Businesses that have relied on B-BBEE ownership transactions rather than ESD.</strong> The Fund concentrates on productive participation and value-chain entry, not on ownership deals — the emphasis of the whole policy shifts.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>What to watch over the next 12–24 months</h3>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered tf-table mb-2">
+              <thead>
+                <tr><th style="width:16rem;">Signal</th><th>Why it matters</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Amendment to the B-BBEE Codes</strong></td><td>The single most important enabling step. Without immediate Code 400 recognition for contributions, the Fund's core incentive does not exist and the R100bn target is unreachable by design.</td></tr>
+                <tr><td><strong>Registration of the SPV and appointment of the Board</strong></td><td>Determines whether the two-tier governance works in practice, and who holds the investment mandate.</td></tr>
+                <tr><td><strong>Publication of a final (non-draft) policy document</strong></td><td>Moves the Fund from a proposal into settled policy, and would resolve the allocation percentages the draft leaves open.</td></tr>
+                <tr><td><strong>The size and composition of capital raised</strong></td><td>Disclosed commitments of R1.37bn against a R100bn target. The next announcements show whether this is a rounding exercise or genuine capital formation.</td></tr>
+                <tr><td><strong>Whether institutional capital arrives</strong></td><td>Pension funds and development banks are the only plausible route to scale. If they stay out, the Fund remains a redistribution of corporate ESD spend.</td></tr>
+                <tr><td><strong>The first published township and rural allocations</strong></td><td>Distinguishes a fund that funds its stated purpose from one that funds the easiest transactions.</td></tr>
+                <tr><td><strong>The Transformation Index</strong></td><td>The document's proposed benchmark for measuring impact. Its design — and whether it is published independently — determines whether any of the Fund's claims can be checked.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============================== RISKS =========================== -->
+        <section class="tf-section" id="risks">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17h.01"/></svg>
+            Risks and open questions</h2>
+
+          <p>
+            These are not hypotheticals invented from outside. Most of them were raised in the public comment process
+            itself, and the dtic acknowledged several of them when it briefed Parliament in June 2025. They are the
+            questions the Fund's design still has to answer.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">1 · Redirecting ESD money may defund what already works</h6>
+                  <p class="small mb-0">The Fund's largest channel is corporate ESD spend. Pulling that into one national
+                  pool is efficient in theory, but well-functioning ESD programmes build long-term supplier
+                  relationships that a central fund cannot replicate. The public comments specifically requested clarity
+                  on how the Fund will work with existing, functioning ESD funds — and the answer is not yet in the
+                  public domain.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">2 · R100 billion is largely money that already exists</h6>
+                  <p class="small mb-0">Because there is no new tax, the Fund aggregates spend that is already committed
+                  to transformation in some form. If contributors simply move existing budgets across, the net new
+                  capital is close to zero — the change is in delivery, not volume. The counter is that central
+                  management may deploy the same money better; the risk is that the headline figure is read as new money
+                  when it is not.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">3 · Compliance has been the weak link, not capital</h6>
+                  <p class="small mb-0">The document's own evidence shows measured entities achieving roughly 44–61% of
+                  ESD targets over five years. If the underlying problem is that corporations under-deliver on existing
+                  obligations, creating a new destination for the money does not automatically fix the under-delivery.
+                  Enforcement has to change too.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">4 · Concentration of power in one vehicle</h6>
+                  <p class="small mb-0">The Minister appoints both the Board and the Oversight Committee. The SPV is
+                  tax-exempt, holds a ring-fenced pool, and intends to become a licensed financial services provider
+                  that can raise from pension funds. No fit-and-proper test, conflict-of-interest policy or appointment
+                  process for either body has been published.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-dark, #c62828);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">5 · Slow capital formation</h6>
+                  <p class="small mb-0">Announced February 2025; first disclosed capital commitments R1.37&nbsp;billion
+                  in August 2026 against a R100&nbsp;billion target. If the pace of the first eighteen months continues,
+                  the five-year capitalisation plan slips. This is the difference between a R100bn fund and a much
+                  smaller one with a R100bn name.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">6 · The township allocation is the easiest to erode</h6>
+                  <p class="small mb-0">Large urban transactions are simpler, cheaper to process and better for
+                  reporting. Small township grants are the opposite. Without published allocation percentages and
+                  verified local-employment tests, the ring-fence can be met on paper while the money concentrates
+                  elsewhere.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">7 · Fronting risk under "majority black-owned"</h6>
+                  <p class="small mb-0">Fronting is an established problem in B-BBEE ownership structures. A fund
+                  deploying R100&nbsp;billion on ownership-defined eligibility has to verify control, not just
+                  shareholding — otherwise the largest transactions may be structured to qualify on paper rather than in
+                  substance.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">8 · "No funding limit" without a stated ceiling</h6>
+                  <p class="small mb-0">Removing funding limits is what lets the Fund anchor large industrial
+                  transactions — and it is also what allows a small number of very large deals to absorb most of the
+                  pool. The document does not set a maximum transaction size or a concentration limit.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">9 · Grant funding needs a sunset rule</h6>
+                  <p class="small mb-0">Grants and concessionary funding for risky township and rural businesses are a
+                  genuine improvement over loan-only ESD funds. But the document does not describe graduation criteria —
+                  when a business moves from grant to debt — or how grant-dependent beneficiaries become self-sustaining.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card tf-card h-100" style="border-left:5px solid var(--tf-red);">
+                <div class="card-body">
+                  <h6 style="color:var(--tf-red);font-weight:700;">10 · Market access is promised but not enforced</h6>
+                  <p class="small mb-0">The document states that access to markets and technical support will be
+                  prioritised above all other pillars — because finance without a buyer does not create a business. But
+                  it does not yet impose enforceable procurement commitments on the corporates whose supply chains would
+                  have to open. The public comments pushed for exactly this; it remains the least guaranteed part of the
+                  design.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tf-callout warn mt-3">
+            <strong>The question that decides everything else.</strong> Is the Transformation Fund primarily
+            <em>new capital for black-owned business</em>, or <em>a better-managed route for capital that was already
+            committed</em>? The dtic's own framing — no new tax, no new burden, sourced from existing ESD, EEIP,
+            competition and departmental channels — points to the second. That does not make it less valuable: better
+            deployment of existing money is a real gain, and a single R100bn pool can do things forty separate corporate
+            ESD programmes cannot. But it does mean the Fund should be judged on deployment quality, speed and
+            reach — not on the size of its headline number.
+          </div>
+        </section>
+
+        <!-- ============================ SOURCES =========================== -->
+        <section class="tf-section" id="sources">
+          <h2>
+            <svg class="tf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2V5z"/><path d="M8 3v18"/></svg>
+            Documents and sources</h2>
+
+          <p class="small">
+            The primary source behind this page, stored locally in this dashboard so it remains accessible offline, plus
+            the official statements used for the status and timeline sections.
+          </p>
+
+          <div class="tf-source">
+            <div style="font-size:1.5rem;line-height:1;">&#128216;</div>
+            <div>
+              <h6>Draft Transformation Fund Concept Document</h6>
+              <p>The dtic, March 2025 (26 pages). The founding document. Sets out the R100&nbsp;billion target and
+              R20&nbsp;billion-per-annum capitalisation, the constitutional and B-BBEE legal basis, the funding pillars,
+              the four resource-mobilisation channels, the investment approach by sector and designated group, the
+              proposed SPV governance structure, the full legislative framework, the ESD market analysis, the execution
+              strategy and the model Participation Agreement terms.</p>
+              <a class="btn btn-sm btn-success" href="../data/economy/Draft-Transformation-Fund-Concept-Document.pdf" target="_blank" rel="noopener">Download (PDF)</a>
+              <a class="btn btn-sm btn-outline-success ms-1" href="https://www.nefcorp.co.za/products-services/transformation-fund/" target="_blank" rel="noopener">Original source (nefcorp.co.za)</a>
+            </div>
+          </div>
+
+          <div class="tf-source">
+            <div style="font-size:1.5rem;line-height:1;">&#128196;</div>
+            <div>
+              <h6>dtic media statements and official updates</h6>
+              <p>The statements below were used for the timeline, the funder table and the current-status framing.</p>
+              <ul class="small mb-2">
+                <li><a href="https://www.thedtic.gov.za/minister-tau-publishes-the-draft-transformation-fund-concept-document-for-public-comment/" target="_blank" rel="noopener">Minister Tau publishes the Draft Transformation Fund Concept Document for public comment</a> — 19 March 2025</li>
+                <li><a href="https://www.thedtic.gov.za/minister-tau-extends-the-deadline-for-the-public-commentary-period-on-the-draft-transformation-fund-document-until-28-may-2025/" target="_blank" rel="noopener">Minister Tau extends the public commentary deadline to 28 May 2025</a> — 24 April 2025</li>
+                <li><a href="https://www.thedtic.gov.za/transformation-fund-a-major-step-forward-in-business-funding-gaps-to-deal-with-economic-inequalities-in-sa/" target="_blank" rel="noopener">Transformation Fund a major step forward in business funding gaps</a> — 3 June 2025 (Portfolio Committee briefing; funding channels; nine-member oversight committee)</li>
+                <li><a href="https://www.thedtic.gov.za/27four-and-the-dtic-unite-to-drive-economic-growth-and-transformation-through-the-transformation-fund/" target="_blank" rel="noopener">27four and the dtic unite to drive economic growth and transformation</a> — 8 August 2025</li>
+                <li><a href="https://www.thedtic.gov.za/minister-tau-signals-strategic-reset-to-strengthen-economic-transformation/" target="_blank" rel="noopener">Minister Tau signals strategic reset to strengthen economic transformation</a> — 25 February 2026 (B-BBEE Sector Charter Councils; ownership data)</li>
+                <li><a href="https://www.thedtic.gov.za/transformation-and-economic-inclusion-are-moral-and-economic-imperatives-minister-tau/" target="_blank" rel="noopener">Transformation and economic inclusion are moral and economic imperatives</a> — 12 August 2026 (UIF, DBSA, Vodacom and IBM commitments; IDC transformation funding)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tf-source">
+            <div style="font-size:1.5rem;line-height:1;">&#127974;</div>
+            <div>
+              <h6>Related institutions on this dashboard</h6>
+              <p>For the surrounding architecture — the NEF as the delivery partner, the IDC and DBSA as co-funders, the
+              Competition Commission as a source of merger commitments, and the B-BBEE framework itself.</p>
+              <p class="small mb-2">
+                <a href="idc.html">Industrial Development Corporation</a> ·
+                <a href="dbsa.html">Development Bank of Southern Africa</a> ·
+                <a href="competition-commission.html">Competition Commission</a> ·
+                <a href="bbbee-bill.html">B-BBEE Act (2003)</a> ·
+                <a href="dtic.html">Department of Trade, Industry & Competition</a> ·
+                <a href="economic-inclusion-bill.html">Economic Inclusion for All</a>
+              </p>
+            </div>
+          </div>
+
+          <h3>Notes on the figures</h3>
+          <ul class="small">
+            <li><strong>R100bn / R20bn per annum:</strong> the target and capitalisation pace stated in the Draft
+            Transformation Fund Concept Document (March 2025).</li>
+            <li><strong>R1.37bn:</strong> the sum of the four capital commitments disclosed by the Minister in August
+            2026 — UIF R500m, Vodacom R400m, DBSA R250m, IBM R220m. Reported as partnership announcements, not as
+            audited inflows.</li>
+            <li><strong>ESD target achievement rates (44%, 60%, 51%, 61%, 61%):</strong> B-BBEE Commission study, 2022,
+            as reproduced in the concept document.</li>
+            <li><strong>Sector GDP shares:</strong> rounded approximations from South African national accounts,
+            included for scale only and not drawn from the concept document.</li>
+            <li><strong>Ownership percentages:</strong> as presented by officials in February 2026 (black ownership
+            ~29%, JSE-listed companies ~31%, black women ~12%) and by the Minister in August 2026 (black ownership
+            45.8% in 2023, black female ownership 13.6%). These come from different data sets and measurement bases —
+            treat them as indicative, not comparable.</li>
+          </ul>
+
+          <p class="small text-muted mb-0">
+            This page is a synthesis prepared for the South Africa Dashboard. The Fund is an evolving policy proposal:
+            the founding document remains a draft, most of the structural detail is proposed rather than settled, and no
+            final policy instrument has been published. Verify all figures against the latest dtic disclosure and the
+            finalised Fund documents before relying on them.
+          </p>
+        </section>
+
+        <hr>
+        <div class="d-flex justify-content-between small text-muted mb-4">
+          <a href="economy.html" class="btn btn-outline-secondary btn-sm">&larr; Back to Economy Overview</a>
+          <a href="bbbee-bill.html" class="btn btn-outline-success btn-sm">B-BBEE Act (2003) &#8599;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

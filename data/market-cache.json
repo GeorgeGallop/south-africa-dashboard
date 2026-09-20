@@ -1,0 +1,4221 @@
+{
+  "equities": {
+    "fetchedAt": 1789772340.8488436,
+    "fetchedAtIso": "2026-09-19 00:59:00 SAST",
+    "source": "Yahoo Finance - JSE last close",
+    "sessionKey": "2026-09-18",
+    "data": {
+      "asOf": "2026-09-18 17:13:19 SAST",
+      "asOfEpoch": 1789744399,
+      "capturedAt": "2026-09-19 00:59:00 SAST",
+      "capturedAtEpoch": 1789772340,
+      "sessionKey": "2026-09-18",
+      "sessionLabel": "Fri 18 Sep 2026",
+      "sessionPhase": "settled",
+      "marketState": "CLOSED",
+      "sectors": [
+        {
+          "id": "tech",
+          "name": "Technology",
+          "icon": "\ud83d\udcbb",
+          "color": "#1565c0",
+          "blurb": "Software, IT services, internet and consumer digital platforms.",
+          "companies": [
+            {
+              "t": "PRX",
+              "n": "Prosus",
+              "p": 670.0,
+              "c": 0.41,
+              "m": 1401.771261952,
+              "v": 6388506,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744072,
+              "prev": 667.27
+            },
+            {
+              "t": "NPN",
+              "n": "Naspers",
+              "p": 714.6,
+              "c": -0.29,
+              "m": 534.60811776,
+              "v": 4970510,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743601,
+              "prev": 716.7
+            },
+            {
+              "t": "DTC",
+              "n": "Datatec",
+              "p": 80.56,
+              "c": 2.49,
+              "m": 19.547420672,
+              "v": 2140343,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743925,
+              "prev": 78.6
+            },
+            {
+              "t": "MST",
+              "n": "Mustek",
+              "p": 15.42,
+              "c": 0.0,
+              "m": 0.834713216,
+              "v": 5000,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789568519,
+              "prev": 15.42
+            },
+            {
+              "t": "ISA",
+              "n": "ISA Holdings",
+              "p": 2.21,
+              "c": -1.78,
+              "m": 0.344752,
+              "v": 5000,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789721701,
+              "prev": 2.25
+            }
+          ]
+        },
+        {
+          "id": "telecom",
+          "name": "Telecommunications",
+          "icon": "\ud83d\udce1",
+          "color": "#00838f",
+          "blurb": "Mobile and fixed-line operators serving SA and the wider continent.",
+          "companies": [
+            {
+              "t": "MTN",
+              "n": "MTN Group",
+              "p": 195.86,
+              "c": -1.12,
+              "m": 359.021641728,
+              "v": 9736313,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743943,
+              "prev": 198.08
+            },
+            {
+              "t": "VOD",
+              "n": "Vodacom Group",
+              "p": 152.02,
+              "c": -1.63,
+              "m": 293.666553856,
+              "v": 3710081,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743627,
+              "prev": 154.54
+            },
+            {
+              "t": "TKG",
+              "n": "Telkom SA",
+              "p": 52.36,
+              "c": -3.0,
+              "m": 25.867921408,
+              "v": 2171256,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743649,
+              "prev": 53.98
+            },
+            {
+              "t": "BLU",
+              "n": "Blue Label Telecoms",
+              "p": 8.15,
+              "c": -2.98,
+              "m": 7.399626752,
+              "v": 3439773,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743659,
+              "prev": 8.4
+            },
+            {
+              "t": "HUG",
+              "n": "Huge Group",
+              "p": 0.96,
+              "c": 0.0,
+              "m": 0.159021312,
+              "v": 13700,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789631985,
+              "prev": 0.96
+            }
+          ]
+        },
+        {
+          "id": "health",
+          "name": "Health Care",
+          "icon": "\ud83c\udfe5",
+          "color": "#e91e63",
+          "blurb": "Pharmaceuticals, hospital groups and healthcare services.",
+          "companies": [
+            {
+              "t": "APN",
+              "n": "Aspen Pharmacare",
+              "p": 155.54,
+              "c": -0.16,
+              "m": 67.336597504,
+              "v": 14190051,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743649,
+              "prev": 155.79
+            },
+            {
+              "t": "NTC",
+              "n": "Netcare",
+              "p": 17.89,
+              "c": -1.16,
+              "m": 20.661643264,
+              "v": 19029449,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743625,
+              "prev": 18.1
+            },
+            {
+              "t": "LHC",
+              "n": "Life Healthcare",
+              "p": 12.09,
+              "c": 0.75,
+              "m": 17.301141504,
+              "v": 5442773,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743630,
+              "prev": 12.0
+            },
+            {
+              "t": "ACT",
+              "n": "Afrocentric Investment",
+              "p": 0.7,
+              "c": 0.0,
+              "m": 0.573183424,
+              "v": 90000,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789730489,
+              "prev": 0.7
+            }
+          ]
+        },
+        {
+          "id": "financials",
+          "name": "Financials",
+          "icon": "\ud83c\udfe6",
+          "color": "#f57c00",
+          "blurb": "Banks, insurers, investment holdings and diversified financial services.",
+          "companies": [
+            {
+              "t": "FSR",
+              "n": "FirstRand",
+              "p": 93.87,
+              "c": -0.47,
+              "m": 522.054139904,
+              "v": 25205407,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743655,
+              "prev": 94.31
+            },
+            {
+              "t": "CPI",
+              "n": "Capitec Bank",
+              "p": 4459.41,
+              "c": -0.64,
+              "m": 516.501405696,
+              "v": 265592,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743626,
+              "prev": 4488.02
+            },
+            {
+              "t": "SBK",
+              "n": "Standard Bank Group",
+              "p": 309.95,
+              "c": -0.5,
+              "m": 501.90450688,
+              "v": 4808791,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743637,
+              "prev": 311.52
+            },
+            {
+              "t": "ABG",
+              "n": "Absa Group",
+              "p": 217.99,
+              "c": -1.34,
+              "m": 180.516503552,
+              "v": 4329861,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743631,
+              "prev": 220.95
+            },
+            {
+              "t": "DSY",
+              "n": "Discovery",
+              "p": 265.0,
+              "c": -2.03,
+              "m": 177.356161024,
+              "v": 2395981,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743614,
+              "prev": 270.5
+            },
+            {
+              "t": "SLM",
+              "n": "Sanlam",
+              "p": 82.16,
+              "c": -0.89,
+              "m": 171.694194688,
+              "v": 8995431,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743607,
+              "prev": 82.9
+            },
+            {
+              "t": "NED",
+              "n": "Nedbank Group",
+              "p": 291.0,
+              "c": 0.0,
+              "m": 132.959322112,
+              "v": 2485949,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743632,
+              "prev": 291.0
+            },
+            {
+              "t": "OUT",
+              "n": "OUTsurance",
+              "p": 85.56,
+              "c": 0.01,
+              "m": 132.457816064,
+              "v": 4034102,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743607,
+              "prev": 85.55
+            },
+            {
+              "t": "REM",
+              "n": "Remgro",
+              "p": 202.15,
+              "c": 3.23,
+              "m": 112.414785536,
+              "v": 2385706,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744195,
+              "prev": 195.82
+            },
+            {
+              "t": "INP",
+              "n": "Investec plc",
+              "p": 138.9,
+              "c": -3.34,
+              "m": 87.092731904,
+              "v": 4077922,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743607,
+              "prev": 143.7
+            },
+            {
+              "t": "RNI",
+              "n": "Reinet Investments",
+              "p": 428.01,
+              "c": 1.06,
+              "m": 81.205952512,
+              "v": 765387,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743639,
+              "prev": 423.54
+            },
+            {
+              "t": "OMU",
+              "n": "Old Mutual",
+              "p": 13.88,
+              "c": -0.72,
+              "m": 56.075722752,
+              "v": 31347102,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743630,
+              "prev": 13.98
+            },
+            {
+              "t": "QLT",
+              "n": "Quilter",
+              "p": 39.56,
+              "c": -1.3,
+              "m": 53.43475712,
+              "v": 4160034,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743632,
+              "prev": 40.08
+            },
+            {
+              "t": "MTM",
+              "n": "Momentum Metropolitan",
+              "p": 37.5,
+              "c": -1.83,
+              "m": 48.306765824,
+              "v": 9478957,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743827,
+              "prev": 38.2
+            },
+            {
+              "t": "SNT",
+              "n": "Santam",
+              "p": 413.99,
+              "c": 0.97,
+              "m": 45.222703104,
+              "v": 201920,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743655,
+              "prev": 410.0
+            },
+            {
+              "t": "KST",
+              "n": "PSG Financial Services",
+              "p": 33.61,
+              "c": 3.1,
+              "m": 41.590255616,
+              "v": 4879777,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743637,
+              "prev": 32.6
+            },
+            {
+              "t": "INL",
+              "n": "Investec Ltd",
+              "p": 136.15,
+              "c": -3.44,
+              "m": 34.646781952,
+              "v": 2205279,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743650,
+              "prev": 141.0
+            },
+            {
+              "t": "JSE",
+              "n": "JSE Ltd",
+              "p": 157.0,
+              "c": 1.86,
+              "m": 13.04772096,
+              "v": 310943,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743604,
+              "prev": 154.14
+            },
+            {
+              "t": "AFH",
+              "n": "Alexander Forbes",
+              "p": 7.4,
+              "c": 8.5,
+              "m": 9.43136256,
+              "v": 1071620,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743634,
+              "prev": 6.82
+            },
+            {
+              "t": "BAT",
+              "n": "Brait",
+              "p": 2.15,
+              "c": 8.59,
+              "m": 8.30477312,
+              "v": 198407091,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743754,
+              "prev": 1.98
+            },
+            {
+              "t": "PPE",
+              "n": "Purple Group",
+              "p": 1.97,
+              "c": 2.07,
+              "m": 2.87292928,
+              "v": 404037,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789742461,
+              "prev": 1.93
+            },
+            {
+              "t": "ZED",
+              "n": "Zeder Investments",
+              "p": 1.03,
+              "c": -0.96,
+              "m": 1.585844992,
+              "v": 600,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789716807,
+              "prev": 1.04
+            }
+          ]
+        },
+        {
+          "id": "realestate",
+          "name": "Real Estate",
+          "icon": "\ud83c\udfe2",
+          "color": "#7b1fa2",
+          "blurb": "REITs and property funds across offices, retail, industrial and storage.",
+          "companies": [
+            {
+              "t": "NRP",
+              "n": "NEPI Rockcastle",
+              "p": 143.82,
+              "c": -0.79,
+              "m": 101.7237504,
+              "v": 3280934,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743607,
+              "prev": 144.96
+            },
+            {
+              "t": "GRT",
+              "n": "Growthpoint Properties",
+              "p": 15.8,
+              "c": -1.37,
+              "m": 53.504016384,
+              "v": 24926088,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743651,
+              "prev": 16.02
+            },
+            {
+              "t": "FTA",
+              "n": "Fairvest",
+              "p": 19.85,
+              "c": 0.4,
+              "m": 41.856688128,
+              "v": 44665,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743609,
+              "prev": 19.77
+            },
+            {
+              "t": "RDF",
+              "n": "Redefine Properties",
+              "p": 5.89,
+              "c": -2.0,
+              "m": 41.100279808,
+              "v": 69284100,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743651,
+              "prev": 6.01
+            },
+            {
+              "t": "VKE",
+              "n": "Vukile Property Fund",
+              "p": 24.09,
+              "c": 1.86,
+              "m": 35.94971136,
+              "v": 29654844,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743630,
+              "prev": 23.65
+            },
+            {
+              "t": "FFB",
+              "n": "Fortress REIT A",
+              "p": 25.4,
+              "c": 3.08,
+              "m": 32.512165888,
+              "v": 7448926,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743630,
+              "prev": 24.64
+            },
+            {
+              "t": "SRE",
+              "n": "Sirius Real Estate",
+              "p": 20.0,
+              "c": -2.44,
+              "m": 31.645853696,
+              "v": 1026190,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743607,
+              "prev": 20.5
+            },
+            {
+              "t": "RES",
+              "n": "Resilient REIT",
+              "p": 77.67,
+              "c": 0.8,
+              "m": 25.94763776,
+              "v": 1264960,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743650,
+              "prev": 77.05
+            },
+            {
+              "t": "HYP",
+              "n": "Hyprop Investments",
+              "p": 61.21,
+              "c": 2.44,
+              "m": 25.666072576,
+              "v": 4157720,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743656,
+              "prev": 59.75
+            },
+            {
+              "t": "LTE",
+              "n": "Lighthouse Capital",
+              "p": 8.2,
+              "c": 0.0,
+              "m": 17.274421248,
+              "v": 3958524,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743653,
+              "prev": 8.2
+            },
+            {
+              "t": "EQU",
+              "n": "Equites Property Fund",
+              "p": 18.13,
+              "c": 1.97,
+              "m": 15.741275136,
+              "v": 4534327,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743603,
+              "prev": 17.78
+            },
+            {
+              "t": "ATT",
+              "n": "Attacq",
+              "p": 17.92,
+              "c": -0.06,
+              "m": 12.539891712,
+              "v": 2098907,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743653,
+              "prev": 17.93
+            },
+            {
+              "t": "SAC",
+              "n": "SA Corporate Real Estate",
+              "p": 3.5,
+              "c": 1.74,
+              "m": 9.576749056,
+              "v": 8855860,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743629,
+              "prev": 3.44
+            },
+            {
+              "t": "SSS",
+              "n": "Stor-Age Property REIT",
+              "p": 16.36,
+              "c": 3.61,
+              "m": 8.388749312,
+              "v": 2395213,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743623,
+              "prev": 15.79
+            },
+            {
+              "t": "DIB",
+              "n": "Dipula Income Fund",
+              "p": 6.74,
+              "c": -2.03,
+              "m": 8.012361216,
+              "v": 4463712,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743807,
+              "prev": 6.88
+            },
+            {
+              "t": "EMI",
+              "n": "Emira Property Fund",
+              "p": 14.48,
+              "c": 2.7,
+              "m": 6.770505216,
+              "v": 1360062,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743911,
+              "prev": 14.1
+            },
+            {
+              "t": "SEA",
+              "n": "Spear REIT",
+              "p": 12.74,
+              "c": 0.0,
+              "m": 6.43998464,
+              "v": 5843145,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743934,
+              "prev": 12.74
+            },
+            {
+              "t": "OCT",
+              "n": "Octodec Investments",
+              "p": 17.68,
+              "c": 1.26,
+              "m": 4.706372608,
+              "v": 132636,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743655,
+              "prev": 17.46
+            },
+            {
+              "t": "TEX",
+              "n": "Texton Property Fund",
+              "p": 2.75,
+              "c": 0.0,
+              "m": 0.81977088,
+              "v": 1026,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789551734,
+              "prev": 2.75
+            }
+          ]
+        },
+        {
+          "id": "discre",
+          "name": "Consumer Discretionary",
+          "icon": "\ud83d\udecd",
+          "color": "#c62828",
+          "blurb": "Retail, luxury goods, media, hospitality, education and autos.",
+          "companies": [
+            {
+              "t": "CFR",
+              "n": "Compagnie Financiere Richemont",
+              "p": 3323.26,
+              "c": -2.48,
+              "m": 1953.878376448,
+              "v": 193829,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743631,
+              "prev": 3407.84
+            },
+            {
+              "t": "PPH",
+              "n": "Pepkor Holdings",
+              "p": 18.28,
+              "c": 1.56,
+              "m": 67.405950976,
+              "v": 35554596,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743996,
+              "prev": 18.0
+            },
+            {
+              "t": "MRP",
+              "n": "Mr Price Group",
+              "p": 163.13,
+              "c": -0.2,
+              "m": 41.94125824,
+              "v": 1583847,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743637,
+              "prev": 163.45
+            },
+            {
+              "t": "WHL",
+              "n": "Woolworths Holdings",
+              "p": 38.22,
+              "c": -0.47,
+              "m": 33.598779392,
+              "v": 38240407,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743746,
+              "prev": 38.4
+            },
+            {
+              "t": "ADH",
+              "n": "Advtech",
+              "p": 52.43,
+              "c": 3.01,
+              "m": 28.511434752,
+              "v": 2377893,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744399,
+              "prev": 50.9
+            },
+            {
+              "t": "MTH",
+              "n": "Motus Holdings",
+              "p": 113.33,
+              "c": 0.68,
+              "m": 18.522591232,
+              "v": 774027,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743648,
+              "prev": 112.57
+            },
+            {
+              "t": "TRU",
+              "n": "Truworths",
+              "p": 42.49,
+              "c": -1.02,
+              "m": 15.817773056,
+              "v": 3936310,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743613,
+              "prev": 42.93
+            },
+            {
+              "t": "SDO",
+              "n": "Stadio Holdings",
+              "p": 18.49,
+              "c": 22.86,
+              "m": 15.594397696,
+              "v": 22422858,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744043,
+              "prev": 15.05
+            },
+            {
+              "t": "TFG",
+              "n": "The Foschini Group",
+              "p": 49.4,
+              "c": -3.14,
+              "m": 15.575774208,
+              "v": 5718528,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744132,
+              "prev": 51.0
+            },
+            {
+              "t": "SUI",
+              "n": "Sun International",
+              "p": 46.58,
+              "c": -0.62,
+              "m": 11.16449792,
+              "v": 980481,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743642,
+              "prev": 46.87
+            },
+            {
+              "t": "ITE",
+              "n": "Italtile",
+              "p": 8.49,
+              "c": 4.04,
+              "m": 9.925809152,
+              "v": 286966,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743850,
+              "prev": 8.16
+            },
+            {
+              "t": "TSG",
+              "n": "Tsogo Sun",
+              "p": 7.35,
+              "c": 5.91,
+              "m": 7.131613696,
+              "v": 2090396,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744160,
+              "prev": 6.94
+            },
+            {
+              "t": "FBR",
+              "n": "Famous Brands",
+              "p": 51.55,
+              "c": 0.0,
+              "m": 5.117307904,
+              "v": 273295,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743608,
+              "prev": 51.55
+            },
+            {
+              "t": "HDC",
+              "n": "Hudaco Industries",
+              "p": 185.0,
+              "c": 0.65,
+              "m": 4.97432832,
+              "v": 104181,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743644,
+              "prev": 183.8
+            },
+            {
+              "t": "CAT",
+              "n": "Caxton and CTP Publishers",
+              "p": 12.0,
+              "c": 0.84,
+              "m": 4.24217088,
+              "v": 22043,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789742117,
+              "prev": 11.9
+            },
+            {
+              "t": "SUR",
+              "n": "Spur Corporation",
+              "p": 43.46,
+              "c": 2.23,
+              "m": 3.526696192,
+              "v": 34663,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743647,
+              "prev": 42.51
+            },
+            {
+              "t": "CMH",
+              "n": "Combined Motor Holdings",
+              "p": 36.0,
+              "c": -1.37,
+              "m": 2.499292928,
+              "v": 95331,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743630,
+              "prev": 36.5
+            },
+            {
+              "t": "CLH",
+              "n": "City Lodge Hotels",
+              "p": 4.38,
+              "c": 2.82,
+              "m": 2.378693632,
+              "v": 367617,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743657,
+              "prev": 4.26
+            },
+            {
+              "t": "EMH",
+              "n": "eMedia Holdings",
+              "p": 1.89,
+              "c": 0.0,
+              "m": 1.244059776,
+              "v": 25000,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789651798,
+              "prev": 1.89
+            },
+            {
+              "t": "MTA",
+              "n": "Metair Investments",
+              "p": 4.95,
+              "c": 0.0,
+              "m": 0.970417792,
+              "v": 41721,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743618,
+              "prev": 4.95
+            }
+          ]
+        },
+        {
+          "id": "staples",
+          "name": "Consumer Staples",
+          "icon": "\ud83d\uded2",
+          "color": "#2e7d32",
+          "blurb": "Food and drug retail, food producers and distributors.",
+          "companies": [
+            {
+              "t": "SHP",
+              "n": "Shoprite Holdings",
+              "p": 318.56,
+              "c": 1.71,
+              "m": 172.27235328,
+              "v": 2499930,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743601,
+              "prev": 313.2
+            },
+            {
+              "t": "BID",
+              "n": "Bidcorp",
+              "p": 444.52,
+              "c": 0.53,
+              "m": 148.578287616,
+              "v": 1323185,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743633,
+              "prev": 442.18
+            },
+            {
+              "t": "CLS",
+              "n": "Clicks Group",
+              "p": 204.13,
+              "c": -1.05,
+              "m": 47.299018752,
+              "v": 4460269,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744056,
+              "prev": 206.3
+            },
+            {
+              "t": "TBS",
+              "n": "Tiger Brands",
+              "p": 271.56,
+              "c": 1.95,
+              "m": 39.699337216,
+              "v": 924623,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743610,
+              "prev": 266.36
+            },
+            {
+              "t": "PMR",
+              "n": "Premier Group",
+              "p": 183.94,
+              "c": 2.19,
+              "m": 30.289354752,
+              "v": 2263363,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743617,
+              "prev": 180.0
+            },
+            {
+              "t": "AVI",
+              "n": "AVI Ltd",
+              "p": 84.73,
+              "c": 0.63,
+              "m": 28.27300864,
+              "v": 2471285,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743605,
+              "prev": 84.2
+            },
+            {
+              "t": "DCP",
+              "n": "Dis-Chem Pharmacies",
+              "p": 26.85,
+              "c": 0.6,
+              "m": 22.986545152,
+              "v": 4636566,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743620,
+              "prev": 26.69
+            },
+            {
+              "t": "PIK",
+              "n": "Pick n Pay Stores",
+              "p": 18.66,
+              "c": -1.01,
+              "m": 13.703591936,
+              "v": 3006573,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743610,
+              "prev": 18.85
+            },
+            {
+              "t": "SPP",
+              "n": "The SPAR Group",
+              "p": 45.8,
+              "c": 2.81,
+              "m": 8.818352128,
+              "v": 3499528,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744130,
+              "prev": 44.55
+            },
+            {
+              "t": "OCE",
+              "n": "Oceana Group",
+              "p": 64.0,
+              "c": 0.31,
+              "m": 8.305897472,
+              "v": 430746,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744223,
+              "prev": 63.8
+            },
+            {
+              "t": "ARL",
+              "n": "Astral Foods",
+              "p": 198.0,
+              "c": -0.98,
+              "m": 7.659223552,
+              "v": 220917,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743655,
+              "prev": 199.95
+            },
+            {
+              "t": "RCL",
+              "n": "RCL Foods",
+              "p": 6.01,
+              "c": -10.96,
+              "m": 5.409404928,
+              "v": 4120749,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743779,
+              "prev": 6.75
+            },
+            {
+              "t": "KAL",
+              "n": "Kaap Agri",
+              "p": 47.8,
+              "c": -0.38,
+              "m": 3.26575488,
+              "v": 18743,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743638,
+              "prev": 47.98
+            },
+            {
+              "t": "SHG",
+              "n": "Sea Harvest Group",
+              "p": 8.8,
+              "c": 3.29,
+              "m": 2.907526912,
+              "v": 61066,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743636,
+              "prev": 8.52
+            },
+            {
+              "t": "LBR",
+              "n": "Libstar Holdings",
+              "p": 3.6,
+              "c": 0.0,
+              "m": 2.1139456,
+              "v": 318117,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743651,
+              "prev": 3.6
+            }
+          ]
+        },
+        {
+          "id": "industrials",
+          "name": "Industrials",
+          "icon": "\ud83c\udfed",
+          "color": "#5d4037",
+          "blurb": "Diversified industrials, construction, logistics, packaging and services.",
+          "companies": [
+            {
+              "t": "BVT",
+              "n": "Bidvest Group",
+              "p": 233.66,
+              "c": 1.5,
+              "m": 79.418171392,
+              "v": 2591997,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743625,
+              "prev": 230.2
+            },
+            {
+              "t": "GND",
+              "n": "Grindrod",
+              "p": 29.88,
+              "c": 3.07,
+              "m": 19.947739136,
+              "v": 4989077,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743789,
+              "prev": 28.99
+            },
+            {
+              "t": "PPC",
+              "n": "PPC Ltd",
+              "p": 8.01,
+              "c": 3.49,
+              "m": 11.750595584,
+              "v": 12916943,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743638,
+              "prev": 7.74
+            },
+            {
+              "t": "RLO",
+              "n": "Reunert",
+              "p": 56.36,
+              "c": 6.88,
+              "m": 8.8559872,
+              "v": 2718932,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743647,
+              "prev": 52.73
+            },
+            {
+              "t": "RBX",
+              "n": "Raubex Group",
+              "p": 42.99,
+              "c": 3.12,
+              "m": 7.754376704,
+              "v": 1015944,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743805,
+              "prev": 41.69
+            },
+            {
+              "t": "WBO",
+              "n": "Wilson Bayly Holmes-Ovcon",
+              "p": 139.52,
+              "c": 0.03,
+              "m": 7.440310784,
+              "v": 1017190,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743653,
+              "prev": 139.48
+            },
+            {
+              "t": "KAP",
+              "n": "KAP Industrial Holdings",
+              "p": 2.79,
+              "c": 1.82,
+              "m": 6.996404224,
+              "v": 11166420,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743636,
+              "prev": 2.74
+            },
+            {
+              "t": "SPG",
+              "n": "Super Group",
+              "p": 18.3,
+              "c": 0.0,
+              "m": 6.182893056,
+              "v": 2463709,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743656,
+              "prev": 18.3
+            },
+            {
+              "t": "NPK",
+              "n": "Nampak",
+              "p": 460.0,
+              "c": -0.74,
+              "m": 3.86169984,
+              "v": 3533,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743919,
+              "prev": 463.45
+            },
+            {
+              "t": "MMP",
+              "n": "Marshall Monteagle",
+              "p": 30.5,
+              "c": 0.0,
+              "m": 1.436552064,
+              "v": 1210,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789732399,
+              "prev": 30.5
+            },
+            {
+              "t": "SSK",
+              "n": "Stefanutti Stocks",
+              "p": 6.18,
+              "c": -1.12,
+              "m": 1.033565952,
+              "v": 69582,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789739908,
+              "prev": 6.25
+            },
+            {
+              "t": "SNV",
+              "n": "Santova",
+              "p": 7.74,
+              "c": -1.65,
+              "m": 0.996261312,
+              "v": 21128,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744201,
+              "prev": 7.87
+            },
+            {
+              "t": "ADR",
+              "n": "Adcorp Holdings",
+              "p": 5.8,
+              "c": -7.5,
+              "m": 0.613276288,
+              "v": 39513,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743649,
+              "prev": 6.27
+            },
+            {
+              "t": "AEG",
+              "n": "Aveng",
+              "p": 4.28,
+              "c": -0.23,
+              "m": 0.561874048,
+              "v": 4022,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789740393,
+              "prev": 4.29
+            }
+          ]
+        },
+        {
+          "id": "materials",
+          "name": "Basic Materials",
+          "icon": "\u26cf",
+          "color": "#455a64",
+          "blurb": "Mining (PGMs, gold, coal, iron ore, manganese, chrome), chemicals, paper.",
+          "companies": [
+            {
+              "t": "BHG",
+              "n": "BHP Group",
+              "p": 693.34,
+              "c": -1.18,
+              "m": 3524.215177216,
+              "v": 1005325,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743629,
+              "prev": 701.61
+            },
+            {
+              "t": "GLN",
+              "n": "Glencore",
+              "p": 121.51,
+              "c": -3.69,
+              "m": 1425.493458944,
+              "v": 5080822,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743749,
+              "prev": 126.17
+            },
+            {
+              "t": "AGL",
+              "n": "Anglo American",
+              "p": 861.04,
+              "c": -1.37,
+              "m": 922.593984512,
+              "v": 661022,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743614,
+              "prev": 872.97
+            },
+            {
+              "t": "ANG",
+              "n": "AngloGold Ashanti",
+              "p": 1627.18,
+              "c": -2.04,
+              "m": 822.977626112,
+              "v": 2939719,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744175,
+              "prev": 1661.15
+            },
+            {
+              "t": "GFI",
+              "n": "Gold Fields",
+              "p": 688.78,
+              "c": -2.55,
+              "m": 613.631721472,
+              "v": 5419552,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743640,
+              "prev": 706.83
+            },
+            {
+              "t": "VAL",
+              "n": "Valterra Platinum (ex-Amplats)",
+              "p": 1410.08,
+              "c": -3.76,
+              "m": 372.216332288,
+              "v": 1739448,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744369,
+              "prev": 1465.11
+            },
+            {
+              "t": "S32",
+              "n": "South32",
+              "p": 57.09,
+              "c": 0.71,
+              "m": 255.84459776,
+              "v": 3556060,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743647,
+              "prev": 56.69
+            },
+            {
+              "t": "IMP",
+              "n": "Impala Platinum",
+              "p": 230.35,
+              "c": -3.23,
+              "m": 206.754906112,
+              "v": 5318957,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743951,
+              "prev": 238.04
+            },
+            {
+              "t": "HAR",
+              "n": "Harmony Gold",
+              "p": 319.71,
+              "c": -1.91,
+              "m": 199.811530752,
+              "v": 6290764,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744155,
+              "prev": 325.93
+            },
+            {
+              "t": "SSW",
+              "n": "Sibanye-Stillwater",
+              "p": 46.45,
+              "c": -1.94,
+              "m": 131.479846912,
+              "v": 22684396,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743886,
+              "prev": 47.37
+            },
+            {
+              "t": "NPH",
+              "n": "Northam Platinum",
+              "p": 292.3,
+              "c": -2.5,
+              "m": 115.085697024,
+              "v": 2819456,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743885,
+              "prev": 299.79
+            },
+            {
+              "t": "MNP",
+              "n": "Mondi",
+              "p": 180.49,
+              "c": -1.69,
+              "m": 79.559606272,
+              "v": 1575517,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743648,
+              "prev": 183.59
+            },
+            {
+              "t": "KIO",
+              "n": "Kumba Iron Ore",
+              "p": 225.13,
+              "c": 0.16,
+              "m": 72.080523264,
+              "v": 1145937,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743645,
+              "prev": 224.78
+            },
+            {
+              "t": "PAN",
+              "n": "Pan African Resources",
+              "p": 28.1,
+              "c": 1.66,
+              "m": 59.795423232,
+              "v": 26175063,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743851,
+              "prev": 27.64
+            },
+            {
+              "t": "EXX",
+              "n": "Exxaro Resources",
+              "p": 184.08,
+              "c": -2.6,
+              "m": 43.10112256,
+              "v": 2914353,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743632,
+              "prev": 189.0
+            },
+            {
+              "t": "DRD",
+              "n": "DRDGOLD",
+              "p": 42.41,
+              "c": -0.21,
+              "m": 36.843962368,
+              "v": 4521080,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743830,
+              "prev": 42.5
+            },
+            {
+              "t": "ARI",
+              "n": "African Rainbow Minerals",
+              "p": 174.81,
+              "c": -3.93,
+              "m": 35.0971904,
+              "v": 511229,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744009,
+              "prev": 181.96
+            },
+            {
+              "t": "OMN",
+              "n": "Omnia Holdings",
+              "p": 123.5,
+              "c": 0.19,
+              "m": 19.324153856,
+              "v": 1321604,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743645,
+              "prev": 123.27
+            },
+            {
+              "t": "TGA",
+              "n": "Thungela Resources",
+              "p": 123.9,
+              "c": -3.1,
+              "m": 15.747303424,
+              "v": 1198637,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743608,
+              "prev": 127.87
+            },
+            {
+              "t": "AFE",
+              "n": "AECI",
+              "p": 101.67,
+              "c": -1.22,
+              "m": 10.727993344,
+              "v": 375471,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743725,
+              "prev": 102.93
+            },
+            {
+              "t": "SAP",
+              "n": "Sappi",
+              "p": 13.27,
+              "c": 0.53,
+              "m": 8.055984128,
+              "v": 6390700,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743655,
+              "prev": 13.2
+            },
+            {
+              "t": "AFT",
+              "n": "Afrimat",
+              "p": 26.88,
+              "c": -4.24,
+              "m": 4.152706304,
+              "v": 5028481,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743604,
+              "prev": 28.07
+            },
+            {
+              "t": "MRF",
+              "n": "Merafe Resources",
+              "p": 1.36,
+              "c": 0.0,
+              "m": 3.398812416,
+              "v": 1516969,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743640,
+              "prev": 1.36
+            },
+            {
+              "t": "ORN",
+              "n": "Orion Minerals",
+              "p": 0.29,
+              "c": 3.57,
+              "m": 2.596770304,
+              "v": 2882649,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743650,
+              "prev": 0.28
+            },
+            {
+              "t": "MCZ",
+              "n": "MC Mining",
+              "p": 3.0,
+              "c": 6.38,
+              "m": 2.534775552,
+              "v": 4000,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743635,
+              "prev": 2.82
+            },
+            {
+              "t": "JBL",
+              "n": "Jubilee Metals Group",
+              "p": 0.47,
+              "c": 0.0,
+              "m": 1.589225216,
+              "v": 1115145,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789741760,
+              "prev": 0.47
+            },
+            {
+              "t": "ACL",
+              "n": "ArcelorMittal South Africa",
+              "p": 1.36,
+              "c": -0.73,
+              "m": 1.51587328,
+              "v": 1887206,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789743612,
+              "prev": 1.37
+            },
+            {
+              "t": "WEZ",
+              "n": "Wesizwe Platinum",
+              "p": 0.44,
+              "c": 0.0,
+              "m": 0.716243904,
+              "v": 232437,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789738950,
+              "prev": 0.44
+            }
+          ]
+        },
+        {
+          "id": "energy",
+          "name": "Energy",
+          "icon": "\u26fd",
+          "color": "#e65100",
+          "blurb": "Integrated energy, oil and gas and fuel distribution.",
+          "companies": [
+            {
+              "t": "SOL",
+              "n": "Sasol",
+              "p": 223.56,
+              "c": -2.41,
+              "m": 143.310389248,
+              "v": 6442631,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1789744073,
+              "prev": 229.09
+            },
+            {
+              "t": "TLM",
+              "n": "TotalEnergies Marketing SA",
+              "p": 1.0,
+              "c": 0.0,
+              "m": 0.05658446,
+              "v": 2860,
+              "state": "CLOSED",
+              "basis": "close",
+              "qtime": 1785916968,
+              "prev": 1.0
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "listings": 134,
+        "marketCapAvailable": true,
+        "marketCapBillion": 18232.71,
+        "advancers": 55,
+        "decliners": 62,
+        "unchanged": 17
+      },
+      "unavailable": [
+        "AIP",
+        "ARC",
+        "AWA",
+        "BAW",
+        "CLI",
+        "COH",
+        "CTA",
+        "EOH",
+        "HUL",
+        "MCG",
+        "MSS",
+        "MTT",
+        "MUR",
+        "PBG",
+        "REN",
+        "RFG",
+        "SAB",
+        "SFN",
+        "TCP",
+        "TRE",
+        "VLE",
+        "WKF"
+      ],
+      "coverage": {
+        "covered": 134,
+        "priced": 134,
+        "declaredUnavailable": [
+          "AIP",
+          "ARC",
+          "AWA",
+          "BAW",
+          "CLI",
+          "COH",
+          "CTA",
+          "EOH",
+          "HUL",
+          "MCG",
+          "MSS",
+          "MTT",
+          "MUR",
+          "PBG",
+          "REN",
+          "RFG",
+          "SAB",
+          "SFN",
+          "TCP",
+          "TRE",
+          "VLE",
+          "WKF"
+        ]
+      }
+    }
+  },
+  "fx": {
+    "fetchedAt": 1789772343.0440848,
+    "fetchedAtIso": "2026-09-19 00:59:03 SAST",
+    "source": "Yahoo Finance - FX daily closes",
+    "sessionKey": "2026-09-18",
+    "data": {
+      "asOf": "2026-09-19 00:59:03 SAST",
+      "asOfEpoch": 1789772343,
+      "sessionKey": "2026-09-18",
+      "sessionLabel": "Fri 18 Sep 2026",
+      "source": "Yahoo Finance FX daily closes",
+      "windows": [
+        "1W",
+        "1M",
+        "3M",
+        "6M",
+        "1Y"
+      ],
+      "pairs": [
+        {
+          "code": "USDZAR",
+          "label": "USD/ZAR",
+          "foreign": "USD",
+          "spot": 16.2463,
+          "previous": 16.2551,
+          "changePct": -0.05,
+          "windows": {
+            "1W": 0.42,
+            "1M": 0.9,
+            "3M": -1.76,
+            "6M": -4.87,
+            "1Y": -5.82
+          },
+          "high1y": 17.491,
+          "low1y": 15.71,
+          "avg1y": 16.5575,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              16.4193
+            ],
+            [
+              1782860400000,
+              16.3748
+            ],
+            [
+              1782946800000,
+              16.3948
+            ],
+            [
+              1783033200000,
+              16.2633
+            ],
+            [
+              1783292400000,
+              16.2304
+            ],
+            [
+              1783378800000,
+              16.1987
+            ],
+            [
+              1783465200000,
+              16.3209
+            ],
+            [
+              1783551600000,
+              16.4003
+            ],
+            [
+              1783638000000,
+              16.315
+            ],
+            [
+              1783897200000,
+              16.3549
+            ],
+            [
+              1783983600000,
+              16.4678
+            ],
+            [
+              1784070000000,
+              16.3467
+            ],
+            [
+              1784156400000,
+              16.318
+            ],
+            [
+              1784242800000,
+              16.4012
+            ],
+            [
+              1784502000000,
+              16.5535
+            ],
+            [
+              1784588400000,
+              16.4999
+            ],
+            [
+              1784674800000,
+              16.46
+            ],
+            [
+              1784761200000,
+              16.3936
+            ],
+            [
+              1784847600000,
+              16.8159
+            ],
+            [
+              1785106800000,
+              16.7091
+            ],
+            [
+              1785193200000,
+              16.7786
+            ],
+            [
+              1785279600000,
+              16.702
+            ],
+            [
+              1785366000000,
+              16.6604
+            ],
+            [
+              1785452400000,
+              16.5
+            ],
+            [
+              1785711600000,
+              16.4583
+            ],
+            [
+              1785798000000,
+              16.523
+            ],
+            [
+              1785884400000,
+              16.3827
+            ],
+            [
+              1785970800000,
+              16.3048
+            ],
+            [
+              1786057200000,
+              16.3419
+            ],
+            [
+              1786316400000,
+              16.1519
+            ],
+            [
+              1786402800000,
+              16.1855
+            ],
+            [
+              1786489200000,
+              16.1852
+            ],
+            [
+              1786575600000,
+              16.1379
+            ],
+            [
+              1786662000000,
+              16.1833
+            ],
+            [
+              1786921200000,
+              16.1912
+            ],
+            [
+              1787007600000,
+              16.222
+            ],
+            [
+              1787094000000,
+              16.2528
+            ],
+            [
+              1787180400000,
+              16.0901
+            ],
+            [
+              1787266800000,
+              16.102
+            ],
+            [
+              1787526000000,
+              15.9938
+            ],
+            [
+              1787612400000,
+              15.9927
+            ],
+            [
+              1787698800000,
+              15.9242
+            ],
+            [
+              1787785200000,
+              15.9435
+            ],
+            [
+              1787871600000,
+              15.9915
+            ],
+            [
+              1788130800000,
+              16.1687
+            ],
+            [
+              1788217200000,
+              16.0921
+            ],
+            [
+              1788303600000,
+              16.1559
+            ],
+            [
+              1788390000000,
+              16.0628
+            ],
+            [
+              1788476400000,
+              15.9775
+            ],
+            [
+              1788735600000,
+              15.9601
+            ],
+            [
+              1788822000000,
+              15.9832
+            ],
+            [
+              1788908400000,
+              16.0069
+            ],
+            [
+              1788994800000,
+              16.0395
+            ],
+            [
+              1789081200000,
+              16.2026
+            ],
+            [
+              1789340400000,
+              16.1783
+            ],
+            [
+              1789426800000,
+              16.2481
+            ],
+            [
+              1789513200000,
+              16.2672
+            ],
+            [
+              1789599600000,
+              16.3764
+            ],
+            [
+              1789686000000,
+              16.2551
+            ],
+            [
+              1789768362000,
+              16.2463
+            ]
+          ]
+        },
+        {
+          "code": "EURZAR",
+          "label": "EUR/ZAR",
+          "foreign": "EUR",
+          "spot": 18.6729,
+          "previous": 18.653,
+          "changePct": 0.11,
+          "windows": {
+            "1W": -0.44,
+            "1M": -0.81,
+            "3M": -0.76,
+            "6M": -5.23,
+            "1Y": -7.77
+          },
+          "high1y": 20.2804,
+          "low1y": 18.5182,
+          "avg1y": 19.2473,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              18.7491
+            ],
+            [
+              1782860400000,
+              18.694
+            ],
+            [
+              1782946800000,
+              18.6675
+            ],
+            [
+              1783033200000,
+              18.5774
+            ],
+            [
+              1783292400000,
+              18.5538
+            ],
+            [
+              1783378800000,
+              18.5182
+            ],
+            [
+              1783465200000,
+              18.5827
+            ],
+            [
+              1783551600000,
+              18.731
+            ],
+            [
+              1783638000000,
+              18.6513
+            ],
+            [
+              1783897200000,
+              18.6505
+            ],
+            [
+              1783983600000,
+              18.7473
+            ],
+            [
+              1784070000000,
+              18.6877
+            ],
+            [
+              1784156400000,
+              18.7191
+            ],
+            [
+              1784242800000,
+              18.773
+            ],
+            [
+              1784502000000,
+              18.9054
+            ],
+            [
+              1784588400000,
+              18.837
+            ],
+            [
+              1784674800000,
+              18.7695
+            ],
+            [
+              1784761200000,
+              18.7028
+            ],
+            [
+              1784847600000,
+              19.13
+            ],
+            [
+              1785106800000,
+              19.0391
+            ],
+            [
+              1785193200000,
+              19.0756
+            ],
+            [
+              1785279600000,
+              19.0174
+            ],
+            [
+              1785366000000,
+              19.1064
+            ],
+            [
+              1785452400000,
+              19.0128
+            ],
+            [
+              1785711600000,
+              19.0
+            ],
+            [
+              1785798000000,
+              19.0128
+            ],
+            [
+              1785884400000,
+              18.8933
+            ],
+            [
+              1785970800000,
+              18.8438
+            ],
+            [
+              1786057200000,
+              18.8351
+            ],
+            [
+              1786316400000,
+              18.6574
+            ],
+            [
+              1786402800000,
+              18.687
+            ],
+            [
+              1786489200000,
+              18.6814
+            ],
+            [
+              1786575600000,
+              18.6015
+            ],
+            [
+              1786662000000,
+              18.6686
+            ],
+            [
+              1786921200000,
+              18.7389
+            ],
+            [
+              1787007600000,
+              18.7887
+            ],
+            [
+              1787094000000,
+              18.8139
+            ],
+            [
+              1787180400000,
+              18.7889
+            ],
+            [
+              1787266800000,
+              18.8253
+            ],
+            [
+              1787526000000,
+              18.6827
+            ],
+            [
+              1787612400000,
+              18.672
+            ],
+            [
+              1787698800000,
+              18.5903
+            ],
+            [
+              1787785200000,
+              18.5814
+            ],
+            [
+              1787871600000,
+              18.6352
+            ],
+            [
+              1788130800000,
+              18.7371
+            ],
+            [
+              1788217200000,
+              18.7071
+            ],
+            [
+              1788303600000,
+              18.7355
+            ],
+            [
+              1788390000000,
+              18.6077
+            ],
+            [
+              1788476400000,
+              18.5923
+            ],
+            [
+              1788735600000,
+              18.5353
+            ],
+            [
+              1788822000000,
+              18.5824
+            ],
+            [
+              1788908400000,
+              18.6102
+            ],
+            [
+              1788994800000,
+              18.6597
+            ],
+            [
+              1789081200000,
+              18.8107
+            ],
+            [
+              1789340400000,
+              18.7557
+            ],
+            [
+              1789426800000,
+              18.7637
+            ],
+            [
+              1789513200000,
+              18.7662
+            ],
+            [
+              1789599600000,
+              18.7824
+            ],
+            [
+              1789686000000,
+              18.653
+            ],
+            [
+              1789768201000,
+              18.6729
+            ]
+          ]
+        },
+        {
+          "code": "GBPZAR",
+          "label": "GBP/ZAR",
+          "foreign": "GBP",
+          "spot": 21.7512,
+          "previous": 21.7091,
+          "changePct": 0.19,
+          "windows": {
+            "1W": -0.59,
+            "1M": -1.01,
+            "3M": -0.35,
+            "6M": -4.51,
+            "1Y": -6.19
+          },
+          "high1y": 23.3221,
+          "low1y": 21.4809,
+          "avg1y": 22.2067,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              21.7604
+            ],
+            [
+              1782860400000,
+              21.6907
+            ],
+            [
+              1782946800000,
+              21.7862
+            ],
+            [
+              1783033200000,
+              21.6928
+            ],
+            [
+              1783292400000,
+              21.6733
+            ],
+            [
+              1783378800000,
+              21.69
+            ],
+            [
+              1783465200000,
+              21.7837
+            ],
+            [
+              1783551600000,
+              21.9657
+            ],
+            [
+              1783638000000,
+              21.8821
+            ],
+            [
+              1783897200000,
+              21.8907
+            ],
+            [
+              1783983600000,
+              21.9839
+            ],
+            [
+              1784070000000,
+              21.9082
+            ],
+            [
+              1784156400000,
+              22.0955
+            ],
+            [
+              1784242800000,
+              22.1057
+            ],
+            [
+              1784502000000,
+              22.2512
+            ],
+            [
+              1784588400000,
+              22.164
+            ],
+            [
+              1784674800000,
+              22.0226
+            ],
+            [
+              1784761200000,
+              21.9279
+            ],
+            [
+              1784847600000,
+              22.3823
+            ],
+            [
+              1785106800000,
+              22.3073
+            ],
+            [
+              1785193200000,
+              22.2977
+            ],
+            [
+              1785279600000,
+              22.1905
+            ],
+            [
+              1785366000000,
+              22.2719
+            ],
+            [
+              1785452400000,
+              22.2085
+            ],
+            [
+              1785711600000,
+              22.2039
+            ],
+            [
+              1785798000000,
+              22.185
+            ],
+            [
+              1785884400000,
+              22.0359
+            ],
+            [
+              1785970800000,
+              21.9599
+            ],
+            [
+              1786057200000,
+              21.9891
+            ],
+            [
+              1786316400000,
+              21.7911
+            ],
+            [
+              1786402800000,
+              21.8674
+            ],
+            [
+              1786489200000,
+              21.8637
+            ],
+            [
+              1786575600000,
+              21.7812
+            ],
+            [
+              1786662000000,
+              21.8348
+            ],
+            [
+              1786921200000,
+              21.9323
+            ],
+            [
+              1787007600000,
+              21.98
+            ],
+            [
+              1787094000000,
+              21.998
+            ],
+            [
+              1787180400000,
+              21.8891
+            ],
+            [
+              1787266800000,
+              21.9734
+            ],
+            [
+              1787526000000,
+              21.8361
+            ],
+            [
+              1787612400000,
+              21.8253
+            ],
+            [
+              1787698800000,
+              21.7304
+            ],
+            [
+              1787785200000,
+              21.6785
+            ],
+            [
+              1787871600000,
+              21.743
+            ],
+            [
+              1788130800000,
+              21.8895
+            ],
+            [
+              1788217200000,
+              21.8184
+            ],
+            [
+              1788303600000,
+              21.843
+            ],
+            [
+              1788390000000,
+              21.6578
+            ],
+            [
+              1788476400000,
+              21.6297
+            ],
+            [
+              1788735600000,
+              21.5735
+            ],
+            [
+              1788822000000,
+              21.6494
+            ],
+            [
+              1788908400000,
+              21.6751
+            ],
+            [
+              1788994800000,
+              21.7316
+            ],
+            [
+              1789081200000,
+              21.886
+            ],
+            [
+              1789340400000,
+              21.8802
+            ],
+            [
+              1789426800000,
+              21.9353
+            ],
+            [
+              1789513200000,
+              21.9119
+            ],
+            [
+              1789599600000,
+              21.9127
+            ],
+            [
+              1789686000000,
+              21.7091
+            ],
+            [
+              1789766999000,
+              21.7512
+            ]
+          ]
+        },
+        {
+          "code": "JPYZAR",
+          "label": "JPY/ZAR",
+          "foreign": "JPY",
+          "spot": 0.1036,
+          "previous": 0.1041,
+          "changePct": -0.43,
+          "windows": {
+            "1W": -1.71,
+            "1M": 2.24,
+            "3M": 1.29,
+            "6M": -3.1,
+            "1Y": -10.76
+          },
+          "high1y": 0.1174,
+          "low1y": 0.0998,
+          "avg1y": 0.1053,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              0.1014
+            ],
+            [
+              1782860400000,
+              0.1007
+            ],
+            [
+              1782946800000,
+              0.1009
+            ],
+            [
+              1783033200000,
+              0.1007
+            ],
+            [
+              1783292400000,
+              0.1005
+            ],
+            [
+              1783378800000,
+              0.0998
+            ],
+            [
+              1783465200000,
+              0.1004
+            ],
+            [
+              1783551600000,
+              0.1009
+            ],
+            [
+              1783638000000,
+              0.1005
+            ],
+            [
+              1783897200000,
+              0.101
+            ],
+            [
+              1783983600000,
+              0.1014
+            ],
+            [
+              1784070000000,
+              0.1009
+            ],
+            [
+              1784156400000,
+              0.1007
+            ],
+            [
+              1784242800000,
+              0.101
+            ],
+            [
+              1784502000000,
+              0.1018
+            ],
+            [
+              1784588400000,
+              0.1016
+            ],
+            [
+              1784674800000,
+              0.1009
+            ],
+            [
+              1784761200000,
+              0.1005
+            ],
+            [
+              1784847600000,
+              0.1026
+            ],
+            [
+              1785106800000,
+              0.1021
+            ],
+            [
+              1785193200000,
+              0.1024
+            ],
+            [
+              1785279600000,
+              0.1019
+            ],
+            [
+              1785366000000,
+              0.102
+            ],
+            [
+              1785452400000,
+              0.103
+            ],
+            [
+              1785711600000,
+              0.1044
+            ],
+            [
+              1785798000000,
+              0.1049
+            ],
+            [
+              1785884400000,
+              0.1039
+            ],
+            [
+              1785970800000,
+              0.1035
+            ],
+            [
+              1786057200000,
+              0.1032
+            ],
+            [
+              1786316400000,
+              0.1022
+            ],
+            [
+              1786402800000,
+              0.1017
+            ],
+            [
+              1786489200000,
+              0.1016
+            ],
+            [
+              1786575600000,
+              0.1013
+            ],
+            [
+              1786662000000,
+              0.1015
+            ],
+            [
+              1786921200000,
+              0.1017
+            ],
+            [
+              1787007600000,
+              0.1018
+            ],
+            [
+              1787094000000,
+              0.1019
+            ],
+            [
+              1787180400000,
+              0.1017
+            ],
+            [
+              1787266800000,
+              0.1014
+            ],
+            [
+              1787526000000,
+              0.1006
+            ],
+            [
+              1787612400000,
+              0.1006
+            ],
+            [
+              1787698800000,
+              0.1
+            ],
+            [
+              1787785200000,
+              0.1001
+            ],
+            [
+              1787871600000,
+              0.1004
+            ],
+            [
+              1788130800000,
+              0.101
+            ],
+            [
+              1788217200000,
+              0.1008
+            ],
+            [
+              1788303600000,
+              0.1009
+            ],
+            [
+              1788390000000,
+              0.1011
+            ],
+            [
+              1788476400000,
+              0.1027
+            ],
+            [
+              1788735600000,
+              0.1022
+            ],
+            [
+              1788822000000,
+              0.1039
+            ],
+            [
+              1788908400000,
+              0.1043
+            ],
+            [
+              1788994800000,
+              0.1044
+            ],
+            [
+              1789081200000,
+              0.1049
+            ],
+            [
+              1789340400000,
+              0.1054
+            ],
+            [
+              1789426800000,
+              0.1052
+            ],
+            [
+              1789513200000,
+              0.1048
+            ],
+            [
+              1789599600000,
+              0.1049
+            ],
+            [
+              1789686000000,
+              0.1041
+            ],
+            [
+              1789766939000,
+              0.1036
+            ]
+          ]
+        },
+        {
+          "code": "AUDZAR",
+          "label": "AUD/ZAR",
+          "foreign": "AUD",
+          "spot": 11.5795,
+          "previous": 11.5655,
+          "changePct": 0.12,
+          "windows": {
+            "1W": 0.08,
+            "1M": 0.99,
+            "3M": 1.26,
+            "6M": -1.57,
+            "1Y": 1.99
+          },
+          "high1y": 12.0324,
+          "low1y": 10.9403,
+          "avg1y": 11.4414,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              11.2998
+            ],
+            [
+              1782860400000,
+              11.3213
+            ],
+            [
+              1782946800000,
+              11.3053
+            ],
+            [
+              1783033200000,
+              11.2475
+            ],
+            [
+              1783292400000,
+              11.2531
+            ],
+            [
+              1783378800000,
+              11.2568
+            ],
+            [
+              1783465200000,
+              11.2821
+            ],
+            [
+              1783551600000,
+              11.3749
+            ],
+            [
+              1783638000000,
+              11.3272
+            ],
+            [
+              1783897200000,
+              11.3527
+            ],
+            [
+              1783983600000,
+              11.3942
+            ],
+            [
+              1784070000000,
+              11.4116
+            ],
+            [
+              1784156400000,
+              11.4368
+            ],
+            [
+              1784242800000,
+              11.481
+            ],
+            [
+              1784502000000,
+              11.5456
+            ],
+            [
+              1784588400000,
+              11.5522
+            ],
+            [
+              1784674800000,
+              11.5234
+            ],
+            [
+              1784761200000,
+              11.4553
+            ],
+            [
+              1784847600000,
+              11.7153
+            ],
+            [
+              1785106800000,
+              11.6863
+            ],
+            [
+              1785193200000,
+              11.7227
+            ],
+            [
+              1785279600000,
+              11.6492
+            ],
+            [
+              1785366000000,
+              11.5957
+            ],
+            [
+              1785452400000,
+              11.5916
+            ],
+            [
+              1785711600000,
+              11.5958
+            ],
+            [
+              1785798000000,
+              11.5615
+            ],
+            [
+              1785884400000,
+              11.5446
+            ],
+            [
+              1785970800000,
+              11.5066
+            ],
+            [
+              1786057200000,
+              11.4951
+            ],
+            [
+              1786316400000,
+              11.4034
+            ],
+            [
+              1786402800000,
+              11.4184
+            ],
+            [
+              1786489200000,
+              11.4316
+            ],
+            [
+              1786575600000,
+              11.3981
+            ],
+            [
+              1786662000000,
+              11.4314
+            ],
+            [
+              1786921200000,
+              11.4713
+            ],
+            [
+              1787007600000,
+              11.53
+            ],
+            [
+              1787094000000,
+              11.5086
+            ],
+            [
+              1787180400000,
+              11.4638
+            ],
+            [
+              1787266800000,
+              11.4665
+            ],
+            [
+              1787526000000,
+              11.4691
+            ],
+            [
+              1787612400000,
+              11.449
+            ],
+            [
+              1787698800000,
+              11.4095
+            ],
+            [
+              1787785200000,
+              11.4492
+            ],
+            [
+              1787871600000,
+              11.5054
+            ],
+            [
+              1788130800000,
+              11.5758
+            ],
+            [
+              1788217200000,
+              11.5462
+            ],
+            [
+              1788303600000,
+              11.5511
+            ],
+            [
+              1788390000000,
+              11.5054
+            ],
+            [
+              1788476400000,
+              11.5141
+            ],
+            [
+              1788735600000,
+              11.5009
+            ],
+            [
+              1788822000000,
+              11.5399
+            ],
+            [
+              1788908400000,
+              11.5567
+            ],
+            [
+              1788994800000,
+              11.5816
+            ],
+            [
+              1789081200000,
+              11.5943
+            ],
+            [
+              1789340400000,
+              11.5699
+            ],
+            [
+              1789426800000,
+              11.5967
+            ],
+            [
+              1789513200000,
+              11.5901
+            ],
+            [
+              1789599600000,
+              11.6072
+            ],
+            [
+              1789686000000,
+              11.5655
+            ],
+            [
+              1789766939000,
+              11.5795
+            ]
+          ]
+        },
+        {
+          "code": "CHFZAR",
+          "label": "CHF/ZAR",
+          "foreign": "CHF",
+          "spot": 19.786,
+          "previous": 19.7012,
+          "changePct": 0.43,
+          "windows": {
+            "1W": -0.12,
+            "1M": -1.77,
+            "3M": -3.11,
+            "6M": -7.94,
+            "1Y": -8.58
+          },
+          "high1y": 21.8908,
+          "low1y": 19.7012,
+          "avg1y": 20.8147,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              20.3252
+            ],
+            [
+              1782860400000,
+              20.2513
+            ],
+            [
+              1782946800000,
+              20.2736
+            ],
+            [
+              1783033200000,
+              20.216
+            ],
+            [
+              1783292400000,
+              20.1825
+            ],
+            [
+              1783378800000,
+              20.1025
+            ],
+            [
+              1783465200000,
+              20.1471
+            ],
+            [
+              1783551600000,
+              20.2922
+            ],
+            [
+              1783638000000,
+              20.2253
+            ],
+            [
+              1783897200000,
+              20.2025
+            ],
+            [
+              1783983600000,
+              20.2138
+            ],
+            [
+              1784070000000,
+              20.2162
+            ],
+            [
+              1784156400000,
+              20.2792
+            ],
+            [
+              1784242800000,
+              20.2875
+            ],
+            [
+              1784502000000,
+              20.4626
+            ],
+            [
+              1784588400000,
+              20.3696
+            ],
+            [
+              1784674800000,
+              20.2547
+            ],
+            [
+              1784761200000,
+              20.128
+            ],
+            [
+              1784847600000,
+              20.5825
+            ],
+            [
+              1785106800000,
+              20.4669
+            ],
+            [
+              1785193200000,
+              20.4744
+            ],
+            [
+              1785279600000,
+              20.3798
+            ],
+            [
+              1785366000000,
+              20.4832
+            ],
+            [
+              1785452400000,
+              20.4751
+            ],
+            [
+              1785711600000,
+              20.3946
+            ],
+            [
+              1785798000000,
+              20.3882
+            ],
+            [
+              1785884400000,
+              20.2461
+            ],
+            [
+              1785970800000,
+              20.2117
+            ],
+            [
+              1786057200000,
+              20.1171
+            ],
+            [
+              1786316400000,
+              19.9759
+            ],
+            [
+              1786402800000,
+              19.9843
+            ],
+            [
+              1786489200000,
+              19.9533
+            ],
+            [
+              1786575600000,
+              19.8421
+            ],
+            [
+              1786662000000,
+              19.879
+            ],
+            [
+              1786921200000,
+              19.9208
+            ],
+            [
+              1787007600000,
+              20.01
+            ],
+            [
+              1787094000000,
+              20.0084
+            ],
+            [
+              1787180400000,
+              20.172
+            ],
+            [
+              1787266800000,
+              20.1435
+            ],
+            [
+              1787526000000,
+              19.9728
+            ],
+            [
+              1787612400000,
+              19.9456
+            ],
+            [
+              1787698800000,
+              19.8582
+            ],
+            [
+              1787785200000,
+              19.8028
+            ],
+            [
+              1787871600000,
+              19.8921
+            ],
+            [
+              1788130800000,
+              19.9863
+            ],
+            [
+              1788217200000,
+              19.9202
+            ],
+            [
+              1788303600000,
+              19.9094
+            ],
+            [
+              1788390000000,
+              19.7544
+            ],
+            [
+              1788476400000,
+              19.7996
+            ],
+            [
+              1788735600000,
+              19.7031
+            ],
+            [
+              1788822000000,
+              19.7533
+            ],
+            [
+              1788908400000,
+              19.7816
+            ],
+            [
+              1788994800000,
+              19.8015
+            ],
+            [
+              1789081200000,
+              19.9234
+            ],
+            [
+              1789340400000,
+              19.8093
+            ],
+            [
+              1789426800000,
+              19.8806
+            ],
+            [
+              1789513200000,
+              19.8587
+            ],
+            [
+              1789599600000,
+              19.838
+            ],
+            [
+              1789686000000,
+              19.7012
+            ],
+            [
+              1789766999000,
+              19.786
+            ]
+          ]
+        },
+        {
+          "code": "CNYZAR",
+          "label": "CNY/ZAR",
+          "foreign": "CNY",
+          "spot": 2.426,
+          "previous": 2.4234,
+          "changePct": 0.11,
+          "windows": {
+            "1W": 0.59,
+            "1M": 1.3,
+            "3M": -0.38,
+            "6M": -1.82,
+            "1Y": 0.08
+          },
+          "high1y": 2.4872,
+          "low1y": 2.2589,
+          "avg1y": 2.4009,
+          "sessions": 261,
+          "series": [
+            [
+              1782774000000,
+              2.4166
+            ],
+            [
+              1782860400000,
+              2.4102
+            ],
+            [
+              1782946800000,
+              2.413
+            ],
+            [
+              1783033200000,
+              2.3955
+            ],
+            [
+              1783292400000,
+              2.3894
+            ],
+            [
+              1783378800000,
+              2.3814
+            ],
+            [
+              1783465200000,
+              2.3989
+            ],
+            [
+              1783551600000,
+              2.4107
+            ],
+            [
+              1783638000000,
+              2.4016
+            ],
+            [
+              1783897200000,
+              2.4133
+            ],
+            [
+              1783983600000,
+              2.4288
+            ],
+            [
+              1784070000000,
+              2.4143
+            ],
+            [
+              1784156400000,
+              2.4108
+            ],
+            [
+              1784242800000,
+              2.4215
+            ],
+            [
+              1784502000000,
+              2.4425
+            ],
+            [
+              1784588400000,
+              2.436
+            ],
+            [
+              1784674800000,
+              2.4327
+            ],
+            [
+              1784761200000,
+              2.4199
+            ],
+            [
+              1784847600000,
+              2.4827
+            ],
+            [
+              1785106800000,
+              2.4672
+            ],
+            [
+              1785193200000,
+              2.4798
+            ],
+            [
+              1785279600000,
+              2.4666
+            ],
+            [
+              1785366000000,
+              2.4623
+            ],
+            [
+              1785452400000,
+              2.4425
+            ],
+            [
+              1785711600000,
+              2.4378
+            ],
+            [
+              1785798000000,
+              2.4469
+            ],
+            [
+              1785884400000,
+              2.4258
+            ],
+            [
+              1785970800000,
+              2.4156
+            ],
+            [
+              1786057200000,
+              2.4214
+            ],
+            [
+              1786316400000,
+              2.3937
+            ],
+            [
+              1786402800000,
+              2.3985
+            ],
+            [
+              1786489200000,
+              2.399
+            ],
+            [
+              1786575600000,
+              2.3927
+            ],
+            [
+              1786662000000,
+              2.3999
+            ],
+            [
+              1786921200000,
+              2.4011
+            ],
+            [
+              1787007600000,
+              2.4066
+            ],
+            [
+              1787094000000,
+              2.41
+            ],
+            [
+              1787180400000,
+              2.3909
+            ],
+            [
+              1787266800000,
+              2.395
+            ],
+            [
+              1787526000000,
+              2.3796
+            ],
+            [
+              1787612400000,
+              2.3802
+            ],
+            [
+              1787698800000,
+              2.3695
+            ],
+            [
+              1787785200000,
+              2.3716
+            ],
+            [
+              1787871600000,
+              2.3787
+            ],
+            [
+              1788130800000,
+              2.4035
+            ],
+            [
+              1788217200000,
+              2.3938
+            ],
+            [
+              1788303600000,
+              2.4049
+            ],
+            [
+              1788390000000,
+              2.3906
+            ],
+            [
+              1788476400000,
+              2.3779
+            ],
+            [
+              1788735600000,
+              2.378
+            ],
+            [
+              1788822000000,
+              2.3815
+            ],
+            [
+              1788908400000,
+              2.3853
+            ],
+            [
+              1788994800000,
+              2.39
+            ],
+            [
+              1789081200000,
+              2.4159
+            ],
+            [
+              1789340400000,
+              2.4117
+            ],
+            [
+              1789426800000,
+              2.422
+            ],
+            [
+              1789513200000,
+              2.4239
+            ],
+            [
+              1789599600000,
+              2.4419
+            ],
+            [
+              1789686000000,
+              2.4234
+            ],
+            [
+              1789770120000,
+              2.426
+            ]
+          ]
+        }
+      ],
+      "zarIndex": {
+        "label": "Equal-weighted ZAR vs majors",
+        "note": "Derived: each cross rebased to 100 at the start of the window, then averaged and inverted (up = rand stronger).",
+        "level": 99.875,
+        "changePct": -0.06,
+        "series": [
+          [
+            1782774000000,
+            100.0
+          ],
+          [
+            1782860400000,
+            100.289
+          ],
+          [
+            1782946800000,
+            100.188
+          ],
+          [
+            1783033200000,
+            100.682
+          ],
+          [
+            1783292400000,
+            100.824
+          ],
+          [
+            1783378800000,
+            101.07
+          ],
+          [
+            1783465200000,
+            100.594
+          ],
+          [
+            1783551600000,
+            99.929
+          ],
+          [
+            1783638000000,
+            100.338
+          ],
+          [
+            1783897200000,
+            100.141
+          ],
+          [
+            1783983600000,
+            99.7
+          ],
+          [
+            1784070000000,
+            100.032
+          ],
+          [
+            1784156400000,
+            99.883
+          ],
+          [
+            1784242800000,
+            99.597
+          ],
+          [
+            1784502000000,
+            98.839
+          ],
+          [
+            1784588400000,
+            99.113
+          ],
+          [
+            1784674800000,
+            99.521
+          ],
+          [
+            1784761200000,
+            99.997
+          ],
+          [
+            1784847600000,
+            97.743
+          ],
+          [
+            1785106800000,
+            98.214
+          ],
+          [
+            1785193200000,
+            97.974
+          ],
+          [
+            1785279600000,
+            98.446
+          ],
+          [
+            1785366000000,
+            98.369
+          ],
+          [
+            1785452400000,
+            98.602
+          ],
+          [
+            1785711600000,
+            98.535
+          ],
+          [
+            1785798000000,
+            98.408
+          ],
+          [
+            1785884400000,
+            99.089
+          ],
+          [
+            1785970800000,
+            99.428
+          ],
+          [
+            1786057200000,
+            99.472
+          ],
+          [
+            1786316400000,
+            100.421
+          ],
+          [
+            1786402800000,
+            100.336
+          ],
+          [
+            1786489200000,
+            100.359
+          ],
+          [
+            1786575600000,
+            100.719
+          ],
+          [
+            1786662000000,
+            100.452
+          ],
+          [
+            1786921200000,
+            100.211
+          ],
+          [
+            1787007600000,
+            99.931
+          ],
+          [
+            1787094000000,
+            99.867
+          ],
+          [
+            1787180400000,
+            100.182
+          ],
+          [
+            1787266800000,
+            100.123
+          ],
+          [
+            1787526000000,
+            100.742
+          ],
+          [
+            1787612400000,
+            100.8
+          ],
+          [
+            1787698800000,
+            101.252
+          ],
+          [
+            1787785200000,
+            101.238
+          ],
+          [
+            1787871600000,
+            100.888
+          ],
+          [
+            1788130800000,
+            100.166
+          ],
+          [
+            1788217200000,
+            100.473
+          ],
+          [
+            1788303600000,
+            100.3
+          ],
+          [
+            1788390000000,
+            100.829
+          ],
+          [
+            1788476400000,
+            100.739
+          ],
+          [
+            1788735600000,
+            100.993
+          ],
+          [
+            1788822000000,
+            100.536
+          ],
+          [
+            1788908400000,
+            100.356
+          ],
+          [
+            1788994800000,
+            100.164
+          ],
+          [
+            1789081200000,
+            99.483
+          ],
+          [
+            1789340400000,
+            99.614
+          ],
+          [
+            1789426800000,
+            99.397
+          ],
+          [
+            1789513200000,
+            99.461
+          ],
+          [
+            1789599600000,
+            99.229
+          ],
+          [
+            1789686000000,
+            99.932
+          ],
+          [
+            1789768362000,
+            99.875
+          ]
+        ]
+      }
+    }
+  },
+  "bonds": {
+    "fetchedAt": 1789772340.6867313,
+    "fetchedAtIso": "2026-09-19 00:59:00 SAST",
+    "source": "World Government Bonds - JSE benchmark yields",
+    "sessionKey": "2026-09-18",
+    "data": {
+      "asOf": "18 September 2026",
+      "lastUpdate": "18 Sep 2026, 17:15",
+      "fetchedAt": "2026-09-18T17:59:00",
+      "source": "World Government Bonds (JSE daily benchmark yields)",
+      "currency": "ZAR",
+      "policyRate": {
+        "label": "SARB policy (repo) rate",
+        "rate": 7.0,
+        "asOf": "May 2026"
+      },
+      "benchmark10y": 8.84,
+      "curve": [
+        {
+          "months": 3,
+          "label": "3M",
+          "yield": 6.42,
+          "change1mBp": -5.0,
+          "change6mBp": 14.0,
+          "change12mBp": -18.0,
+          "zeroCouponPrice": 98.46,
+          "capitalGrowth": 1.015
+        },
+        {
+          "months": 60,
+          "label": "5Y",
+          "yield": 8.29,
+          "change1mBp": 23.5,
+          "change6mBp": 8.0,
+          "change12mBp": 40.5,
+          "zeroCouponPrice": 67.15,
+          "capitalGrowth": 1.489
+        },
+        {
+          "months": 120,
+          "label": "10Y",
+          "yield": 8.84,
+          "change1mBp": 13.5,
+          "change6mBp": -12.0,
+          "change12mBp": -34.0,
+          "zeroCouponPrice": 42.87,
+          "capitalGrowth": 2.332
+        },
+        {
+          "months": 144,
+          "label": "12Y",
+          "yield": 9.075,
+          "change1mBp": 9.5,
+          "change6mBp": -18.0,
+          "change12mBp": -65.0,
+          "zeroCouponPrice": 35.26,
+          "capitalGrowth": 2.835
+        },
+        {
+          "months": 240,
+          "label": "20Y",
+          "yield": 9.39,
+          "change1mBp": 2.0,
+          "change6mBp": -13.5,
+          "change12mBp": -103.5,
+          "zeroCouponPrice": 16.61,
+          "capitalGrowth": 6.019
+        },
+        {
+          "months": 300,
+          "label": "25Y",
+          "yield": 9.33,
+          "change1mBp": 1.0,
+          "change6mBp": -20.0,
+          "change12mBp": -110.5,
+          "zeroCouponPrice": 10.75,
+          "capitalGrowth": 9.3
+        },
+        {
+          "months": 360,
+          "label": "30Y",
+          "yield": 9.2,
+          "change1mBp": -5.5,
+          "change6mBp": -24.5,
+          "change12mBp": -111.5,
+          "zeroCouponPrice": 7.13,
+          "capitalGrowth": 14.017
+        }
+      ],
+      "history": [
+        {
+          "period": "Sep 2026",
+          "yields": {
+            "1M": null,
+            "3M": 6.42,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": null,
+            "5Y": 8.29,
+            "7Y": null,
+            "10Y": 8.84,
+            "30Y": 9.2
+          },
+          "spread10y2yBp": null
+        },
+        {
+          "period": "Dec 2025",
+          "yields": {
+            "1M": null,
+            "3M": 6.24,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": null,
+            "5Y": 7.345,
+            "7Y": null,
+            "10Y": 8.21,
+            "30Y": 8.975
+          },
+          "spread10y2yBp": null
+        },
+        {
+          "period": "Dec 2024",
+          "yields": {
+            "1M": null,
+            "3M": 7.75,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": null,
+            "5Y": 8.27,
+            "7Y": null,
+            "10Y": 9.035,
+            "30Y": 11.115
+          },
+          "spread10y2yBp": null
+        },
+        {
+          "period": "Dec 2023",
+          "yields": {
+            "1M": null,
+            "3M": 8.5,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": null,
+            "5Y": 8.695,
+            "7Y": null,
+            "10Y": 9.77,
+            "30Y": 12.16
+          },
+          "spread10y2yBp": null
+        },
+        {
+          "period": "Dec 2022",
+          "yields": {
+            "1M": null,
+            "3M": 7.74,
+            "6M": null,
+            "1Y": null,
+            "2Y": 7.4,
+            "3Y": null,
+            "5Y": 8.765,
+            "7Y": null,
+            "10Y": 10.185,
+            "30Y": 11.405
+          },
+          "spread10y2yBp": 278.5
+        },
+        {
+          "period": "Dec 2021",
+          "yields": {
+            "1M": null,
+            "3M": 5.25,
+            "6M": null,
+            "1Y": null,
+            "2Y": 5.09,
+            "3Y": null,
+            "5Y": 7.86,
+            "7Y": null,
+            "10Y": 9.35,
+            "30Y": 10.625
+          },
+          "spread10y2yBp": 426.0
+        },
+        {
+          "period": "Dec 2020",
+          "yields": {
+            "1M": null,
+            "3M": 3.75,
+            "6M": null,
+            "1Y": null,
+            "2Y": 4.53,
+            "3Y": null,
+            "5Y": 6.665,
+            "7Y": null,
+            "10Y": 8.735,
+            "30Y": 10.81
+          },
+          "spread10y2yBp": 420.5
+        },
+        {
+          "period": "Dec 2019",
+          "yields": {
+            "1M": null,
+            "3M": 6.0,
+            "6M": null,
+            "1Y": null,
+            "2Y": 6.715,
+            "3Y": null,
+            "5Y": 7.235,
+            "7Y": null,
+            "10Y": 8.255,
+            "30Y": 10.09
+          },
+          "spread10y2yBp": 154.0
+        },
+        {
+          "period": "Dec 2018",
+          "yields": {
+            "1M": null,
+            "3M": 7.25,
+            "6M": null,
+            "1Y": null,
+            "2Y": 5.96,
+            "3Y": 7.005,
+            "5Y": 8.11,
+            "7Y": null,
+            "10Y": 8.885,
+            "30Y": 9.91
+          },
+          "spread10y2yBp": 292.5
+        },
+        {
+          "period": "Dec 2017",
+          "yields": {
+            "1M": null,
+            "3M": 7.05,
+            "6M": null,
+            "1Y": null,
+            "2Y": 7.28,
+            "3Y": 7.575,
+            "5Y": 7.915,
+            "7Y": null,
+            "10Y": 8.605,
+            "30Y": 9.73
+          },
+          "spread10y2yBp": 132.5
+        },
+        {
+          "period": "Dec 2016",
+          "yields": {
+            "1M": null,
+            "3M": 8.0,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": 8.125,
+            "5Y": 8.28,
+            "7Y": null,
+            "10Y": 8.925,
+            "30Y": 9.63
+          },
+          "spread10y2yBp": null
+        },
+        {
+          "period": "Dec 2015",
+          "yields": {
+            "1M": null,
+            "3M": 6.35,
+            "6M": null,
+            "1Y": null,
+            "2Y": null,
+            "3Y": 8.995,
+            "5Y": 9.275,
+            "7Y": null,
+            "10Y": 9.77,
+            "30Y": 10.405
+          },
+          "spread10y2yBp": null
+        }
+      ],
+      "spreadsVsPolicy": [
+        {
+          "months": 3,
+          "label": "3M",
+          "yield": 6.42,
+          "spreadOverPolicyBp": -58.0
+        },
+        {
+          "months": 60,
+          "label": "5Y",
+          "yield": 8.29,
+          "spreadOverPolicyBp": 129.0
+        },
+        {
+          "months": 120,
+          "label": "10Y",
+          "yield": 8.84,
+          "spreadOverPolicyBp": 184.0
+        },
+        {
+          "months": 360,
+          "label": "30Y",
+          "yield": 9.2,
+          "spreadOverPolicyBp": 220.0
+        }
+      ],
+      "ratings": [
+        {
+          "agency": "Standard & Poor's",
+          "rating": "BB",
+          "outlook": "positive",
+          "asOf": "17 Nov 2025"
+        },
+        {
+          "agency": "Moody's Investors Service",
+          "rating": "Ba2",
+          "outlook": "positive",
+          "asOf": "25 May 2026"
+        },
+        {
+          "agency": "Fitch Ratings",
+          "rating": "BB-",
+          "outlook": null,
+          "asOf": "16 Dec 2021"
+        },
+        {
+          "agency": "DBRS",
+          "rating": null,
+          "outlook": null,
+          "asOf": null
+        }
+      ],
+      "cds5yBp": 116.43,
+      "shape": {
+        "policySpread10yBp": 184.0,
+        "slope3m10yBp": 242.0,
+        "slope5y10yBp": 55.0,
+        "slope10y30yBp": 36.0,
+        "longEndInverted": true,
+        "peakMonths": 240
+      }
+    }
+  }
+}

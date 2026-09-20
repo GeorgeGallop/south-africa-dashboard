@@ -8,26 +8,26 @@
   <link rel="stylesheet" href="../css/style.css">
 
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="../js/tablekit.js"></script>
 
   <style>
     .sortable-header { cursor: pointer; user-select: none; }
     .sortable-header:hover { background-color: #f1f3f5; }
     .sort-icon { font-size: 0.75rem; margin-left: 4px; opacity: 0.6; }
-    .table th { white-space: nowrap; }
-    /* Fix uneven row heights: no text wrap in any cell, consistent row height */
-    #plantTable td, #plantTable th { 
-      white-space: nowrap; 
-      vertical-align: middle; 
-      overflow: hidden; 
-      text-overflow: ellipsis; 
-    }
-    /* Limit description/notes columns if present - they cause the uneven heights */
-    #plantTable td:nth-child(n+10) { 
-      max-width: 180px; 
-      white-space: normal; 
-      overflow: visible; 
-    }
+    .table th, .table td { white-space: nowrap; vertical-align: middle; }
+    /* Dark table-head rows always use white header text */
+    .table-dark th { color: #fff !important; }
+    .scope-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; border-radius: 20px; padding: 0.2rem 0.6rem; }
+    .scope-Project    { background: #e3f2fd; color: #0d47a1; }
+    .scope-Allocation { background: #fff3e0; color: #e65100; }
+    .scope-Target     { background: #f3e5f5; color: #6a1b9a; }
+    .type-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #fff; padding: 0.15rem 0.5rem; border-radius: 3px; white-space: normal; }
+    .src-link { font-size: 0.72rem; }
+    .status-pill { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; }
+    .st-online { background: #c8e6c9; color: #1b5e20; }
+    .st-shutdown { background: #ffcdd2; color: #b71c1c; }
+    .st-pending { background: #ffe0b2; color: #e65100; }
+    .st-upcoming { background: #e1bee7; color: #6a1b9a; }
   </style>
 </head>
 <body>
@@ -45,66 +45,65 @@
     <header class="mb-4">
       <h1 class="display-6 fw-bold text-sa-green mb-2">SAWEM • Plants</h1>
       <p class="text-muted mb-0">
-        Full plant fleet table from <code>data/power/Plants.xlsx</code>.
-        Columns are dynamically driven from the spreadsheet — reorder or rename columns in <code>Plants.xlsx</code> and the table adapts.
-        Source for technical fields (where available): <a href="https://www.eskom.co.za/eskom-divisions/gx/coal-fired-power-stations/" target="_blank" rel="noreferrer">Eskom coal-fired power stations</a>.
+        Full generation registry (Eskom fleet + every IPP / private project) read from a single canonical source:
+        <code>data/power/plants.csv</code>. It uses the same column structure as the SAWEM simulation dashboard's
+        Plants table, plus <strong>Scope</strong> (Project / Allocation / Target), <strong>Programme</strong>,
+        <strong>Bid Window</strong>, <strong>Province</strong> and <strong>Source</strong> links for every figure.
+        Edit the CSV and refresh this page to update the table.
       </p>
     </header>
 
-    <!-- Plants sub-section -->
-    <section class="mb-4">
-      <h2 class="h5 fw-bold text-sa-green mb-3">Plants</h2>
-
-      <section class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-3 p-md-4">
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-            <div>
-              <h2 class="h5 fw-bold text-sa-green mb-1">Plant table (full)</h2>
-              <div class="text-muted small">Use the filter to select a plant for the calculator below.</div>
-            </div>
-
-            <div class="input-group input-group-sm" style="min-width: 280px;">
-              <span class="input-group-text">Filter plants</span>
-              <input id="plantSearch" type="text" class="form-control" placeholder="Search plant name...">
-            </div>
+    <section class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-3 p-md-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+          <div>
+            <h2 class="h5 fw-bold text-sa-green mb-1">Plant table (full registry)</h2>
+            <div class="text-muted small">Use the filter / scope buttons to narrow rows for the calculator below.</div>
           </div>
 
-          <div class="table-responsive">
-            <table class="table table-sm align-middle mb-0" style="min-width: 1180px;" id="plantTable">
-              <thead>
-                <tr id="plantTableHead"></tr>
-              </thead>
-              <tbody id="plantTableBody"></tbody>
-            </table>
-          </div>
-
-          <div class="mt-3">
-            <div class="alert alert-light border mb-0 py-2">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
-                <div class="fw-semibold">Total nominal capacity</div>
-                <div class="fw-bold fs-5 mb-0"><span id="outTotalNominalMw">—</span> MW</div>
-              </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-sm btn-outline-success" id="btnDownloadPlants">⬇ Download CSV</button>
+            <div class="btn-group btn-group-sm" role="group" id="scopeGroup">
+              <button type="button" class="btn btn-outline-success active" data-scope="all">All</button>
+              <button type="button" class="btn btn-outline-success" data-scope="Project">Projects</button>
+              <button type="button" class="btn btn-outline-success" data-scope="Allocation">Allocations</button>
+              <button type="button" class="btn btn-outline-success" data-scope="Target">Targets</button>
             </div>
-          </div>
-
-          <!-- Graphs -->
-          <div class="row g-3 mt-2">
-            <div class="col-12 col-lg-6">
-              <div class="p-3 rounded-3 bg-light border">
-                <div class="fw-semibold mb-2">Capacity by owner</div>
-                <div id="ownerPie" style="height: 320px;"></div>
-              </div>
-            </div>
-            <div class="col-12 col-lg-6">
-              <div class="p-3 rounded-3 bg-light border">
-                <div class="fw-semibold mb-2">Capacity by owner (bar)</div>
-                <div id="ownerBar" style="height: 320px;"></div>
-              </div>
+            <div class="input-group input-group-sm" style="min-width: 260px;">
+              <span class="input-group-text">Filter</span>
+              <input id="plantSearch" type="text" class="form-control" placeholder="Search name / owner / programme...">
             </div>
           </div>
         </div>
-      </section>
+
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0 table-bordered" style="min-width: 1500px;" id="plantTable">
+            <thead class="table-dark">
+              <tr id="plantTableHead"></tr>
+            </thead>
+            <tbody id="plantTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="mt-3 d-flex flex-wrap gap-2" id="summaryChips"></div>
+      </div>
     </section>
+
+    <!-- Graphs -->
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-lg-6">
+        <div class="p-3 rounded-3 bg-light border h-100">
+          <div class="fw-semibold mb-2">Installed capacity by owner</div>
+          <div id="ownerPie" style="height: 320px;"></div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="p-3 rounded-3 bg-light border h-100">
+          <div class="fw-semibold mb-2">Installed capacity by owner (bar)</div>
+          <div id="ownerBar" style="height: 320px;"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Marginal Cost Calculator Section -->
     <section class="card border-0 shadow-sm">
@@ -121,7 +120,6 @@
           <div class="col-12 col-lg-7">
             <div class="p-3 rounded-3 bg-light border h-100">
               <h3 class="h6 fw-bold mb-3">Inputs</h3>
-
               <div class="row g-3">
                 <div class="col-6">
                   <label class="form-label small text-muted">Efficiency η (0–1)</label>
@@ -134,45 +132,30 @@
                 <div class="col-6">
                   <label class="form-label small text-muted">Fuel price ($ / ton)</label>
                   <input id="mcFuelPriceUsdPerTon" type="number" class="form-control" step="1" min="0" value="60">
-                  <div class="form-text">Fuel price is assumed in USD/ton; converted to ZAR using USD/ZAR below.</div>
                 </div>
                 <div class="col-6">
                   <label class="form-label small text-muted">Assumed USD/ZAR</label>
                   <input id="mcUsdZar" type="number" class="form-control" step="0.01" min="0" value="18">
-                  <div class="form-text">ZAR per 1 USD.</div>
                 </div>
-
                 <div class="col-12">
                   <div class="d-flex gap-2 flex-wrap">
-                    <div class="input-group input-group-sm" style="min-width: 260px;">
+                    <div class="input-group input-group-sm" style="min-width: 240px;">
                       <span class="input-group-text">Output currency</span>
                       <select id="mcOutputCurrency" class="form-select">
                         <option value="USD" selected>USD</option>
                         <option value="ZAR">ZAR</option>
                       </select>
                     </div>
-                    <div class="input-group input-group-sm" style="min-width: 260px;">
+                    <div class="input-group input-group-sm" style="min-width: 240px;">
                       <span class="input-group-text">Reference output (MWh)</span>
                       <input id="mcRefMwh" type="number" class="form-control" step="10" min="1" value="1000">
                     </div>
                   </div>
                 </div>
-
-                <div class="col-12">
-                  <div class="alert alert-info py-2 mb-0" role="alert">
-                    <strong>Back-hand math</strong><br>
-                    Thermal energy per MWh = 3600 / η (MJ/MWh)<br>
-                    Fuel mass per MWh = (3600 / η) / LHV (kg/MWh)<br>
-                    Fuel cost per MWh = (kg/MWh ÷ 1000) · (fuel_price_usd_per_ton)<br>
-                    Marginal cost ≈ fuel_cost + Variable OPEX per MWh
-                  </div>
-                </div>
-
                 <div class="col-6">
                   <label class="form-label small text-muted">Variable OPEX per MWh (selected currency)</label>
                   <input id="mcVarOpexPerMwh" type="number" class="form-control" step="1" min="0" value="0">
                 </div>
-
                 <div class="col-6">
                   <label class="form-label small text-muted">Quick actions</label>
                   <div class="d-flex gap-2 flex-wrap mt-1">
@@ -188,31 +171,14 @@
             <div class="p-3 rounded-3 bg-light border h-100">
               <h3 class="h6 fw-bold mb-3">Outputs</h3>
               <div class="row g-3">
-                <div class="col-12">
-                  <div class="text-muted small">Thermal energy per MWh</div>
-                  <div class="fw-bold fs-4" id="outThermalMjPerMwh">—</div>
-                </div>
-                <div class="col-12">
-                  <div class="text-muted small">Fuel mass per MWh</div>
-                  <div class="fw-bold fs-4" id="outFuelKgPerMwh">—</div>
-                </div>
-                <div class="col-12">
-                  <div class="text-muted small">Fuel cost per MWh</div>
-                  <div class="fw-bold fs-4" id="outFuelCostPerMwh">—</div>
-                </div>
-                <div class="col-12">
-                  <div class="text-muted small">Marginal cost per MWh (all-in)</div>
-                  <div class="fw-bold fs-4" id="outMarginalCostPerMwh">—</div>
-                </div>
-                <div class="col-12">
-                  <hr class="my-2">
-                  <div class="text-muted small">Cost for reference output</div>
-                  <div class="fw-bold" id="outCostForRef">—</div>
-                </div>
+                <div class="col-12"><div class="text-muted small">Thermal energy per MWh</div><div class="fw-bold fs-4" id="outThermalMjPerMwh">—</div></div>
+                <div class="col-12"><div class="text-muted small">Fuel mass per MWh</div><div class="fw-bold fs-4" id="outFuelKgPerMwh">—</div></div>
+                <div class="col-12"><div class="text-muted small">Fuel cost per MWh</div><div class="fw-bold fs-4" id="outFuelCostPerMwh">—</div></div>
+                <div class="col-12"><div class="text-muted small">Marginal cost per MWh (all-in)</div><div class="fw-bold fs-4" id="outMarginalCostPerMwh">—</div></div>
+                <div class="col-12"><hr class="my-2"><div class="text-muted small">Cost for reference output</div><div class="fw-bold" id="outCostForRef">—</div></div>
               </div>
               <div class="alert alert-secondary py-2 mt-3 mb-0">
-                Note: This is a planning-level marginal cost proxy.
-                Real dispatch costs depend on heat-rate curve, auxiliaries, fuel handling, and availability.
+                Note: This is a planning-level marginal cost proxy. Real dispatch costs depend on heat-rate curve, auxiliaries, fuel availability.
               </div>
             </div>
           </div>
@@ -222,429 +188,259 @@
   </main>
 
   <script>
-    const NUM = (v) => {
-      if (v === null || v === undefined) return null;
-      const n = Number(v);
-      return Number.isFinite(n) ? n : null;
-    };
     const $ = (id) => document.getElementById(id);
+    const NUM = (v) => { const n = Number(v); return Number.isFinite(n) ? n : null; };
+    const fmt = (v, d = 2) => v == null || !Number.isFinite(v) ? "—" : v.toLocaleString(undefined, { maximumFractionDigits: d });
+
+    // ---- Column set mirrors south-africa-dashboard-main/data/power/plants.csv ----
+    const NUMERIC_KEYS = new Set([
+      "capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y"
+    ]);
 
     let PLANTS = [];
-    let COLUMN_DEFS = [];           // { key, displayName, isNumeric }
-    let currentSort = { key: null, direction: 'desc' };
+    let COLUMNS = [];
+    let state = { query: "", scope: "all", sortKey: "name", sortDir: "asc" };
+    let filterApi = null;
 
-    // ==================== Column display name mapping ====================
-    // Best-effort friendly names for common headers in Plants.xlsx.
-    // Unmapped columns use their Excel header verbatim.
-    // If you change headers in the xlsx, the table will still show them (raw or via this map).
-    const DISPLAY_NAMES = {
-      "Name": "Plant",
-      "Installed Capacity": "Installed MW",
-      "Nominal Capacity": "Nominal MW",
-      "Fuel Type": "Fuel Type",
-      "MWh": "MWh",
-      "Efficiency": "Efficiency",
-      "LHV": "LHV",
-      "Under Construction": "Under Construction",
-      "Units": "Units",
-      "Location": "Location",
-      "Owner": "Owner",
-      "Province": "Province",
-      "PPA with Eskom?": "PPA with Eskom?",
-      "IPP Programme": "IPP Programme",
-      "Years comissioned, first to last unit": "Years commissioned",
-      "Notes": "Notes"
-    };
-
-    // Fallback allow-list (used only if data-driven detection can't decide).
-    const NUMERIC_NAME_FALLBACKS = [
-      "Installed Capacity", "Nominal Capacity", "MWh", "Efficiency",
-      "LHV", "Under Construction", "Units"
-    ];
-
-    // ==================== Utility ====================
-    function fmtMaybe(v, digits = 2) {
-      if (v === null || v === undefined) return "—";
-      if (!Number.isFinite(v)) return "—";
-      return v.toLocaleString(undefined, { maximumFractionDigits: digits });
-    }
-
-    function getDisplayName(key) {
-      return DISPLAY_NAMES[key] || key;
-    }
-
-    function isNumericNameFallback(key) {
-      return NUMERIC_NAME_FALLBACKS.includes(key);
-    }
-
-    // Data-driven numeric test: majority of sampled values parse as finite numbers.
-    function isLikelyNumeric(values) {
-      if (!values || values.length === 0) return false;
-      let numeric = 0;
-      for (const v of values) {
-        if (v === null || v === undefined || v === "") continue;
-        const n = Number(v);
-        if (Number.isFinite(n)) numeric++;
-      }
-      return numeric / values.length >= 0.5;
-    }
-
-    // ==================== Build column definitions from spreadsheet headers ====================
-    // headers: array of raw header strings from the sheet
-    // numericSet (optional Set): pre-computed keys that should be treated numeric
-    function buildColumnDefs(headers, numericSet = null) {
-      COLUMN_DEFS = headers.map(key => ({
-        key,
-        displayName: getDisplayName(key),
-        isNumeric: numericSet ? numericSet.has(key) : isNumericNameFallback(key)
-      }));
-    }
-
-    // ==================== Render thead dynamically ====================
-    function renderTableHead() {
-      const thead = $("plantTableHead");
-      thead.innerHTML = "";
-
-      COLUMN_DEFS.forEach((col, idx) => {
-        const th = document.createElement("th");
-        th.scope = "col";
-        th.className = "text-muted";
-
-        if (col.isNumeric) {
-          th.className += " text-end sortable-header";
-          th.setAttribute("data-col-index", idx);
-          th.setAttribute("data-col-key", col.key);
-          th.onclick = () => sortTableByKey(col.key, true);
-          th.innerHTML = `${col.displayName} <span class="sort-icon">↕</span>`;
-        } else {
-          th.textContent = col.displayName;
+    // ---- CSV parsing (handles quoted fields) ----
+    function parseCSV(text) {
+      const lines = text.trim().split("\n").map(l => l.trim()).filter(l => l);
+      if (lines.length < 2) return { headers: [], rows: [] };
+      const headers = lines[0].split(",").map(h => h.trim());
+      const rows = lines.slice(1).map(line => {
+        const vals = [];
+        let cur = "", inQ = false;
+        for (const ch of line) {
+          if (ch === '"') { inQ = !inQ; continue; }
+          if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
+          cur += ch;
         }
+        vals.push(cur.trim());
+        const obj = {};
+        headers.forEach((h, i) => {
+          let v = vals[i] == null ? "" : vals[i].trim();
+          if (v === "") v = null;
+          else if (NUMERIC_KEYS.has(h)) v = NUM(v);
+          obj[h] = v;
+        });
+        return obj;
+      });
+      return { headers, rows };
+    }
 
-        thead.appendChild(th);
+    function srcLinks(p) {
+      if (!p.Source) return "—";
+      return p.Source.split(";").map(s => s.trim()).filter(Boolean).slice(0, 2).map(u => {
+        const host = u.replace(/^https?:\/\//, "").split("/")[0];
+        return '<a class="src-link" href="' + u + '" target="_blank" rel="noreferrer">' + host + "</a>";
+      }).join(" · ");
+    }
+
+    function typeBadge(t) {
+      const colors = { Coal:"#37474f", Nuclear:"#e65100", Hydro:"#1565c0", "Pumped Storage":"#00838f", Gas:"#f57f17", Wind:"#2e7d32", "Solar PV":"#f9a825", CSP:"#e65100", "Battery Storage":"#6a1b9a", Various:"#607d8b" };
+      return '<span class="type-badge" style="background:' + (colors[t] || "#999") + ';">' + (t || "—") + "</span>";
+    }
+
+    function statusPill(s) {
+      const low = String(s || "").toLowerCase();
+      let cls = "st-online";
+      if (low.indexOf("shut") !== -1 || low.indexOf("retired") !== -1) cls = "st-shutdown";
+      else if (low.indexOf("tender") !== -1 || low.indexOf("announced") !== -1) cls = "st-upcoming";
+      else if (low.indexOf("awarded") !== -1 || low.indexOf("bq") !== -1 || low.indexOf("construction") !== -1) cls = "st-pending";
+      return '<span class="status-pill ' + cls + '">' + (s || "—") + "</span>";
+    }
+
+    function scopeBadge(s) { return '<span class="scope-badge scope-' + s + '">' + (s || "—") + "</span>"; }
+
+    function renderHead() {
+      COLUMNS = [
+      { k: "name", label: "Plant", num: false },
+      { k: "capacity", label: "Capacity (MW)", num: true },
+      { k: "units", label: "Units", num: true },
+      { k: "type", label: "Type", num: false },
+      { k: "type2", label: "Type 2", num: false },
+      { k: "commissioned", label: "Commissioned", num: false },
+      { k: "owner", label: "Owner", num: false },
+      { k: "Scope", label: "Scope", num: false },
+      { k: "Province", label: "Province", num: false },
+      { k: "Programme", label: "Programme", num: false },
+      { k: "BidWindow", label: "Bid Window", num: false },
+      { k: "efficiency", label: "Efficiency (%)", num: true },
+      { k: "heatRate", label: "Heat Rate (kJ/kWh)", num: true },
+      { k: "marginalCost", label: "Marginal Cost ($/MWh)", num: true },
+      { k: "status", label: "Status", num: false },
+      { k: "status2", label: "Status 2", num: false },
+      { k: "Source", label: "Source", num: false },
+      { k: "Notes", label: "Notes", num: false }
+      ];
+      const head = $("plantTableHead");
+      head.innerHTML = COLUMNS.map((c, i) =>
+        '<th class="text-muted sortable-header ' + (c.num ? "text-end" : "") + '" data-idx="' + i + '">' +
+        c.label + ' <span class="sort-icon">↕</span></th>'
+      ).join("");
+      head.querySelectorAll(".sortable-header").forEach(th => th.onclick = () => {
+        const col = COLUMNS[+th.dataset.idx];
+        if (state.sortKey === col.k) state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+        else { state.sortKey = col.k; state.sortDir = "asc"; }
+        renderBody();
+        renderSortIcons();
       });
     }
 
-    // Robust field access for calculator, totals, and charts.
-    // Survives small header renames in Plants.xlsx.
-    function getField(plant, logical /* 'name'|'nominal'|'owner'|'efficiency'|'lhv' */) {
-      const cands = {
-        name: ["Name", "Plant", "name", "Plant Name"],
-        nominal: ["Nominal Capacity", "Nominal MW", "Nom Capacity", "Nominal"],
-        owner: ["Owner", "owner"],
-        efficiency: ["Efficiency", "Eff", "η", "Efficiency %"],
-        lhv: ["LHV", "Lhv", "LHV (MJ/kg)"]
-      }[logical] || [];
-      for (const k of cands) {
-        if (k in plant && plant[k] != null && plant[k] !== "") return plant[k];
-      }
-      const lower = logical.toLowerCase();
-      for (const k of Object.keys(plant)) {
-        const kl = k.toLowerCase();
-        if (kl.includes(lower) ||
-            (logical === "nominal" && /(nom|capacity|mw)/i.test(k))) {
-          const v = plant[k];
-          if (v != null && v !== "") return v;
-        }
-      }
-      return null;
+    function renderSortIcons() {
+      document.querySelectorAll("#plantTable .sort-icon").forEach(el => { el.textContent = "↕"; el.style.opacity = "0.5"; });
+      const idx = COLUMNS.findIndex(c => c.k === state.sortKey);
+      if (idx < 0) return;
+      const th = document.querySelector('#plantTable th[data-idx="' + idx + '"] .sort-icon');
+      if (th) { th.textContent = state.sortDir === "asc" ? "↑" : "↓"; th.style.opacity = "1"; }
     }
 
-    // ==================== Get raw cell value for display ====================
-    function getCellValue(plant, col) {
-      const val = plant[col.key];
-      if (col.isNumeric) {
-        return val !== null && val !== undefined ? fmtMaybe(val, 2) : "—";
-      }
-      return (val !== null && val !== undefined) ? String(val) : "—";
-    }
-
-    // ==================== Sorting ====================
-    function getSortValue(plant, key) {
-      const col = COLUMN_DEFS.find(c => c.key === key);
-      const val = plant[key];
-      if (col && col.isNumeric) {
-        const n = Number(val);
-        return Number.isFinite(n) ? n : -Infinity;
-      }
-      // Text sort: use string value (lower for stability)
-      return (val == null ? "" : String(val)).toLowerCase();
-    }
-
-    function sortTableByKey(key, isNumeric) {
-      if (currentSort.key === key) {
-        currentSort.direction = currentSort.direction === 'desc' ? 'asc' : 'desc';
-      } else {
-        currentSort.key = key;
-        currentSort.direction = 'desc';
-      }
-      renderPlantsTable();
-      updateSortIcons();
-    }
-
-    function updateSortIcons() {
-      document.querySelectorAll('#plantTable .sortable-header .sort-icon').forEach(icon => {
-        icon.textContent = '↕';
-        icon.style.opacity = '0.5';
-      });
-      if (!currentSort.key) return;
-
-      document.querySelectorAll('#plantTable th').forEach(th => {
-        const colKey = th.getAttribute('data-col-key');
-        if (colKey === currentSort.key) {
-          const icon = th.querySelector('.sort-icon');
-          if (icon) {
-            icon.textContent = currentSort.direction === 'desc' ? '↓' : '↑';
-            icon.style.opacity = '1';
-          }
-        }
-      });
-    }
-
-    // ==================== Render table body ====================
-    function renderPlantsTable() {
-      const q = ($("plantSearch").value || "").trim().toLowerCase();
-      const tbody = $("plantTableBody");
-      tbody.innerHTML = "";
-
-      let filtered = PLANTS;
+    function filtered() {
+      let rows = filterApi ? filterApi.applyFilters(PLANTS) : PLANTS.slice();
+      if (state.scope !== "all") rows = rows.filter(p => p.Scope === state.scope);
+      const q = state.query.toLowerCase();
       if (q) {
-        filtered = PLANTS.filter(p => {
-          // Search across Name + other likely text columns present in COLUMN_DEFS
-          return COLUMN_DEFS.some(col => {
-            if (col.isNumeric) return false;
-            const v = p[col.key];
-            return v && String(v).toLowerCase().includes(q);
-          });
-        });
+        rows = rows.filter(p => COLUMNS.some(c => {
+          if (c.num) return false;
+          const v = p[c.k];
+          return v && String(v).toLowerCase().includes(q);
+        }));
       }
-
-      if (currentSort.key) {
-        const sortCol = COLUMN_DEFS.find(c => c.key === currentSort.key);
-        const numeric = !!(sortCol && sortCol.isNumeric);
-        filtered.sort((a, b) => {
-          const va = getSortValue(a, currentSort.key);
-          const vb = getSortValue(b, currentSort.key);
-          if (numeric) {
-            return currentSort.direction === 'desc' ? (vb - va) : (va - vb);
-          }
-          // localeCompare for text
-          const cmp = String(va).localeCompare(String(vb), undefined, { numeric: true, sensitivity: 'base' });
-          return currentSort.direction === 'desc' ? -cmp : cmp;
-        });
-      }
-
-      filtered.forEach(p => {
-        const tr = document.createElement("tr");
-        let html = "";
-
-        COLUMN_DEFS.forEach((col, idx) => {
-          const val = getCellValue(p, col);
-          const align = col.isNumeric ? 'text-end' : '';
-          html += `<td class="${align}">${val}</td>`;
-        });
-
-        tr.innerHTML = html;
-        tbody.appendChild(tr);
+      const col = COLUMNS.find(c => c.k === state.sortKey);
+      rows.sort((a, b) => {
+        const va = a[col.k], vb = b[col.k];
+        if (col.num) return state.sortDir === "asc" ? ((va == null ? -Infinity : va) - (vb == null ? -Infinity : vb)) : ((vb == null ? -Infinity : vb) - (va == null ? -Infinity : va));
+        const cmp = String(va == null ? "" : va).localeCompare(String(vb == null ? "" : vb), undefined, { numeric: true, sensitivity: "base" });
+        return state.sortDir === "asc" ? cmp : -cmp;
       });
+      return rows;
     }
 
-    function computeTotalNominalMw() {
-      const total = PLANTS
-        .map(p => getField(p, "nominal"))
-        .filter(v => v !== null && Number.isFinite(v))
-        .reduce((acc, v) => acc + v, 0);
-      $("outTotalNominalMw").textContent = Number.isFinite(total) ? total.toLocaleString() : "—";
-    }
-
-    function renderOwnerCharts() {
-      const ownerTotals = new Map();
-      for (const p of PLANTS) {
-        const mw = getField(p, "nominal");
-        if (mw === null || !Number.isFinite(mw)) continue;
-        const owner = getField(p, "owner") || "Unknown";
-        ownerTotals.set(owner, (ownerTotals.get(owner) || 0) + mw);
+    function renderBody() {
+      const rows = filtered();
+      const tbody = $("plantTableBody");
+      tbody.innerHTML = rows.map(p => {
+        let html = "<tr>";
+        COLUMNS.forEach(c => {
+          const align = c.num ? ' class="text-end"' : "";
+          if (c.k === "type") html += "<td>" + typeBadge(p.type) + "</td>";
+          else if (c.k === "Scope") html += "<td>" + scopeBadge(p.Scope) + "</td>";
+          else if (c.k === "status") html += "<td>" + statusPill(p.status) + "</td>";
+          else if (c.k === "Source") html += "<td>" + srcLinks(p) + "</td>";
+          else if (c.k === "name") html += '<td class="fw-bold">' + p.name + "</td>";
+          else {
+            const v = p[c.k];
+            html += "<td" + align + ">" + (c.num ? fmt(v, 2) : (v == null || v === "" ? "—" : v)) + "</td>";
+          }
+        });
+        return html + "</tr>";
+      }).join("");
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="' + COLUMNS.length + '" class="text-center text-muted py-4">No plants match the filter.</td></tr>';
       }
+    }
+
+    function renderSummary() {
+      const rows = filtered();
+      const total = rows.reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0);
+      const proj = PLANTS.filter(p => p.Scope === "Project").reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0);
+      const alloc = PLANTS.filter(p => p.Scope === "Allocation").reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0);
+      const target = PLANTS.filter(p => p.Scope === "Target").reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0);
+      $("summaryChips").innerHTML =
+        '<span class="badge text-bg-dark">Rows: ' + rows.length + " / " + PLANTS.length + "</span>" +
+        '<span class="badge text-bg-success">Filtered capacity: ' + fmt(total, 0) + " MW</span>" +
+        '<span class="badge" style="background:#e3f2fd;color:#0d47a1;">Projects: ' + fmt(proj, 0) + " MW</span>" +
+        '<span class="badge" style="background:#fff3e0;color:#e65100;">Allocations: ' + fmt(alloc, 0) + " MW</span>" +
+        '<span class="badge" style="background:#f3e5f5;color:#6a1b9a;">Targets: ' + fmt(target, 0) + " MW</span>";
+    }
+
+    function renderCharts() {
+      const ownerTotals = new Map();
+      PLANTS.forEach(p => {
+        if (!Number.isFinite(p.capacity)) return;
+        const owner = p.owner || "Unknown";
+        ownerTotals.set(owner, (ownerTotals.get(owner) || 0) + p.capacity);
+      });
       const owners = Array.from(ownerTotals.keys()).sort((a, b) => ownerTotals.get(b) - ownerTotals.get(a));
       const values = owners.map(o => ownerTotals.get(o));
 
-      Plotly.newPlot('ownerPie', [{
-        labels: owners, values, type: 'pie', textinfo: 'label+percent'
-      }], { margin: { l: 10, r: 10, t: 10, b: 10 }, showlegend: false }, { responsive: true });
-
-      Plotly.newPlot('ownerBar', [{
-        x: owners, y: values, type: 'bar'
-      }], { margin: { l: 50, r: 10, t: 10, b: 80 }, yaxis: { title: 'Nominal MW' }, xaxis: { tickangle: -30 }, showlegend: false }, { responsive: true });
+      Plotly.newPlot("ownerPie", [{ labels: owners, values, type: "pie", textinfo: "label+percent" }],
+        { margin: { l: 10, r: 10, t: 10, b: 10 }, showlegend: false }, { responsive: true });
+      Plotly.newPlot("ownerBar", [{ x: owners, y: values, type: "bar", marker: { color: "#007A4D" } }],
+        { margin: { l: 50, r: 10, t: 10, b: 90 }, yaxis: { title: "MW" }, xaxis: { tickangle: -35 }, showlegend: false }, { responsive: true });
     }
 
-    // ==================== Sync calculator from filter ====================
-    function syncFromFirstFilteredPlant() {
-      const q = ($("plantSearch").value || "").trim().toLowerCase();
-      let filtered = PLANTS;
-      if (q) {
-        filtered = PLANTS.filter(p => {
-          return COLUMN_DEFS.some(col => {
-            if (col.isNumeric) return false;
-            const v = p[col.key];
-            return v && String(v).toLowerCase().includes(q);
-          });
-        });
-      }
-      if (filtered.length === 0) return;
+    // ---- Calculator ----
+    function computeMarginalCost() {
+      const eta = NUM($("mcEfficiency").value);
+      const lhv = NUM($("mcLhv").value);
+      const fuelUsd = NUM($("mcFuelPriceUsdPerTon").value);
+      const usdZar = NUM($("mcUsdZar").value);
+      const currency = $("mcOutputCurrency").value;
+      const varOpex = NUM($("mcVarOpexPerMwh").value) || 0;
+      const refMwh = NUM($("mcRefMwh").value) || 1000;
+      if (eta == null || eta <= 0 || lhv == null || lhv <= 0 || fuelUsd == null) return;
 
-      const plant = filtered[0];
-      const eta = getField(plant, "efficiency");
-      const lhv = getField(plant, "lhv");
-      if (eta !== null && eta !== undefined) $("mcEfficiency").value = eta;
-      if (lhv !== null && lhv !== undefined) $("mcLhv").value = lhv;
+      const thermal = 3600 / eta;
+      const kg = thermal / lhv;
+      let fuelCost = (kg / 1000) * fuelUsd;
+      const symbol = currency === "ZAR" ? "R" : "$";
+      if (currency === "ZAR") { if (usdZar == null) return; fuelCost *= usdZar; }
+      const marginal = fuelCost + varOpex;
+
+      $("outThermalMjPerMwh").textContent = fmt(thermal, 0) + " MJ/MWh";
+      $("outFuelKgPerMwh").textContent = fmt(kg, 0) + " kg/MWh";
+      $("outFuelCostPerMwh").textContent = symbol + fmt(fuelCost, 2);
+      $("outMarginalCostPerMwh").textContent = symbol + fmt(marginal, 2);
+      $("outCostForRef").textContent = symbol + fmt(marginal * refMwh, 0) + " for " + fmt(refMwh, 0) + " MWh";
+    }
+
+    function syncFromFirstFilteredPlant() {
+      const first = filtered()[0];
+      if (!first) return;
+      if (Number.isFinite(first.efficiency)) $("mcEfficiency").value = first.efficiency / 100;
+      if (first.type === "Coal") $("mcLhv").value = 20;
       computeMarginalCost();
     }
 
-    // ==================== Marginal Cost Calculator ====================
-    function readNumValue(id) { return NUM($(id).value); }
-
-    function computeMarginalCost() {
-      const eta = readNumValue("mcEfficiency");
-      const lhv = readNumValue("mcLhv");
-      const fuelUsdPerTon = readNumValue("mcFuelPriceUsdPerTon");
-      const usdZar = readNumValue("mcUsdZar");
-      const outputCurrency = $("mcOutputCurrency").value;
-      const varOpexPerMwh = readNumValue("mcVarOpexPerMwh") || 0;
-      const refMwh = readNumValue("mcRefMwh") || 1000;
-
-      if (eta === null || eta <= 0 || lhv === null || lhv <= 0 || fuelUsdPerTon === null || fuelUsdPerTon < 0) return;
-
-      const thermalMjPerMwh = 3600 / eta;
-      const fuelKgPerMwh = thermalMjPerMwh / lhv;
-      let fuelCostPerMwh = (fuelKgPerMwh / 1000) * fuelUsdPerTon;
-
-      let currencySymbol = "$";
-      if (outputCurrency === "ZAR") {
-        currencySymbol = "R";
-        if (usdZar === null || !Number.isFinite(usdZar)) return;
-        fuelCostPerMwh *= usdZar;
-      }
-
-      const marginalCostPerMwh = fuelCostPerMwh + varOpexPerMwh;
-
-      $("outThermalMjPerMwh").textContent = `${fmtMaybe(thermalMjPerMwh, 0)} MJ/MWh`;
-      $("outFuelKgPerMwh").textContent = `${fmtMaybe(fuelKgPerMwh, 0)} kg/MWh`;
-      $("outFuelCostPerMwh").textContent = `${currencySymbol}${fmtMaybe(fuelCostPerMwh, 2)}`;
-      $("outMarginalCostPerMwh").textContent = `${currencySymbol}${fmtMaybe(marginalCostPerMwh, 2)}`;
-
-      const totalCostRef = marginalCostPerMwh * refMwh;
-      $("outCostForRef").textContent = `${currencySymbol}${fmtMaybe(totalCostRef, 0)} for ${fmtMaybe(refMwh, 0)} MWh`;
-    }
-
-    // ==================== Initialization ====================
-    window.onload = async () => {
-      const resp = await fetch('../data/power/Plants.xlsx');
-      const arrBuf = await resp.arrayBuffer();
-      const wb = XLSX.read(arrBuf, { type: 'array' });
-
-      const wsName = wb.SheetNames.includes('Plants') ? 'Plants' : wb.SheetNames[0];
-      const ws = wb.Sheets[wsName];
-
-      // Read raw headers from the first row (row 0 of the used range)
-      const headerRange = XLSX.utils.decode_range(ws['!ref'] || "A1:Z1");
-      const rawHeaders = [];
-      for (let c = headerRange.s.c; c <= headerRange.e.c; c++) {
-        const addr = XLSX.utils.encode_cell({ r: headerRange.s.r, c });
-        const cell = ws[addr];
-        const h = cell ? String(cell.v).trim() : `Column_${c}`;
-        if (h) rawHeaders.push(h);
-      }
-
-      // Read every row as plain objects first (keys match the raw headers)
-      const rawRows = XLSX.utils.sheet_to_json(ws, { defval: null });
-
-      // === Data-driven column selection + numeric inference ===
-      // Goal: drop columns that are almost empty in the xlsx so the table
-      // doesn't look "uneven" or have wildly different row "widths".
-      const MIN_POP_PCT = 8; // columns below this % populated are hidden from the UI table
-      const stats = {};
-      rawHeaders.forEach(h => { stats[h] = { nonNull: 0, samples: [] }; });
-
-      rawRows.forEach(r => {
-        rawHeaders.forEach(h => {
-          const v = r[h];
-          const empty = (v === null || v === undefined || v === "");
-          if (!empty) {
-            stats[h].nonNull++;
-            if (stats[h].samples.length < 6) stats[h].samples.push(v);
-          }
-        });
+    function init() {
+      renderHead();
+      filterApi = TableKit.attachFilters({
+        headRow: $("plantTableHead"),
+        columns: COLUMNS,
+        getRows: () => PLANTS,
+        onChange: () => { renderBody(); renderSummary(); }
+      });
+      renderBody();
+      renderSummary();
+      renderCharts();
+      renderSortIcons();
+      $("btnDownloadPlants").addEventListener("click", () => {
+        TableKit.downloadCSV("SA-Dashboard-plants.csv", filtered(), COLUMNS);
       });
 
-      const rowCount = rawRows.length || 1;
-
-      // Always keep "Name" + the key technical fields used by the marginal cost calculator,
-      // even if sparse. Drop the rest that are almost empty.
-      const ALWAYS_KEEP = new Set(["LHV", "Efficiency"]);
-      let displayHeaders = rawHeaders.filter(h => {
-        const pct = (stats[h].nonNull / rowCount) * 100;
-        const isNameCol = h.toLowerCase() === "name" || h.toLowerCase().includes("plant");
-        return pct >= MIN_POP_PCT || isNameCol || ALWAYS_KEEP.has(h);
-      });
-
-      // If after filtering we somehow lost everything, fall back to all headers.
-      if (displayHeaders.length === 0) displayHeaders = rawHeaders.slice();
-
-      // Numeric detection: prefer sampling actual values; fall back to name list.
-      const numericSet = new Set();
-      displayHeaders.forEach(h => {
-        const byData = isLikelyNumeric(stats[h].samples);
-        const byName = isNumericNameFallback(h);
-        if (byData || byName) numericSet.add(h);
-      });
-
-      // Build COLUMN_DEFS from *display* headers only (controls thead + visible columns)
-      buildColumnDefs(displayHeaders, numericSet);
-
-      // Render thead from the (reduced) COLUMN_DEFS
-      renderTableHead();
-
-      // === Data rows: ALWAYS keep values for ALL raw columns ===
-      // This ensures getField() can find Efficiency / LHV / Notes etc for the calculator,
-      // totals, and charts even when we hide the column from the visible table.
-      const dataHeaders = rawHeaders;
-      const dataNumeric = new Set(rawHeaders.filter(h =>
-        numericSet.has(h) || isNumericNameFallback(h) || isLikelyNumeric(stats[h].samples)
-      ));
-
-      for (const row of rawRows) {
-        const p = {};
-        dataHeaders.forEach(h => {
-          const raw = row[h];
-          const isNum = dataNumeric.has(h);
-          p[h] = isNum ? NUM(raw) : (raw ?? null);
-        });
-        const hasName = getField(p, "name");
-        if (hasName && hasName !== "—") PLANTS.push(p);
-      }
-
-      renderPlantsTable();
-      computeTotalNominalMw();
-      renderOwnerCharts();
-
-      // Search filter
-      $("plantSearch").addEventListener("input", () => {
-        renderPlantsTable();
-        syncFromFirstFilteredPlant();
-      });
-
-      // Live compute listeners
-      ["mcEfficiency","mcLhv","mcFuelPriceUsdPerTon","mcUsdZar","mcOutputCurrency",
-       "mcVarOpexPerMwh","mcRefMwh"].forEach(id => {
+      $("plantSearch").addEventListener("input", () => { state.query = $("plantSearch").value; renderBody(); renderSummary(); });
+      document.querySelectorAll("#scopeGroup button").forEach(btn => btn.addEventListener("click", () => {
+        document.querySelectorAll("#scopeGroup button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.scope = btn.dataset.scope;
+        renderBody();
+        renderSummary();
+      }));
+      ["mcEfficiency","mcLhv","mcFuelPriceUsdPerTon","mcUsdZar","mcOutputCurrency","mcVarOpexPerMwh","mcRefMwh"].forEach(id => {
         $(id).addEventListener("input", computeMarginalCost);
         $(id).addEventListener("change", computeMarginalCost);
       });
+    }
 
-      setTimeout(() => {
-        syncFromFirstFilteredPlant();
-      }, 300);
+    window.onload = async () => {
+      const resp = await fetch("../data/power/plants.csv");
+      const text = await resp.text();
+      const parsed = parseCSV(text);
+      PLANTS = parsed.rows.filter(p => p.name);
+      init();
     };
 
-    window.sortTableByKey = sortTableByKey;
     window.computeMarginalCost = computeMarginalCost;
     window.syncFromFirstFilteredPlant = syncFromFirstFilteredPlant;
   </script>

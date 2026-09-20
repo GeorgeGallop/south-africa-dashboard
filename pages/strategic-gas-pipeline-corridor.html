@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strategic Gas Pipeline Corridor • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.overview { background: #2a4a6b; color: white; border-bottom-color: #1a3a5b; }
+    .card-header.map      { background: #00695c; color: white; border-bottom-color: #004d40; }
+    .card-header.rollout  { background: #e65100; color: white; border-bottom-color: #bf360c; }
+    .card-header.phases   { background: #37474f; color: white; border-bottom-color: #263238; }
+    .card-header.legal    { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .card-header.gmp      { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.status   { background: #00695c; color: white; border-bottom-color: #004d40; }
+    .card-header.risk     { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .phase-badge {
+      display: inline-block;
+      min-width: 2.6rem;
+      text-align: center;
+      font-weight: 800;
+      color: white;
+      border-radius: 0.4rem;
+      padding: 0.2rem 0.5rem;
+      margin-right: 0.4rem;
+    }
+    .stat-value { font-size: 1.8rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#overview">&#128200; Overview</a>
+          <a class="nav-link" href="#government-map">&#128506; The Government Map</a>
+          <a class="nav-link" href="#rollout">&#128640; How the Rollout Works</a>
+          <a class="nav-link" href="#phases-table">&#128668; The 9 Phases</a>
+          <a class="nav-link" href="#phases-detail">&#128202; Phase-by-Phase</a>
+          <a class="nav-link" href="#legal">&#128196; Legal & Procedural Framework</a>
+          <a class="nav-link" href="#gmp">&#128218; Link to the Gas Master Plan</a>
+          <a class="nav-link" href="#status">&#128337; Status Since 2020</a>
+          <a class="nav-link" href="#risk">&#9888;&#65039; Risks & Realities</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold sa-green">&#128293; Strategic Gas Pipeline Corridor</h1>
+        <p class="lead text-muted mb-3">The South African government's declared national gas transmission corridors &mdash; a phased plan to build the country's natural gas pipeline backbone, connecting LNG import terminals, offshore gas fields, and regional import pipelines to industrial demand centres and power stations.</p>
+
+        <div class="alert alert-warning small mb-4">
+          <strong>What this is:</strong> Under the National Environmental Management Act (NEMA), the Minister of Forestry, Fisheries and the Environment declared specific geographical areas as <strong>Strategic Gas Pipeline Corridors</strong> (Government Notice 788 of 17 July 2020, refined in Government Notice 143 of 26 February 2021). These corridors &mdash; derived from the 2019 <em>Strategic Environmental Assessment (SEA) for the Development of a Phased Gas Pipeline Network in South Africa</em> (prepared by CSIR for DEFF, DMRE, iGas, Transnet, Eskom and Sasol) &mdash; pre-identify the routes along which future gas transmission pipelines may be developed with streamlined environmental authorisation.
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- OVERVIEW                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="overview">
+          <div class="card-header overview">&#128200; Overview &mdash; What the Corridors Are For</div>
+          <div class="card-body">
+            <p class="small">South Africa has almost no national gas transmission grid today. The existing network is essentially a private system built by <strong>Sasol</strong> (the ROMPCO pipeline from Mozambique plus the Sasol-Gas distribution network serving Gauteng, Mpumalanga and KwaZulu-Natal) and the declining <strong>PetroSA</strong> offshore fields at Mossel Bay with a coastal pipeline to the Gas-to-Liquids refinery. Everything else is proposed.</p>
+            <p class="small">The Strategic Gas Pipeline Corridors are the government's answer to a planning problem: <em>if a national gas grid is going to be built, where may it go?</em> Rather than letting each future pipeline project negotiate its own route and environmental assessment from scratch, the Minister &mdash; through the declaration &mdash; identified the preferred corridors up front, based on a strategic environmental assessment of the whole country.</p>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#00695c;">9</div>
+                  <small class="text-muted">Strategic corridors declared</small>
+                  <div class="small text-muted">Phases 1a&ndash;9 of the phased network</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#e65100;">3</div>
+                  <small class="text-muted">Coastal LNG entry points</small>
+                  <div class="small text-muted">Saldanha Bay, Coega (Gqeberha), Richards Bay</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#37474f;">2020&ndash;21</div>
+                  <small class="text-muted">Declaration gazetted</small>
+                  <div class="small text-muted">GN 788 (2020), GN 143 (2021)</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center p-3 border shadow-sm h-100">
+                  <div class="stat-value" style="color:#4a148c;">2019</div>
+                  <small class="text-muted">Basis: CSIR SEA study</small>
+                  <div class="small text-muted">Strategic Environmental Assessment</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="small mb-0">The corridors are designed around the country's planned <strong>gas demand nodes</strong>: power stations (Ankerlig, Dedisa, and future gas-to-power plants), the Gauteng industrial heartland, the coastal industrial ports, the smelter belts of Mpumalanga/Limpopo, and the petrochemical complexes of Secunda and Sasolburg. The plan connects each of those demand centres back to one of the three anchor supply points &mdash; an LNG import terminal on the West Coast, the Eastern Cape, or KwaZulu-Natal &mdash; plus potentially new offshore discoveries and a second Mozambique import pipeline.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- GOVERNMENT MAP                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="government-map">
+          <div class="card-header map">&#128506; The Government Map &mdash; Corridors as Declared</div>
+          <div class="card-body">
+            <p class="small">This is the official map of the Strategic Gas Pipeline Corridors, as certified by the Department of Environment, Forestry and Fisheries (DFFE). It was signed on <strong>12 December 2020</strong> by the then-Minister of Forestry, Fisheries and the Environment, <strong>Barbara Dallas Creecy</strong>, and identifies the geographical areas within which strategic gas transmission pipeline infrastructure may be developed.</p>
+
+            <div class="text-center my-3">
+              <img src="../images/gas/Strategic%20Gas%20Pipeline%20Corridor.png"
+                   class="img-fluid rounded border shadow-sm"
+                   style="max-height: 650px;"
+                   alt="Official DFFE map of the Strategic Gas Pipeline Corridors in South Africa">
+              <div class="small text-muted mt-2">
+                Figure 1: Map illustrating the Strategic Gas Pipeline Corridors within South Africa.<br>
+                Source: DFFE &mdash; Declaration under NEMA, signed by Minister B.D. Creecy, 12 December 2020.
+                (An interactive version of this map is available from DFFE at <span class="text-break">http://egis.environment.gov.za/</span>)
+              </div>
+            </div>
+
+            <p class="small mb-0">The map shows towns (the demand and logistics nodes the network must serve) and the corridor bands (the declared areas within which pipelines may be developed). The corridor labels &mdash; <strong>Phase 1a & 1b, Phase 2 through Phase 8</strong> &mdash; reflect the phased build-out described below. On the December 2020 map, the Phase 1a connection to Ankerlig (the gas power station west of Cape Town) is flagged as a <em>"Potential Corridor"</em>, signalling that the near-term priority route was the Saldanha&ndash;Mossel Bay leg that ties into existing infrastructure. The 2021 notice (GN 143) subsequently formalised the full set of nine corridors, including the inland Saldanha&ndash;Coega backbone (Phase 9).</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ROLLOUT                                                      -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="rollout">
+          <div class="card-header rollout">&#128640; How the Rollout Works &mdash; The Phased Build-Out</div>
+          <div class="card-body">
+            <p class="small">The corridors are deliberately sequenced so that infrastructure is built <strong>just ahead of demand</strong>, starting from the coast and working inland. The logic of the phasing:</p>
+
+            <ol class="small">
+              <li><strong>Anchor at the coast first.</strong> Gas enters South Africa by ship (LNG) or from offshore fields, so the first pipelines connect the terminals and offshore tie-ins to the nearest existing infrastructure &mdash; Ankerlig power station near Cape Town, and the PetroSA network at Mossel Bay (Phase 1a & 1b).</li>
+              <li><strong>Build the coastal backbone.</strong> Once the Western Cape is served, the network extends east along the coast from Mossel Bay to Coega (Phase 2), serving the Coega industrial development zone and the Dedisa power station &mdash; and, on the east coast, from Richards Bay inland toward the Gauteng market (Phase 3).</li>
+              <li><strong>Import pipelines connect the region.</strong> A second Mozambique&ndash;South Africa pipeline corridor (Phase 4) and the existing ROMPCO corridor (Phase 8) supply gas from the north, while the west coast corridors (Phases 5 & 6) bring gas from the Northern Cape coast, the iBhubesi field area and potentially Namibia's Kudu field.</li>
+              <li><strong>Close the loop into a national grid.</strong> Phases 7 and 9 &mdash; the coastal Coega&ndash;Richards Bay link and the long inland Saldanha&ndash;Coega backbone &mdash; turn the separate regional systems into one interconnected national network, allowing gas to flow from any port to any demand centre.</li>
+            </ol>
+
+            <div class="alert alert-info small mt-3 mb-0">
+              <strong>Rollout principle &mdash; avoid stranded assets:</strong> Phases 7 and 9 (the east&ndash;west links) are explicitly regarded by the SEA team as <em>"an expensive and unlikely scenario"</em> in the near term because of their length and the absence of substantial markets between the endpoints. They are declared so that the network <strong>can</strong> eventually be unified &mdash; but they will only be built when demand justifies them. This sequencing is the same philosophy the Gas Master Plan (2024) later adopted: build the highest-demand, lowest-cost corridors first.
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PHASES TABLE                                                 -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="phases-table">
+          <div class="card-header phases">&#128668; The 9 Strategic Corridor Phases &mdash; At a Glance</div>
+          <div class="card-body">
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Phase</th><th>Corridor</th><th>Route / Endpoints</th><th>Provinces</th><th>Purpose</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="phase-badge" style="background:#007A4D;">1a</span></td><td>Saldanha &ndash; Ankerlig</td><td>Saldanha Bay LNG terminal &rarr; Ankerlig power station (near Cape Town)</td><td>Western Cape</td><td>Deliver regasified LNG to Eskom's existing open-cycle gas turbine (OCGT) peaker; anchor West Coast LNG import</td></tr>
+                <tr><td><span class="phase-badge" style="background:#007A4D;">1b</span></td><td>Saldanha &ndash; Mossel Bay</td><td>Saldanha Bay LNG terminal &rarr; Mossel Bay terminal (ties into PetroSA network, F-A platform, iBhubesi tie-in)</td><td>Western Cape</td><td>Backfill the PetroSA GTL refinery and connect LNG to the existing southern coastal network</td></tr>
+                <tr><td><span class="phase-badge" style="background:#00695c;">2</span></td><td>Mossel Bay &ndash; Coega</td><td>Mossel Bay terminal &rarr; Port of Coega / Gqeberha (Dedisa power station)</td><td>Western Cape, Eastern Cape</td><td>Extend the coastal backbone east; supply Coega IDZ industry and gas-to-power</td></tr>
+                <tr><td><span class="phase-badge" style="background:#00695c;">3</span></td><td>Richards Bay &ndash; Gauteng</td><td>Richards Bay &rarr; Secunda &rarr; southern Gauteng / Sasolburg</td><td>KwaZulu-Natal, Mpumalanga, Free State, Gauteng</td><td>Move LNG and potential offshore (Eni) gas from Richards Bay to the largest industrial market in the country; supplements the limited-capacity Lilly (Secunda&ndash;Durban) pipeline</td></tr>
+                <tr><td><span class="phase-badge" style="background:#e65100;">4</span></td><td>Mozambique &ndash; Richards Bay</td><td>Mozambique southern border &rarr; Richards Bay</td><td>Mozambique, KwaZulu-Natal</td><td>Regional import corridor; part of the ~2,600 km GasNosu north&ndash;south pipeline vision connecting Maputo to Richards Bay</td></tr>
+                <tr><td><span class="phase-badge" style="background:#e65100;">5</span></td><td>Abraham Villiers Bay &ndash; Saldanha</td><td>Abraham Villiers Bay (Northern Cape) &rarr; Saldanha Bay</td><td>Northern Cape, Western Cape</td><td>Bring onshore gas from the iBhubesi offshore field area and other west-coast discoveries to the Saldanha LNG hub</td></tr>
+                <tr><td><span class="phase-badge" style="background:#37474f;">6</span></td><td>Abraham Villiers Bay &ndash; Oranjemund</td><td>Oranjemund (Namibia) &rarr; Abraham Villiers Bay</td><td>Namibia, Northern Cape</td><td>Import gas from Namibia's Kudu offshore field (or export later once Kudu depletes); connects to Phase 5 at Abraham Villiers Bay</td></tr>
+                <tr><td><span class="phase-badge" style="background:#37474f;">7</span></td><td>Coega &ndash; Richards Bay</td><td>Port of Coega &rarr; Richards Bay</td><td>Eastern Cape, KwaZulu-Natal</td><td>Unite the eastern and western halves of the network into a single national grid (long-term option)</td></tr>
+                <tr><td><span class="phase-badge" style="background:#002395;">8</span></td><td>ROMPCO Corridor</td><td>Mozambique &rarr; Secunda / Gauteng (along the existing ROMPCO route)</td><td>Mozambique, Mpumalanga, Gauteng</td><td>Reinforce or duplicate the existing ROMPCO pipeline to expand Mozambique supply beyond its ~4.3 bcm/yr ceiling</td></tr>
+                <tr><td><span class="phase-badge" style="background:#4a148c;">9</span></td><td>Saldanha &ndash; Coega (Inland)</td><td>Saldanha Bay &rarr; inland (Beaufort West / De Aar / Kimberley corridor) &rarr; Coega</td><td>Western Cape, Northern Cape, Eastern Cape</td><td>Inland backbone linking west and east coasts through the interior, bringing gas toward central-region towns</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-muted mb-0">Sources: Government Notice 143 of 2021 (Gazette 44191); Strategic Environmental Assessment for the Development of a Phased Gas Pipeline Network in South Africa, 2019 (CSIR for DEFF/DMRE/iGas/Transnet/Eskom/Sasol); DFFE corridor map (Dec 2020).</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PHASES DETAIL                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="phases-detail">
+          <div class="card-header phases">&#128202; Phase-by-Phase &mdash; What Each Corridor Does</div>
+          <div class="card-body">
+            <p class="small">The nine declared corridors form four functional groups. Note that the proposed pipelines are generally conceived with <strong>Transnet Pipelines</strong> (the state-owned liquid fuels pipeline operator) as the prospective developer/operator, working with iGas (the state gas development company) &mdash; a deliberate pairing of infrastructure ownership with the mandate to develop a national gas grid.</p>
+
+            <h6 class="fw-bold mt-3">&#127757; Group 1 &mdash; West Coast LNG & the Southern Coastal Backbone (Phases 1a, 1b, 2)</h6>
+            <ul class="small">
+              <li><strong>Phase 1a &mdash; Saldanha&ndash;Ankerlig:</strong> The shortest, fastest corridor. It runs from the proposed Saldanha Bay LNG terminal (where FSRU-based regasification would land imported LNG) west/south to Eskom's Ankerlig power station &mdash; one of the country's existing gas-burning open-cycle peakers. This gives the LNG terminal an immediate anchor customer.</li>
+              <li><strong>Phase 1b &mdash; Saldanha&ndash;Mossel Bay:</strong> Runs along the southern Cape coast from Saldanha to the Mossel Bay terminal, tying into the existing PetroSA/Mossgas pipeline network, the producing F-A offshore platform and the proposed iBhubesi field tie-in. Strategically this is the <em>priority</em> phase: it backfills the ageing Mossel Bay GTL refinery &mdash; keeping it and its surrounding industrial economy alive &mdash; and gives LNG access to the pre-existing network that already runs toward Gauteng.</li>
+              <li><strong>Phase 2 &mdash; Mossel Bay&ndash;Coega:</strong> Extends the coastal backbone eastward from Mossel Bay to the Port of Coega near Gqeberha, serving the Coega Special Economic Zone and the Dedisa gas power station. This is the route that would later connect north toward Gauteng via the inland links.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">&#127757; Group 2 &mdash; East Coast LNG, Offshore Gas & the Gauteng Market (Phases 3, 7)</h6>
+            <ul class="small">
+              <li><strong>Phase 3 &mdash; Richards Bay&ndash;Gauteng:</strong> The single most commercially important corridor. It runs from a Richards Bay LNG/FSRU terminal inland to Secunda (endpoint of the existing Mozambique&ndash;South Africa pipeline) and on to southern Gauteng and/or Sasolburg. It would supplement the existing Secunda&ndash;Durban "Lilly" pipeline, which has limited capacity, and could also collect gas from potential offshore wells operated by Eni that were in advanced permitting in 2019.</li>
+              <li><strong>Phase 7 &mdash; Coega&ndash;Richards Bay:</strong> The coastal link that would stitch the two halves of the network together once both are built. Long, expensive, and low-priority near-term &mdash; but declared so the national grid vision remains possible.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">&#127757; Group 3 &mdash; Regional Import Corridors from the North (Phases 4, 8)</h6>
+            <ul class="small">
+              <li><strong>Phase 4 &mdash; Mozambique&ndash;Richards Bay:</strong> A pipeline from the Mozambican border to Richards Bay, aligned with the broader GasNosu north&ndash;south pipeline concept connecting Maputo southward. It would give South Africa a secure second southern corridor for Mozambican gas (including future Rovuma Basin volumes) without routing everything through the existing Secunda line.</li>
+              <li><strong>Phase 8 &mdash; ROMPCO Corridor:</strong> Covers the existing ROMPCO pipeline route from Mozambique to Secunda/Gauteng. Declaring it a strategic corridor allows reinforcement, looping or duplication of the line &mdash; expansion beyond the current ~4.3 bcm/yr ceiling as Mozambique supply grows.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-3">&#127757; Group 4 &mdash; West Coast Offshore Fields, Namibia & the Inland Backbone (Phases 5, 6, 9)</h6>
+            <ul class="small">
+              <li><strong>Phase 5 &mdash; Abraham Villiers Bay&ndash;Saldanha:</strong> Brings gas from the Northern Cape coast (the iBhubesi field and prospective adjacent discoveries identified by iGas) to the Saldanha LNG hub. iGas completed preliminary route engineering for an onshore pipeline from Villiers Bay to Saldanha before 2014.</li>
+              <li><strong>Phase 6 &mdash; Abraham Villiers Bay&ndash;Oranjemund:</strong> Extends the corridor north to the Namibian border at Oranjemund, enabling imports from Namibia's Kudu offshore gas field &mdash; and, after Kudu depletes, potential exports to keep Namibia's proposed Kudu power station running. The pipeline's direction of flow could therefore reverse over its lifetime.</li>
+              <li><strong>Phase 9 &mdash; Saldanha&ndash;Coega Inland:</strong> The great interior backbone. Rather than hugging the coast, this corridor crosses the interior (tracking roughly through the Beaufort West / De Aar / Kimberley region, per the towns shown on the official map), connecting the West Coast and East Coast systems and opening the Karoo/semi-arid central regions to gas. It is the network's ultimate connective tissue.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LEGAL FRAMEWORK                                              -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="legal">
+          <div class="card-header legal">&#128196; Legal & Procedural Framework &mdash; How the Corridors Enable Development</div>
+          <div class="card-body">
+            <p class="small">The declaration is not just a map &mdash; it is a regulatory instrument that changes how future pipeline projects get approved.</p>
+
+            <h6 class="fw-bold">The gazetted instruments</h6>
+            <table class="table table-sm table-bordered small">
+              <thead class="table-light">
+                <tr><th>Instrument</th><th>Date</th><th>What it does</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>GN 788 &mdash; Gazette 43528</td><td>17 July 2020</td><td>First publication identifying the Strategic Gas Pipeline Corridors as geographical areas for strategic gas transmission infrastructure.</td></tr>
+                <tr><td>GN 836 &mdash; Gazette 43571</td><td>31 July 2020</td><td>Prescribes the <strong>procedures</strong> for applying the corridors: how environmental authorisation is processed for development inside a corridor, and the 10% rule (see below).</td></tr>
+                <tr><td>GN 143 &mdash; Gazette 44191</td><td>26 February 2021</td><td>Definitive identification of the geographical areas, with the corridor schedules and the mapped corridors (Figure 3 in the notice) &mdash; the legal basis cited for the nine phases.</td></tr>
+              </tbody>
+            </table>
+
+            <h6 class="fw-bold mt-3">How it works in practice</h6>
+            <ul class="small">
+              <li><strong>Pre-assessed corridors:</strong> The environmental attributes of each corridor were assessed during the 2019 SEA. A developer whose proposed pipeline falls within a declared corridor benefits from that prior strategic assessment, streamlining the environmental authorisation process under NEMA compared with a greenfield route.</li>
+              <li><strong>The 10% rule:</strong> If more than 10% of the contemplated infrastructure falls outside a Strategic Gas Pipeline Corridor, the ordinary requirements prescribed in the NEMA regulations apply in full. In other words, staying within a corridor is the fast track; deviating from it resets the process.</li>
+              <li><strong>Still project-level EIA:</strong> The corridors do not remove the need for project-specific environmental authorisation &mdash; but they de-risk route selection, avoid litigation over corridor-level alternatives, and allow specialists to focus on site-specific impacts rather than re-arguing the route.</li>
+              <li><strong>Interaction with the SEA for Electricity Grid (EGI):</strong> The gas pipeline SEA was run in parallel with the Electricity Grid Infrastructure SEA (also completed August 2020) &mdash; both used the same CSIR methodology &mdash; so electricity transmission corridors and gas corridors are deliberately aligned, which is important for routing gas to future power stations.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- GMP LINK                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="gmp">
+          <div class="card-header gmp">&#128218; Relationship to the Gas Master Plan (2024)</div>
+          <div class="card-body">
+            <p class="small">The Strategic Gas Pipeline Corridors (2019&ndash;2021) and the <a href="gas_master_plan.html" class="link-primary">Gas Master Plan</a> (2024) are two pieces of the same strategy:</p>
+            <ul class="small">
+              <li><strong>The SEA / corridors = where pipelines may go.</strong> Produced under the environmental mandate (DFFE), it fixed the <em>geography</em> of the future network and pre-cleared the routes.</li>
+              <li><strong>The Gas Master Plan = when, how much, and by whom.</strong> Produced under the energy mandate (DMRE), it fixed the <em>economics</em>: demand scenarios of 600&ndash;900 PJ/yr by 2040 in the base case, 10&ndash;15 MTPA of LNG imports, and 8&ndash;12 GW of gas-to-power.</li>
+              <li><strong>They reinforce each other.</strong> The GMP's proposed Phase 1 corridors (Coega&ndash;Mossel Bay; Richards Bay&ndash;Gauteng) sit inside corridors already declared in 2020/21. The GMP's third-party access, pipeline tariff and LNG licensing reforms are the market rules needed to make the declared corridors bankable.</li>
+            </ul>
+            <p class="small mb-0">Read more: <a href="gas_master_plan.html" class="link-primary">Gas Master Plan 2024</a> | <a href="gas_lng.html" class="link-primary">LNG Overview</a> | <a href="gas_lng_fsrus.html" class="link-primary">FSRUs</a> | <a href="offshore_exploration.html" class="link-primary">Offshore Exploration</a></p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- STATUS                                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="status">
+          <div class="card-header status">&#128337; Status Since 2020 &mdash; Where It Stands</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>The declaration stands.</strong> The corridors remain in force as declared geographical areas; the February 2021 notice (GN 143) superseded the 2020 publication with the definitive schedules.</li>
+              <li><strong>No major new national trunk line built yet.</strong> As of the mid-2020s, South Africa still operates the legacy ROMPCO and Sasol-Gas networks (the Phase 8 corridor in practice) and the PetroSA coastal line (the Phase 1b/2 route partially exists). The new-build corridors at Saldanha, Coega and Richards Bay await final investment decisions anchored on LNG supply commitments and gas-to-power demand.</li>
+              <li><strong>LNG terminals are the key enabler.</strong> The declared import-corridor ports &mdash; Saldanha Bay, Coega/Ngqura and Richards Bay &mdash; are exactly the three sites shortlisted in the Gas Master Plan for FSRU-based LNG import. The corridors pre-empt the hardest part (routing) so that once an LNG terminal reaches FID, the pipeline can move quickly through environmental authorisation.</li>
+              <li><strong>Mozambique dynamics.</strong> The Phase 4/8 corridors assume additional Mozambican volumes (Rovuma Basin). Rovuma LNG (TotalEnergies) remains delayed by the Cabo Delgado insurgency, and regional pipeline ambition is now partly channelled through the GasNosu north&ndash;south corridor concept.</li>
+              <li><strong>iGas mandate.</strong> iGas &mdash; the co-sponsor of the SEA and the state company charged with developing gas infrastructure &mdash; continues to do the preparatory work (route engineering, feasibility, anchor-offtake structuring) on exactly the alignments the corridors protect.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RISKS                                                        -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="risk">
+          <div class="card-header risk">&#9888;&#65039; Risks & Realities</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>The chicken-and-egg of anchor demand.</strong> Corridors do not build pipelines; committed demand does. Without anchor off-takers (Eskom gas-to-power contracts, PetroSA backfill, Sasol industrial conversions), the LNG terminals and trunk lines will not reach financial close &mdash; and the corridors will remain lines on a map.</li>
+              <li><strong>Capital intensity.</strong> A national trunk network is a multi-decade, tens-of-billions-of-rand programme. Phase 1 alone (Coega and Richards Bay corridors, per the GMP) is estimated at R50&ndash;80bn. State balance sheets are constrained, so delivery depends on private investors who will demand the very market reforms (third-party access, transparent tariffs) the GMP proposes.</li>
+              <li><strong>Stranded-asset risk.</strong> The corridors are declared for up to <em>nine</em> phases, but the SEA itself describes Phases 7 and 9 as "expensive and unlikely" near-term. If decarbonisation accelerates, some corridors may never be built &mdash; which is precisely why the phasing (build only as demand justifies) was designed the way it was.</li>
+              <li><strong>Competition from the incumbent.</strong> Sasol's existing network already performs the Phase 8 + eastern half of Phase 3 function for the Gauteng market. New corridors only make sense if they open <em>new</em> supply (LNG, offshore, Mozambique 2.0) rather than duplicate a functioning private network.</li>
+              <li><strong>Environmental and social opposition.</strong> Corridors cut across sensitive coastal, marine and Karoo environments. The SEA pre-authorisation reduces risk but does not remove it &mdash; each project still faces its own environmental authorisation, land-access and community engagement process.</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr>
+        <div class="d-flex justify-content-between small text-muted mb-4">
+          <a href="gas.html" class="btn btn-outline-secondary btn-sm">&larr; Back to Gas Overview</a>
+          <a href="gas_master_plan.html" class="btn btn-outline-success btn-sm">Gas Master Plan &#8599;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

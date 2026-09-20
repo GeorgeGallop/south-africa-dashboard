@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>England & Wales Electricity Pool • Thesis • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --pool-green: #007A4D;
+      --pool-blue: #002395;
+      --pool-gold: #FFCD00;
+    }
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      border-radius: 4px;
+      margin: 2.5rem 0;
+    }
+    .section-divider-thin {
+      height: 2px;
+      background: #e9ecef;
+      border-radius: 2px;
+      margin: 2rem 0;
+    }
+    .formula-card {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      background: #f8f9fa;
+      padding: 1.25rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.92rem;
+      overflow-x: auto;
+    }
+    .formula-card .math-label {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 0.78rem;
+      color: #007A4D;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .callout-box {
+      border-left: 5px solid #007A4D;
+      background: #f8f9fa;
+      padding: 1.25rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .callout-box p:last-child { margin-bottom: 0; }
+    .def-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 768px) { .def-grid { grid-template-columns: 1fr 1fr; } }
+    .def-item {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .def-item .term { font-weight: 700; color: #007A4D; font-size: 0.9rem; }
+    .def-item .desc { font-size: 0.9rem; color: #444; margin-top: 0.3rem; margin-bottom: 0; }
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: #dde4ec; border-radius: 2px; }
+    .tl-item { position: relative; margin-bottom: 1.25rem; }
+    .tl-item::before { content: ''; position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: #007A4D; border: 2px solid white; box-shadow: 0 0 0 2px #007A4D; }
+    .tl-year { font-size: 0.78rem; font-weight: 700; color: #007A4D; text-transform: uppercase; letter-spacing: 1px; }
+    .tl-text { font-size: 0.9rem; color: #555; }
+    .badge-math { background: #002395; color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; font-family: 'Courier New', monospace; }
+    .player-row { display: flex; gap: 1rem; align-items: center; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; background: white; margin-bottom: 0.75rem; }
+    .player-row .share-badge { font-family: 'Courier New', monospace; font-weight: 700; color: #002395; }
+    .stat-box { background: white; border: 2px solid #e0e5ea; border-radius: 10px; padding: 1rem; text-align: center; height: 100%; }
+    .stat-box .stat-num { font-size: 1.5rem; font-weight: 800; color: #007A4D; }
+    .stat-box .stat-lbl { font-size: 0.75rem; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
+    .chart-wrap { position: relative; height: 340px; }
+    .dl-card { border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; background: #f8f9fa; height: 100%; }
+    .dl-card .file-name { font-family: 'Courier New', monospace; font-size: 0.82rem; font-weight: 600; color: #002395; }
+    .data-flag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 10px; }
+    .flag-official { background: #d4edda; color: #155724; }
+    .flag-compiled { background: #fff3cd; color: #856404; }
+    .flag-external { background: #cce5ff; color: #004085; }
+    @media (max-width: 768px) { .chart-wrap { height: 280px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="thesis.html" class="btn btn-light btn-sm">📄 Thesis</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <!-- ============================================================ -->
+    <!-- HEADER                                                        -->
+    <!-- ============================================================ -->
+    <header class="mb-4">
+      <span class="badge-math mb-2 d-inline-block">THESIS • MARKET DESIGN HISTORY</span>
+      <h1 class="display-6 fw-bold text-sa-green mb-2">England & Wales Electricity Pool (1990–2001)</h1>
+      <p class="text-muted mb-0">
+        The world's first privatised competitive wholesale electricity market, and the
+        historical ancestor of the System Marginal Price (SMP) design being introduced in
+        South Africa's SAWEM. This page examines how single marginal pricing worked, who the
+        incumbent generator was, where the T&D systems were transferred, the major themes
+        of the Pool's existence, and its results — including datasets in the
+        <code>data/power</code> folder.
+      </p>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- STATS STRIP                                                   -->
+    <!-- ============================================================ -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">31 Mar 1990</div><div class="stat-lbl">Pool go-live</div></div></div>
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">11 yrs</div><div class="stat-lbl">Operation</div></div></div>
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">48</div><div class="stat-lbl">Half-hrs per day</div></div></div>
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">~200k</div><div class="stat-lbl">UKERC data records</div></div></div>
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">27 Mar 2001</div><div class="stat-lbl">Replaced by NETA</div></div></div>
+      <div class="col-6 col-md-2"><div class="stat-box"><div class="stat-num">GBP 2,000</div><div class="stat-lbl">VOLL (£/MWh, 1990)</div></div></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1) INTRODUCTION                                               -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">A) Background — From CEGB Monopoly to the Pool</h2>
+          <p>
+            Before 1990, electricity in England and Wales was supplied by the state-owned
+            <strong>Central Electricity Generating Board (CEGB)</strong> — a fully vertically-integrated
+            monopoly that owned all large generation, the national grid, and coordinated despatch.
+            The <strong>Electricity Act 1989</strong> privatised the industry and created the
+            <strong>Electricity Pool of England and Wales</strong>, which began trading on
+            <strong>31 March/1 April 1990</strong>.
+          </p>
+          <p>
+            The Pool was a mandatory, centralised, gross-pool wholesale market. All generators above
+            a de minimis threshold had to sell all output through the Pool, and all suppliers bought
+            from it. A central scheduler (the National Grid Company) ran a day-ahead merit-order
+            optimisation over 48 half-hour settlement periods per day. The design was heavily
+            influential — it is the direct intellectual ancestor of the single-Pricing-Area,
+            SMP-cleared design adopted by SAWEM in South Africa, and a central case study in
+            wholesale electricity market design.
+          </p>
+          <div class="alert alert-info border mb-0">
+            <strong>Why it matters for the thesis:</strong> the Pool was the first live
+            laboratory for the questions at the heart of the South African market design —
+            whether a single marginal price can discipline a dominant incumbent, how
+            capacity-based revenues should be layered on energy payments, and what happens
+            when market structure and market rules interact. Its successes (entry, falling
+            costs) and failures (duopoly market power, opaque pool prices) directly shaped
+            the NETA/BETTA successor design.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2) HOW SINGLE MARGINAL PRICING WORKED                         -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">B) How Single Marginal Pricing Worked</h2>
+
+          <p>
+            The Pool price was built from a <strong>pay-as-clear marginal price</strong> plus two
+            add-ons. Each day, generators submitted multi-part bids — an <em>availability price</em>
+            (£/MW/h for being available), <em>start-up costs</em>, no-load costs, and a schedule of
+            incremental energy offer prices. The NGC's GOAL scheduler stacked offers by price
+            (merit order), respecting technical constraints (minimum loads, ramp rates, minimum
+            up/down times, plant availability and the operational security standard).
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="formula-card h-100">
+                <div class="math-label">System Marginal Price (SMP)</div>
+                <pre style="margin:0; white-space:pre-wrap;">SMP<sub>h</sub> = highest offer price of the
+          most expensive generating set
+          scheduled by the Pool in
+          half-hour h, computed on the
+          UNCONSTRAINED schedule</pre>
+                <p class="small text-muted mt-2 mb-0">
+                  Key design point: SMP was derived from the <em>unconstrained</em> merit-order
+                  schedule, <em>before</em> transmission constraints were imposed. Constrained-on
+                  plant was paid its bid; constrained-off plant was compensated.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="formula-card h-100">
+                <div class="math-label">The three Pool prices</div>
+                <pre style="margin:0; white-space:pre-wrap;">Capacity Charge:  CC = LOLP × (VOLL − SMP)
+
+Pool Purchase Price (paid to generators):
+  PPP = SMP + CC
+
+Pool Selling Price (paid by suppliers):
+  PSP = PPP + UPLIFT
+
+UPLIFT: reserve, constraint and
+        start-up costs recovered ex post,
+        allocated by metered volume</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="def-grid mb-3">
+            <div class="def-item">
+              <div class="term">LOLP — Loss of Load Probability</div>
+              <p class="desc">
+                Probability, per half-hour, that demand would exceed available capacity. It rose
+                steeply when spare capacity was tight — and because CC = LOLP × (VOLL − SMP),
+                a small capacity margin could add large sums to the price.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">VOLL — Value of Lost Load</div>
+              <p class="desc">
+                Willingness-to-pay to avoid interruption, set by OFFER at <strong>£2,000/MWh</strong>
+                in 1990/91 and RPI-indexed annually. VOLL acted as the scarcity cap on prices and
+                the anchor for the capacity charge.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">UPLIFT</div>
+              <p class="desc">
+                Ex-post add-on recovering reserve costs, constrained-on payments, plant available
+                but unused, and start-up costs. Averaged ~1–2% of PSP, but was the Pool's only
+                day-ahead price uncertainty.
+              </p>
+            </div>
+            <div class="def-item">
+              <div class="term">Pay-as-clear property</div>
+              <p class="desc">
+                Every dispatched generator received the same PPP (= SMP + CC) regardless of its
+                individual bid. Infra-marginal plant earned the gap between SMP and its offer —
+                the profit that funded fixed costs and entry.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout-box mb-3">
+            <p><strong>Why "single" marginal pricing?</strong></p>
+            <p class="mb-0">
+              The Pool paid a <em>single system-wide</em> price per half-hour. There were no
+              locational prices — constraints were "uplifted" into the PSP rather than priced
+              by node. This contrasts directly with LMP markets (e.g. PJM) and mirrors the
+              single-Pricing-Area SMP design of SAWEM Phase 1, complete with the same
+              constrained-on/off compensation mechanisms.
+            </p>
+          </div>
+
+          <div class="alert alert-warning border mb-0">
+            <strong>A structural flaw:</strong> because SMP was the offer of the marginal unit on
+            the unconstrained schedule, and because the duopoly's plant frequently set the margin,
+            the two big generators could influence the price with <em>both</em> bid levels and
+            capacity availability games — see Section F.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3) PRICE FORMULA & CHART                                      -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">C) The Price Stack at Work — Annual Pool Price Structure</h2>
+          <p>
+            The chart below shows the indicative annual structure of the Pool prices
+            (SMP, capacity charge CC, and the resulting PPP) across the Pool's life. The data
+            are compiled from published literature (see data folder); the authoritative
+            half-hourly records are the UKERC/Poolit dataset.
+          </p>
+
+          <div class="chart-wrap mb-4">
+            <canvas id="poolPriceChart"></canvas>
+          </div>
+
+          <div class="alert alert-secondary border mb-0">
+            <strong>Reading the chart:</strong> the capacity charge (yellow segment) made up a
+            surprisingly large share of generator revenue — often 10–20% of PPP — because the
+            duopoly could declare capacity unavailable, raising LOLP and the capacity payment.
+            Energy (SMP) prices in real terms drifted down from the mid-1990s as CCGT entry and
+            divestitures bit, even before NETA replaced the Pool.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4) INCUMBENT GENERATOR                                        -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">D) Who Was the Incumbent Generator?</h2>
+          <p>
+            The incumbent was the <strong>CEGB</strong>. On vesting (31 March 1990) its generation
+            was broken into three companies, deliberately creating a duopoly:
+          </p>
+
+          <div class="player-row">
+            <div style="flex:0 0 44px;font-size:1.6rem;">🏭</div>
+            <div style="flex:1;">
+              <strong>National Power</strong> — the largest thermal generator, ~<span class="share-badge">46–47%</span> of capacity (fossil + some hydro).
+              Inherited most of the CEGB's coal and oil plant.
+            </div>
+          </div>
+          <div class="player-row">
+            <div style="flex:0 0 44px;font-size:1.6rem;">⚡</div>
+            <div style="flex:1;">
+              <strong>PowerGen</strong> — the second thermal generator, ~<span class="share-badge">27–28%</span> of capacity.
+            </div>
+          </div>
+          <div class="player-row">
+            <div style="flex:0 0 44px;font-size:1.6rem;">☢️</div>
+            <div style="flex:1;">
+              <strong>Nuclear Electric</strong> — took all nuclear stations (~<span class="share-badge">15%</span>), retained in state
+              ownership because the nuclear liabilities (decommissioning, Magnox) were unprivatisable in 1990.
+            </div>
+          </div>
+          <div class="player-row">
+            <div style="flex:0 0 44px;font-size:1.6rem;">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+            <div style="flex:1;">
+              <strong>Scottish + French imports</strong> — Scottish Power/Scottish Hydro (which later became
+              ScottishPower and SSE), plus the 2 GW interconnector from Électricité de France,
+              accounting for the remainder.
+            </div>
+          </div>
+
+          <div class="section-divider-thin"></div>
+
+          <p>
+            The result was a private-sector duopoly controlling ~<strong>75%</strong> of the market:
+            National Power + PowerGen. Neither faced meaningful competition at launch — the
+            CEGB's generation had simply been split in two — and this concentration dominated
+            the Pool's price behaviour and policy history for its first six years.
+          </p>
+          <div class="callout-box mb-0">
+            <p class="mb-0">
+              <strong>Parallel with South Africa:</strong> SAWEM's Phase-1 SMP market launches with
+              the <strong>Central Purchasing Agency</strong> acting for Eskom Generation's
+              vesting-contracted plant (~70% market share) — a strikingly similar starting point.
+              The Pool's experience with a dominant incumbent, capacity withholding, and the
+              mitigation that followed is the key comparative case study for whether SMP alone can
+              discipline a ~70% state generator.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5) T&D TRANSFER                                               -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">E) Where Did the Transmission & Distribution Go?</h2>
+          <p>
+            The Electricity Act 1989 unbundled the CEGB's assets in the following way:
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Transmission → National Grid Company (NGC)</div>
+                <p class="desc">
+                  The CEGB's 400/275 kV national grid and its pumped-storage stations (Dinorwig,
+                  Ffestiniog) were transferred to the <strong>National Grid Company</strong>, jointly
+                  owned by the 12 RECs at vesting. NGC acted as both grid operator and the Pool's
+                  central scheduler/clearing house. NGC was flotation-privatised in
+                  <strong>December 1995</strong>, later merging with Lattice to become National Grid
+                  Transco (2002) and today's National Grid plc.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Distribution → 12 Regional Electricity Companies (RECs)</div>
+                <p class="desc">
+                  Distribution networks passed from the Area Electricity Boards to
+                  <strong>12 privatised RECs</strong> (e.g. Eastern, Midlands, NORWEB, SEEBOARD,
+                  SWEB, Yorkshire, etc.), floated on the London Stock Exchange in
+                  <strong>December 1990</strong>. Each REC held a regional monopoly over wires
+                  and (initially) supply, subject to an RPI-X price control set by the regulator OFFER.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <div class="def-item">
+                <div class="term">Generation</div>
+                <p class="desc">CEGB generation → National Power, PowerGen, Nuclear Electric (1990). Later split further: PowerGen's coal → Edison/TXU, National Power's → AES/Midwest Power at Drax.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="def-item">
+                <div class="term">Transmission</div>
+                <p class="desc">CEGB grid + pumped storage → NGC (1990), floated Dec 1995.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="def-item">
+                <div class="term">Distribution & supply</div>
+                <p class="desc">Area Boards → 12 RECs (floated Dec 1990), RPI-X price control by OFFER.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info border mt-3 mb-0">
+            <strong>Relevance to SA:</strong> this three-way unbundling — generation, transmission
+            (→ NTCSA), distribution (→ municipalities) — is precisely the structure the
+            Electricity Regulation Amendment Act 38 of 2024 is implementing for Eskom. SAWEM's
+            single SMP with a national pricing area and constrained-on/off uplift is modelled
+            directly on the Pool's PSP/UPLIFT mechanics.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6) MAJOR THEMES                                               -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">F) Major Themes of the Pool's Existence</h2>
+
+          <div class="timeline mb-4">
+            <div class="tl-item"><div class="tl-year">1990–1995</div><div class="tl-text"><strong>Market power & the duopoly problem.</strong> National Power and PowerGen faced no real competition. Wolak & Patrick (2001) showed they strategically manipulated <em>both</em> offer prices and capacity availability declarations: withdrawing plant raised LOLP (and thus the capacity charge) and forced higher-cost plant to set SMP. Pool prices spiked repeatedly (documented half-hourly SMP above £500/MWh in winter peaks).</div></div>
+            <div class="tl-item"><div class="tl-year">1993–1995</div><div class="tl-text"><strong>Regulatory battles & price caps.</strong> OFFER's investigations led to a five-year price cap (1994/95–1998/99) on PPP above a reference level, plus a coal-supply "gas-for-coal" review and the ending of domestic coal contracts. The cap limited the duopoly's ability to profit from scarcity but did not remove the structural problem.</div></div>
+            <div class="tl-item"><div class="tl-year">1994</div><div class="tl-text"><strong>Two-part bidding.</strong> The Pool introduced start-up/no-load/energy bid structures to better reflect generator costs and reduce "pricing above marginal cost" gaming.</div></div>
+            <div class="tl-item"><div class="tl-year">1996</div><div class="tl-text"><strong>MMC reference & divestitures.</strong> The Monopolies and Mergers Commission found the duopoly's market power contrary to the public interest. National Power agreed to divest 4 GW and PowerGen 2 GW, later increased to 6 GW and 4 GW. Drax (Europe's largest coal plant) passed to AES; plant went to Eastern, Edison Mission, TXU and others — cutting the duopoly's share roughly in half.</div></div>
+            <div class="tl-item"><div class="tl-year">1990–2000</div><div class="tl-text"><strong>The "dash for gas".</strong> Open access + falling CCGT costs + cheap North Sea gas produced a construction boom: ~20 GW of CCGTs by 2000, taking gas from ~1% to ~40% of generation while coal fell from ~67% to ~30%. Real wholesale prices fell ~25% and energy efficiency/entry delivered the Pool's core success.</div></div>
+            <div class="tl-item"><div class="tl-year">1996–1998</div><div class="tl-text"><strong>Full retail competition.</strong> The 1998/99 opening of the domestic supply market completed the competition chain and allowed suppliers to hedge via electricity Contracts for Differences (CfDs) — the Pool's parallel black market.</div></div>
+            <div class="tl-item"><div class="tl-year">1998–2001</div><div class="tl-text"><strong>Design backlash → NETA.</strong> Growing complaints that Pool prices were opaque, volatile, and manipulable (and the 1997–98 "Pool 2000" review) led the new Labour government to commission Ofgem's review, culminating in the <strong>New Electricity Trading Arrangements (NETA)</strong> — a bilateral, self-dispatch, pay-as-bid balancing market — which replaced the Pool on 27 March 2001.</div></div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Theme 1 — Market power v. market rules</div>
+                <p class="desc">
+                  The Pool proved that a marginal-price auction cannot discipline a concentrated
+                  incumbent by itself. The interaction of the SMP (unconstrained merit order),
+                  LOLP-based capacity payments, and availability declarations created a
+                  "pricing without output" loophole: generators could push prices up while
+                  producing less.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Theme 2 — Entry & stranded assets</div>
+                <p class="desc">
+                  The Pool opened the door to merchant entry (CCGTs), but entry stranded
+                  coal assets and triggered the "dash for gas" controversy, emissions-related
+                  politics, and social consequences in coal-mining regions — an early, real-world
+                  "just transition" episode.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Theme 3 — Price transparency & acceptability</div>
+                <p class="desc">
+                  The Pool daily published SMP/LOLP/PPP/PSP was transparent but the public found
+                  capacity payments and uplift opaque. The political economy of price formation
+                  (not just its efficiency) drove the switch to NETA.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="def-item h-100">
+                <div class="term">Theme 4 — Congestion handling</div>
+                <p class="desc">
+                  A single national price with UPLIFT meant the Pool never sent locational
+                  signals or locational investment incentives for generation siting — a design
+                  lesson for the single-Pricing-Area choices in SAWEM Phase 1.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7) RESULTS                                                    -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">G) Results of the Market</h2>
+
+          <div class="row g-3 mb-3">
+            <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">~67% → ~30%</div><div class="stat-lbl">Coal share of generation</div></div></div>
+            <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">~1% → ~40%</div><div class="stat-lbl">Gas (CCGT) share</div></div></div>
+            <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">~75% → ~40%</div><div class="stat-lbl">Duopoly capacity share</div></div></div>
+            <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">~25%</div><div class="stat-lbl">Real wholesale price fall (late-90s)</div></div></div>
+          </div>
+
+          <ul class="mb-4">
+            <li><strong>Prices fell in real terms.</strong> Despite early spikes (annual average SMP around £25/MWh and spikes above £500/MWh in 1991–94 winters), real wholesale prices declined ~25% by the late 1990s as entry and divestiture eroded the duopoly.</li>
+            <li><strong>Massive capacity entry.</strong> ~20 GW of CCGTs commissioned by 2000 — the fastest capacity build-out in UK history — driven by open access to the Pool and the SMP revenue opportunity.</li>
+            <li><strong>Fuel switching & the coal exit.</strong> Coal fell from roughly two-thirds to under a third of generation; the 1993–98 coal contract rundown produced major social disruption in mining regions.</li>
+            <li><strong>Market power was real and quantified.</strong> Wolak & Patrick (2001) estimated a substantial share of consumer payments in the mid-1990s represented transfers above the competitive benchmark; the MMC found the market structure "against the public interest" and forced divestiture.</li>
+            <li><strong>Thermal efficiency improved.</strong> The competitive squeeze forced incumbents to improve plant performance and availability.</li>
+            <li><strong>Retail competition completed.</strong> All customers — including households by 1998/99 — could choose suppliers, with CfD hedging markets developing alongside the Pool.</li>
+            <li><strong>Replacement.</strong> Persistent complaints about opacity and manipulability produced NETA (pay-as-bid bilateral trading), which cut wholesale prices sharply after 2001 — though critics note part of that fall was coincident CCGT entry.</li>
+          </ul>
+
+          <div class="alert alert-success border mb-0">
+            <strong>Headline lesson:</strong> the Pool proved competitive wholesale electricity
+            trading could work and could drive entry and cost reduction — but it also proved
+            that <em>single marginal pricing alone cannot fix a bad market structure</em>.
+            SAWEM's SMP design rests on the same architecture, which is why the Thesis project
+            treats structural mitigation (vesting-hedge decay, CPA, NTCSA unbundling) as
+            essential complements to the SMP.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8) TIMELINE                                                   -->
+    <!-- ============================================================ -->
+    <section class="mb-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">H) Key Dates</h2>
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle">
+              <thead>
+                <tr class="bg-light"><th style="width:170px;">Date</th><th>Event</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>27 Jul 1989</td><td>Electricity Act 1989 receives Royal Assent — legal basis for privatisation and the Pool.</td></tr>
+                <tr><td>31 Mar / 1 Apr 1990</td><td>CEGB split; National Power, PowerGen, Nuclear Electric, NGC and the 12 RECs vest; Pool starts trading.</td></tr>
+                <tr><td>Dec 1990</td><td>12 RECs floated on the London Stock Exchange.</td></tr>
+                <tr><td>Apr 1990 – 1994</td><td>Duopoly market power episodes; OFFER investigations; price spikes in winter peaks.</td></tr>
+                <tr><td>Apr 1994</td><td>Pool price cap introduced (reference-price undertakings, effective to 1998/99); two-part bidding introduced.</td></tr>
+                <tr><td>Dec 1995</td><td>NGC floated (transmission privatised).</td></tr>
+                <tr><td>Feb 1996</td><td>MMC report — duopoly found against the public interest; divestiture undertakings follow.</td></tr>
+                <tr><td>1996–1999</td><td>Divestitures: National Power 6 GW, PowerGen 4 GW; Drax → AES; Eastern, TXU, Edison Mission enter.</td></tr>
+                <tr><td>Sep 1998 – 1999</td><td>Full retail competition opens to all domestic customers.</td></tr>
+                <tr><td>Oct 1998 – 2000</td><td>"Pool 2000" review; Ofgem confirms NETA design (Jan 2000).</td></tr>
+                <tr><td>27 Mar 2001</td><td>NETA replaces the Pool (last Pool trading day 26 Mar 2001). BETTA extends the design to Scotland in 2005.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 9) DATA & DOWNLOADS                                           -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">I) Data & Downloads</h2>
+          <p>
+            Files relevant to the Pool are stored in <code>data/power/</code>, and the
+            authoritative half-hourly Pool dataset is available (free registration) from the
+            UKERC Energy Data Centre.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-official">Official</span></div>
+                <div class="file-name mt-2">Electricity_since_1920.xlsx</div>
+                <p class="small text-muted mt-1 mb-2">UK government (DESNZ) official historical electricity series 1920–2025 — generation, capacity, fuel mix, demand, average prices. Source: GOV.UK statistical data set.</p>
+                <a href="../data/power/Electricity_since_1920.xlsx" class="btn btn-sm btn-success" download>⬇ Download XLSX</a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-compiled">Compiled</span></div>
+                <div class="file-name mt-2">england-wales-pool-annual-summary.csv</div>
+                <p class="small text-muted mt-1 mb-2">Annual SMP / CC / PPP / PSP summary 1990–2001 compiled from published literature. <strong>Indicative</strong> — verify against UKERC before citation.</p>
+                <a href="../data/power/england-wales-pool-annual-summary.csv" class="btn btn-sm btn-outline-success" download>⬇ Download CSV</a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-official">Academic</span></div>
+                <div class="file-name mt-2">w8248_england_wales_pool_wolak_patrick.pdf</div>
+                <p class="small text-muted mt-1 mb-2">NBER Working Paper 8248 — Wolak & Patrick (2001), the definitive econometric study of Pool price formation and market power (half-hourly bids & prices, 4 fiscal years).</p>
+                <a href="../data/power/w8248_england_wales_pool_wolak_patrick.pdf" class="btn btn-sm btn-outline-success" download>⬇ Download PDF</a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-external">External</span></div>
+                <div class="file-name mt-2">UKERC EDC — Pool half-hourly data</div>
+                <p class="small text-muted mt-1 mb-2">~200,000 records of demand, SMP, LOLP, PPP, PSP, 1990–2001 (owner Poolit Ltd). Free registration required.</p>
+                <a href="https://services.ceda.ac.uk/services/archive/edc_electricity_pool/" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Register / Access</a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-external">External</span></div>
+                <div class="file-name mt-2">GOV.UK historical data page</div>
+                <p class="small text-muted mt-1 mb-2">Official landing page for DESNZ historical electricity statistics (DUKES-related series, updated annually).</p>
+                <a href="https://www.gov.uk/government/statistical-data-sets/historical-electricity-data" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Open</a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="dl-card">
+                <div><span class="data-flag flag-external">External</span></div>
+                <div class="file-name mt-2">NBER w8248 abstract</div>
+                <p class="small text-muted mt-1 mb-2">Full abstract and citation data for the Wolak & Patrick working paper (DOI 10.3386/w8248).</p>
+                <a href="https://www.nber.org/papers/w8248" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Open</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-light border mt-3 mb-0 small">
+            <strong>Citation note:</strong> any publication using the UKERC pool data
+            must acknowledge UKERC EDC and Poolit Limited. The compiled annual figures in
+            <code>england-wales-pool-annual-summary.csv</code> are indicative, assembled from
+            OFFER/Ofgem reports, DUKES, NBER w8248 and academic literature, and should be
+            verified against primary sources before academic use.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 10) FURTHER READING                                           -->
+    <!-- ============================================================ -->
+    <section class="mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-3 p-md-4">
+          <h2 class="h4 fw-bold text-sa-green mb-3">J) Further Reading</h2>
+          <ul class="mb-0">
+            <li>Wolak, F.A. & Patrick, R.H. (2001). <em>The Impact of Market Rules and Market Structure on the Price Determination Process in the England and Wales Electricity Market.</em> NBER Working Paper 8248. DOI 10.3386/w8248.</li>
+            <li>Bunn, D. & Martoccia, M. (2009). <em>Computational modelling of price formation in the electricity pool of England and Wales.</em> Journal of Economic Dynamics & Control, 33(2), 363–376.</li>
+            <li>Powell, A. (1997). <em>The Electricity Contract Market in England and Wales.</em> Journal of Industrial Economics (JSTOR 117509).</li>
+            <li>Stoft, S. (2002). <em>Power System Economics: Designing Markets for Electricity.</em> IEEE/Wiley — the standard text covering the Pool's pricing rules.</li>
+            <li>Newbery, D. (1995). <em>Power Markets and Market Power.</em> The Energy Journal — early formal treatment of Pool market power.</li>
+            <li>UKERC Energy Data Centre — <em>UK Electricity Pool Demand and Price (1990–2001)</em> dataset documentation (Poolit Ltd).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ============================================================
+    // Annual Pool price structure chart
+    // Data: compiled/indicative annual averages 1990-2001
+    // (see data/power/england-wales-pool-annual-summary.csv)
+    // ============================================================
+    const poolYears = ['1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001'];
+    const smpData   = [22,25,23,23,24,24,23,23,22,20,20,19];   // pence/kWh - SMP
+    const ccData    = [ 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3];   // capacity charge
+    const upliftData= [ 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2];   // uplift (PSP - PPP)
+
+    const ctx = document.getElementById('poolPriceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: poolYears,
+        datasets: [
+          { label: 'SMP (energy) p/kWh', data: smpData, backgroundColor: '#007A4D' },
+          { label: 'Capacity charge p/kWh', data: ccData, backgroundColor: '#FFCD00' },
+          { label: 'Uplift p/kWh', data: upliftData, backgroundColor: '#002395' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: { display: true, text: 'England & Wales Pool — indicative annual price structure (nominal pence/kWh)', font: { weight: 'bold' } },
+          legend: { position: 'bottom' },
+          tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y} p/kWh` } }
+        },
+        scales: {
+          x: { stacked: true, title: { display: true, text: 'Year (fiscal year shown by start year)' } },
+          y: { stacked: true, title: { display: true, text: 'pence per kWh (nominal)' }, beginAtZero: true }
+        }
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

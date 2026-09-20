@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activation Functions • Neural Networks • Load Forecasting</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    .math {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .sa-green { color: #007A4D; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.level-sauce    { background: #f3e5f5; color: #4a148c; border-bottom-color: #4a148c; }
+    .card-header.level-collapse { background: #fff3e0; color: #e65100; border-bottom-color: #e65100; }
+    .card-header.level-catalog  { background: #e3f2fd; color: #0d47a1; border-bottom-color: #0d47a1; }
+    .card-header.level-relu     { background: #e8f5e9; color: #1b5e20; border-bottom-color: #1b5e20; }
+    .card-header.level-load     { background: #fff8e1; color: #f57f17; border-bottom-color: #f57f17; }
+    .card-header.level-train    { background: #fce4ec; color: #880e4f; border-bottom-color: #880e4f; }
+    .layman-box {
+      background: #f3e5f5;
+      border: 2px solid #9c27b0;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .layman-box h5 { color: #4a148c; }
+    .stake-box {
+      background: #fff8e1;
+      border: 2px solid #ffc107;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .equation-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 0.75rem 0;
+    }
+    .nav-pills .nav-link { color: #495057; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+    .nav-pills .nav-link.active { background: #007A4D; color: white; }
+    .nn-subnav .nav-link { color: #4a148c; }
+    .nn-subnav .nav-link.active { background: #7b1fa2; color: white; }
+    .demo-panel {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .act-card {
+      border-left: 4px solid #7b1fa2;
+      background: #fff;
+      padding: 0.9rem 1rem;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="thesis-neural-networks.html" class="btn btn-light btn-sm">&#129504; NN Overview</a>
+        <a href="thesis.html" class="btn btn-light btn-sm">&#128196; Thesis</a>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top nn-subnav mb-3" style="top: 1rem;">
+          <div class="small fw-bold text-muted px-2 mb-1">Neural Networks</div>
+          <a class="nav-link" href="thesis-neural-networks.html">&#127917; Overview</a>
+          <a class="nav-link active" href="thesis-activation-functions.html">&#8767; Activation Functions</a>
+          <hr class="my-2">
+          <a class="nav-link" href="#sauce">&#127859; The Sauce</a>
+          <a class="nav-link" href="#collapse">&#9632; Linear Collapse</a>
+          <a class="nav-link" href="#ushape">&#9632; The Load U-Shape</a>
+          <a class="nav-link" href="#plotter">&#9632; Plot the Functions</a>
+          <a class="nav-link" href="#catalog">&#9632; The Catalog</a>
+          <a class="nav-link" href="#relu">&#9632; Why ReLU Won</a>
+          <a class="nav-link" href="#stlf">&#9632; What STLF Uses</a>
+          <a class="nav-link" href="#gradients">&#9632; Gradients &amp; Failure</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <p class="small text-muted mb-1">Thesis &rsaquo; Neural Networks &rsaquo; Activation Functions</p>
+        <h1 class="display-4 fw-bold" style="color:#7b1fa2;">&#8767; Activation Functions</h1>
+        <p class="lead text-muted mb-4">
+          The non-linearity that makes a neural network a neural network &mdash; and not
+          just a stacked linear regression. Told through the temperature&ndash;load curve
+          every South African day-ahead forecast has to bend around.
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- THE SAUCE                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sauce">
+          <div class="card-header level-sauce">
+            &#127859; This Is the Sauce &mdash; Non-Linearity Is the Whole Method
+          </div>
+          <div class="card-body">
+
+            <div class="layman-box">
+              <h5>&#128172; Layman's Introduction</h5>
+              <p>
+                A neuron does two things, in this order:
+              </p>
+              <div class="math mb-3">z = w &middot; x + b &nbsp;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;&nbsp; a = &sigma;(z)</div>
+              <p>
+                The first step is a weighted sum. That is ordinary arithmetic: &ldquo;add 400 MW
+                per degree below 18&nbsp;&deg;C.&rdquo; If that were the whole network, you would
+                have invented linear regression and called it a day. ARIMA desks already had that.
+              </p>
+              <p class="mb-0">
+                The second step, <strong>&sigma;</strong>, is the <em>activation function</em>.
+                It is a bend. It takes the straight line the weighted sum just drew and kinks it,
+                saturates it, or clips it. Stack those bends and you can draw a U-shaped
+                heating/cooling response, an evening ramp, a holiday rundown &mdash; anything
+                continuous. <strong>Remove &sigma; and the deepest network in the world collapses
+                back into one matrix multiply.</strong> The weights are the ingredients. The
+                activation is the sauce. Without it, there is no dish.
+              </p>
+            </div>
+
+            <p>
+              This is not a flourish. It is a theorem. Cybenko (1989) and Hornik (1991): a
+              feedforward net with one hidden layer and a non-linear activation can approximate
+              any continuous function on a compact set, to any accuracy, if you give it enough
+              hidden units. The theorem is silent if &sigma; is linear. Linearity has no
+              approximating power beyond a hyperplane. Load is not a hyperplane.
+            </p>
+
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="act-card">
+                  <div class="small text-muted fw-bold text-uppercase">Weighted sum</div>
+                  <div class="fw-bold">The mixer</div>
+                  <p class="small mb-0">Combines temperature, hour, last-week load into one number <em>z</em>. Necessary. Not sufficient.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="act-card" style="border-left-color:#e65100;">
+                  <div class="small text-muted fw-bold text-uppercase">Activation &sigma;</div>
+                  <div class="fw-bold">The bend</div>
+                  <p class="small mb-0">Turns <em>z</em> into a shape the next layer can compose. This is where capacity comes from.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="act-card" style="border-left-color:#007A4D;">
+                  <div class="small text-muted fw-bold text-uppercase">Stacking</div>
+                  <div class="fw-bold">The composition</div>
+                  <p class="small mb-0">Bends of bends. A daily load curve is a composition of kinks, not a single slope.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LINEAR COLLAPSE                                            -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="collapse">
+          <div class="card-header level-collapse">
+            &#9632; Linear Collapse &mdash; Why Depth Without &sigma; Is Theatre
+          </div>
+          <div class="card-body">
+            <p>
+              Take two layers and drop the activation. Layer 1 computes W<sub>1</sub>x + b<sub>1</sub>.
+              Layer 2 computes W<sub>2</sub>(that) + b<sub>2</sub>. Substitute:
+            </p>
+            <div class="equation-box">
+              <div class="math mb-2">
+                y = W<sub>2</sub>(W<sub>1</sub>x + b<sub>1</sub>) + b<sub>2</sub>
+              </div>
+              <div class="math mb-2">
+                y = (W<sub>2</sub> W<sub>1</sub>) x + (W<sub>2</sub> b<sub>1</sub> + b<sub>2</sub>)
+              </div>
+              <div class="math mb-0">
+                y = W' x + b'
+              </div>
+            </div>
+            <p>
+              Two layers, one line. A hundred layers, still one line. You paid for depth and
+              bought a spreadsheet. That is the collapse. It is why every serious network
+              inserts a non-linear &sigma; after each hidden weighted sum:
+            </p>
+            <div class="math mb-3">
+              h<sub>1</sub> = &sigma;(W<sub>1</sub>x + b<sub>1</sub>) &nbsp;&nbsp;&nbsp;
+              h<sub>2</sub> = &sigma;(W<sub>2</sub>h<sub>1</sub> + b<sub>2</sub>) &nbsp;&nbsp;&nbsp;
+              y = W<sub>3</sub>h<sub>2</sub> + b<sub>3</sub>
+            </div>
+            <p class="mb-0">
+              Now W<sub>2</sub> is multiplying a <em>bent</em> version of x, not x itself.
+              The composition no longer factors. That is the entire difference between
+              &ldquo;a neural network&rdquo; and &ldquo;linear regression with extra steps.&rdquo;
+              The output layer is often left linear on purpose &mdash; you want unbounded
+              megawatts, not a squashed probability. The sauce lives in the <em>hidden</em>
+              layers.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- U-SHAPE                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="ushape">
+          <div class="card-header level-load">
+            &#9632; The Load U-Shape &mdash; The Curve a Line Cannot Draw
+          </div>
+          <div class="card-body">
+            <p>
+              South African system load versus temperature is the textbook reason you need
+              a bend. Cold Highveld evenings: heating load rises as temperature falls.
+              Hot January afternoons: air-conditioning rises as temperature rises. In
+              between, a dead band. That is a U, not a slope.
+            </p>
+            <p>
+              A linear net is forced to pick one slope and live with it. A hidden layer of
+              ReLU units can specialise: one neuron learns <code>max(0, 16 &minus; T)</code>
+              (heating), another learns <code>max(0, T &minus; 24)</code> (cooling), the
+              output mixes them into MW. Toggle the model below. The dots are an illustrative
+              evening-peak response, not a live Eskom series.
+            </p>
+
+            <div class="demo-panel mb-3">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="ushapeModel" id="uLinear" value="linear">
+                  <label class="form-check-label small" for="uLinear">Linear (no activation)</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="ushapeModel" id="uRelu" value="relu" checked>
+                  <label class="form-check-label small" for="uRelu">Two ReLU hidden units</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="ushapeModel" id="uTanh" value="tanh">
+                  <label class="form-check-label small" for="uTanh">Tanh hidden (smooth U)</label>
+                </div>
+              </div>
+              <canvas id="uShapeChart" height="110"></canvas>
+              <p class="small text-muted mt-3 mb-0" id="uShapeCaption"></p>
+            </div>
+
+            <div class="equation-box">
+              <div class="fw-bold mb-2">What those two ReLU neurons actually compute</div>
+              <div class="math mb-2">
+                h<sub>heat</sub> = ReLU(16 &minus; T) = max(0, 16 &minus; T)
+              </div>
+              <div class="math mb-2">
+                h<sub>cool</sub> = ReLU(T &minus; 24) = max(0, T &minus; 24)
+              </div>
+              <div class="math mb-0">
+                D&#770; = 28&nbsp;000 + 420 &middot; h<sub>heat</sub> + 480 &middot; h<sub>cool</sub> &nbsp;&nbsp;(MW, illustrative)
+              </div>
+            </div>
+            <p class="mb-0">
+              That is the sauce in one picture: the <code>max(0, &middot;)</code> is the
+              non-linearity. Without it, heating and cooling would cancel into a single
+              slope and the dead band would disappear. With it, each neuron is silent
+              on the side of 18&nbsp;&deg;C it does not own, and the U appears for free.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PLOTTER                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="plotter">
+          <div class="card-header level-catalog">
+            &#9632; Plot the Functions &mdash; Shape and Slope
+          </div>
+          <div class="card-body">
+            <p>
+              Two plots matter. The left is &sigma;(z) &mdash; what the neuron emits.
+              The right is &sigma;'(z) &mdash; the local slope that back-propagation
+              multiplies through. If that slope is near zero, the weight update dies.
+              That is vanishing gradients, and it is why sigmoid lost the hidden layer
+              to ReLU.
+            </p>
+            <div class="demo-panel">
+              <label class="form-label small fw-bold" for="actPick">Activation</label>
+              <select id="actPick" class="form-select form-select-sm mb-3" style="max-width: 280px;">
+                <option value="linear">Linear (identity) &mdash; no sauce</option>
+                <option value="sigmoid">Sigmoid</option>
+                <option value="tanh">Tanh</option>
+                <option value="relu" selected>ReLU</option>
+                <option value="leaky">Leaky ReLU</option>
+                <option value="gelu">GELU</option>
+                <option value="swish">SiLU / Swish</option>
+              </select>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="small fw-bold mb-1">&sigma;(z)</div>
+                  <canvas id="actFnChart" height="160"></canvas>
+                </div>
+                <div class="col-md-6">
+                  <div class="small fw-bold mb-1">&sigma;'(z) &mdash; the gradient the chain rule sees</div>
+                  <canvas id="actDerivChart" height="160"></canvas>
+                </div>
+              </div>
+              <p class="small mt-3 mb-0" id="actCaption"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CATALOG                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="catalog">
+          <div class="card-header level-catalog">
+            &#9632; The Catalog &mdash; What Each Bend Is For
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width:16%;">Function</th>
+                    <th>&sigma;(z)</th>
+                    <th>Range</th>
+                    <th>What it is doing, in load-forecasting language</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Linear / identity</strong></td>
+                    <td class="math p-1 mb-0">z</td>
+                    <td>(&minus;&infin;, &infin;)</td>
+                    <td>No bend. Use on the <em>output</em> of a regression net so predicted MW can be any size. Never use as the only hidden activation, or the net collapses.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sigmoid</strong></td>
+                    <td class="math p-1 mb-0">1 / (1 + e<sup>&minus;z</sup>)</td>
+                    <td>(0, 1)</td>
+                    <td>A smooth on/off switch. Historically the default. Saturates hard: at |z| &gt; 4 the slope is ~0, so early layers stop learning. Fine as a gate (LSTM forget gate), poor as a deep hidden activation.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tanh</strong></td>
+                    <td class="math p-1 mb-0">(e<sup>z</sup> &minus; e<sup>&minus;z</sup>) / (e<sup>z</sup> + e<sup>&minus;z</sup>)</td>
+                    <td>(&minus;1, 1)</td>
+                    <td>Sigmoid, recentred on zero. Hidden units can inhibit as well as excite. Still saturates. Common inside LSTM/GRU cells; rare as the only STLF hidden activation today.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>ReLU</strong></td>
+                    <td class="math p-1 mb-0">max(0, z)</td>
+                    <td>[0, &infin;)</td>
+                    <td>A hinge. Zero on the left, identity on the right. Cheap, sparse, and the slope is 1 wherever it is on, so gradients survive depth. This is the default hidden activation for MLP load models.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Leaky ReLU / PReLU</strong></td>
+                    <td class="math p-1 mb-0">max(&alpha;z, z)</td>
+                    <td>(&minus;&infin;, &infin;)</td>
+                    <td>ReLU with a drip on the negative side (&alpha; ~ 0.01). Stops a neuron from dying if it falls permanently left of zero. A cheap insurance policy on small STLF nets.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>GELU</strong></td>
+                    <td class="math p-1 mb-0">z &middot; &Phi;(z)</td>
+                    <td>(&minus;&infin;, &infin;)</td>
+                    <td>A smooth ReLU: multiplies z by the Gaussian CDF. Default in transformers. Use this if your day-ahead model is an attention net, not an MLP.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SiLU / Swish</strong></td>
+                    <td class="math p-1 mb-0">z &middot; sigmoid(z)</td>
+                    <td>(&minus;&infin;, &infin;)</td>
+                    <td>Smooth, non-monotonic dip below zero. A GELU cousin. Shows up in some modern residual towers; not required for a first-cut BRP forecast.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Softmax</strong></td>
+                    <td class="math p-1 mb-0">e<sup>z<sub>i</sub></sup> / &Sigma;<sub>j</sub> e<sup>z<sub>j</sub></sup></td>
+                    <td>simplex</td>
+                    <td>Turns a vector into probabilities that sum to 1. Classification, mixture weights, attention. <em>Not</em> how you emit megawatts. A quantile net uses several linear outputs (or pinball heads), not a softmax.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mb-0 small text-muted">
+              Softplus, ELU, SELU, Mish and the rest are variations on the same idea: keep
+              a non-linear kink, keep a usable derivative, keep the computation cheap.
+              The industry argument is almost never &ldquo;which exotic &sigma;&rdquo; and
+              almost always &ldquo;ReLU vs GELU, and is the output linear.&rdquo;
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- WHY RELU                                                   -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="relu">
+          <div class="card-header level-relu">
+            &#9632; Why ReLU Won the Hidden Layer
+          </div>
+          <div class="card-body">
+            <p>
+              ReLU looks too simple to be the sauce. It is a hinge. That is the point.
+              A hinge is non-linear (the second derivative is a Dirac at zero; the function
+              is not a straight line through the origin in both directions), it is cheap
+              (one comparison), and its derivative is either 0 or 1 &mdash; so when a unit
+              is on, the gradient passes through undamped.
+            </p>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100 bg-white">
+                  <h6 class="fw-bold text-sa-green">Piecewise-linear universal approximation</h6>
+                  <p class="small mb-0">
+                    One ReLU is a hockey stick. A hidden layer of them is a set of hinges
+                    at learned locations (the bias sets the kink; the incoming weights set
+                    the slope). The output layer mixes those sticks into a piecewise-linear
+                    polyline. Give it enough pieces and it traces the evening ramp, the
+                    lunch trough, the U-shaped temperature response. Deep ReLU nets just
+                    make more pieces, more cheaply, than a wide shallow one.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded h-100 bg-white">
+                  <h6 class="fw-bold" style="color:#e65100;">Sparsity is a feature</h6>
+                  <p class="small mb-0">
+                    On any given hour, many ReLU units sit at 0. The heating neuron is
+                    silent in January. The cooling neuron is silent in July. That is
+                    specialisation: the network is not averaging heating and cooling into
+                    mush, it is routing the example through the units that own it. Sigmoid
+                    never quite turns off, so every unit meddles in every hour.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p class="mb-0">
+              The remaining tax is <strong>dying ReLU</strong>: if a unit's incoming
+              weights shove z permanently negative, &sigma;'(z) = 0 forever and that
+              neuron is a brick. A sensible initialisation, a lower learning rate, or
+              a leaky ReLU drip fixes most of it. It is a real failure mode. It is not
+              a reason to go back to sigmoid.
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- STLF PRACTICE                                              -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="stlf">
+          <div class="card-header level-load">
+            &#9632; What a Load-Forecasting Desk Actually Puts Where
+          </div>
+          <div class="card-body">
+            <p>
+              Architecture from the
+              <a href="thesis-neural-networks.html">overview</a> is not enough. You also
+              have to pick &sigma; per layer, because the output of a day-ahead model is
+              megawatts, not a class label.
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th>Layer</th>
+                    <th>Typical &sigma;</th>
+                    <th>Why</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>MLP hidden</strong></td>
+                    <td>ReLU (or leaky ReLU)</td>
+                    <td>Default. Builds the piecewise load shape. Fast enough to retrain every week before DAM gate.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LSTM / GRU gates</strong></td>
+                    <td>Sigmoid (gates) + tanh (cell)</td>
+                    <td>Gates must be (0, 1) interpolators: how much of yesterday's ramp to keep. The cell needs a signed, bounded write. This is the one place sigmoid is still the right tool.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Transformer hidden</strong></td>
+                    <td>GELU (or SiLU)</td>
+                    <td>What BERT / GPT / temporal fusion transformers ship. If your STLF model is attention, copy the activation they trained at scale.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Point-forecast output</strong></td>
+                    <td><strong>Linear</strong></td>
+                    <td>Predicted MW has no natural upper bound and is not a probability. Squashing through sigmoid would cap the evening peak at 1. Do not do this.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Quantile heads (P10 / P50 / P90)</strong></td>
+                    <td>Linear, one output per quantile</td>
+                    <td>Pinball loss trains each head. Softmax would force the quantiles to sum to 1, which is nonsense in MW.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Mixture-density output</strong></td>
+                    <td>Softmax on mixture weights; linear / softplus on means and variances</td>
+                    <td>If you emit a full density for reserve sizing. Softmax belongs on the <em>weights</em> of the mixture, not on the megawatts.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="stake-box mb-0">
+              <p class="mb-0">
+                <strong>A SAWEM BRP rule of thumb.</strong> Hidden ReLU, linear output, pinball
+                or MSE loss, trained on weather <em>forecasts</em> available at 10:00 SAST.
+                That is a complete, shippable short-term load model. Fancy activations do
+                not rescue a leaked temperature feature or a load-shedding-contaminated target.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- GRADIENTS                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="gradients">
+          <div class="card-header level-train">
+            &#9632; Gradients &amp; Failure Modes &mdash; The Sauce Can Also Burn
+          </div>
+          <div class="card-body">
+            <p>
+              Back-propagation multiplies &sigma;'(z) at every layer. Choose a saturating
+              activation and a deep net, and the product of those slopes goes to zero.
+              Early layers stop moving. The network still <em>runs</em>; it just stops
+              <em>learning</em> the features that sit far from the output &mdash; hour-of-day
+              Fourier terms, lagged load, the heating kink.
+            </p>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                  <tr><th>Failure</th><th>Cause</th><th>What it looks like on a forecast desk</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Vanishing gradient</strong></td>
+                    <td>Sigmoid / tanh in a deep stack; |z| large, &sigma;' &approx; 0</td>
+                    <td>Training loss plateaus. The net has memorised the mean daily shape and will not learn the U-shaped temperature response sitting in layer 1.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Exploding gradient</strong></td>
+                    <td>Unconstrained linear / badly scaled ReLU; product of slopes &gt; 1</td>
+                    <td>Loss becomes NaN. Predicted MW jumps to millions. Clip gradients; normalise inputs (temp_norm, not &deg;C raw).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dying ReLU</strong></td>
+                    <td>Unit pushed to z &lt; 0 for every training hour</td>
+                    <td>A heating neuron that never fires, even in July&hellip; wait, in July it <em>should</em> be silent. Dying is when it is silent in June <em>and</em> July. Watch the fraction of zero activations per unit.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Wrong output &sigma;</strong></td>
+                    <td>Sigmoid or ReLU on the MW head</td>
+                    <td>Sigmoid: peak load stuck near 1 after scaling mistakes. ReLU on output: the net cannot emit a negative residual if you are forecasting a <em>deviation</em> from last week, and it clips the left tail of a residual model.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mb-0">
+              None of these is an argument against non-linearity. They are arguments for
+              putting the right bend in the right place. The linear collapse is fatal.
+              A dead ReLU is a single lost hinge, and you still have the rest of the layer.
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-0 mt-4" style="background: #f0f4f8;">
+          <div class="card-body">
+            <h5 class="fw-bold">&#128260; Neural Networks</h5>
+            <div class="row g-2 small text-center mb-3">
+              <div class="col-6 col-md-3">
+                <a href="thesis-neural-networks.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Overview</a>
+              </div>
+              <div class="col-6 col-md-3">
+                <a href="thesis-activation-functions.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white" style="border:2px solid #7b1fa2 !important;">&#8767; Activation Functions &larr;</a>
+              </div>
+            </div>
+            <h5 class="fw-bold">All Thesis Pages</h5>
+            <div class="row g-2 small text-center">
+              <div class="col">
+                <a href="thesis.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127917; Thesis</a>
+              </div>
+              <div class="col">
+                <a href="thesis-cas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127760; CAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-ace.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127891; ACE</a>
+              </div>
+              <div class="col">
+                <a href="thesis-emcas.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127758; EMCAS</a>
+              </div>
+              <div class="col">
+                <a href="thesis-abm.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; ABM</a>
+              </div>
+              <div class="col">
+                <a href="thesis-stochastic.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127936; Stochastic</a>
+              </div>
+              <div class="col">
+                <a href="thesis-methods.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129518; Methods</a>
+              </div>
+              <div class="col">
+                <a href="thesis-neural-networks.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129504; Neural Nets</a>
+              </div>
+              <div class="col">
+                <a href="thesis-agents.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#129302; Agents</a>
+              </div>
+              <div class="col">
+                <a href="thesis-simulation.html" class="fw-bold text-decoration-none d-block p-2 border rounded bg-white">&#127922; Simulation</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-4">
+          <strong>To go deeper:</strong> Cybenko, &ldquo;Approximation by Superpositions of a
+          Sigmoidal Function&rdquo; (1989); Hornik, &ldquo;Approximation Capabilities of
+          Multilayer Feedforward Networks&rdquo; (1991). Nair &amp; Hinton, ReLU (2010).
+          Hendrycks &amp; Gimpel, GELU (2016). For the load-forecasting setting, start on the
+          <a href="thesis-neural-networks.html">Neural Networks overview</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      function gaussianCdf(z) {
+        const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+        const a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+        const sign = z < 0 ? -1 : 1;
+        const x = Math.abs(z) / Math.SQRT2;
+        const t = 1 / (1 + p * x);
+        const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+        return 0.5 * (1 + sign * y);
+      }
+      function gaussianPdf(z) {
+        return Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI);
+      }
+      function sigmoid(z) { return 1 / (1 + Math.exp(-Math.max(-40, Math.min(40, z)))); }
+
+      const fns = {
+        linear: {
+          y: (z) => z,
+          d: () => 1,
+          caption: 'Identity. Stack it and the whole net is still one line. Fine as an output head for MW. Fatal as the only hidden activation.'
+        },
+        sigmoid: {
+          y: sigmoid,
+          d: (z) => { const s = sigmoid(z); return s * (1 - s); },
+          caption: 'Saturates at both ends: look how fast the derivative dies for |z| > 4. That product, layered, is vanishing gradients. Keep it for LSTM gates, not for deep STLF hidden stacks.'
+        },
+        tanh: {
+          y: (z) => Math.tanh(z),
+          d: (z) => 1 - Math.tanh(z) * Math.tanh(z),
+          caption: 'Zero-centred sigmoid. Same saturation problem, slightly healthier gradients near 0. Still the cell nonlinearity inside an LSTM, not the default MLP hidden.'
+        },
+        relu: {
+          y: (z) => Math.max(0, z),
+          d: (z) => (z > 0 ? 1 : 0),
+          caption: 'The hinge. Derivative is 1 wherever the unit is on, so depth does not damp the update. The kink at 0 is the entire non-linearity — and it is enough to build the load U-shape.'
+        },
+        leaky: {
+          y: (z) => (z > 0 ? z : 0.01 * z),
+          d: (z) => (z > 0 ? 1 : 0.01),
+          caption: 'ReLU with a 0.01 drip on the left. A neuron that would have died still leaks a little gradient. Cheap insurance on small BRP models.'
+        },
+        gelu: {
+          y: (z) => z * gaussianCdf(z),
+          d: (z) => gaussianCdf(z) + z * gaussianPdf(z),
+          caption: 'Smooth ReLU: z weighted by how “on” a Gaussian says it is. Default in transformers. Use this if the day-ahead model is attention, not a plain MLP.'
+        },
+        swish: {
+          y: (z) => z * sigmoid(z),
+          d: (z) => { const s = sigmoid(z); return s + z * s * (1 - s); },
+          caption: 'SiLU / Swish. Smooth, slightly non-monotonic dip below zero. A GELU cousin. Not required for a first-cut SAWEM forecast.'
+        }
+      };
+
+      const zs = [];
+      for (let i = 0; i <= 80; i++) zs.push(-6 + i * 0.15);
+
+      const fnChart = new Chart(document.getElementById('actFnChart'), {
+        type: 'line',
+        data: {
+          labels: zs,
+          datasets: [{
+            data: [],
+            borderColor: '#7b1fa2',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              ticks: {
+                callback: function (val, i) {
+                  const z = zs[i];
+                  return (z % 2 === 0) ? String(z) : '';
+                },
+                maxRotation: 0,
+                autoSkip: false
+              },
+              title: { display: true, text: 'z' }
+            },
+            y: { title: { display: true, text: '\u03c3(z)' } }
+          }
+        }
+      });
+
+      const dChart = new Chart(document.getElementById('actDerivChart'), {
+        type: 'line',
+        data: {
+          labels: zs,
+          datasets: [{
+            data: [],
+            borderColor: '#e65100',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              ticks: {
+                callback: function (val, i) {
+                  const z = zs[i];
+                  return (z % 2 === 0) ? String(z) : '';
+                },
+                maxRotation: 0,
+                autoSkip: false
+              },
+              title: { display: true, text: 'z' }
+            },
+            y: { title: { display: true, text: "\u03c3'(z)" } }
+          }
+        }
+      });
+
+      function renderAct() {
+        const key = document.getElementById('actPick').value;
+        const f = fns[key];
+        fnChart.data.datasets[0].data = zs.map(f.y);
+        dChart.data.datasets[0].data = zs.map(f.d);
+        fnChart.update();
+        dChart.update();
+        document.getElementById('actCaption').textContent = f.caption;
+      }
+      document.getElementById('actPick').addEventListener('change', renderAct);
+      renderAct();
+
+      // --- U-shape: temperature vs evening load ---
+      const temps = [];
+      for (let t = 6; t <= 34; t += 1) temps.push(t);
+
+      function trueLoad(T) {
+        return 28000 + 420 * Math.max(0, 16 - T) + 480 * Math.max(0, T - 24);
+      }
+      function linearLoad(T) {
+        return 29200 + 40 * (T - 20);
+      }
+      function tanhLoad(T) {
+        const heat = 2100 * (0.5 + 0.5 * Math.tanh((16 - T) / 3));
+        const cool = 2400 * (0.5 + 0.5 * Math.tanh((T - 24) / 3));
+        return 28000 + heat + cool - 2100;
+      }
+
+      const scatter = temps.map((T) => {
+        const noise = ((T * 17) % 7) - 3;
+        return trueLoad(T) + noise * 35;
+      });
+
+      const captions = {
+        linear: 'A linear net (no hidden activation) must pick one slope. It under-predicts both the cold evening peak and the hot afternoon peak, and it invents a slope in the dead band where load barely moves. This is why ARIMA-plus-temperature-dummy desks fail in July and in January for different reasons.',
+        relu: 'Two ReLU hidden units: one owns heating (silent above 16 °C), one owns cooling (silent below 24 °C). The output mix is the U. That kink — max(0, ·) — is the entire difference from the line on the other radio button.',
+        tanh: 'Tanh is a smooth U: the dead band is a shallow valley rather than a flat hinge. It works, but it saturates, so the heating neuron’s gradient dies on a 6 °C Highveld night. ReLU just stays on, with slope 1.'
+      };
+
+      const uChart = new Chart(document.getElementById('uShapeChart'), {
+        type: 'line',
+        data: {
+          labels: temps.map((T) => String(T)),
+          datasets: [
+            {
+              label: 'Illustrative metered evening load',
+              data: scatter,
+              borderColor: 'rgba(0, 122, 77, 0.0)',
+              backgroundColor: 'rgba(0, 122, 77, 0.55)',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              showLine: false
+            },
+            {
+              label: 'Network output',
+              data: [],
+              borderColor: '#7b1fa2',
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: (item) => Math.round(item.parsed.y).toLocaleString() + ' MW @ ' + item.label + ' °C'
+              }
+            }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Temperature (°C)' } },
+            y: {
+              title: { display: true, text: 'MW' },
+              ticks: { callback: (v) => (v / 1000).toFixed(0) + ' GW' }
+            }
+          }
+        }
+      });
+
+      function renderU() {
+        const mode = document.querySelector('input[name="ushapeModel"]:checked').value;
+        const f = mode === 'linear' ? linearLoad : mode === 'tanh' ? tanhLoad : trueLoad;
+        uChart.data.datasets[1].data = temps.map(f);
+        uChart.data.datasets[1].borderColor = mode === 'linear' ? '#e65100' : '#7b1fa2';
+        uChart.update();
+        document.getElementById('uShapeCaption').textContent = captions[mode];
+      }
+      document.querySelectorAll('input[name="ushapeModel"]').forEach((el) => {
+        el.addEventListener('change', renderU);
+      });
+      renderU();
+    })();
+  </script>
+</body>
+</html>

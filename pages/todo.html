@@ -213,36 +213,13 @@
 
   <script>
     // ===== STORAGE KEY =====
-    const STORAGE_KEY = 'sa_dashboard_todo';
+    const STORAGE_KEY = 'sa_dashboard_todo_v2';
+    // Save to the codebase (data/todo.json) through server.py. Falls
+    // back to localStorage when the server is not running (file://).
+    const API_URL = '/api/todo';
 
     // ===== DEFAULT ITEMS =====
-    const DEFAULT_ITEMS = [
-      'SAWEM',
-      'SAWEM Gride Code',
-      'SAREM',
-      'JET',
-      'Eskom 10k data',
-      'Lesotho highlands water project',
-      'Eskom REIPPs',
-      'API for data from Eskom or SAWEM',
-      'Domestic Indsutry Master Plans',
-      'Crime overview',
-      'National Energy Crisis Committee',
-      'South Africa Mineral resource wealth and the markets for it and the locations',
-      'Geography of country',
-      'Weather',
-      'Angola-Namibia Interconnector',
-      'Baynes HPP Transmission Lines',
-      'Malawi - Zambia Interconnector',
-      'Mozambique - Tanzania Interconnector',
-      'Luapula River HPP And Transmission Lines',
-      'Waste to Energy Potential in SAPP',
-      'The Black Homelands Citizenship Act of 1970',
-      'Eskom Tariff analysis',
-      'Add gov.za as a source for news in the news tab and add energy sources',
-      'Add a reports area for all of the relevant eskom reports like Generation Connection Capacity Assessment',
-      'Add a section about wars. Cecil Rhodes, Nadie rothschild, the boer wars, and the creation of SA. Deebers consolidated. Cecil was the leader of the cape colony until blank'
-    ];
+    const DEFAULT_ITEMS = [];
 
     // ===== STATE =====
     let items = [];
@@ -250,13 +227,27 @@
     let checkedForDelete = new Set();
 
     // ===== INIT =====
-    function init() {
-      loadItems();
+    async function init() {
+      await loadItems();
       render();
     }
 
     // ===== LOAD / SAVE =====
-    function loadItems() {
+    async function loadItems() {
+      // 1) Prefer the codebase copy (data/todo.json served by server.py).
+      try {
+        const resp = await fetch(API_URL, { cache: 'no-store' });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && Array.isArray(data.items)) {
+            items = data.items;
+            syncLocal();
+            return;
+          }
+        }
+      } catch (_) { /* server not running — fall through */ }
+
+      // 2) Fall back to this browser's saved copy.
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -267,12 +258,25 @@
           }
         }
       } catch (_) {}
+
+      // 3) Otherwise use the defaults, then persist them to the codebase.
       items = [...DEFAULT_ITEMS];
       saveItems();
     }
 
     function saveItems() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      // Always keep a local copy so the page still works offline.
+      syncLocal();
+      // Push the whole list into the codebase JSON file (fire + forget).
+      fetch(API_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items, savedAt: new Date().toISOString() })
+      }).catch(() => { /* offline — localStorage only */ });
+    }
+
+    function syncLocal() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (_) {}
     }
 
     // ===== RENDER =====

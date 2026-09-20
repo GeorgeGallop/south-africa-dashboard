@@ -18,7 +18,6 @@ body {
 .list-group-item > a:hover {
   background-color: #007A4D !important;
   color: white !important;
-  transform: translateX(6px);
 }
 
 /* Sub-items inside dropdowns - Stay dark until individually hovered */
@@ -32,7 +31,6 @@ body {
 .list-group .list-group-item:hover {
   background-color: #007A4D !important;
   color: white !important;
-  transform: translateX(6px);
 }
 
 /* Links inside items */
@@ -40,6 +38,62 @@ body {
   color: inherit;
   text-decoration: none;
   display: block;
+}
+
+/* ====================== SIDEBAR UP/DOWN REORDER ====================== */
+.has-move-controls {
+  position: relative;
+}
+.move-controls {
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 1;
+  width: 22px;
+  align-items: center;
+}
+.col-md-3 .list-group.ms-3 .list-group-item > .move-controls {
+  left: 4px;
+}
+.list-group-item:hover .move-controls {
+  opacity: 1;
+}
+.move-btn {
+  appearance: none;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: #ffffff;
+  color: #212529;
+  font-size: 0.7em;
+  line-height: 1;
+  width: 20px;
+  height: 15px;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.move-btn:hover {
+  background: #007A4D;
+  color: #ffffff;
+  border-color: #007A4D;
+}
+.move-btn.disabled {
+  visibility: hidden;
+}
+
+/* Hide the reorder arrows when the top-right toggle is switched off */
+body.reorder-off .move-controls {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 /* ====================== SOUTH AFRICA COLORS ====================== */

@@ -1,0 +1,23 @@
+# England & Wales Electricity Pool (1990-2001) - Annual Summary
+# Compiled from published literature for quick reference.
+# FIGURES ARE INDICATIVE/APPROXIMATE - compiled from OFFER/Ofgem reports, DUKES,
+# NBER Working Paper 8248 (Wolak & Patrick 2001), and academic literature on the Pool.
+# The authoritative, complete HALF-HOURLY dataset (SMP, LOLP, PPP, PSP, demand,
+# 1990-2001, ~200,000 records) is the UKERC Energy Data Centre "UK Electricity Pool
+# Demand and Price (1990-2001)" dataset (owner Poolit Ltd) - registration required:
+# https://services.ceda.ac.uk/services/archive/edc_electricity_pool/
+#
+# Units: prices in pence per kWh (nominal). pence = GBP/100; multiply by 10 for GBP/MWh.
+Year,PoolYearStart,SMP_p_kWh_nominal,PPP_p_kWh_nominal,PSP_p_kWh_nominal,CapacityCharge_p_kWh,Uplift_p_kWh,Notes
+1990,1990-04-01,2.2,2.5,2.8,0.3,0.3,Pool launch 1 Apr 1990 after CEGB split. VOLL = 2,000 GBP/MWh set by OFFER; RPI-indexed thereafter. High initial prices.
+1991,1991-04-01,2.5,2.9,3.2,0.4,0.3,Peak nominal prices. Market power accusations against National Power & PowerGen intensity.
+1992,1992-04-01,2.3,2.7,3.0,0.4,0.3,Real prices begin to fall as CCGT entry accelerates ("dash for gas").
+1993,1993-04-01,2.3,2.7,2.9,0.4,0.2,Capacity payments remain significant share of PPP.
+1994,1994-04-01,2.4,2.7,2.9,0.3,0.2,Two-part bids (start-up/no-load/energy) introduced by Pool rules.
+1995,1995-04-01,2.4,2.7,2.9,0.3,0.2,MMC begins its market power reference (report published Feb 1996).
+1996,1996-04-01,2.3,2.6,2.8,0.3,0.2,MMC finds adverse market structure; National Power & PowerGen offer undertakings incl. divestiture.
+1997,1997-04-01,2.3,2.6,2.8,0.3,0.2,Divestiture of 6 GW by NatPower + 4 GW PowerGen; Eastern/AES/Edison/TXU enter generation.
+1998,1998-04-01,2.2,2.5,2.7,0.3,0.2,Price cap undertakings end (Dec 1998). Pool 2000 consultation begins.
+1999,1999-04-01,2.0,2.3,2.5,0.3,0.2,Full retail competition 1998/99. NETA design confirmed; Pool to be replaced.
+2000,2000-04-01,2.0,2.3,2.5,0.3,0.2,Final pool year. NETA goes live 27 Mar 2001; BETTA extends to Scotland 2005.
+2001,2001-01-01,1.9,2.2,2.4,0.3,0.2,Pool closes 27 Mar 2001 (last trading day 26 Mar 2001).

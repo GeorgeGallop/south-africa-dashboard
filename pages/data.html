@@ -9,6 +9,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="../js/africa-data.js" defer></script>
+  <script src="../js/pink-sheet.js" defer></script>
 </head>
 
 <body>
@@ -205,6 +207,55 @@
             <input id="popWithoutWindowRange" type="range" class="form-range flex-grow-1" />
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- AFRICA: World Bank API — population, access %, computed without-access -->
+    <div class="card shadow-sm mt-4" id="africa-section">
+      <div class="card-header bg-light d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <h5 class="mb-0">🌍 Africa — Electricity Access & Population (World Bank API)</h5>
+        <div class="d-flex flex-wrap gap-2">
+          <button id="africaRefreshBtn" class="btn btn-outline-success btn-sm">↻ Refresh from API</button>
+          <button id="africaDownloadBtn" class="btn btn-outline-success btn-sm">⬇ Download CSV</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="africaSummary" class="mb-3 text-muted small">Loading population + electricity access for 54 African countries from the World Bank API…</div>
+
+        <!-- Metric selector -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <span class="text-muted small fw-semibold">Show:</span>
+          <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-success active" data-africa-metric="without">🚫 Population without access</button>
+            <button class="btn btn-outline-success" data-africa-metric="access">⚡ Access %</button>
+            <button class="btn btn-outline-success" data-africa-metric="pop">👥 Total population</button>
+          </div>
+        </div>
+
+        <!-- Time series -->
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-column flex-md-row gap-2">
+          <div class="fw-semibold">Time series — all 54 African countries</div>
+          <div class="btn-group africa-btn-group btn-group-sm" role="group">
+            <button onclick="setAfricaTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
+            <button onclick="setAfricaTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
+            <button onclick="setAfricaTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+          </div>
+        </div>
+        <canvas id="africaLineChart" height="200"></canvas>
+
+        <!-- Year range slider -->
+        <div class="mt-2">
+          <div class="d-flex justify-content-between small text-muted">
+            <span id="africaRangeLabel"></span>
+          </div>
+          <input id="africaWindowRange" type="range" class="form-range" />
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Country breakdown chart -->
+        <div class="fw-semibold mb-2">Country breakdown — latest year in the selected range</div>
+        <canvas id="africaPieChart" height="220"></canvas>
       </div>
     </div>
 
@@ -1131,6 +1182,10 @@
           const values = parsed.data.map(r => r[c.valueCol]);
           const canvas = document.getElementById(c.id);
           if (!canvas) continue;
+          // Gold, Platinum, Coal SA, Iron Ore are drawn from the official
+          // World Bank Pink Sheet (see pink-sheet.js) — skip here to avoid
+          // canvas conflicts.
+          if (['goldChart','platinumChart','coalChart','ironOreChart'].indexOf(c.id) !== -1) continue;
           new Chart(canvas, {
             type: 'line',
             data: {
@@ -1168,6 +1223,10 @@
     window.onload = function() {
       loadCSVData();
       loadCommodityPrices();
+      // Replace Gold/Platinum/Coal/Iron Ore charts with official World Bank Pink Sheet data
+      if (typeof window.loadPinkSheet === 'function') {
+        window.loadPinkSheet();
+      }
     };
   </script>
 </body>

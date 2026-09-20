@@ -1,0 +1,164 @@
+/* ============================================================
+   population-density.css — styles for the map's population
+   density overlay (legend, opacity slider, map labels).
+   Loaded only by pages/map.html.
+   ============================================================ */
+
+/* ---------- legend panel (bottom-left) ---------- */
+.pd-legend {
+  background: #ffffff;
+  border: 1px solid #9a9a9a;
+  border-radius: 4px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  color: #1a1a1a;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+  padding: 0;
+  width: 236px;
+}
+
+.pd-legend-title {
+  background: #1d3c5a;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding: 6px 8px;
+}
+
+.pd-legend-sub {
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 5px 8px 4px;
+}
+
+.pd-legend-grid {
+  display: grid;
+  gap: 5px 7px;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 7px 8px;
+}
+
+.pd-legend-grid .pd-band {
+  display: block;
+  min-width: 0;
+}
+
+.pd-legend-grid .pd-swatch {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  display: block;
+  height: 13px;
+  width: 100%;
+}
+
+.pd-legend-grid .pd-band-label {
+  display: block;
+  font-size: 9.5px;
+  line-height: 1.15;
+  margin-top: 2px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pd-legend-note {
+  background: #f4f4f4;
+  border-top: 1px solid #e2e2e2;
+  color: #666;
+  font-size: 8.5px;
+  line-height: 1.25;
+  padding: 4px 8px 5px;
+}
+
+/* ---------- opacity slider (bottom-right) ---------- */
+.pd-opacity {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  display: flex;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  gap: 6px;
+  padding: 5px 9px;
+}
+
+.pd-opacity-label {
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pd-opacity-range {
+  cursor: pointer;
+  width: 96px;
+}
+
+/* ---------- map labels ---------- */
+.pd-label-wrap {
+  width: 0;
+  height: 0;
+}
+
+.pd-label {
+  color: #111;
+  display: inline-block;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  left: 0;
+  line-height: 1;
+  position: absolute;
+  text-align: center;
+  text-shadow:
+    0 0 2px #fff, 0 0 2px #fff,
+    1px 1px 2px #fff, -1px 1px 2px #fff,
+    1px -1px 2px #fff, -1px -1px 2px #fff;
+  top: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.pd-province {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.pd-neighbour {
+  color: #2b2b2b;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.pd-enclave {
+  color: #2b2b2b;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.pd-ocean {
+  color: #2f4f63;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Keep the Leaflet layers control tidy next to the legend */
+.leaflet-control-layers {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+}
+
+@media (max-width: 767.98px) {
+  .pd-legend {
+    width: 200px;
+  }
+  .pd-legend-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pd-opacity-range {
+    width: 70px;
+  }
+}
