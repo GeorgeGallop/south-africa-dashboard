@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wheeling • Power · SAWEM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .status-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+    .status-open { background: #198754; color: #fff; }
+    .status-consolidation { background: #ffc107; color: #212529; }
+    .status-approved { background: #0d6efd; color: #fff; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 34%; background: #f8f9fa; }
+    .w-section { scroll-margin-top: 1rem; }
+    .w-section > h2 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.35rem;
+      margin: 1.75rem 0 1rem;
+    }
+    .w-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      height: 100%;
+    }
+    .w-card h3 { font-size: 1.02rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.8rem; color: #6c757d; }
+    .toc-mini a { text-decoration: none; }
+    .step-n {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #007A4D; color: #fff; font-weight: 800; font-size: 0.85rem;
+      margin-right: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="sawem-market-structure.html" class="btn btn-light btn-sm">SAWEM</a>
+        <a href="ntcsa.html" class="btn btn-light btn-sm">NTCSA</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <p class="small text-muted mb-1"><a href="power.html">Power</a> · <a href="sawem-market-structure.html">SAWEM</a> · Wheeling</p>
+    <h1 class="display-6 fw-bold text-sa-green">Wheeling</h1>
+    <p class="lead">Using someone else’s wires to deliver a private power deal. A generator injects at one point, a customer withdraws at another, and the network is paid a use-of-system charge for the path in between.</p>
+    <p class="mb-4">
+      <span class="status-badge status-approved">Live on Eskom networks</span>
+      <span class="status-badge status-open ms-1">Virtual &amp; pooled running</span>
+      <span class="status-badge status-consolidation ms-1">Municipal rollout uneven</span>
+    </p>
+
+    <table class="table table-bordered fact mb-4">
+      <tbody>
+        <tr><th>As at</th><td>13 October 2026</td></tr>
+        <tr><th>What it is</th><td>A financial transaction on a physical network. Electrons mix on the grid; the contract, the meters and the credit make the sale.</td></tr>
+        <tr><th>Parent statute</th><td>Electricity Regulation Act 4 of 2006 as amended by Act 38 of 2024 — non-discriminatory third-party access (s 21) and transmission use-of-system charges (s 34B)</td></tr>
+        <tr><th>Live wheeling rules</th><td>NERSA <em>Regulatory Rules on Network Charges for Third-Party Wheeling of Energy, 2025</em> — approved 3 March 2025, GN 6263 / GG 52781 of 30 May 2025. Replaces the 2012 third-party network-charge rules.</td></tr>
+        <tr><th>Eskom operating policy</th><td>Wheeling of Energy and Net-Billing Policy 240-52443922, Revision 2, July 2026</td></tr>
+        <tr><th>Municipal guide</th><td>COGTA <em>Wheeling Framework for Municipalities</em>, July 2025 (NECOM workstream)</td></tr>
+        <tr><th>SAWEM overlay</th><td>Market Code still in NERSA consolidation; go-live April 2027. Until then, bilateral wheeling is the working private market.</td></tr>
+        <tr><th>Related briefings</th><td>
+          <a href="electricity-trading-rules.html">Trading rules</a> ·
+          <a href="ntcsa-market-code.html">Market Code</a> ·
+          <a href="wholesale-pricing-methodology.html">Wholesale pricing</a> ·
+          <a href="epp-2026.html">EPP 2026</a> ·
+          <a href="corporate-renewable-energy.html">Corporate RE</a> ·
+          <a href="ntcsa.html">NTCSA</a>
+        </td></tr>
+      </tbody>
+    </table>
+
+    <div class="card mb-4 toc-mini">
+      <div class="card-body py-3 small">
+        <strong class="d-block mb-2">On this page</strong>
+        <a href="#what">What wheeling is</a> ·
+        <a href="#how">How a deal is settled</a> ·
+        <a href="#types">Four live forms</a> ·
+        <a href="#docs">Document stack</a> ·
+        <a href="#who">Who is doing it</a> ·
+        <a href="#state">State of play</a> ·
+        <a href="#sawem">How it sits in SAWEM</a> ·
+        <a href="#watch">What to watch</a>
+      </div>
+    </div>
+
+    <section id="what" class="w-section">
+      <h2>What wheeling is</h2>
+      <p>Wheeling is third-party use of a licensed transmission or distribution network so that energy generated at point A can be sold to a customer at point B. NERSA’s 2025 rules define it as a financial transaction: through a bilateral or multilateral contract, a generator sells electrical energy to another party, and that energy is transported on the existing network of a licensee.</p>
+      <p>The physics is the ordinary grid. Power injected anywhere raises the pool; power withdrawn anywhere lowers it. The contract does the matching. Meters at both ends, a time-of-use (or hourly) reconciliation, and a credit on the customer’s bill are what make “my wind farm in the Eastern Cape supplies my mine in Limpopo” true in the accounts.</p>
+      <p class="mb-0">The customer still pays the network. Use-of-system (UoS) charges recover the cost of making capacity available on the wires. Connection charges recover the cost of the physical hook-up. An administration charge recovers the cost of running the wheeling account. Energy is the only line the private PPA replaces. Subsidies, legacy charges and municipal surcharges stay on the bill.</p>
+    </section>
+
+    <section id="how" class="w-section">
+      <h2>How a deal is settled</h2>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3><span class="step-n">1</span>Approvals</h3>
+            <p class="small mb-0">The generator is licensed or registered with NERSA (Schedule 2). A trader, if used, holds a trading licence. Both ends sign a connection and use-of-system agreement with the network service provider (NTCSA, Eskom Distribution, or the municipality). Grid Code and metering-code compliance is required. Eskom also wants a three-year forecast of wheeled energy from generator and load.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3><span class="step-n">2</span>Injection and withdrawal</h3>
+            <p class="small mb-0">The IPP injects at its connection point. The customer keeps taking power from the local distributor as usual. There is no dedicated line. Eligibility on Eskom’s network has historically been medium-voltage or higher, on a time-of-use tariff. Virtual wheeling is the product that extends the same idea to thousands of low-voltage sites.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3><span class="step-n">3</span>Reconciliation</h3>
+            <p class="small mb-0">In each settlement period the lesser of generation and consumption is the wheeled energy. That quantity is credited on the customer’s energy charge (often at the WEPS / Megaflex energy rate, or a municipal avoided-cost rate). Generation above the customer’s take in that period is surplus; consumption above generation is bought from the incumbent supplier.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3><span class="step-n">4</span>Who gets paid</h3>
+            <p class="small mb-0">The customer pays the IPP or trader under the PPA. The customer pays UoS, subsidies and admin to the network. The generator pays generator UoS at its connection. Where the path crosses Eskom into a municipality, the municipality still collects its network and surcharge lines; the energy credit is the avoided bulk purchase, passed through.</p>
+          </div>
+        </div>
+      </div>
+      <div class="key-fact mb-0">
+        The SAWEM Specification (in this dashboard’s <code>data/power/SAWEM Specification.pdf</code>) treats the unbundled use-of-system tariff as the same charge “sometimes referred to as a wheeling tariff”, paid for every MWh transferred on the network. Wheeling is the present-tense version of the network half of SAWEM: energy becomes contestable; the wires stay a regulated monopoly.
+      </div>
+    </section>
+
+    <section id="types" class="w-section">
+      <h2>Four live forms</h2>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3>Conventional bilateral</h3>
+            <p class="small mb-0">One generator, one offtaker, TOU matching, both on Eskom or NTCSA networks. The original Eskom product. The IPP may nominate more than one purchaser (Eskom policy 2.2.5). This is still how large mine and industrial PPAs are structured when both ends sit on Eskom Dx or transmission.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3>Trader-mediated</h3>
+            <p class="small mb-0">A NERSA-licensed trader buys from one or more IPPs and sells to a portfolio of C&amp;I customers. The trader is the single counterparty for settlement. Enpower, Etana, Discovery Green, POWERX, Apollo Africa and GreenCo sit here. This is the form that scales when customers are too small to contract a whole wind farm.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3>Virtual wheeling</h3>
+            <p class="small mb-0">Consumption across many low-voltage, often municipal, sites is aggregated and matched to IPP generation. Eskom pays a monthly refund after reconciling the claim. Vodacom and Eskom signed the first agreement in 2023; commercial operation ran 1 September 2025 to 31 August 2026, with monthly refunds since November 2025. Mezzanine (Vodacom subsidiary) runs the meter-data platform across 15,000+ sites in 168 municipal licence areas.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="w-card">
+            <h3>Pooled municipal</h3>
+            <p class="small mb-0">A trader allocates remote generation across a portfolio of customers on one municipal grid. Cape Town + Etana + Growthpoint completed the first pooled allocation in April 2026 (Boston hydro in the Free State → five Growthpoint buildings). By 22 September 2026 the city had wheeled about 3.1 GWh and was reviewing a move from pilot to market, with a 200 MW capacity aim over the next few years. George has taken Enpower wheeled energy since 2022.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="docs" class="w-section">
+      <h2>The documents that underpin it</h2>
+      <p>Wheeling is a stack, not a single statute. The Act opens the wires; NERSA prices them; Eskom and municipalities write the operating manuals; SAWEM will later clear the imbalances.</p>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr><th>Layer</th><th>Instrument</th><th>What it does for wheeling</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Statute</td>
+              <td><a href="era-2024.html">Electricity Regulation Amendment Act 38 of 2024</a></td>
+              <td>s 21(3): transmission and distribution licensees must give non-discriminatory third-party access. s 21(3A): the system operator may not discriminate in dispatch or balancing. s 34B: the transmitter develops transmission UoS charges and gives third-party access. Trading is a separate licensable activity.</td>
+              <td>In force 1 Jan 2025</td>
+            </tr>
+            <tr>
+              <td>Policy</td>
+              <td>Electricity Pricing Policy 2008 → <a href="epp-2026.html">EPP 2026</a></td>
+              <td>Unbundled, cost-reflective tariffs so energy, network, legacy and subsidy can be seen separately. Wheeling only prices cleanly once those lines are split.</td>
+              <td>EPP 2026 open to 28 Oct 2026</td>
+            </tr>
+            <tr>
+              <td>NERSA rules</td>
+              <td>Regulatory Rules on Network Charges for Third-Party Wheeling of Energy, 2025 (GN 6263 / GG 52781)</td>
+              <td>Replaces the 2012 rules. Sets UoS for generators and loads, connection and administration charges, the contracts (connection + UoS agreement), and the conditions for wheeling onto municipal networks. Minister Ramokgopa launched them 5–6 May 2025 as the national wheeling framework.</td>
+              <td>Approved 3 Mar 2025; gazetted 30 May 2025</td>
+            </tr>
+            <tr>
+              <td>Codes</td>
+              <td>SA Grid Code, Distribution Code, Distribution Metering Code</td>
+              <td>Open, non-discriminatory access in exchange for fair compensation. Metering, data and Grid Code compliance are conditions of the wheeling rules.</td>
+              <td>In force</td>
+            </tr>
+            <tr>
+              <td>Licensing</td>
+              <td>Schedule 2 / GN 1231 of 17 Jan 2023; NERSA trading licences</td>
+              <td>Generation below the ministerial threshold is registered rather than licensed. Buying and selling as a commercial activity needs a trading licence. Import/export is a separate licence (GreenCo holds one).</td>
+              <td>In force</td>
+            </tr>
+            <tr>
+              <td>Eskom manual</td>
+              <td>Wheeling of Energy and Net-Billing Policy 240-52443922 Rev 2 (July 2026)</td>
+              <td>How Eskom adjusts customer accounts for wheeled or net-billed energy. Allows third-party access subject to NERSA approvals and a UoS agreement. Rev 2 removes grandfathering of monthly reconciliation: once the automated system is live, hourly TOU applies to existing and new contracts.</td>
+              <td>Operating policy; hourly cutover ~2029, two NERSA tariff approvals still needed</td>
+            </tr>
+            <tr>
+              <td>Municipal</td>
+              <td>COGTA Wheeling Framework for Municipalities (July 2025); city by-laws and unbundled tariffs</td>
+              <td>NECOM asked for a national municipal guide. Wheeling onto a municipal network needs a completed cost-of-supply study and cost-reflective UoS. That is the binding constraint in most towns.</td>
+              <td>Guide issued; few munics fully unbundled</td>
+            </tr>
+            <tr>
+              <td>Trading overlay</td>
+              <td><a href="electricity-trading-rules.html">Draft NERSA Rules for Electricity Trading</a> (v3 May 2026)</td>
+              <td>Who may hold a trading licence, how traders relate to distributors and to SAWEM, phased retail competition. Must be read with the 2025 Wheeling Rules. For SAWEM transactions the Trading Rules prevail over the Wheeling Rules where they clash. Comments closed 28 Sep 2026.</td>
+              <td>Input consolidation</td>
+            </tr>
+            <tr>
+              <td>Market overlay</td>
+              <td><a href="ntcsa-market-code.html">SAWEM Market Code rev 2.3</a> (Feb 2026)</td>
+              <td>Day-ahead, balancing, settlement, BRPs. The Code does not use the word “wheeling”; it assumes UoS already exists (Specification, p. 8) and then clears energy and reserves. Once approved, the Code prevails for SAWEM participants; NERSA then has 12 months to migrate trading-rule clauses.</td>
+              <td>Input consolidation; go-live April 2027</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src-note mb-0">Gazette PDF of the 2025 rules: <a href="https://www.gov.za/sites/default/files/gcis_document/202506/52781gon6263.pdf" target="_blank" rel="noreferrer">GG 52781 GN 6263</a>. Eskom public page: <a href="https://www.eskom.co.za/distribution/wheeling/" target="_blank" rel="noreferrer">eskom.co.za/distribution/wheeling</a>.</p>
+    </section>
+
+    <section id="who" class="w-section">
+      <h2>Who is doing it</h2>
+      <h3 class="h5 fw-bold mt-3">Networks</h3>
+      <ul>
+        <li><strong>NTCSA</strong> — transmission owner, system operator, future market operator. Sets transmission UoS (NERSA-approved). Every long-distance wheel crosses this network.</li>
+        <li><strong>Eskom Distribution</strong> — still the operating manual and billing engine for most conventional and virtual wheels. Policy owner of 240-52443922. Western Cape Dx supported the Cape Town pooled pilot.</li>
+        <li><strong>Municipal distributors</strong> — ~168 licence areas. The customer-facing bottleneck. Cape Town and George are live; most others are waiting on cost-of-supply studies and unbundled tariffs.</li>
+      </ul>
+      <h3 class="h5 fw-bold">Traders (NERSA-licensed)</h3>
+      <p>SAETA’s public membership list is a fair census of the active book: Discovery Green, Enpower Trading, Etana Energy, Envusa Energy, Energy Exchange of Southern Africa, Africa GreenCo, POWERX, Apollo Africa, Lyra Energy, NOA Group, Sturdee Energy, Mainstream, Investec. Notable marks:</p>
+      <ul>
+        <li><strong>POWERX</strong> — long-standing private trader on municipal and Eskom networks.</li>
+        <li><strong>Enpower Trading</strong> — first new private trading licence in more than a decade; George since 2022, Cape Town since 2024; Azura Power took a majority stake in October 2026.</li>
+        <li><strong>Discovery Green</strong> — licensed in the October 2025 batch with Apollo Africa, Green Electron Market and GreenCo; Implats refinery is an anchor wheeled offtaker.</li>
+        <li><strong>Etana Energy</strong> — trader on the Cape Town pooled wheel (Boston hydro → Growthpoint portfolio).</li>
+        <li><strong>Apollo Africa</strong> (Reunert / CBI Electric Apollo) — trading licence 29 October 2025; first major wind offtake in progress.</li>
+        <li><strong>GreenCo Power Services</strong> — trading plus import/export licence, SAPP-facing.</li>
+      </ul>
+      <h3 class="h5 fw-bold">Offtakers already on the wires</h3>
+      <ul>
+        <li><strong>Vodacom</strong> — first commercial virtual wheel, year 1 complete (Sep 2025–Aug 2026), 15,000+ sites.</li>
+        <li><strong>Sasol</strong> — ~600 MW of signed PPAs, wind in the Eastern Cape and solar in the Northern Cape, wheeled via NTCSA toward Secunda.</li>
+        <li><strong>Anglo American / Kumba</strong> — hybrid of behind-the-meter, batteries and wheeled grid power; 3–5 GW group target.</li>
+        <li><strong>Implats</strong> — Discovery Green wheeled PPA at the refinery.</li>
+        <li><strong>Growthpoint</strong> — Cape Town pooled wheel, expanding toward 30+ buildings.</li>
+        <li>Sibanye, Harmony, South32 and others are still mostly behind-the-meter first, with wheeling as the off-site second step. See <a href="corporate-renewable-energy.html">Corporate Renewable Energy</a>.</li>
+      </ul>
+      <h3 class="h5 fw-bold">The public machinery</h3>
+      <ul class="mb-0">
+        <li><strong>NERSA</strong> — licences, the 2025 wheeling rules, trading rules, UoS and gen-wheeling tariff approvals, Market Code.</li>
+        <li><strong>DEE / Minister Ramokgopa</strong> — launched the 2025 rules as the national framework; EPP 2026 and the Market Transformation paper sit on top.</li>
+        <li><strong>NECOM</strong> — asked for the municipal wheeling framework; COGTA issued it in July 2025. Training programme (Salvoldi session on the 2025 rules) ran September 2025.</li>
+        <li><strong>Western Cape infrastructure department</strong> — provincial push to make municipal wheeling usable (Teuteberg / GreenCape MIR 2025).</li>
+      </ul>
+    </section>
+
+    <section id="state" class="w-section">
+      <h2>State of play — 13 October 2026</h2>
+      <p>Wheeling is no longer a pilot idea. It is a working, still-uneven market sitting in front of SAWEM.</p>
+      <div class="key-fact mb-3">
+        <strong>What is live.</strong> Conventional wheeling on Eskom MV+ TOU accounts; Eskom virtual wheeling in commercial operation (Vodacom year 1 done, refunds flowing); municipal wheels in Cape Town (pooled, 3.1 GWh, targeting a 200 MW market opening) and George; a growing trader book after the October 2025 licence round; national UoS rules gazetted.
+      </div>
+      <p><strong>What is stuck.</strong> Most municipalities still bill a bundled energy-plus-network tariff, so they cannot credit a wheel without losing the network margin. Ramokgopa said at launch that wheeling may only be implemented where cost-of-supply studies are done and UoS is cost-reflective. Live municipal wheels are still concentrated in Cape Town and George. Discovery Green’s 2026 policy note said municipalities need standardised frameworks, systems and templates, or wheeling stays theoretical across most of the country.</p>
+      <p><strong>What Eskom is changing.</strong> Revision 2 of the wheeling/net-billing policy (July 2026) drops grandfathering. When the automated billing system is ready, hourly reconciliation applies to every existing and new contract. Cresco’s reading: full implementation is unlikely before about 2029, and Eskom still needs NERSA to approve an updated generator-wheeling tariff and an explicit WEPS credit. Migrating old monthly deals will itself need a public-interest finding so the move does not load the wider tariff base.</p>
+      <p><strong>What the grid is doing.</strong> A wheel is only as good as spare transfer capacity. NTCSA has been issuing solar curtailment instructions at more than 1,000 a month (from about 100 earlier in 2026); verified curtailment claims were about R1.5 billion in July 2026. IGCAR (interim grid capacity allocation) is the queue rule. Wheeling demand and TDP build are the same constraint seen from two sides.</p>
+      <p class="mb-0"><strong>What the trading rules will add.</strong> Phases 1–2 (licensed traders, PPAs, CfDs, SAWEM participation) are in the body of the draft; phases 3–4 (customer switching, fuller retail) sit in appendices. Comments closed 28 September 2026. NERSA has not set a decision-meeting date. Until that instrument and the Market Code are in force, the 2025 Wheeling Rules plus Eskom’s policy plus municipal by-laws are the law of the deal.</p>
+    </section>
+
+    <section id="sawem" class="w-section">
+      <h2>How it sits in SAWEM</h2>
+      <p>Three layers, in time:</p>
+      <ol>
+        <li><strong>Now — bilateral wheeling.</strong> Energy is contracted privately. The network is paid UoS. Imbalances (generation and load that do not match in the period) are settled against Eskom/municipal energy tariffs. This is already a multi-market, as the SAWEM Specification says, with poor system visibility.</li>
+        <li><strong>April 2027 — SAWEM opens.</strong> Generators and traders that become market participants / BRPs offer into the day-ahead market. A physical PPA can sit beside the market as a contract-for-differences: the wheel still uses the wires; the energy price is hedged against SMP. Vesting contracts and the CPA are the Eskom-generation analogue of the same idea.</li>
+        <li><strong>Later — retail switching.</strong> Trading-rules phases 3–4. The customer changes supplier on the same connection. Wheeling as a special product starts to look like ordinary supply on a regulated network, which is the European end-state the Specification sketches.</li>
+      </ol>
+      <p class="mb-0">Corporate programmes already mix the three commercial forms on <a href="corporate-renewable-energy.html">Corporate Renewable Energy</a>: behind-the-meter (no wheel), wheeled PPAs (today’s private market), and direct SAWEM participation (the design case). Vesting will compete with wheeled power for the same offtakers; that is why the <a href="vesting-contracts.html">vesting framework</a> and this page belong next to each other under SAWEM.</p>
+    </section>
+
+    <section id="watch" class="w-section">
+      <h2>What to watch</h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr><th>Item</th><th>Status as at 13 Oct 2026</th><th>Next mark</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025 Wheeling Rules</td>
+              <td>In force (GN 6263)</td>
+              <td>Municipal UoS filings against those rules</td>
+            </tr>
+            <tr>
+              <td>Eskom Rev 2 policy</td>
+              <td>Published July 2026; monthly still the working settlement</td>
+              <td>NERSA gen-wheeling tariff + WEPS credit; hourly system ~2029</td>
+            </tr>
+            <tr>
+              <td>Virtual wheeling</td>
+              <td>Vodacom year 1 complete</td>
+              <td>Second offtakers copying the 15,000-site pattern</td>
+            </tr>
+            <tr>
+              <td>Cape Town pooled wheel</td>
+              <td>3.1 GWh; pilot under review</td>
+              <td>Open to the market; 200 MW aim</td>
+            </tr>
+            <tr>
+              <td>Municipal COS / unbundling</td>
+              <td>The national bottleneck</td>
+              <td>COGTA framework uptake; NERSA tariff approvals</td>
+            </tr>
+            <tr>
+              <td>Trading rules v3</td>
+              <td>Comments closed 28 Sep 2026</td>
+              <td>NERSA decision; phases 1–2 in force</td>
+            </tr>
+            <tr>
+              <td>Market Code + platform</td>
+              <td>Consolidation; platform framework open to 31 Oct 2026</td>
+              <td>SAWEM April 2027. See <a href="sawem-trading-platform.html">Trading Platform</a></td>
+            </tr>
+            <tr>
+              <td>Grid capacity</td>
+              <td>Curtailment elevated; IGCAR queue</td>
+              <td>TDP build and ITIPP. See <a href="itipp.html">ITIPP</a> and <a href="TDP2025.html">TDP 2025</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src-note mb-0">Sources: ERAA 38 of 2024 ss 21 and 34B; SAWEM Specification p. 8 (UoS as wheeling tariff); GN 6263 / GG 52781 (30 May 2025); Eskom policy 240-52443922 Rev 2 (July 2026); COGTA municipal framework July 2025; Eskom Distribution wheeling page; Vodacom/Eskom year-1 statements 1 Oct 2026; City of Cape Town 22 Sep 2026 (3.1 GWh); Etana/Growthpoint pooled allocation Apr 2026; Cresco Rev 2 note Aug 2026; draft Trading Rules v3; NTCSA Market Code rev 2.3; Azura/Enpower Oct 2026.</p>
+    </section>
+
+    <hr>
+    <a href="sawem-market-structure.html" class="btn btn-outline-secondary">← Market structure</a>
+    <a href="ntcsa.html" class="btn btn-outline-secondary ms-2">NTCSA</a>
+    <a href="corporate-renewable-energy.html" class="btn btn-outline-secondary ms-2">Corporate RE</a>
+    <a href="electricity-trading-rules.html" class="btn btn-outline-dark ms-2">Trading rules</a>
+    <a href="https://www.eskom.co.za/distribution/wheeling/" class="btn btn-outline-dark ms-2" target="_blank" rel="noreferrer">Eskom wheeling</a>
+  </div>
+</body>
+</html>

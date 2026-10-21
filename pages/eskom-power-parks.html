@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Power Parks Programme (2026) • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .insight-box { background: #e3f2fd; border-left: 4px solid #1565c0; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .alert-box { background: #fff3e0; border-left: 4px solid #e65100; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .stat-card { background: #f5f0f7; border-radius: 12px; padding: 1rem; text-align: center; height: 100%; }
+    .stat-card .num { font-size: 1.5rem; font-weight: 800; color: #2d1b3e; }
+    .stat-card .label { font-size: 0.72rem; color: #6c757d; text-transform: uppercase; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 30%; background: #f8f9fa; }
+    .hero { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 16px; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.15rem 0.6rem; border-radius: 20px; }
+    .pill-new { background: #fff3e0; color: #e65100; }
+    .pill-mix { background: #e3f2fd; color: #0d47a1; }
+    .pill-site { background: #e1bee7; color: #6a1b9a; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">&#9889; Power</a>
+        <a href="eskom.html" class="btn btn-light btn-sm">&#128273; Eskom</a>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3 px-4">
+    <p class="small text-muted mb-1"><a href="power.html">Power</a> &middot; <a href="eskom.html">Eskom</a> &middot; Department of Electricity and Energy</p>
+
+    <div class="hero p-4 mb-4">
+      <h1 class="fw-bold">&#127957; Eskom Power Parks Programme</h1>
+      <p class="mb-0">
+        A new <strong>State-led</strong> initiative introduced by the Minister of Electricity and Energy,
+        Dr.&nbsp;Kgosientsho Ramokgopa, to lower the barriers to entry for emerging power developers,
+        widen ownership in the energy sector, and cluster new generation on strategic sites that have
+        transmission, battery storage and local economic development built in.
+      </p>
+    </div>
+
+    <!-- Quick stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="stat-card"><div class="num">7 Oct 2026</div><div class="label">Announced</div></div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card"><div class="num">2026&ndash;2037</div><div class="label">Planning horizon</div></div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card"><div class="num">Sec. 34</div><div class="label">Enabling determination</div></div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card"><div class="num">State-led</div><div class="label">Programme model</div></div>
+      </div>
+    </div>
+
+    <!-- At a glance fact table -->
+    <table class="table table-bordered fact mb-4">
+      <tbody>
+        <tr><th>Programme</th><td>Power Parks Programme (State-led)</td></tr>
+        <tr><th>Announced by</th><td>Minister of Electricity and Energy, Dr.&nbsp;Kgosientsho Ramokgopa</td></tr>
+        <tr><th>Announcement date</th><td>7 October 2026 &mdash; media briefing at GCIS, Tshedimosetso House, Hatfield, Pretoria</td></tr>
+        <tr><th>Introduced alongside</th><td>New <strong>Section 34 Determination</strong> for additional generation capacity and a new <strong>multi-year procurement pipeline</strong> (2026&ndash;2037 planning horizon)</td></tr>
+        <tr><th>Objective</th><td>Reduce barriers to entry for emerging developers and promote broader ownership in the energy sector</td></tr>
+        <tr><th>Focus</th><td>Strategic sites supporting transmission, battery storage and local economic development, integrated into the national grid</td></tr>
+        <tr><th>Source document</th><td><a href="https://www.gov.za/news/media-advisories/media-briefings/minister-kgosientsho-ramokgopa-announces-new-electricity" target="_blank" rel="noreferrer">Gov.za &mdash; Minister announces new electricity procurement programme (6 Oct 2026)</a></td></tr>
+      </tbody>
+    </table>
+
+    <!-- What was announced -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">What was announced</h4>
+        <p>
+          On 7 October 2026, Minister Kgosientsho Ramokgopa announced a package of measures to expand
+          South Africa's generation capacity over the <strong>2026&ndash;2037</strong> planning horizon. The
+          announcement was delivered together with two instruments the Power Parks Programme sits inside:
+        </p>
+        <ul>
+          <li>
+            <strong>A new Section 34 Determination</strong> for significant additional generation capacity,
+            covering a diverse energy mix &mdash; <span class="pill pill-mix">Wind</span>
+            <span class="pill pill-mix">Solar</span>
+            <span class="pill pill-mix">Battery storage</span>
+            <span class="pill pill-mix">Gas-to-power</span>.
+          </li>
+          <li>
+            <strong>A new multi-year procurement pipeline</strong> designed to give the market long-term
+            visibility and stability, so developers and financiers can plan beyond a single bid window.
+          </li>
+          <li>
+            <strong>The State-led Power Parks Programme</strong> &mdash; the focus of this page.
+          </li>
+        </ul>
+        <div class="insight-box">
+          <strong>Why it matters:</strong> South Africa's grid has been dominated by very large, single-site
+          projects. A State-led "park" model clusters multiple generators &mdash; and the grid, storage and
+          services they need &mdash; onto prepared strategic sites, which lowers the cost and complexity for
+          smaller and emerging developers who cannot build that infrastructure alone.
+        </div>
+      </div>
+    </div>
+
+    <!-- The programme -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">The Power Parks Programme</h4>
+        <p>
+          The programme is <strong>State-led</strong>: government prepares and de-risks strategic sites so that
+          generation can be built on them. As set out in the announcement, it aims to:
+        </p>
+        <div class="row g-3 mt-1">
+          <div class="col-md-4">
+            <div class="p-3 border rounded h-100" style="background:#e8f5e9;">
+              <h6 class="fw-bold mb-2">Lower barriers to entry</h6>
+              <p class="small mb-0">
+                Reduce the hurdles for <strong>emerging developers</strong>, especially new and local players
+                who struggle to fund grid, land and infrastructure preparation on their own.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded h-100" style="background:#e8f5e9;">
+              <h6 class="fw-bold mb-2">Broaden ownership</h6>
+              <p class="small mb-0">
+                Promote <strong>broader ownership</strong> in the energy sector &mdash; widening participation
+                beyond the established large independent power producers.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded h-100" style="background:#e8f5e9;">
+              <h6 class="fw-bold mb-2">Cluster on strategic sites</h6>
+              <p class="small mb-0">
+                Use <strong>strategic sites</strong> to co-locate generation with the transmission and battery
+                storage it needs, and to anchor <strong>local economic development</strong> around the park.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design principles -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">Design principles behind a "power park"</h4>
+        <p>
+          Read together, the announced elements point to a delivery model with four recurring themes. These are
+          the design principles the programme is being built around:
+        </p>
+        <ol class="mb-0">
+          <li>
+            <strong>Prepared sites.</strong> Government identifies and readies strategic land so that
+            developers arrive at a site that is already serviced and consented, rather than starting from
+            greenfield.
+          </li>
+          <li>
+            <strong>Transmission first.</strong> Sites are chosen where grid capacity can be made available,
+            directly addressing the transmission constraint that has bottlenecked new generation.
+          </li>
+          <li>
+            <strong>Storage integrated.</strong> Battery energy storage is treated as part of the park's core
+            infrastructure, not an afterthought &mdash; helping firm up variable wind and solar.
+          </li>
+          <li>
+            <strong>Local economic development.</strong> Parks are intended to anchor jobs, skills and local
+            supply chains in the surrounding area, echoing the "just transition" logic applied elsewhere in the
+            power sector.
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- How it fits -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">How it fits into the wider procurement picture</h4>
+        <p>
+          The Power Parks Programme does not replace the existing procurement route. It is one part of a broader
+          three-part package announced on the same day:
+        </p>
+        <div class="table-responsive">
+          <table class="table table-bordered small align-middle mb-0">
+            <thead class="table-dark">
+              <tr><th>Instrument</th><th>What it does</th><th>Horizon</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-bold">Section 34 Determination</td>
+                <td>Directs the procurement of significant additional generation capacity across a diverse mix.</td>
+                <td>2026&ndash;2037</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Multi-year procurement pipeline</td>
+                <td>Gives the market long-term visibility and stability so developers can plan and finance.</td>
+                <td>Multi-year</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Power Parks Programme</td>
+                <td>State-led strategic sites to lower entry barriers, broaden ownership and cluster grid, storage and local development.</td>
+                <td>Phased</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted mt-3 mb-0">
+          Related reading on this dashboard:
+          <a href="distributed-generation.html">Distributed Generation</a>,
+          <a href="irp2025.html">IRP2025</a>,
+          <a href="sawem-ipp-programmes.html">SAWEM IPP Programmes</a> and the
+          <a href="jet.html">Just Energy Transition</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Open questions -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">What is not yet known</h4>
+        <div class="alert-box">
+          <strong>Read with care:</strong> The public announcement confirmed the <em>intent and shape</em> of the
+          programme. Many operational details that would normally accompany a procurement round are still to be
+          published. Treat the following as open until confirmed in the official gazette, determination notice or
+          bid documentation.
+        </div>
+        <ul class="mb-0">
+          <li><strong>Sites and capacity.</strong> The specific strategic sites, their locations and the megawatt capacity to be allocated to each park.</li>
+          <li><strong>Determination specifics.</strong> The exact megawatts, technologies and timelines named in the Section 34 Determination.</li>
+          <li><strong>Procurement windows.</strong> The sequencing of bid windows under the new multi-year pipeline and how the parks will be allocated (auction, tender or direct State development).</li>
+          <li><strong>Ownership rules.</strong> The precise mechanism &mdash; local content, equity or developer requirements &mdash; used to deliver "broader ownership".</li>
+          <li><strong>Funding model.</strong> How the State funds site preparation, grid connection and battery storage, and how costs are recovered.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Documents -->
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">Documents & links</h4>
+        <ul class="mb-0">
+          <li>
+            <strong>Official announcement (primary source).</strong>
+            <a href="https://www.gov.za/news/media-advisories/media-briefings/minister-kgosientsho-ramokgopa-announces-new-electricity" target="_blank" rel="noreferrer">Gov.za &mdash; "Minister Kgosientsho Ramokgopa announces new electricity procurement programme, 7 Oct"</a>
+            &mdash; media advisory issued 6 October 2026 by the Department of Electricity and Energy.
+          </li>
+          <li>
+            <strong>Department of Electricity and Energy.</strong>
+            <a href="https://www.dee.gov.za" target="_blank" rel="noreferrer">dee.gov.za</a>
+            &mdash; the responsible department (formerly DMRE portfolio for electricity). Determination notices and bid documentation are published by the Department's independent power producer office.
+          </li>
+          <li>
+            <strong>Companion dashboard pages.</strong>
+            <a href="irp2025.html">IRP2025</a> (the Integrated Resource Plan that sets the capacity mix),
+            <a href="sawem-ipp-programmes.html">SAWEM IPP Programmes</a> (existing bid windows), and
+            <a href="distributed-generation.html">Distributed Generation</a>.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="text-muted small mb-4">
+      <strong>Sources:</strong> Department of Electricity and Energy media advisory, "Minister Kgosientsho Ramokgopa
+      announces new electricity procurement programme" (Gov.za, 6 October 2026); Ministerial media briefing,
+      GCIS Tshedimosetso House, Pretoria (7 October 2026). Page reflects the announcement as at October 2026;
+      operational detail will be updated as determinations and bid documents are gazetted.
+    </div>
+
+    <hr>
+    <a href="eskom.html" class="btn btn-outline-secondary">&larr; Eskom overview</a>
+    <a href="power.html" class="btn btn-outline-secondary ms-2">Power hub</a>
+    <a href="https://www.gov.za/news/media-advisories/media-briefings/minister-kgosientsho-ramokgopa-announces-new-electricity" class="btn btn-success ms-2" target="_blank" rel="noreferrer">Official announcement</a>
+  </div>
+</body>
+</html>

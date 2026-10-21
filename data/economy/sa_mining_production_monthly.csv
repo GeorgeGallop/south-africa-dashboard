@@ -1,0 +1,385 @@
+# Stats SA P2041 Mining: Production and sales — monthly volume of mining production.
+# index = unadjusted volume index, 2019=100 (Table 4).
+# sa = estimated physical output = (2019 annual SA output / 12) * index / 100.
+# 2019 annual SA output from data/power/sa_world_production.csv (BGS).
+# platinum monthly is the PGM group index, scaled to 2019 SA platinum tonnes.
+# Source: https://www.statssa.gov.za/publications/P2041/P2041August2026.pdf
+commodity,date,index,sa,yoy_pct,unit
+chromium,2022-03,114.1,1.679575,,million tonnes
+chromium,2022-04,108.0,1.589782,,million tonnes
+chromium,2022-05,114.6,1.686935,,million tonnes
+chromium,2022-06,112.5,1.656022,,million tonnes
+chromium,2022-07,116.2,1.710487,,million tonnes
+chromium,2022-08,115.7,1.703127,,million tonnes
+chromium,2022-09,107.3,1.579477,,million tonnes
+chromium,2022-10,105.2,1.548565,,million tonnes
+chromium,2022-11,113.8,1.675159,,million tonnes
+chromium,2022-12,86.7,1.276241,,million tonnes
+chromium,2023-01,91.0,1.339538,,million tonnes
+chromium,2023-02,96.9,1.426387,,million tonnes
+chromium,2023-03,109.7,1.614806,-3.9,million tonnes
+chromium,2023-04,103.7,1.526485,-4.0,million tonnes
+chromium,2023-05,110.7,1.629526,-3.4,million tonnes
+chromium,2023-06,116.2,1.710487,3.3,million tonnes
+chromium,2023-07,114.0,1.678103,-1.9,million tonnes
+chromium,2023-08,121.4,1.787032,4.9,million tonnes
+chromium,2023-09,120.8,1.7782,12.6,million tonnes
+chromium,2023-10,120.9,1.779672,14.9,million tonnes
+chromium,2023-11,125.4,1.845913,10.2,million tonnes
+chromium,2023-12,102.7,1.511764,18.5,million tonnes
+chromium,2024-01,94.7,1.394003,4.1,million tonnes
+chromium,2024-02,118.4,1.742872,22.2,million tonnes
+chromium,2024-03,126.8,1.866521,15.6,million tonnes
+chromium,2024-04,125.4,1.845913,20.9,million tonnes
+chromium,2024-05,133.6,1.966619,20.7,million tonnes
+chromium,2024-06,131.7,1.93865,13.3,million tonnes
+chromium,2024-07,141.2,2.078492,23.9,million tonnes
+chromium,2024-08,152.6,2.246302,25.7,million tonnes
+chromium,2024-09,141.7,2.085852,17.3,million tonnes
+chromium,2024-10,135.9,2.000475,12.4,million tonnes
+chromium,2024-11,145.3,2.138845,15.9,million tonnes
+chromium,2024-12,107.3,1.579477,4.5,million tonnes
+chromium,2025-01,93.8,1.380755,-1.0,million tonnes
+chromium,2025-02,114.4,1.683991,-3.4,million tonnes
+chromium,2025-03,134.4,1.978395,6.0,million tonnes
+chromium,2025-04,127.8,1.881241,1.9,million tonnes
+chromium,2025-05,138.9,2.044636,4.0,million tonnes
+chromium,2025-06,145.7,2.144733,10.6,million tonnes
+chromium,2025-07,146.4,2.155037,3.7,million tonnes
+chromium,2025-08,149.2,2.196254,-2.2,million tonnes
+chromium,2025-09,146.9,2.162397,3.7,million tonnes
+chromium,2025-10,154.9,2.280159,14.0,million tonnes
+chromium,2025-11,147.5,2.171229,1.5,million tonnes
+chromium,2025-12,127.2,1.872409,18.5,million tonnes
+chromium,2026-01,127.5,1.876825,35.9,million tonnes
+chromium,2026-02,146.8,2.160925,28.3,million tonnes
+chromium,2026-03,158.6,2.334624,18.0,million tonnes
+chromium,2026-04,147.2,2.166813,15.2,million tonnes
+chromium,2026-05,153.3,2.256607,10.4,million tonnes
+chromium,2026-06,157.2,2.314015,7.9,million tonnes
+chromium,2026-07,166.7,2.453857,13.9,million tonnes
+chromium,2026-08,165.8,2.440609,11.1,million tonnes
+coal,2022-03,94.8,20.098446,,million tonnes
+coal,2022-04,77.0,16.324687,,million tonnes
+coal,2022-05,89.0,18.868795,,million tonnes
+coal,2022-06,93.8,19.886437,,million tonnes
+coal,2022-07,100.2,21.243295,,million tonnes
+coal,2022-08,94.6,20.056045,,million tonnes
+coal,2022-09,93.8,19.886437,,million tonnes
+coal,2022-10,94.7,20.077245,,million tonnes
+coal,2022-11,86.8,18.402375,,million tonnes
+coal,2022-12,74.0,15.688661,,million tonnes
+coal,2023-01,83.2,17.639143,,million tonnes
+coal,2023-02,75.5,16.006674,,million tonnes
+coal,2023-03,93.7,19.865237,-1.2,million tonnes
+coal,2023-04,86.1,18.253969,11.8,million tonnes
+coal,2023-05,86.9,18.423576,-2.4,million tonnes
+coal,2023-06,92.5,19.610826,-1.4,million tonnes
+coal,2023-07,93.8,19.886437,-6.4,million tonnes
+coal,2023-08,93.6,19.844036,-1.1,million tonnes
+coal,2023-09,96.6,20.480062,3.0,million tonnes
+coal,2023-10,94.9,20.119647,0.2,million tonnes
+coal,2023-11,97.3,20.628469,12.1,million tonnes
+coal,2023-12,77.9,16.515495,5.3,million tonnes
+coal,2024-01,84.3,17.872353,1.3,million tonnes
+coal,2024-02,86.1,18.253969,14.0,million tonnes
+coal,2024-03,88.1,18.677987,-6.0,million tonnes
+coal,2024-04,84.7,17.957156,-1.6,million tonnes
+coal,2024-05,94.1,19.95004,8.3,million tonnes
+coal,2024-06,90.4,19.165607,-2.3,million tonnes
+coal,2024-07,96.3,20.41646,2.7,million tonnes
+coal,2024-08,95.1,20.162049,1.6,million tonnes
+coal,2024-09,93.9,19.907638,-2.8,million tonnes
+coal,2024-10,97.5,20.67087,2.7,million tonnes
+coal,2024-11,97.4,20.64967,0.1,million tonnes
+coal,2024-12,80.9,17.151522,3.9,million tonnes
+coal,2025-01,82.4,17.469536,-2.3,million tonnes
+coal,2025-02,84.8,17.978357,-1.5,million tonnes
+coal,2025-03,89.8,19.038402,1.9,million tonnes
+coal,2025-04,83.3,17.660344,-1.7,million tonnes
+coal,2025-05,90.8,19.250411,-3.5,million tonnes
+coal,2025-06,94.6,20.056045,4.6,million tonnes
+coal,2025-07,100.2,21.243295,4.0,million tonnes
+coal,2025-08,99.7,21.13729,4.8,million tonnes
+coal,2025-09,96.3,20.41646,2.6,million tonnes
+coal,2025-10,98.0,20.776875,0.5,million tonnes
+coal,2025-11,91.3,19.356415,-6.3,million tonnes
+coal,2025-12,75.7,16.049076,-6.4,million tonnes
+coal,2026-01,82.1,17.405933,-0.4,million tonnes
+coal,2026-02,80.9,17.151522,-4.6,million tonnes
+coal,2026-03,81.6,17.299928,-9.1,million tonnes
+coal,2026-04,78.7,16.685103,-5.5,million tonnes
+coal,2026-05,87.0,18.444777,-4.2,million tonnes
+coal,2026-06,89.7,19.017201,-5.2,million tonnes
+coal,2026-07,93.8,19.886437,-6.4,million tonnes
+coal,2026-08,88.3,18.720388,-11.4,million tonnes
+diamond,2022-03,181.5,1.085587,,million carats
+diamond,2022-04,129.6,0.775163,,million carats
+diamond,2022-05,113.1,0.676473,,million carats
+diamond,2022-06,136.4,0.815835,,million carats
+diamond,2022-07,130.2,0.778752,,million carats
+diamond,2022-08,157.8,0.943833,,million carats
+diamond,2022-09,168.1,1.005439,,million carats
+diamond,2022-10,94.9,0.567615,,million carats
+diamond,2022-11,121.7,0.727912,,million carats
+diamond,2022-12,92.0,0.55027,,million carats
+diamond,2023-01,124.1,0.742266,,million carats
+diamond,2023-02,76.7,0.458758,,million carats
+diamond,2023-03,82.2,0.491654,-54.7,million carats
+diamond,2023-04,76.1,0.455169,-41.3,million carats
+diamond,2023-05,77.6,0.464141,-31.4,million carats
+diamond,2023-06,80.4,0.480888,-41.1,million carats
+diamond,2023-07,86.9,0.519766,-33.3,million carats
+diamond,2023-08,71.7,0.428852,-54.6,million carats
+diamond,2023-09,65.0,0.388778,-61.3,million carats
+diamond,2023-10,74.3,0.444403,-21.7,million carats
+diamond,2023-11,81.1,0.485075,-33.4,million carats
+diamond,2023-12,89.1,0.532925,-3.2,million carats
+diamond,2024-01,72.9,0.436029,-41.3,million carats
+diamond,2024-02,89.6,0.535915,16.8,million carats
+diamond,2024-03,88.0,0.526345,7.1,million carats
+diamond,2024-04,81.2,0.485673,6.7,million carats
+diamond,2024-05,86.2,0.515579,11.1,million carats
+diamond,2024-06,73.7,0.440814,-8.3,million carats
+diamond,2024-07,86.6,0.517972,-0.3,million carats
+diamond,2024-08,66.8,0.399544,-6.8,million carats
+diamond,2024-09,87.9,0.525747,35.2,million carats
+diamond,2024-10,94.6,0.565821,27.3,million carats
+diamond,2024-11,71.8,0.42945,-11.5,million carats
+diamond,2024-12,77.2,0.461748,-13.4,million carats
+diamond,2025-01,80.6,0.482084,10.6,million carats
+diamond,2025-02,76.8,0.459356,-14.3,million carats
+diamond,2025-03,89.1,0.532925,1.2,million carats
+diamond,2025-04,89.2,0.533523,9.9,million carats
+diamond,2025-05,92.8,0.555055,7.7,million carats
+diamond,2025-06,93.9,0.561634,27.4,million carats
+diamond,2025-07,91.7,0.548476,5.9,million carats
+diamond,2025-08,86.1,0.514981,28.9,million carats
+diamond,2025-09,90.2,0.539504,2.6,million carats
+diamond,2025-10,81.8,0.489262,-13.5,million carats
+diamond,2025-11,91.8,0.549074,27.9,million carats
+diamond,2025-12,52.8,0.315807,-31.6,million carats
+diamond,2026-01,83.5,0.49943,3.6,million carats
+diamond,2026-02,83.7,0.500626,9.0,million carats
+diamond,2026-03,78.8,0.471318,-11.6,million carats
+diamond,2026-04,70.8,0.423469,-20.6,million carats
+diamond,2026-05,73.1,0.437225,-21.2,million carats
+diamond,2026-06,73.5,0.439618,-21.7,million carats
+diamond,2026-07,47.3,0.282911,-48.4,million carats
+diamond,2026-08,50.5,0.30205,-41.3,million carats
+gold,2022-03,77.3,6.775667,,tonnes
+gold,2022-04,68.3,5.98678,,tonnes
+gold,2022-05,74.7,6.547766,,tonnes
+gold,2022-06,77.2,6.766902,,tonnes
+gold,2022-07,85.8,7.520728,,tonnes
+gold,2022-08,94.8,8.309615,,tonnes
+gold,2022-09,94.6,8.292084,,tonnes
+gold,2022-10,98.7,8.651466,,tonnes
+gold,2022-11,100.7,8.826775,,tonnes
+gold,2022-12,85.1,7.45937,,tonnes
+gold,2023-01,79.5,6.968506,,tonnes
+gold,2023-02,82.6,7.240234,,tonnes
+gold,2023-03,95.1,8.335911,23.0,tonnes
+gold,2023-04,86.1,7.547024,26.1,tonnes
+gold,2023-05,95.2,8.344677,27.4,tonnes
+gold,2023-06,97.3,8.52875,26.0,tonnes
+gold,2023-07,94.5,8.283319,10.1,tonnes
+gold,2023-08,97.0,8.502454,2.3,tonnes
+gold,2023-09,94.4,8.274553,-0.2,tonnes
+gold,2023-10,100.9,8.844305,2.2,tonnes
+gold,2023-11,97.8,8.572577,-2.9,tonnes
+gold,2023-12,82.0,7.187642,-3.6,tonnes
+gold,2024-01,69.4,6.083199,-12.7,tonnes
+gold,2024-02,79.4,6.959741,-3.9,tonnes
+gold,2024-03,91.0,7.976529,-4.3,tonnes
+gold,2024-04,84.7,7.424308,-1.6,tonnes
+gold,2024-05,86.7,7.599616,-8.9,tonnes
+gold,2024-06,85.0,7.450604,-12.6,tonnes
+gold,2024-07,91.2,7.99406,-3.5,tonnes
+gold,2024-08,92.4,8.099245,-4.7,tonnes
+gold,2024-09,90.9,7.967764,-3.7,tonnes
+gold,2024-10,97.5,8.546281,-3.4,tonnes
+gold,2024-11,86.6,7.590851,-11.5,tonnes
+gold,2024-12,75.1,6.582828,-8.4,tonnes
+gold,2025-01,70.2,6.153323,1.2,tonnes
+gold,2025-02,72.5,6.354927,-8.7,tonnes
+gold,2025-03,80.9,7.091222,-11.1,tonnes
+gold,2025-04,82.6,7.240234,-2.5,tonnes
+gold,2025-05,88.0,7.713567,1.5,tonnes
+gold,2025-06,87.5,7.66974,2.9,tonnes
+gold,2025-07,90.9,7.967764,-0.3,tonnes
+gold,2025-08,89.1,7.809986,-3.6,tonnes
+gold,2025-09,95.5,8.370973,5.1,tonnes
+gold,2025-10,97.1,8.51122,-0.4,tonnes
+gold,2025-11,81.3,7.126284,-6.1,tonnes
+gold,2025-12,76.6,6.714309,2.0,tonnes
+gold,2026-01,70.6,6.188384,0.6,tonnes
+gold,2026-02,81.7,7.161345,12.7,tonnes
+gold,2026-03,94.4,8.274553,16.7,tonnes
+gold,2026-04,82.3,7.213938,-0.4,tonnes
+gold,2026-05,84.1,7.371715,-4.4,tonnes
+gold,2026-06,92.9,8.143072,6.2,tonnes
+gold,2026-07,84.3,7.389246,-7.3,tonnes
+gold,2026-08,84.0,7.36295,-5.7,tonnes
+iron_ore,2022-03,93.0,5.613347,,million tonnes
+iron_ore,2022-04,90.6,5.468487,,million tonnes
+iron_ore,2022-05,93.9,5.66767,,million tonnes
+iron_ore,2022-06,110.2,6.651515,,million tonnes
+iron_ore,2022-07,92.6,5.589204,,million tonnes
+iron_ore,2022-08,100.9,6.09018,,million tonnes
+iron_ore,2022-09,79.2,4.780399,,million tonnes
+iron_ore,2022-10,77.5,4.677789,,million tonnes
+iron_ore,2022-11,74.2,4.478606,,million tonnes
+iron_ore,2022-12,90.7,5.474523,,million tonnes
+iron_ore,2023-01,86.8,5.239124,,million tonnes
+iron_ore,2023-02,89.1,5.377949,,million tonnes
+iron_ore,2023-03,92.9,5.607311,-0.1,million tonnes
+iron_ore,2023-04,87.8,5.299483,-3.1,million tonnes
+iron_ore,2023-05,88.3,5.329662,-6.0,million tonnes
+iron_ore,2023-06,90.4,5.456415,-18.0,million tonnes
+iron_ore,2023-07,105.7,6.379901,14.1,million tonnes
+iron_ore,2023-08,107.1,6.464403,6.1,million tonnes
+iron_ore,2023-09,81.7,4.931295,3.2,million tonnes
+iron_ore,2023-10,74.6,4.50275,-3.7,million tonnes
+iron_ore,2023-11,89.1,5.377949,20.1,million tonnes
+iron_ore,2023-12,74.2,4.478606,-18.2,million tonnes
+iron_ore,2024-01,95.1,5.7401,9.6,million tonnes
+iron_ore,2024-02,98.3,5.933248,10.3,million tonnes
+iron_ore,2024-03,86.4,5.214981,-7.0,million tonnes
+iron_ore,2024-04,81.3,4.907152,-7.4,million tonnes
+iron_ore,2024-05,90.3,5.450379,2.3,million tonnes
+iron_ore,2024-06,93.9,5.66767,3.9,million tonnes
+iron_ore,2024-07,85.6,5.166694,-19.0,million tonnes
+iron_ore,2024-08,90.6,5.468487,-15.4,million tonnes
+iron_ore,2024-09,89.7,5.414164,9.8,million tonnes
+iron_ore,2024-10,69.3,4.182849,-7.1,million tonnes
+iron_ore,2024-11,86.0,5.190837,-3.5,million tonnes
+iron_ore,2024-12,75.2,4.538965,1.3,million tonnes
+iron_ore,2025-01,80.8,4.876973,-15.0,million tonnes
+iron_ore,2025-02,88.0,5.311554,-10.5,million tonnes
+iron_ore,2025-03,92.9,5.607311,7.5,million tonnes
+iron_ore,2025-04,86.4,5.214981,6.3,million tonnes
+iron_ore,2025-05,100.3,6.053965,11.1,million tonnes
+iron_ore,2025-06,92.2,5.56506,-1.8,million tonnes
+iron_ore,2025-07,95.9,5.788387,12.0,million tonnes
+iron_ore,2025-08,92.9,5.607311,2.5,million tonnes
+iron_ore,2025-09,87.6,5.287411,-2.3,million tonnes
+iron_ore,2025-10,86.8,5.239124,25.3,million tonnes
+iron_ore,2025-11,79.4,4.792471,-7.7,million tonnes
+iron_ore,2025-12,89.8,5.4202,19.4,million tonnes
+iron_ore,2026-01,80.2,4.840758,-0.7,million tonnes
+iron_ore,2026-02,77.6,4.683825,-11.8,million tonnes
+iron_ore,2026-03,89.9,5.426236,-3.2,million tonnes
+iron_ore,2026-04,81.0,4.889044,-6.3,million tonnes
+iron_ore,2026-05,88.3,5.329662,-12.0,million tonnes
+iron_ore,2026-06,85.0,5.130479,-7.8,million tonnes
+iron_ore,2026-07,89.9,5.426236,-6.3,million tonnes
+iron_ore,2026-08,78.2,4.72004,-15.8,million tonnes
+manganese,2022-03,93.0,1.318194,,million tonnes
+manganese,2022-04,115.0,1.630024,,million tonnes
+manganese,2022-05,108.9,1.543562,,million tonnes
+manganese,2022-06,121.6,1.723574,,million tonnes
+manganese,2022-07,125.9,1.784522,,million tonnes
+manganese,2022-08,130.5,1.849723,,million tonnes
+manganese,2022-09,113.7,1.611598,,million tonnes
+manganese,2022-10,108.1,1.532223,,million tonnes
+manganese,2022-11,113.8,1.613016,,million tonnes
+manganese,2022-12,94.9,1.345125,,million tonnes
+manganese,2023-01,105.5,1.49537,,million tonnes
+manganese,2023-02,91.9,1.302602,,million tonnes
+manganese,2023-03,123.3,1.74767,32.6,million tonnes
+manganese,2023-04,112.0,1.587502,-2.6,million tonnes
+manganese,2023-05,119.1,1.688138,9.4,million tonnes
+manganese,2023-06,126.4,1.79161,3.9,million tonnes
+manganese,2023-07,110.6,1.567658,-12.2,million tonnes
+manganese,2023-08,118.4,1.678216,-9.3,million tonnes
+manganese,2023-09,109.2,1.547815,-4.0,million tonnes
+manganese,2023-10,117.7,1.668295,8.9,million tonnes
+manganese,2023-11,112.0,1.587502,-1.6,million tonnes
+manganese,2023-12,85.9,1.217557,-9.5,million tonnes
+manganese,2024-01,80.8,1.145269,-23.4,million tonnes
+manganese,2024-02,99.2,1.406073,7.9,million tonnes
+manganese,2024-03,113.7,1.611598,-7.8,million tonnes
+manganese,2024-04,103.9,1.472692,-7.2,million tonnes
+manganese,2024-05,133.9,1.897915,12.4,million tonnes
+manganese,2024-06,133.0,1.885159,5.2,million tonnes
+manganese,2024-07,140.5,1.991465,27.0,million tonnes
+manganese,2024-08,137.5,1.948942,16.1,million tonnes
+manganese,2024-09,123.7,1.753339,13.3,million tonnes
+manganese,2024-10,112.7,1.597424,-4.2,million tonnes
+manganese,2024-11,113.0,1.601676,0.9,million tonnes
+manganese,2024-12,93.4,1.323863,8.7,million tonnes
+manganese,2025-01,114.7,1.625772,42.0,million tonnes
+manganese,2025-02,111.1,1.574745,12.0,million tonnes
+manganese,2025-03,119.2,1.689556,4.8,million tonnes
+manganese,2025-04,103.6,1.468439,-0.3,million tonnes
+manganese,2025-05,116.7,1.65412,-12.8,million tonnes
+manganese,2025-06,122.4,1.734913,-8.0,million tonnes
+manganese,2025-07,135.6,1.922011,-3.5,million tonnes
+manganese,2025-08,137.3,1.946107,-0.1,million tonnes
+manganese,2025-09,118.3,1.676799,-4.4,million tonnes
+manganese,2025-10,131.4,1.86248,16.6,million tonnes
+manganese,2025-11,132.7,1.880906,17.4,million tonnes
+manganese,2025-12,125.3,1.776018,34.2,million tonnes
+manganese,2026-01,125.5,1.778853,9.4,million tonnes
+manganese,2026-02,130.3,1.846889,17.3,million tonnes
+manganese,2026-03,137.6,1.95036,15.4,million tonnes
+manganese,2026-04,124.1,1.759009,19.8,million tonnes
+manganese,2026-05,133.4,1.890828,14.3,million tonnes
+manganese,2026-06,134.2,1.902168,9.6,million tonnes
+manganese,2026-07,144.9,2.053831,6.9,million tonnes
+manganese,2026-08,143.0,2.0269,4.2,million tonnes
+platinum,2022-03,103.3,11.448136,,tonnes
+platinum,2022-04,89.8,9.95201,,tonnes
+platinum,2022-05,111.0,12.301483,,tonnes
+platinum,2022-06,98.7,10.938345,,tonnes
+platinum,2022-07,92.7,10.2734,,tonnes
+platinum,2022-08,97.5,10.805356,,tonnes
+platinum,2022-09,96.4,10.68345,,tonnes
+platinum,2022-10,84.7,9.386807,,tonnes
+platinum,2022-11,91.9,10.184741,,tonnes
+platinum,2022-12,102.6,11.37056,,tonnes
+platinum,2023-01,73.2,8.112329,,tonnes
+platinum,2023-02,64.9,7.192488,,tonnes
+platinum,2023-03,94.0,10.417472,-9.0,tonnes
+platinum,2023-04,85.7,9.497631,-4.6,tonnes
+platinum,2023-05,103.1,11.425972,-7.1,tonnes
+platinum,2023-06,109.9,12.179576,11.3,tonnes
+platinum,2023-07,83.1,9.209488,-10.4,tonnes
+platinum,2023-08,100.1,11.093499,2.7,tonnes
+platinum,2023-09,100.1,11.093499,3.8,tonnes
+platinum,2023-10,99.0,10.971592,16.9,tonnes
+platinum,2023-11,105.9,11.736279,15.2,tonnes
+platinum,2023-12,111.8,12.390142,9.0,tonnes
+platinum,2024-01,76.3,8.455884,4.2,tonnes
+platinum,2024-02,67.2,7.447384,3.5,tonnes
+platinum,2024-03,91.7,10.162576,-2.4,tonnes
+platinum,2024-04,100.0,11.082417,16.7,tonnes
+platinum,2024-05,98.7,10.938345,-4.3,tonnes
+platinum,2024-06,103.5,11.470301,-5.8,tonnes
+platinum,2024-07,82.4,9.131911,-0.8,tonnes
+platinum,2024-08,104.7,11.60329,4.6,tonnes
+platinum,2024-09,106.8,11.836021,6.7,tonnes
+platinum,2024-10,102.3,11.337312,3.3,tonnes
+platinum,2024-11,110.0,12.190658,3.9,tonnes
+platinum,2024-12,103.8,11.503549,-7.2,tonnes
+platinum,2025-01,73.4,8.134494,-3.8,tonnes
+platinum,2025-02,51.4,5.696362,-23.5,tonnes
+platinum,2025-03,82.6,9.154076,-9.9,tonnes
+platinum,2025-04,75.9,8.411554,-24.1,tonnes
+platinum,2025-05,98.1,10.871851,-0.6,tonnes
+platinum,2025-06,106.6,11.813856,3.0,tonnes
+platinum,2025-07,87.6,9.708197,6.3,tonnes
+platinum,2025-08,101.6,11.259735,-3.0,tonnes
+platinum,2025-09,111.0,12.301483,3.9,tonnes
+platinum,2025-10,106.3,11.780609,3.9,tonnes
+platinum,2025-11,107.1,11.869268,-2.6,tonnes
+platinum,2025-12,96.1,10.650202,-7.4,tonnes
+platinum,2026-01,81.4,9.021087,10.9,tonnes
+platinum,2026-02,78.0,8.644285,51.8,tonnes
+platinum,2026-03,91.0,10.084999,10.2,tonnes
+platinum,2026-04,103.8,11.503549,36.8,tonnes
+platinum,2026-05,94.1,10.428554,-4.1,tonnes
+platinum,2026-06,97.6,10.816439,-8.4,tonnes
+platinum,2026-07,75.9,8.411554,-13.4,tonnes
+platinum,2026-08,78.7,8.721862,-22.5,tonnes

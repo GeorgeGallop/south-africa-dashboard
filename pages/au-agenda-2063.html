@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AU Agenda 2063 • Politics • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .a63-hero {
+      background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 45%, #e3f2fd 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.4rem; font-weight: 800; color: #007A4D; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .a63-section { scroll-margin-top: 1rem; }
+    .a63-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .asp-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 0.95rem 1rem;
+      height: 100%;
+    }
+    .asp-card .n {
+      display: inline-block;
+      background: #002395;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-bottom: 0.4rem;
+    }
+    .asp-card h3 { font-size: 0.98rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .warn-fact {
+      background: #fdeceb;
+      border-left: 4px solid #c62828;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    table.a63-table td, table.a63-table th { vertical-align: middle; font-size: 0.88rem; }
+    .tag {
+      display: inline-block;
+      background: #e8f3ee;
+      border: 1px solid #b7d8c8;
+      color: #145c38;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin: 0.1rem 0.15rem;
+    }
+    .tag.gold { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .tag.red { background: #fdeceb; border-color: #f3bdb9; color: #9c2018; }
+    .tag.blue { background: #eaeefb; border-color: #bcc7ef; color: #002395; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="politics.html" class="btn btn-light btn-sm">🏛️ Politics</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="a63-hero mb-4">
+      <p class="small text-muted mb-1">Politics · AU Agenda 2063</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">🌍 Agenda 2063 — The Africa We Want</h1>
+      <p class="lead mb-3">The African Union’s 50-year blueprint (2013–2063). The first decade closed at about 39% of its targets. The second decade, 2024–2033, is billed as the Decade of Acceleration. Continental performance on the new plan sits around 53% — visible, and not yet at the speed the moonshots need.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#what">What it is</a>
+        <a class="btn btn-sm btn-outline-success" href="#aspirations">7 aspirations</a>
+        <a class="btn btn-sm btn-outline-success" href="#flagships">15 flagships</a>
+        <a class="btn btn-sm btn-outline-success" href="#now">Where it is now</a>
+        <a class="btn btn-sm btn-outline-success" href="#sa">South Africa</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">2015</div>
+          <div class="label">Adopted</div>
+          <div class="sub">Assembly/AU/Dec.565(XXIV)</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">39%</div>
+          <div class="label">First decade</div>
+          <div class="sub">FTYIP evaluation vs 2014–23 targets</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">53%</div>
+          <div class="label">STYIP so far</div>
+          <div class="sub">First biennial, 2024–25</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">7</div>
+          <div class="label">Moonshots</div>
+          <div class="sub">by 2033, Decade of Acceleration</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="a63-section" id="what">
+      <h2>What it is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Agenda 2063 is Africa’s long-term development blueprint. The AU calls it the master plan for turning the continent into “the global powerhouse of the future.” The slogan is <strong>The Africa We Want</strong>. The official vision is <em>an integrated, prosperous and peaceful Africa, driven by its own citizens, representing a dynamic force in the international arena</em>.</p>
+          <p>It is a 50-year horizon, 2013 to 2063, because 2013 was the golden jubilee of the Organisation of African Unity. At that summit African heads of state signed the <strong>50th Anniversary Solemn Declaration</strong> (May 2013) and asked the Commission to write a people-driven 50-year agenda. The former Commission chair, <strong>Nkosazana Dlamini-Zuma</strong> of South Africa, framed the destination in a “letter from the future.” The 24th Assembly in Addis Ababa adopted the Agenda in January 2015 as <strong>Assembly/AU/Dec.565(XXIV)</strong>. The First Ten-Year Implementation Plan was endorsed at the June 2015 summit.</p>
+          <p class="mb-0">It is meant to shift the continental project from the OAU’s decolonisation-and-apartheid struggle onto inclusive growth, integration, democratic governance and peace. It sits on top of older frameworks rather than replacing them: the Lagos Plan of Action, the Abuja Treaty, the Minimum Integration Programme, <strong>PIDA</strong> (infrastructure), <strong>CAADP</strong> (agriculture), <strong>NEPAD</strong> (now AUDA-NEPAD), plus REC and national plans. The UN SDGs (Agenda 2030) run in parallel; AU and UNECA report on both together.</p>
+        </div>
+      </div>
+      <div class="key-fact mb-3">
+        <strong>It is five ten-year plans, not one document.</strong> 2014–2023 was the decade of convergence (getting national plans to talk to the continental one). 2024–2033 is the Decade of Acceleration. Then 2034–43, 2044–53, 2054–63. Each plan has its own targets. Scores from different reports are not the same ruler.
+      </div>
+    </section>
+
+    <section class="a63-section" id="aspirations">
+      <h2>Seven aspirations</h2>
+      <p class="text-muted">These are the political promises. Twenty goals hang under them. The second-decade “moonshots” are the 2033 versions of the same seven.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">1</span>
+            <h3>Prosperity</h3>
+            <p class="small mb-0">Inclusive growth and sustainable development — living standards, skills, health, jobs, agriculture, the blue economy, climate-resilient economies.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">2</span>
+            <h3>Integration</h3>
+            <p class="small mb-0">A politically united continent on Pan-Africanism and African Renaissance — world-class infrastructure, continental financial institutions, the union project.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">3</span>
+            <h3>Governance</h3>
+            <p class="small mb-0">Democracy, human rights, justice and the rule of law — capable institutions and transformed leadership.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">4</span>
+            <h3>Peace</h3>
+            <p class="small mb-0">A peaceful and secure Africa — silencing the guns, a working African Peace and Security Architecture.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">5</span>
+            <h3>Culture</h3>
+            <p class="small mb-0">A strong cultural identity, common heritage, shared values and ethics — cultural renaissance as a development instrument.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">6</span>
+            <h3>People</h3>
+            <p class="small mb-0">Development driven by African people, especially women and youth, and caring for children — gender equality and an engaged generation.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="asp-card">
+            <span class="n">7</span>
+            <h3>Global player</h3>
+            <p class="small mb-0">A strong, united, resilient and influential partner — Africa financing its own development and speaking with a common voice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="a63-section" id="moonshots">
+      <h2>The seven moonshots (2024–2033)</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>The Second Ten-Year Implementation Plan, adopted at the 37th Ordinary Session of the Assembly (17–18 February 2024, Addis Ababa), turns the aspirations into ten-year bets. AUDA-NEPAD’s language is that the first decade was about <strong>convergence</strong>; this one is about <strong>acceleration</strong>, with African citizens as the centre of a theory of change.</p>
+          <div class="table-responsive">
+            <table class="table table-sm a63-table mb-0">
+              <thead class="table-light">
+                <tr><th>Moonshot by 2033</th><th>What it asks for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>1. Every member state at least middle-income</strong></td><td>Headline target: GDP per capita of <strong>US$3,048</strong> in every AU state. Industrialisation, value addition, agricultural productivity, governance. South Africa is already upper-middle income; this moonshot is about the whole membership, not Pretoria.</td></tr>
+                <tr><td><strong>2. Africa more integrated and connected</strong></td><td>Infrastructure, energy security, trade in goods and services, internet, roads, air. AfCFTA, SAATM, high-speed rail, AfSEM sit here.</td></tr>
+                <tr><td><strong>3. Public institutions more responsive</strong></td><td>The governance moonshot — delivery, not declarations.</td></tr>
+                <tr><td><strong>4. Africa resolves conflicts amicably</strong></td><td>The successor to “Silencing the Guns by 2020,” which the continent missed.</td></tr>
+                <tr><td><strong>5. African culture and values explicit and promoted</strong></td><td>Museum, Encyclopaedia Africana, cultural renaissance programmes.</td></tr>
+                <tr><td><strong>6. Citizens more empowered and more productive</strong></td><td>Skills, health, youth, gender, jobs.</td></tr>
+                <tr><td><strong>7. A strong and influential global player</strong></td><td>Common positions, seats in global institutions, Africa financing Africa.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="src-note mt-2 mb-0">Source: AUDA-NEPAD, Agenda 2063 Second Ten-Year Implementation Plan; AU “Launch of Decade of Acceleration.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="a63-section" id="flagships">
+      <h2>Fifteen flagship projects — and where each actually is</h2>
+      <p class="text-muted">These are the named accelerators. Executive Council papers in 2025–26 still flag slow ratification, thin project finance, and thin skills as the three brakes.</p>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-sm a63-table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Flagship</th>
+                  <th>Aim</th>
+                  <th>Where it is now</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><strong>Integrated High-Speed Train Network</strong></td>
+                  <td>Connect capitals and commercial centres.</td>
+                  <td>Vision and scoping study done. Audit of the Union of African Railways launched. Detail engineering unfunded. National rail projects exist; a continental HSR does not. <span class="tag gold">Scoping</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><strong>African Commodities Strategy</strong></td>
+                  <td>Stop exporting raw rocks; add value and local content.</td>
+                  <td>Strategy adopted; country uptake uneven. The same problem this dashboard tracks in chrome, manganese, PGMs and fertiliser. <span class="tag gold">Uneven</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><strong>AfCFTA</strong></td>
+                  <td>A single continental market. Double intra-African trade.</td>
+                  <td>The furthest along. 54 of 55 signed (Eritrea unsigned). Afreximbank’s 2026 African Trade Report: <strong>49 of 54 ratified by July 2025</strong>. Secretariat in Accra is live. Guided Trade Initiative expanded past 39 countries. 49 provisional tariff schedules submitted, 48 adopted — only 17 full schedules covering all categories. Intra-African trade still about <strong>16%</strong> (DIRCO, May 2026). PAPSS is live for local-currency settlement. AfCFTA Digital Trade Corridor JV signed in Accra, 31 August 2026. <span class="tag">Furthest along</span></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><strong>African Passport &amp; free movement</strong></td>
+                  <td>Africans travel, work and live on their own continent.</td>
+                  <td>Protocol adopted 2018. About 32–33 signatures. <strong>Four ratifications</strong> (Rwanda, Niger, Mali, São Tomé and Príncipe). Fifteen needed to enter into force. South Africa has not ratified. <span class="tag red">Stuck</span></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><strong>Silencing the Guns</strong></td>
+                  <td>End wars, coups, genocide, gender-based violence — originally by 2020.</td>
+                  <td>The 2020 deadline was missed and rolled forward. Sahel juntas, Sudan, eastern DRC and a cluster of unconstitutional changes of government are the opposite of the target. Africa Center (Nov 2025): serious setbacks on democratisation and constitutionalism. <span class="tag red">Missed</span></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td><strong>Grand Inga Dam</strong></td>
+                  <td>~43,200 MW on the Congo, feeding the power pools.</td>
+                  <td>Still at technical and environmental-impact work. No generation at Grand Inga scale. Ties to the <a href="africa-continental-master-plan.html">CMP</a>, <a href="power-pools.html">power pools</a> and CMP interconnectors already on this dashboard. <span class="tag gold">Studies</span></td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td><strong>SAATM</strong> — Single African Air Transport Market</td>
+                  <td>One liberalised African sky. Open routes, drop restrictive bilaterals.</td>
+                  <td>Launched 2018. <strong>38 states</strong> signed by mid-2026 (ICAO: &gt;80% of intra-African traffic). Only 26 have detailed implementation memoranda. Intra-African connectivity 14.5% (2022) → about <strong>23%</strong> (late 2025). Intra-African routes 59 (2023) → 124 (March 2026). Lomé Ministerial Declaration, June 2026, to put a clock on it. Africa is still ~2% of world air traffic. <span class="tag gold">Partial</span></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td><strong>African Economic Forum</strong></td>
+                  <td>Annual political–private–civil meeting on transformation.</td>
+                  <td>Convening happens; it is not a binding delivery vehicle. <span class="tag blue">Institutional</span></td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td><strong>African financial institutions</strong></td>
+                  <td>African Investment Bank, Pan-African Stock Exchange, African Monetary Fund, African Central Bank.</td>
+                  <td>Treaties exist; operationalisation is incomplete. Resource mobilisation is still the soft underbelly of the whole Agenda. <span class="tag gold">Incomplete</span></td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td><strong>Pan-African e-Network</strong></td>
+                  <td>Broadband, e-services, an African e-society.</td>
+                  <td>Digital policy and cybersecurity work has moved; a single continental network has not. <span class="tag gold">Partial</span></td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td><strong>Africa Outer Space Strategy</strong></td>
+                  <td>Satellites for agriculture, disaster, climate, finance, security.</td>
+                  <td>Strategy in place; national space agencies (including SANSA) are the real capacity. <span class="tag gold">Strategy</span></td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td><strong>African Virtual and e-University</strong></td>
+                  <td>Open, distance and e-learning at continental scale.</td>
+                  <td>Named as a STYIP high-impact project; not a finished university. <span class="tag gold">Early</span></td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td><strong>Cyber security</strong></td>
+                  <td>AU Convention on Cyber Security and Personal Data Protection.</td>
+                  <td>Legal instrument exists; ratification and capacity lag. <span class="tag gold">Legal</span></td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td><strong>Great African Museum</strong></td>
+                  <td>A focal centre for African cultural heritage (Algiers is the designated site).</td>
+                  <td>Political commitment; construction and collections are the long game. <span class="tag gold">Slow</span></td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td><strong>Encyclopaedia Africana</strong></td>
+                  <td>An African-authored record of African life and history.</td>
+                  <td>Editorial project underway; not a finished encyclopaedia. <span class="tag gold">In progress</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p class="src-note">Flagship list: AU, <a href="https://au.int/en/agenda2063/flagship-projects" target="_blank" rel="noopener">Flagship Projects of Agenda 2063</a>. Status drawn from AUDA-NEPAD STYIP pages, Africa Center (Nov 2025), Afreximbank African Trade Report 2026, AFCAC/ICAO 2025–26, DIRCO budget vote May 2026.</p>
+    </section>
+
+    <section class="a63-section" id="now">
+      <h2>Where it is now</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="fw-bold text-sa-green">Scoreboard — three different rulers</h5>
+          <p>Do not mash these into one number. Each report measures a different year and a different target set.</p>
+          <ul>
+            <li><strong>First continental report</strong> (FTYIP vs 2019 targets, 31 of 55 states): about <strong>32%</strong>.</li>
+            <li><strong>Second continental report</strong> (vs 2021 targets, 38 of 55 states): about <strong>51%</strong>. East Africa 53%, Southern Africa 50%, West 45%, Central 42%, North 39%. Aspiration 2 (integration) and Aspiration 4 (peace, then) were the stronger scores on that cut.</li>
+            <li><strong>FTYIP evaluation</strong> presented to the 37th Assembly (2024): overall <strong>39%</strong> against the decade’s own targets. Aspiration 2 at 90%, Aspiration 4 at 73%, Aspiration 3 (governance) at 17%. Ghana’s NDPC later cited that 39% as the first-decade success rate. The evaluation rated the plan <em>very relevant</em>, <em>weak on efficiency</em>, <em>moderately effective</em>, <em>weak on sustainability</em>.</li>
+            <li><strong>First biennial on the STYIP (2024–2025)</strong>: AU Commission Chairperson <strong>Mahmoud Ali Youssouf</strong> told the Ministerial Follow-up Committee (June 2026) that continental performance stands at <strong>53%</strong>. Progress is visible. It is not at the speed or scale the moonshots need. Governance reforms and citizen empowerment are the brighter patches; several moonshots are uneven.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold text-sa-green">What the Assembly is saying in 2026</h5>
+              <p>The February 2026 Assembly decision on the Champion’s 5th continental report (2024–25) is blunt: measurable progress, <strong>insufficient pace and depth</strong> to hit 2033, especially on structural transformation, human capital, productive employment, peace and security, and domestic resource mobilisation.</p>
+              <p class="mb-0">Member states are told to fold the STYIP into national development plans, medium-term expenditure frameworks and sector strategies — not leave it as a DIRCO speech. The biennial performance report is now a standing accountability product.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold text-sa-green">Three brakes the Chairperson named</h5>
+              <ol class="mb-0">
+                <li><strong>Regional integration</strong> — push AfCFTA, air liberalisation, energy-market integration and digital, and close the protocol-implementation gap.</li>
+                <li><strong>Peace and security</strong> — without it there is no investment and no trade.</li>
+                <li><strong>Financing</strong> — domestic resource mobilisation, tax, public-financial management, illicit financial flows, innovative instruments.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warn-fact mb-3">
+        <strong>The Union is running the plan on a thin machine.</strong> At the 52nd PRC in Addis Ababa (3 June 2026) the Commission said it is operating at about <strong>30% of required staffing</strong> and about <strong>25% of its global budget</strong>, including programmes funded from statutory contributions. Executive Council papers also note a special fund of US$5 million to implement STYIP tools (M&amp;E, indicator handbook, communication, domestication guidelines, domestic-resource-mobilisation strategy). That is not the financing of Grand Inga or a high-speed rail. It is the financing of the spreadsheet.
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="fw-bold text-sa-green">Who owns delivery</h5>
+          <ul class="mb-0">
+            <li><strong>AU Commission</strong> — political coordination. Chairperson Mahmoud Ali Youssouf.</li>
+            <li><strong>AUDA-NEPAD</strong> — the development agency that implements. NEPAD was founded in 2001 by Algeria, Egypt, Nigeria, Senegal and South Africa; the five founders met again in El Alamein on 3 October 2026 for the 25-year stocktake (Al-Alamein Declaration).</li>
+            <li><strong>Champion of Agenda 2063</strong> — President Alassane Ouattara of Côte d’Ivoire. Mandate: political leadership, domestication, M&amp;E, resource mobilisation.</li>
+            <li><strong>Ministerial Follow-up Committee</strong> — last public session in this record, mid-2026, on the first STYIP biennial. South Africa chairs the AU ministerial committee on Agenda 2063 (DIRCO, May 2026).</li>
+            <li><strong>RECs</strong> — SADC, ECOWAS, EAC, ECCAS, AMU, COMESA, IGAD and the others are the regional pipes. National development plans are the last mile.</li>
+            <li><strong>Public dashboard</strong> — AUDA-NEPAD country platforms and the Agenda 2063 progress dashboard.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="a63-section" id="sa">
+      <h2>South Africa’s place in it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Pretoria is inside the architecture, not a spectator. Dlamini-Zuma chaired the Commission when the Agenda was written. South Africa is a NEPAD founder and still sits on AUDA-NEPAD’s political story. DIRCO’s May 2026 budget vote said South Africa <strong>chairs the AU ministerial committee on Agenda 2063</strong> and has been nominated to the AfCFTA committee, while noting intra-African trade at 16% and SADC chairship from August 2026.</p>
+          <p>AUDA-NEPAD’s country page treats the <strong>National Development Plan 2030</strong> as South Africa’s domestication vehicle. That is the honest mapping: Agenda 2063 is continental language; the NDP is the domestic plan it is supposed to be folded into. Alignment is a claim governments make in biennial reports. Delivery is electricity, rail, ports, visas and industrial policy — the same constraints this dashboard already tracks.</p>
+          <h6 class="fw-bold mt-3">Where SA is on the flagships that bite</h6>
+          <ul>
+            <li><strong>AfCFTA</strong> — signed and ratified. The Guided Trade Initiative and tariff schedules are the live work. DTIC owns the commercial end; see <a href="bilateral-trading.html">Bilateral Trading</a> and <a href="dtic.html">DTIC</a>.</li>
+            <li><strong>Free movement / African Passport</strong> — South Africa has <strong>not ratified</strong> the AU Protocol. Large labour-market and undocumented-migration politics sit behind that. Pretoria has separately been pressing SADC members to ratify the <em>SADC</em> free-movement protocol (10 signatures, 7 ratifications, 11 needed as of August 2026). Those are two different instruments.</li>
+            <li><strong>SAATM</strong> — South Africa is a large aviation market; the continental gap is still bilateral restrictions and thin intra-African connectivity.</li>
+            <li><strong>Grand Inga and the power pools</strong> — SA’s interest is SAPP, the CMP interconnectors, and whether Inga ever becomes firm energy rather than a slide. See <a href="africa-continental-master-plan.html">Africa Continental Master Plan</a>, <a href="power-pools.html">Power Pools</a> and <a href="sapp.html">SAPP</a>.</li>
+            <li><strong>Commodities / value addition</strong> — the same fight as ferrochrome, manganese, PGMs and fertiliser on this dashboard.</li>
+          </ul>
+          <p class="mb-0">The tension that will not go away: South Africa wants to lead a more integrated Africa while running a tight immigration policy. AfCFTA without movement of people is a goods agreement with a services and skills hole in it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="a63-section" id="outlook">
+      <h2>What “on track” would actually look like by 2033</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>AUDA-NEPAD and the Africa Center’s 2025 stocktake are aligned on the next milestones: operational pieces of the high-speed rail, wider energy access, a real lift in intra-African trade, and visa-free travel that is widespread rather than a protocol in a drawer. AfCFTA, the African Passport, SAATM and the African Single Electricity Market (AfSEM) are the named STYIP priorities.</p>
+          <p class="mb-0">The ISS African Futures work is the caution: even a combined “Agenda 2063 scenario” only closes a slice of the gap by the third ten-year plan (2043) unless trade integration, governance, agriculture, manufacturing and infrastructure move together. The first decade proved the Agenda is politically relevant. The second decade is the test of whether ministries budget for it.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>African Union, <a href="https://au.int/en/agenda2063/overview" target="_blank" rel="noopener">Agenda 2063: The Africa We Want — Overview</a>; <a href="https://au.int/en/agenda2063/flagship-projects" target="_blank" rel="noopener">Flagship Projects</a>; Assembly/AU/Dec.565(XXIV), January 2015.</li>
+          <li>AUDA-NEPAD, <a href="https://www.nepad.org/agenda2063-report/agenda-2063-second-ten-year-implementation-plan" target="_blank" rel="noopener">Second Ten-Year Implementation Plan</a>; First and Second Continental Reports on implementation; country page for South Africa (NDP 2030 as domestication).</li>
+          <li>Assembly/AU/3(XXXVII) and FTYIP Evaluation Report (April 2024) — overall 39%; Aspiration 2 at 90%, Aspiration 3 at 17%, Aspiration 4 at 73%.</li>
+          <li>Decision on the Report of the Champion on Agenda 2063, Assembly/AU/16(XXXIX), 18 February 2026; AU Chairperson remarks to the Ministerial Follow-up Committee, June 2026 (53% STYIP biennial).</li>
+          <li>Africa Center for Strategic Studies, “Assessing Progress on Africa’s Agenda 2063,” 24 November 2025.</li>
+          <li>Afreximbank, African Trade Report 2026 (49/54 AfCFTA ratifications by July 2025); DIRCO budget vote, May 2026 (SA chairs the ministerial committee; intra-African trade 16%).</li>
+          <li>AFCAC / ICAO / AeroTime 2026 on SAATM (38 states; connectivity 23%; Lomé Declaration June 2026).</li>
+          <li>Ghana NDPC, first STYIP biennial validation, September 2026 (first-decade 39% cited; moonshot framing 2024–33).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="politics.html" class="btn btn-outline-secondary">🏛️ Politics</a>
+      <a href="bilateral-trading.html" class="btn btn-outline-secondary">🤝 Bilateral Trading</a>
+      <a href="africa-continental-master-plan.html" class="btn btn-outline-secondary">🌍 CMP</a>
+      <a href="power-pools.html" class="btn btn-outline-secondary">⚡ Power Pools</a>
+      <a href="dtic.html" class="btn btn-outline-secondary">DTIC</a>
+    </div>
+  </div>
+</body>
+</html>

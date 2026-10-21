@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Renewable Energy Development Zones • Power</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <p class="text-muted small mb-2"><a href="power.html">Power</a> · Renewable Energy Development Zones</p>
+    <h1 class="display-4 fw-bold text-sa-green">Renewable Energy Development Zones</h1>
+    <h5 class="text-muted">Eight gazetted zones, three proposed additions, and the plan for getting wind and solar built faster</h5>
+
+    <div class="d-flex flex-wrap gap-2 my-3">
+      <a href="power.html" class="btn btn-sm btn-outline-success">Power Overview</a>
+      <a href="transmission-system-basics.html" class="btn btn-sm btn-outline-success">Transmission Basics</a>
+      <a href="corporate-renewable-energy.html" class="btn btn-sm btn-outline-success">Corporate Renewables</a>
+      <a href="distributed-generation.html" class="btn btn-sm btn-outline-success">Distributed Generation</a>
+      <a href="jet.html" class="btn btn-sm btn-outline-success">Just Energy Transition</a>
+      <a href="renewable-energy-development-zones.html" class="btn btn-sm btn-success">REDZs</a>
+    </div>
+
+    <!-- Map -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">The zones on one map</h2>
+        <p class="mb-3">Phase 1 REDZs (orange) and the Phase 2 proposed zones (green), overlaid on the electricity grid infrastructure corridors where transmission investment is planned. The corridors are the other half of the story: a zone without a power line is a zone nobody builds in.</p>
+        <div class="text-center">
+          <img src="https://www.csir.co.za/sites/default/files/REDZ%20Map.jpg"
+               alt="Map of South Africa showing Phase 1 Renewable Energy Development Zones REDZ1 to REDZ8, the Phase 2 proposed zones at Emalahleni, Klerksdorp and east of Beaufort West, and the electricity grid infrastructure corridors"
+               class="img-fluid border rounded"
+               style="max-height: 640px;">
+        </div>
+        <p class="small text-muted mt-3 mb-0">Map: CSIR / Department of Environment, Forestry and Fisheries, Phase 2 Strategic Environmental Assessment for wind and solar PV (2019). Corridors shown are from the Electricity Grid Infrastructure SEA, gazetted as powerline corridors in February 2018.</p>
+      </div>
+    </div>
+
+    <!-- What is a REDZ -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="fw-bold text-sa-green">1. What a REDZ actually is</h3>
+        <p>A Renewable Energy Development Zone is a <strong>geographically defined area that government has already assessed</strong> for large-scale wind and solar photovoltaic development, and then formally designated so that projects inside it get a faster, cheaper and lower-conflict path to an environmental authorisation.</p>
+        <p>It is not a subsidy, a procurement round or a guarantee of grid access. It is a <strong>land-use and environmental planning instrument</strong>: the state has done the strategic environmental work up front, at a regional scale, so that individual developers do not each have to re-litigate the same questions about birds, bats, heritage sites, wetlands, archaeology and visual impact.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light">
+              <div class="card-body">
+                <h5 class="h6 text-sa-green">Strategic, not project-level</h5>
+                <p class="small mb-0">The zone is assessed through a Strategic Environmental Assessment covering a whole region — the cumulative picture, not one farm's application.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light">
+              <div class="card-body">
+                <h5 class="h6 text-sa-green">Designated by the Minister</h5>
+                <p class="small mb-0">The zones are formally designated by the Minister of Environmental Affairs (now Forestry, Fisheries and the Environment) and published in the Government Gazette.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light">
+              <div class="card-body">
+                <h5 class="h6 text-sa-green">Not exclusive</h5>
+                <p class="small mb-0">Renewable projects can still be built outside a REDZ — they simply go through the full project-by-project assessment route.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">2. The problem the zones are meant to solve</h3>
+        <p>South Africa's renewable procurement was never short of bids. It was short of <strong>speed</strong>. A conventional wind or solar environmental impact assessment is a long, expensive, contested process — twelve to eighteen months, specialist studies, public participation, appeals — and developers routinely discovered late that a site had a fatal flaw: a vulture colony, a heritage site, a landowner dispute, or no grid capacity within 100 km.</p>
+        <div class="table-responsive mt-3">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 32%;">Friction</th>
+                <th>What the REDZ approach does about it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Repeated site-level environmental work</strong></td>
+                <td>Region-wide assessment of sensitive features is done once, up front, and published. Developers inherit that knowledge instead of paying for it again.</td>
+              </tr>
+              <tr>
+                <td><strong>Long, unpredictable authorisation timelines</strong></td>
+                <td>Projects inside a REDZ follow a standardised, generic environmental management programme rather than a bespoke full assessment, cutting the route to authorisation substantially.</td>
+              </tr>
+              <tr>
+                <td><strong>Grid uncertainty</strong></td>
+                <td>Zones are deliberately placed on the electricity grid corridors identified in the 2016 Grid Infrastructure SEA, so the state and Eskom know where to prioritise transmission investment.</td>
+              </tr>
+              <tr>
+                <td><strong>Land-use conflict with agriculture and tourism</strong></td>
+                <td>Zones steer development toward low-conflict land — including degraded and previously mined land, which is the whole logic of the Emalahleni and Klerksdorp proposals.</td>
+              </tr>
+              <tr>
+                <td><strong>Coal-belt decline</strong></td>
+                <td>Phase 2 explicitly targets areas around power stations due for decommissioning (about 12 GW of coal capacity by 2030), so renewables and mine rehabilitation can absorb the economic shock.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">3. How the zones were chosen</h3>
+        <p>The CSIR, which ran the assessments for the Department of Environment, Forestry and Fisheries, used a two-stage spatial method followed by an industry reality check:</p>
+        <ol>
+          <li><strong>Positive mapping — "pull factors".</strong> Where is the resource? Wind speed and solar irradiation, terrain, access to the power corridors and substations, proximity to demand, existing roads and infrastructure.</li>
+          <li><strong>Negative mapping — "push factors".</strong> What must be avoided? Protected areas, critical biodiversity areas, bird and bat sensitivity, wetlands and watercourses, heritage and archaeological sites, visually sensitive landscapes, high-value agricultural land.</li>
+          <li><strong>Industry prioritisation.</strong> The remaining candidate areas were tested against where the renewable energy sector itself said it wanted to build, so the zones reflect commercial reality rather than a purely theoretical map.</li>
+        </ol>
+        <p>The result is a set of zones that are, in effect, a <strong>pre-negotiated compromise</strong> between resource quality, grid access and ecological sensitivity — and a parallel set of transmission corridors that tell Eskom where the next 20 years of grid investment should go.</p>
+      </div>
+    </div>
+  </div>
+<!-- Implementation -->
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="fw-bold text-sa-green">4. The implementation plan</h3>
+        <p>The REDZ programme runs on three legs: environmental authorisation, infrastructure coordination, and procurement. A zone only converts into steel and panels if all three move together.</p>
+
+        <h4 class="h5 mt-4">Leg 1 — Environmental authorisation</h4>
+        <ul>
+          <li><strong>Strategic Environmental Assessment first.</strong> The 2015 Phase 1 SEA assessed the whole country for wind and solar sensitivity and identified eight zones. The Phase 2 SEA, presented in September 2019, added three more.</li>
+          <li><strong>Gazetting.</strong> The Minister of Environmental Affairs designated the Phase 1 zones in the <strong>Government Gazette in February 2018</strong>, giving them formal legal effect.</li>
+          <li><strong>Generic assessment, not bespoke.</strong> Inside a zone, projects are assessed against a standardised generic environmental management programme (EMPr) with a common set of mitigation measures, rather than each commissioning its own full suite of specialist studies from scratch.</li>
+          <li><strong>A national screening tool.</strong> The department built a web-based environmental screening tool so a developer can test a site against the same national datasets the state uses — biodiversity, heritage, hydrology, agriculture — before spending money.</li>
+          <li><strong>Site-level work still happens.</strong> The zone removes the strategic questions, not the local ones. A project still needs its own site assessment, its own EMPr commitments, and its own compliance monitoring.</li>
+        </ul>
+
+        <h4 class="h5 mt-4">Leg 2 — Grid and infrastructure coordination</h4>
+        <ul>
+          <li><strong>Zones are aligned to corridors.</strong> The REDZs were deliberately drawn over the electricity grid corridors identified in the 2016 Grid Infrastructure SEA and gazetted in February 2018. The combined map is effectively a national instruction to Eskom and the transmission planner about where to reinforce the grid.</li>
+          <li><strong>Strategic infrastructure status.</strong> The zones sit within the government's strategic infrastructure programme, which brings coordination under the Infrastructure Development Act — including time-bound decision-making by the state departments whose approvals a project needs.</li>
+          <li><strong>Use what is already there.</strong> Several zones were chosen specifically because roads, substations and servitudes from mining or existing power stations can be reused, which lowers both cost and the environmental footprint of new development.</li>
+        </ul>
+
+        <h4 class="h5 mt-4">Leg 3 — Procurement and offtake</h4>
+        <ul>
+          <li><strong>REIPPPP bid windows.</strong> Most utility-scale wind and solar in South Africa is procured through the Renewable Energy Independent Power Producer Procurement Programme. Sitting in a REDZ does not pre-qualify a bid, but it materially de-risks the environmental and grid schedule, which is scored and, more importantly, determines whether a project can actually reach financial close.</li>
+          <li><strong>Private offtake.</strong> Corporate power purchase agreements, wheeling and the private trading market increasingly bypass the state procurement programme entirely — and those projects also benefit from REDZ designation.</li>
+          <li><strong>Coal-belt repurposing.</strong> In the Phase 2 zones, the state's intention is that new solar on degraded mine land can plug into the existing grid at retiring coal stations, absorb retrenched labour, and satisfy mine rehabilitation obligations at the same time.</li>
+        </ul>
+
+        <div class="alert alert-success mt-4 mb-0">
+          <strong>The plain-language version:</strong> the state did the regional homework once, published the map, aligned it to the grid plan, and then told developers that if they build inside the shaded areas they will get through the environmental process faster and with fewer nasty surprises. Everything else — price, grid connection, land, offtake — still has to be won project by project.
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">5. Timeline</h3>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 22%;">When</th>
+                <th>What happened</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>2015</strong></td>
+                <td>Phase 1 Strategic Environmental Assessment for wind and solar PV completed; eight zones identified.</td>
+              </tr>
+              <tr>
+                <td><strong>2016</strong></td>
+                <td>Electricity Grid Infrastructure SEA completed, identifying the transmission corridors that the zones would later be aligned to.</td>
+              </tr>
+              <tr>
+                <td><strong>February 2018</strong></td>
+                <td>The eight Phase 1 REDZs, and the powerline corridors, are gazetted by the Minister of Environmental Affairs.</td>
+              </tr>
+              <tr>
+                <td><strong>17 October 2019</strong></td>
+                <td>IRP 2019 gazetted, setting the requirement for at least 14.4 GW of additional wind and 6.0 GW of solar PV by 2030 — the demand case the zones serve.</td>
+              </tr>
+              <tr>
+                <td><strong>26 September 2019</strong></td>
+                <td>Phase 2 SEA outcomes presented to stakeholders at the CSIR, proposing three additional zones: Emalahleni and Klerksdorp for solar PV, and an area east of Beaufort West for wind.</td>
+              </tr>
+              <tr>
+                <td><strong>2020 onwards</strong></td>
+                <td>REIPPPP bid windows and the private wheeling market place the bulk of new wind and solar capacity, much of it inside the Phase 1 zones.</td>
+              </tr>
+              <tr>
+                <td><strong>Ongoing</strong></td>
+                <td>Gazetting of the Phase 2 zones, grid reinforcement along the designated corridors, and the shift of new capacity toward coal-belt solar as stations retire.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted">Dates for Phase 1 gazetting, IRP 2019 and the Phase 2 stakeholder presentation are from CSIR and departmental publications. Later gazetting and grid milestones should be checked against the current Government Gazette.</p>
+      </div>
+    </div>
+  </div>
+<!-- Where the zones are -->
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="fw-bold text-sa-green">6. Where the zones are — and what each one is best for</h3>
+        <p>The eight Phase 1 zones fall into two families: the <strong>wind zones</strong> along the Cape and Eastern Cape escarpment, and the <strong>solar zones</strong> across the dry Northern Cape, North West and Free State margins. The Phase 2 proposals deliberately break that pattern by putting solar where the coal and the grid already are.</p>
+
+        <h4 class="h5 mt-4">Phase 1 — the eight gazetted zones (February 2018)</h4>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 9%;">Zone</th>
+                <th style="width: 15%;">Name</th>
+                <th style="width: 15%;">Province</th>
+                <th style="width: 19%;">Roughly where</th>
+                <th style="width: 14%;">Best for</th>
+                <th>Why the zone exists</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>REDZ 1</strong></td>
+                <td><strong>Overberg</strong></td>
+                <td>Western Cape</td>
+                <td>Inland Overberg — Caledon, Bredasdorp, Swellendam</td>
+                <td><span class="badge bg-success">Wind</span></td>
+                <td>Strong coastal and mountain wind close to Cape Town demand and the Western Cape grid. Constrained by wheat and canola farming, Blue Crane habitat and a tourism-sensitive landscape.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 2</strong></td>
+                <td><strong>Komsberg</strong></td>
+                <td>Western / Northern Cape</td>
+                <td>Karoo escarpment near Sutherland, Laingsburg and Matjiesfontein</td>
+                <td><span class="badge bg-success">Wind</span> <span class="badge bg-warning text-dark">Solar</span></td>
+                <td>One of the best combined wind-and-sun areas in the country, with very low population density. The catch is distance to load centres — this zone only works if the corridor transmission is built.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 3</strong></td>
+                <td><strong>Cookhouse</strong></td>
+                <td>Eastern Cape</td>
+                <td>Bedford, Cookhouse and Somerset East district</td>
+                <td><span class="badge bg-success">Wind</span></td>
+                <td>Arguably the strongest wind resource in South Africa and the zone with the most operating capacity. Already host to a cluster of REIPPPP wind farms feeding the Eastern Cape corridor.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 4</strong></td>
+                <td><strong>Stormberg</strong></td>
+                <td>Eastern Cape</td>
+                <td>Stormberg highlands — Queenstown, Dordrecht, Molteno</td>
+                <td><span class="badge bg-success">Wind</span></td>
+                <td>High-altitude, high-wind terrain along the escarpment. Shares the Eastern Cape grid with Cookhouse and has supported several large wind projects.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 5</strong></td>
+                <td><strong>Kimberley</strong></td>
+                <td>Northern Cape</td>
+                <td>Around Kimberley and Barkly West</td>
+                <td><span class="badge bg-warning text-dark">Solar PV</span></td>
+                <td>High irradiation, flat and low-conflict land, and an existing transmission network built for the diamond mines. One of the easier solar zones to connect.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 6</strong></td>
+                <td><strong>Vryburg</strong></td>
+                <td>North West</td>
+                <td>Vryburg and the surrounding dry western bushveld</td>
+                <td><span class="badge bg-warning text-dark">Solar PV</span></td>
+                <td>Good sun on agricultural land with relatively low ecological sensitivity, positioned between the Northern Cape solar belt and the Gauteng market.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 7</strong></td>
+                <td><strong>Upington</strong></td>
+                <td>Northern Cape</td>
+                <td>Upington, Keimoes and the Orange River valley</td>
+                <td><span class="badge bg-warning text-dark">Solar PV</span> <span class="badge bg-info text-dark">CSP</span></td>
+                <td>The best direct solar resource in the country, with Orange River water for plant use and existing concentrated solar power plants nearby. The natural home for both PV and thermal solar.</td>
+              </tr>
+              <tr>
+                <td><strong>REDZ 8</strong></td>
+                <td><strong>Springbok</strong></td>
+                <td>Northern Cape</td>
+                <td>Namaqualand — Springbok, Nababeep, Aggeneys</td>
+                <td><span class="badge bg-warning text-dark">Solar</span> <span class="badge bg-success">Wind</span></td>
+                <td>Excellent sun and a strong wind resource in the same area, with mining infrastructure and grid to reuse. Succulent Karoo sensitivity means careful siting.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="h5 mt-4">Phase 2 — the proposed additions (SEA presented September 2019)</h4>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 16%;">Area</th>
+                <th style="width: 14%;">Province</th>
+                <th style="width: 13%;">Best for</th>
+                <th>What it is for</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Emalahleni</strong><br><span class="small text-muted">REDZ 9 on departmental maps</span></td>
+                <td>Mpumalanga</td>
+                <td><span class="badge bg-warning text-dark">Solar PV</span></td>
+                <td>The centre of the coal belt, next to Gauteng's demand and inside the existing transmission network. The plan is large-scale solar on degraded and rehabilitated mine land, using coal-station grid connections as stations retire — combining rehabilitation, jobs and generation in one place.</td>
+              </tr>
+              <tr>
+                <td><strong>Klerksdorp</strong><br><span class="small text-muted">REDZ 10 on departmental maps</span></td>
+                <td>North West</td>
+                <td><span class="badge bg-warning text-dark">Solar PV</span></td>
+                <td>Old gold and uranium mining land with existing grid and roads. The same logic as Emalahleni: put solar where mining has declined, where the land is already disturbed, and where the connection capacity exists.</td>
+              </tr>
+              <tr>
+                <td><strong>East of Beaufort West</strong><br><span class="small text-muted">shown as REDZ 11 on departmental maps</span></td>
+                <td>Western Cape</td>
+                <td><span class="badge bg-success">Wind</span></td>
+                <td>The only wind zone in the Phase 2 package. It sits in the Karoo between the Cape corridors and the Komsberg zone, adding wind capacity closer to the Western Cape grid.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted">Suitability labels are indicative: they reflect the resource mapping in the two SEAs and where projects have actually been built, not a formal ranking by government. A zone can host more than one technology.</p>
+
+        <h4 class="h5 mt-4">At a glance: which technology fits where</h4>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered text-center align-middle">
+            <thead>
+              <tr class="table-dark">
+                <th class="text-start">Zone</th>
+                <th>Wind</th>
+                <th>Solar PV</th>
+                <th>CSP / thermal</th>
+                <th>Hybrid wind + solar</th>
+                <th class="text-start">Grid position</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-start"><strong>Overberg</strong></td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Limited</td>
+                <td class="table-secondary">No</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Western Cape, close to Cape Town load</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Komsberg</strong></td>
+                <td class="table-success">Strong</td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Possible</td>
+                <td class="table-success">Strong</td>
+                <td class="text-start">Karoo; depends on corridor build</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Cookhouse</strong></td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Limited</td>
+                <td class="table-secondary">No</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Eastern Cape corridor, established</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Stormberg</strong></td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Limited</td>
+                <td class="table-secondary">No</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Eastern Cape interior</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Kimberley</strong></td>
+                <td class="table-warning">Possible</td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Possible</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Existing mining grid</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Vryburg</strong></td>
+                <td class="table-warning">Possible</td>
+                <td class="table-success">Strong</td>
+                <td class="table-secondary">No</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">North West, toward Gauteng</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Upington</strong></td>
+                <td class="table-warning">Possible</td>
+                <td class="table-success">Strong</td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Northern Cape; long corridor to load</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Springbok</strong></td>
+                <td class="table-success">Strong</td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Possible</td>
+                <td class="table-success">Strong</td>
+                <td class="text-start">Far north-west; corridor-dependent</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Emalahleni</strong> <span class="small text-muted">(Phase 2)</span></td>
+                <td class="table-secondary">No</td>
+                <td class="table-success">Strong</td>
+                <td class="table-secondary">No</td>
+                <td class="table-secondary">No</td>
+                <td class="text-start">Best-connected zone in the package — Gauteng load on the doorstep</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>Klerksdorp</strong> <span class="small text-muted">(Phase 2)</span></td>
+                <td class="table-secondary">No</td>
+                <td class="table-success">Strong</td>
+                <td class="table-secondary">No</td>
+                <td class="table-secondary">No</td>
+                <td class="text-start">Existing mining grid, near Gauteng</td>
+              </tr>
+              <tr>
+                <td class="text-start"><strong>E. of Beaufort West</strong> <span class="small text-muted">(Phase 2)</span></td>
+                <td class="table-success">Strong</td>
+                <td class="table-warning">Possible</td>
+                <td class="table-secondary">No</td>
+                <td class="table-warning">Possible</td>
+                <td class="text-start">Karoo corridor, closer to the Cape</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">7. The grid corridors the zones hang on</h3>
+        <p>The Electricity Grid Infrastructure SEA (2016) identified five strategic transmission corridors, gazetted alongside the zones in February 2018. They are the map's other layer, and they explain why the zones sit where they do:</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 22%;">Corridor</th>
+                <th>What it links and why it matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Western</strong></td>
+                <td>Runs from the Cape metropole north through the Western Cape and Namaqualand toward the Northern Cape solar and wind areas. It is the spine that the Overberg, Komsberg and Springbok zones depend on.</td>
+              </tr>
+              <tr>
+                <td><strong>Northern</strong></td>
+                <td>Carries the Northern Cape's solar generation, including Upington and Kimberley, toward the Highveld load centres. Long, expensive and the single biggest determinant of how much Northern Cape capacity can actually connect.</td>
+              </tr>
+              <tr>
+                <td><strong>Eastern</strong></td>
+                <td>Links the Eastern Cape wind zones — Cookhouse and Stormberg — to the national grid and to Gauteng. The most mature renewable corridor in the country.</td>
+              </tr>
+              <tr>
+                <td><strong>Central</strong></td>
+                <td>Connects the Free State, North West and the Karoo interior, covering Vryburg, Klerksdorp and the Komsberg–Beaufort West area, and tying them into the Highveld.</td>
+              </tr>
+              <tr>
+                <td><strong>International</strong></td>
+                <td>The cross-border links toward Zimbabwe, Zambia, Botswana and Mozambique — the infrastructure that a future regional power pool and expanded Southern African trading would run on.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The pairing is the point: <strong>a REDZ tells you where the resource and the environmental permission are; a corridor tells you whether you can get the power out.</strong> Government's stated intention is that publishing both together gives Eskom a defensible, pre-consulted basis for choosing which lines to build first — instead of the old sequence, where generation was procured and the grid was then discovered to be full.</p>
+      </div>
+    </div>
+  </div>
+<!-- What it has delivered -->
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="fw-bold text-sa-green">8. What the zones have actually delivered</h3>
+        <p>The honest scorecard is <strong>a planning success and a delivery disappointment</strong> — and the second half is not the zones' fault.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 bg-light">
+              <div class="card-body">
+                <h5 class="h6 text-success">What worked</h5>
+                <ul class="small mb-0">
+                  <li>South Africa's wind and solar build is heavily concentrated in the REDZs — the Eastern Cape wind zones and the Northern Cape solar belt are where the industry actually went.</li>
+                  <li>The environmental battles moved upstream. The arguments about avifauna, heritage and visual impact were largely settled at the regional level instead of being re-fought per project.</li>
+                  <li>The grid conversation changed. Publishing corridors alongside zones forced the transmission plan and the generation plan onto the same map.</li>
+                  <li>The model was extended deliberately into the coal belt, framing renewables as a rehabilitation and just-transition tool rather than only a climate measure.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 bg-light">
+              <div class="card-body">
+                <h5 class="h6 text-danger">What did not</h5>
+                <ul class="small mb-0">
+                  <li><strong>Grid capacity became the binding constraint.</strong> Zones with excellent resource in the Northern and Western Cape ran into exhausted connection capacity and long reinforcement timelines. Permission to build is not the same as permission to connect.</li>
+                  <li>Authorisation speed-ups helped, but procurement rounds, grid connection agreements and wheeling rules became the new bottlenecks.</li>
+                  <li>Several zones — especially Komsberg and Springbok — remain far from load and depend entirely on corridor investment that has lagged.</li>
+                  <li>The coal-belt zones are the answer to that problem precisely because the grid is already there, which is a strange kind of indictment of the original geography.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">9. What the zones do not do — the limits</h3>
+        <ul>
+          <li><strong>They do not create grid capacity.</strong> A REDZ designation is not a connection right. If the local substation is full, the project waits, no matter how green the zone.</li>
+          <li><strong>They do not replace site-level assessment.</strong> Inside the zone, the specific site still gets assessed. A zone can contain a wetland, a grave site or a nesting colony.</li>
+          <li><strong>They do not settle land.</strong> Land tenure, community consent and the price of the lease remain project-level negotiations, and in communal areas they are often the slowest part of the deal.</li>
+          <li><strong>They do not override other law.</strong> Water use licences, municipal planning approvals, aviation and defence objections, and heritage permits all still apply.</li>
+          <li><strong>They are not exclusive.</strong> Plenty of capacity has been built outside the zones; the zones lower friction, they do not confer exclusivity.</li>
+          <li><strong>They can concentrate risk.</strong> Pushing development into a handful of areas intensifies cumulative impacts — road traffic, visual intrusion, avifauna mortality — which is exactly what the strategic assessment was supposed to manage.</li>
+          <li><strong>Coal-belt solar is not automatically clean.</strong> Building on mine land raises its own questions about ground stability, acid mine drainage, dust and the ownership of rehabilitation liabilities.</li>
+        </ul>
+
+        <h3 class="fw-bold text-sa-green mt-5">10. The numbers that define the programme</h3>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th>Metric</th>
+                <th>Value</th>
+                <th>Context</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Phase 1 zones gazetted</td>
+                <td><strong>8</strong></td>
+                <td>REDZ 1–8, gazetted February 2018</td>
+              </tr>
+              <tr>
+                <td>Phase 2 zones proposed</td>
+                <td><strong>3</strong></td>
+                <td>Emalahleni and Klerksdorp (solar PV), east of Beaufort West (wind)</td>
+              </tr>
+              <tr>
+                <td>Wind capacity required by IRP 2019</td>
+                <td><strong>14.4 GW by 2030</strong></td>
+                <td>Additional, on top of existing capacity</td>
+              </tr>
+              <tr>
+                <td>Solar PV capacity required by IRP 2019</td>
+                <td><strong>6.0 GW by 2030</strong></td>
+                <td>Additional; the demand case the zones were designed to serve</td>
+              </tr>
+              <tr>
+                <td>Coal capacity due to decommission</td>
+                <td><strong>~12 GW by 2030</strong></td>
+                <td>The just-transition case for the Emalahleni and Klerksdorp zones</td>
+              </tr>
+              <tr>
+                <td>Grid corridors designated</td>
+                <td><strong>5</strong></td>
+                <td>Western, Northern, Eastern, Central, International</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="fw-bold text-sa-green mt-5">11. Where it goes next</h3>
+        <ul>
+          <li><strong>Finish the Phase 2 gazetting.</strong> The three proposed zones need to move from SEA recommendation to formal designation to have legal effect.</li>
+          <li><strong>Build the corridors.</strong> The Northern Cape's renewable potential is limited by transmission, not by sunshine. The private transmission and the expanded grid investment programme are the real test.</li>
+          <li><strong>Make the coal-belt zones work.</strong> If solar on rehabilitated mine land in Mpumalanga and North West succeeds, it becomes the template for a just transition that is actually built rather than announced.</li>
+          <li><strong>Tie zones to the private market.</strong> As wheeling and corporate PPAs grow, the value of a pre-assessed zone rises for private developers who never enter a government bid window.</li>
+          <li><strong>Watch cumulative impact.</strong> The strategic assessment logic only holds if somebody keeps monitoring what the concentration of projects does to the areas that host them.</li>
+        </ul>
+
+        <h5 class="mt-5">Sources</h5>
+        <ul class="small">
+          <li>CSIR, <em>Additional Renewable Energy Development Zones proposed for wind and solar PV</em> — Phase 2 SEA outcomes, presented at the CSIR, Pretoria, 26 September 2019 (commissioned by the Department of Environment, Forestry and Fisheries).</li>
+          <li>Department of Environmental Affairs, Phase 1 Strategic Environmental Assessment for wind and solar PV energy (2015) and the gazetting of the eight REDZs, February 2018.</li>
+          <li>Department of Environmental Affairs, Electricity Grid Infrastructure Strategic Environmental Assessment (2016) and the gazetting of the powerline corridors, February 2018.</li>
+          <li>Department of Mineral Resources and Energy, Integrated Resource Plan 2019, gazetted 17 October 2019.</li>
+          <li>National Environmental Management Act 107 of 1998, and the Infrastructure Development Act 23 of 2014 — the legal instruments behind designation and coordinated approval.</li>
+          <li>Renewable Energy Independent Power Producer Procurement Programme (REIPPPP) bid window documentation, for project locations within the zones.</li>
+        </ul>
+        <p class="text-muted small">Zone boundaries, gazette dates and later Phase 2 designations should be verified against the current Government Gazette and departmental publications. Technology suitability labels are indicative and reflect the SEA resource mapping and observed project activity, not a formal government ranking.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

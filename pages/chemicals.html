@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chemicals • Economy • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .chem-hero {
+      background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 55%, #e3f2fd 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.35rem; font-weight: 800; color: #007A4D; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .chem-section { scroll-margin-top: 1rem; }
+    .chem-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .stack-step {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.95rem;
+      height: 100%;
+    }
+    .stack-step .step-n {
+      display: inline-block;
+      background: #007A4D;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-bottom: 0.45rem;
+    }
+    .stack-step h3 { font-size: 1rem; font-weight: 800; color: #002395; }
+    .stack-step ul { margin-bottom: 0; padding-left: 1.1rem; font-size: 0.88rem; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    .hover-effect:hover { transform: scale(1.03); transition: 0.3s; }
+    table.chem-table td, table.chem-table th { vertical-align: middle; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="economy.html" class="btn btn-light btn-sm">📈 Economy</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="chem-hero mb-4">
+      <p class="small text-muted mb-1">Economy · Chemicals</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">⚗️ Chemicals</h1>
+      <p class="lead mb-3">South Africa’s chemical industry is a coal-and-gas complex with Sasol at the centre, feeding fertiliser, explosives, polymers and fuels. The next layer is green hydrogen and ammonia for export.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#stack">Industry stack</a>
+        <a class="btn btn-sm btn-outline-success" href="#who">Who makes it</a>
+        <a class="btn btn-sm btn-outline-success" href="#where">Where it sits</a>
+        <a class="btn btn-sm btn-outline-success" href="#green">Green H<sub>2</sub> &amp; ammonia</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">~3%</div>
+          <div class="label">of GDP</div>
+          <div class="sub">CAIA / InvestSA</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">~23%</div>
+          <div class="label">of manufacturing</div>
+          <div class="sub">third-largest factory sector</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">Sasol</div>
+          <div class="label">backbone</div>
+          <div class="sub">sole or main supplier of many basics</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">Grey → green</div>
+          <div class="label">the hinge</div>
+          <div class="sub">ammonia already, H<sub>2</sub> next</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="chem-section" id="what">
+      <h2>What this industry is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Chemicals here means the plants that turn <strong>coal, gas, phosphate rock, air and imported sulphur</strong> into molecules other factories cannot do without: ammonia, nitric acid, polymers, solvents, explosives, industrial gases and blended fertiliser. Stats SA parks most of this under coke, petroleum, chemical products, rubber and plastics. CAIA (the Chemical and Allied Industries’ Association) and InvestSA have put local chemical manufacturing around <strong>R360 billion of sales</strong>, about <strong>3.4% of GDP</strong> and the <strong>third-largest manufacturing sector</strong> (about 23% of manufacturing). TIPS, using a slightly tighter “basic chemicals + petroleum” cut, had that pair at about 12% of manufacturing value-add by 2019; the broader chemicals cut is closer to a fifth of factory output.</p>
+          <p class="mb-0">The industry is <strong>vertically concentrated</strong>. Sasol’s Secunda and Sasolburg complexes are the source of a large share of South Africa’s basic petrochemicals, polymers and merchant ammonia. Around that sit a handful of integrated groups — AECI, Omnia, Foskor, Afrox — plus multinational speciality houses. Downstream plastics conversion, coatings and consumer chemicals are a long tail of smaller plants.</p>
+        </div>
+      </div>
+      <div class="key-fact mb-3">
+        <strong>Read it as a stack, not a list of companies.</strong> Feedstock in at the top, formulated product out at the bottom. Green hydrogen and green ammonia sit on the same stack — they swap the source of the hydrogen, they do not invent a new industry.
+      </div>
+    </section>
+
+    <section class="chem-section" id="stack">
+      <h2>How the industry is stacked</h2>
+      <p class="text-muted">Five layers, from the mine and the pipeline to the bag, the blast hole and the ship.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md">
+          <div class="stack-step">
+            <span class="step-n">1</span>
+            <h3>Feedstock</h3>
+            <ul>
+              <li>Secunda coal into gasifiers</li>
+              <li>Mozambique gas on ROMPCO into Sasolburg</li>
+              <li>Foskor phosphate rock</li>
+              <li>Imported sulphur; air for N<sub>2</sub> and industrial gases</li>
+              <li>Remaining crude / refinery streams</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="stack-step">
+            <span class="step-n">2</span>
+            <h3>Primary / basic</h3>
+            <ul>
+              <li>Syngas → fuels, olefins, solvents, waxes</li>
+              <li>Haber–Bosch ammonia (Sasol)</li>
+              <li>Sulphuric and phosphoric acid</li>
+              <li>Chlor-alkali</li>
+              <li>Air-separation gases (Afrox)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="stack-step">
+            <span class="step-n">3</span>
+            <h3>Intermediates</h3>
+            <ul>
+              <li>Polymers (PE, PP, PVC)</li>
+              <li>Nitric acid, ammonium nitrate</li>
+              <li>MAP / DAP from phosphoric acid</li>
+              <li>Explosives intermediates</li>
+              <li>Fluorochemicals (Pelchem)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="stack-step">
+            <span class="step-n">4</span>
+            <h3>Formulated</h3>
+            <ul>
+              <li>Mining explosives (AECI, Omnia BME)</li>
+              <li>Fertiliser blends (Omnia, Kynoch)</li>
+              <li>Water treatment, coatings, crop protection</li>
+              <li>Soaps, detergents, consumer</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="stack-step">
+            <span class="step-n">5</span>
+            <h3>End markets</h3>
+            <ul>
+              <li>Mining reagents and blast</li>
+              <li>Farms — see <a href="fertilizer.html">Fertilizer</a></li>
+              <li>Packaging and plastics conversion</li>
+              <li>Liquid fuels</li>
+              <li>Export: acid, polymers, future green NH<sub>3</sub></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="src-note">The same ammonia molecule is fertiliser, explosives and (soon) marine fuel. That is why the green-ammonia projects attach to an existing industry rather than sitting off to the side.</p>
+    </section>
+
+    <section class="chem-section" id="who">
+      <h2>Who makes it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-sm chem-table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Firm</th>
+                  <th>Role on the stack</th>
+                  <th>Where to read more</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sasol</strong></td>
+                  <td>Backbone. Coal-to-liquids and chemicals at Secunda; gas-based chemicals at Sasolburg; merchant ammonia into fertiliser and industry; polymers and solvents.</td>
+                  <td><a href="sasol.html">Sasol</a> · <a href="sasol-ctl.html">Coal to Liquids</a></td>
+                </tr>
+                <tr>
+                  <td><strong>AECI</strong></td>
+                  <td>Mining explosives, industrial chemicals (sulphuric acid at Umbogintwini since 1908), water treatment, plant health, speciality.</td>
+                  <td>CAIA member group</td>
+                </tr>
+                <tr>
+                  <td><strong>Omnia</strong></td>
+                  <td>Fertiliser, BME explosives, Protea Chemicals distribution. Buys Sasol ammonia; makes nitric acid and ammonium nitrate.</td>
+                  <td><a href="fertilizer.html">Fertilizer</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Foskor</strong></td>
+                  <td>Only integrated phosphate chain: Phalaborwa rock → Richards Bay phosphoric acid and MAP/DAP. IDC-owned.</td>
+                  <td><a href="fertilizer.html">Fertilizer</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Afrox (Linde)</strong></td>
+                  <td>Industrial gases — oxygen, nitrogen, argon, CO<sub>2</sub> — into steel, chemicals, food and healthcare.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><strong>Others</strong></td>
+                  <td>NCP Chlorchem (chlor-alkali); Safripol (polymers); Pelchem (fluorochemicals at Pelindaba); BASF, Bayer, Clariant, Buckman on speciality and crop protection.</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p class="src-note mb-0">Who Owns Whom / Research and Markets 2025: the basic-chemicals industry is dominated by large integrated firms anchored on oil, coal and gas, with Sasol the sole or main supplier of many intermediates. CAIA’s full-member list is the industry roll-call.</p>
+    </section>
+
+    <section class="chem-section" id="where">
+      <h2>Where it sits</h2>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold text-sa-green">Inland complexes</h5>
+              <ul class="mb-0">
+                <li><strong>Secunda (Mpumalanga)</strong> — Sasol CTL. Fuels and chemicals are one plant, not two. TIPS (2024) treats Secunda as the heart of SA’s petrochemicals, plastics, ammonia, fertiliser and explosives chains.</li>
+                <li><strong>Sasolburg (Free State)</strong> — gas-based chemicals, Natref, polymers, ammonia into the fertiliser trade.</li>
+                <li><strong>Phalaborwa</strong> — Foskor phosphate rock.</li>
+                <li><strong>Gauteng speciality belt</strong> — AECI Chamdor, water-treatment and formulated plants around Johannesburg.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="fw-bold text-sa-green">Coastal nodes</h5>
+              <ul class="mb-0">
+                <li><strong>Richards Bay</strong> — Foskor acid/MAP, sulphur and ammonia imports, fertiliser export berth.</li>
+                <li><strong>Umbogintwini (KZN)</strong> — AECI sulphuric acid and industrial chemicals, a 1908 site.</li>
+                <li><strong>Saldanha</strong> — iron-ore port plus the lead green-ammonia / bunkering case. See the hydrogen page.</li>
+                <li><strong>Coega</strong> — Hive Hydrogen green-ammonia plant (export scale).</li>
+                <li><strong>Boegoebaai (Northern Cape, planned)</strong> — green-hydrogen hub from a greenfield port.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chem-section" id="green">
+      <h2>The grey-to-green hinge</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>South Africa already makes a lot of <strong>grey hydrogen</strong> — from coal and gas, mostly inside Sasol — and sells <strong>grey ammonia</strong> into fertiliser and explosives. Green hydrogen is the same molecule from renewable-powered electrolysis. Green ammonia is the same NH<sub>3</sub> with that hydrogen. The plants, ports, offtakers and Haber–Bosch know-how already exist; the missing pieces are cheap renewable power, water, and offtake long enough to bank a coastal loop.</p>
+          <p class="mb-0">That is the Chemicals child page: production process, Saldanha and Coega, bunker carriers, market pricing, and the South Africa–EU iron-ore green corridor. Fertilizer stays under Agriculture because the farm-gate N-P-K story is a demand page, not a plant-construction page.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <a href="green-hydrogen-ammonia.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">💧</h1>
+              <h5 class="card-title text-sa-green">Green Hydrogen &amp; Ammonia</h5>
+              <p class="card-text small text-muted">Electrolysis and Haber–Bosch, Saldanha and Coega, ammonia-fuelled bulk carriers, pricing, and the Saldanha–Rotterdam iron-ore corridor.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="fertilizer.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🧪</h1>
+              <h5 class="card-title text-sa-green">Fertilizer</h5>
+              <p class="card-text small text-muted">N-P-K, Foskor–Sasol–Omnia–Kynoch, urea and potash imports. Lives under Agriculture; it is the farm-side of the same ammonia molecule.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>Chemical and Allied Industries’ Association (CAIA) and InvestSA figures on sector sales, GDP and manufacturing share, as cited in Who Owns Whom, <em>Manufacture of Basic Chemicals, Other Chemicals and Industrial Gases in South Africa</em> (2025).</li>
+          <li>TIPS, <em>Manufacturing subsectors — Basic chemicals and petroleum refineries</em> (2021); TIPS, <em>South Africa’s petrochemicals and basic chemicals… focusing on Sasol’s Secunda</em> (August 2024).</li>
+          <li>Dashboard pages: <a href="sasol.html">Sasol</a>, <a href="fertilizer.html">Fertilizer</a>, <a href="green-hydrogen-ammonia.html">Green Hydrogen &amp; Ammonia</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="economy.html" class="btn btn-outline-secondary">📈 Economy</a>
+      <a href="manufacturing.html" class="btn btn-outline-secondary">🏭 Manufacturing</a>
+      <a href="sasol.html" class="btn btn-outline-secondary">🧪 Sasol</a>
+      <a href="fertilizer.html" class="btn btn-outline-secondary">🧪 Fertilizer</a>
+      <a href="green-hydrogen-ammonia.html" class="btn btn-outline-secondary">💧 Green H<sub>2</sub> &amp; ammonia</a>
+    </div>
+  </div>
+</body>
+</html>

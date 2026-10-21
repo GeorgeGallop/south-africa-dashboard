@@ -43,7 +43,11 @@
         This table pulls every IPP project, allocation and target from the single canonical registry
         <code>data/power/plants.csv</code> — the same file that drives the SAWEM Plants table and the
         simulation dashboard. <strong>Scope</strong>: Project = physical plant; Allocation = programme-level award;
-        Target = announced but not yet awarded. Edit the CSV and refresh to update.
+        Target = announced but not yet awarded. <strong>PPA Price (R/MWh)</strong> is the as-bid fully indexed
+        20-year Eskom strike (or BESIPPPP capital-cost recovery charge) at that bid window’s base date.
+        Named preferred-bidder tariffs are used where the IPP Office published a project table; otherwise the
+        official window-and-technology average is applied and labelled in Notes. Documents are listed under
+        Sources below. Edit the CSV and refresh to update.
         Official programme portal: <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer">www.ipp-projects.co.za</a>.
       </p>
     </header>
@@ -83,6 +87,13 @@
           <div class="text-muted small">Commercial operation</div>
           <div class="fw-bold fs-4 text-sa-green" id="totalCommercialOp">—</div>
           <div class="text-muted small">Online capacity (matches IPP Office @ May 2026)</div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md">
+        <div class="card border-0 shadow-sm text-center p-3">
+          <div class="text-muted small">PPA (capacity-weighted)</div>
+          <div class="fw-bold fs-4 text-sa-green" id="ppaWavg">—</div>
+          <div class="text-muted small">priced named projects · R/MWh as-bid</div>
         </div>
       </div>
     </div>
@@ -145,6 +156,12 @@
             <span class="text-muted small">Click ▾ on a header to filter columns</span>
           </div>
         </div>
+        <p class="text-muted small mb-3">
+          The <strong>PPA Price (R/MWh)</strong> column is the as-bid fully indexed 20-year Eskom strike where a
+          figure has been published. Project-level tariffs (BW5–7, RMIPPPP) sit on named rows; BW1–4 use the official
+          window-and-technology average, labelled in Notes. Peaking IPP, GIPPPP and unawarded Target rows stay blank.
+          Filter Bid Window or sort PPA Price from the header. Source documents are listed at the bottom of this page.
+        </p>
         <div class="table-responsive" style="max-height:560px; overflow-y:auto;">
           <table class="table table-sm align-middle mb-0" id="ippTable">
             <thead class="table-dark" style="position:sticky; top:0; z-index:2;">
@@ -171,11 +188,14 @@
           <ul class="small mb-0">
             <li><strong>Project</strong> — an actual physical plant (e.g. Cookhouse Wind Farm 138.6 MW, Kaxu Solar One 100 MW).</li>
             <li><strong>Allocation</strong> — an awarded programme amount not yet broken into named projects (e.g. BESIPPPP BW2 616 MW, the RMIPPPP balance).</li>
-            <li><strong>Target</strong> — a published procurement target before award (REIPPPP BW7 5000 MW, GIPPPP 2000 MW, BESIPPPP BW3).</li>
+            <li><strong>Target</strong> — a published procurement target before award (REIPPPP BW7 remaining 1 060 MW of the 5 000 MW envelope, GIPPPP 2 000 MW, BESIPPPP BW3).</li>
           </ul>
           <p class="small mt-2 mb-0">
             <strong>REIPPPP</strong> allocated about 6,000+ MW across BW1–BW6 (the registry lists the named projects that
-            appear in available project sources — dominated by wind, solar PV and CSP). <strong>RMIPPPP</strong> (2020) awarded
+            appear in available project sources — dominated by wind, solar PV and CSP). BW7 appointed 18 solar PV
+            preferred bidders totalling 3 940 MW (20-year Eskom PPA; published strike in R/MWh); 1 060 MW of the
+            5 000 MW envelope remains unawarded and no wind preferred bidders were named.
+            <strong>RMIPPPP</strong> (2020) awarded
             1,995 MW across 12 projects for dispatchable gas/diesel, battery and hybrid capacity.
             <strong>BESIPPPP</strong> (2024–) awarded 360 MW (BW1, 1440 MWh) and 616 MW (BW2); BW3 announced.
             <strong>GIPPPP</strong> (2023) is targeting 2,000 MW of gas; the Bid Window 1 list of bids received
@@ -196,8 +216,10 @@
               <span class="era-badge">2011–present</span>
               <p class="text-muted small mt-2 mb-0">
                 Competitive auctions for onshore wind, solar PV, CSP, small hydro, biomass, landfill gas and biogas.
-                Bid windows were halted between 2015–2019 (blamed for worsening load shedding). BW7 (2024) targets
-                5,000 MW as a rolling bid window (3,200 MW wind + 1,800 MW solar).
+                Bid windows were halted between 2015–2019 (blamed for worsening load shedding). BW7 opened as a
+                5,000 MW rolling window (3,200 MW wind + 1,800 MW solar). Three preferred-bidder rounds appointed
+                18 solar PV projects (3,940 MW) on 20-year Eskom PPAs; no wind preferred bidders. 1,060 MW of the
+                envelope remains unawarded. PPA prices are the evaluated bid tariffs in R/MWh.
               </p>
             </div>
           </div>
@@ -264,25 +286,94 @@
         <span class="text-muted small">https://www.ipp-projects.co.za/</span>
       </div>
     </section>
+
+    <div class="section-divider"></div>
+
+    <section class="mb-4" id="ppa-sources">
+      <h2 class="h4 fw-bold text-sa-green mb-3">Sources — PPA strike prices</h2>
+      <p class="text-muted small mb-3">
+        Figures in the PPA Price column are as-bid fully indexed 20-year Eskom strikes (R/MWh) at the bid window’s
+        base date, except BESIPPPP rows which use the Capital Cost Recovery Charge from the official preferred-bidder
+        list. Where only a technology-and-window average was published, that average is applied and labelled in Notes.
+      </p>
+      <ul class="small">
+        <li class="mb-2">
+          IPP Office programme portal:
+          <a href="https://www.ipp-projects.co.za/" target="_blank" rel="noreferrer">www.ipp-projects.co.za</a>
+        </li>
+        <li class="mb-2">
+          REIPPPP Bid Windows 1–4 window averages — Department of Energy, 16 April 2015, Bid Window 4 announcement
+          (fully indexed April 2014 terms; also restates BW1–3 averages). IPP Office annotation:
+          <a href="https://www.ipp-projects.co.za/_entity/annotation/4e8f48ba-caba-e611-9463-2c59e59ac9cd" target="_blank" rel="noreferrer">BW4 media statement</a>.
+          As-bid ZARc/kWh averages (Table 1, from DoE IPP Office project data):
+          Eberhard &amp; Naude, <em>Journal of Energy in Southern Africa</em> 27(4) 2016,
+          <a href="https://www.gsb.uct.ac.za/files/EberhardNaude_REIPPPPReview_2017_1_1.pdf" target="_blank" rel="noreferrer">UCT GSB PDF</a>.
+          Additional BW4 preferred bidders (8 June 2015):
+          <a href="https://www.ipp-projects.co.za/_entity/annotation/d45fd65f-f039-e511-942a-2c59e59ac9cd" target="_blank" rel="noreferrer">IPP Office additional BW4 list</a>.
+        </li>
+        <li class="mb-2">
+          REIPPPP Bid Window 5 project-level fully indexed prices — GN 1486 of 5 November 2021 (GG 45431),
+          list of preferred bidders 28 October 2021:
+          <a href="https://www.gov.za/sites/default/files/gcis_document/202111/45431gon1486.pdf" target="_blank" rel="noreferrer">45431gon1486.pdf</a>
+        </li>
+        <li class="mb-2">
+          REIPPPP Bid Window 6 named tariffs — DMRE media statement 8 December 2022
+          (Kutlwano 469.50, Boitumelo 469.50, Virginia 486.50, Good Hope 498.90, Doornhoek 540.00 R/MWh;
+          solar-PV weighted average R490.48):
+          <a href="https://www.gov.za/news/media-statements/minister-gwede-mantashe-announces-5th-bid-window-renewable-energy-ipp" target="_blank" rel="noreferrer">gov.za statement</a>.
+          Sixth preferred bidder Ngonyama Solar PV appointed 23 March 2023:
+          <a href="https://www.gov.za/news/media-statements/mineral-resources-and-energy-appointment-additional-preferred-bidder-under" target="_blank" rel="noreferrer">DMRE confirmation</a>;
+          tariff R0.548/kWh reported by
+          <a href="https://www.greenbuildingafrica.co.za/energy-ministry-in-south-africa-quietly-adds-140mw-ngonyama-solar-project-to-preferred-bidder-list-in-reipppp-bid-window-6/" target="_blank" rel="noreferrer">Green Building Africa, 3 April 2023</a>.
+        </li>
+        <li class="mb-2">
+          REIPPPP Bid Window 7 project-level evaluated tariffs — DEE / IPP Office preferred-bidder announcements
+          23 December 2024, 21 July 2025 and 15 December 2025 (value-for-money). 18 solar PV projects, 3&nbsp;940 MW;
+          1&nbsp;060 MW of the 5&nbsp;000 MW envelope remains unawarded (no onshore wind preferred bidders).
+          15 Dec 2025 VfM:
+          <a href="https://www.dbsa.org/sites/default/files/media/documents/2025-12/15%20Dec%202025%20ITP%20PQBs%20and%20REIPPPP%20BW7.pdf" target="_blank" rel="noreferrer">DBSA PDF</a>
+        </li>
+        <li class="mb-2">
+          RMIPPPP evaluation prices — Minister Mantashe preferred-bidder announcement, 18 March 2021
+          (range R1&nbsp;468–R1&nbsp;885/MWh, weighted average R1&nbsp;575/MWh). Project-level figures as reported by
+          <a href="https://www.engineeringnews.co.za/article/bidding-for-renewables-finally-opens-as-powership-heavy-emergency-projects-are-unveiled-2021-04-02" target="_blank" rel="noreferrer">Engineering News, 2 April 2021</a>
+          and the
+          <a href="https://www.politicsweb.co.za/news/the-preferred-bidders-for-the-rmipppp-gwede-mantashe" target="_blank" rel="noreferrer">Minister’s 18 March 2021 statement</a>.
+        </li>
+        <li class="mb-2">
+          BESIPPPP Bid Window 1 Capital Cost Recovery Charge — DBSA preferred-bidder list, 30 November 2023:
+          <a href="https://www.dbsa.org/sites/default/files/media/documents/2023-12/BESIPPPP%20BW%201%20Successful%20Bidders.pdf" target="_blank" rel="noreferrer">BESIPPPP BW1 Successful Bidders.pdf</a>
+        </li>
+        <li class="mb-2">
+          BESIPPPP Bid Window 2 Capital Cost Recovery Charge — DEE / DBSA preferred-bidder list, 23 December 2024:
+          <a href="https://www.dbsa.org/sites/default/files/media/documents/2025-01/BESIPPPP%20BW2%20Preferred%20Bidders.pdf" target="_blank" rel="noreferrer">BESIPPPP BW2 Preferred Bidders.pdf</a>
+        </li>
+      </ul>
+    </section>
   </main>
 
   <script>
     const $ = (id) => document.getElementById(id);
     const NUM = (v) => { const n = Number(v); return Number.isFinite(n) ? n : null; };
-    const NUMERIC_KEYS = new Set(["capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y"]);
+    const NUMERIC_KEYS = new Set(["capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y","ppaPrice"]);
+
+    function parseFields(line) {
+      const vals = [];
+      let cur = "", inQ = false;
+      for (const ch of line) {
+        if (ch === '"') { inQ = !inQ; continue; }
+        if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
+        cur += ch;
+      }
+      vals.push(cur.trim());
+      return vals;
+    }
 
     function parseCSV(text) {
       const lines = text.trim().split("\n").map(l => l.trim()).filter(l => l);
-      const headers = lines[0].split(",").map(h => h.trim());
+      const headers = parseFields(lines[0]);
       return lines.slice(1).map(line => {
-        const vals = [];
-        let cur = "", inQ = false;
-        for (const ch of line) {
-          if (ch === '"') { inQ = !inQ; continue; }
-          if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
-          cur += ch;
-        }
-        vals.push(cur.trim());
+        const vals = parseFields(line);
         const obj = {};
         headers.forEach((h, i) => {
           let v = vals[i] == null ? "" : vals[i].trim();
@@ -301,6 +392,7 @@
       { k: "Scope", label: "Scope", num: false },
       { k: "Programme", label: "Programme", num: false },
       { k: "BidWindow", label: "Bid Window", num: false },
+      { k: "ppaPrice", label: "PPA Price (R/MWh)", num: true, digits: 2 },
       { k: "owner", label: "Owner / Developer", num: false },
       { k: "Province", label: "Province", num: false },
       { k: "status", label: "Status", num: false },
@@ -320,7 +412,7 @@
 
     function srcLinks(p) {
       if (!p.Source) return "—";
-      return p.Source.split(";").map(s => s.trim()).filter(Boolean).slice(0, 1).map(u => {
+      return p.Source.split(";").map(s => s.trim()).filter(Boolean).slice(0, 3).map(u => {
         const host = u.replace(/^https?:\/\//, "").split("/")[0];
         return '<a class="src-link" href="' + u + '" target="_blank" rel="noreferrer">' + host + "</a>";
       }).join(" · ");
@@ -341,7 +433,8 @@
           else if (c.k === "name") html += '<td class="fw-bold">' + p.name + "</td>";
           else {
             const v = p[c.k];
-            html += "<td" + align + ">" + (c.num ? fmt(v, 0) : (v == null || v === "" ? "—" : v)) + "</td>";
+            const d = c.digits != null ? c.digits : 0;
+            html += "<td" + align + ">" + (c.num ? fmt(v, d) : (v == null || v === "" ? "—" : v)) + "</td>";
           }
         });
         return html + "</tr>";
@@ -349,6 +442,12 @@
     }
 
     function capOf(rows) { return rows.reduce((s, p) => s + (Number.isFinite(p.capacity) ? p.capacity : 0), 0); }
+
+    function weightedPpa(rows) {
+      const mw = capOf(rows.filter(p => Number.isFinite(p.ppaPrice)));
+      if (!mw) return null;
+      return rows.reduce((s, p) => s + ((Number.isFinite(p.ppaPrice) && Number.isFinite(p.capacity)) ? p.capacity * p.ppaPrice : 0), 0) / mw;
+    }
 
     function computeStats() {
       $("totalReipppProjects").textContent = DATA.filter(p => p.Programme === "REIPPPP" && p.Scope === "Project").length;
@@ -358,6 +457,9 @@
       // Commercial operation = IPP rows already online. The CSV has explicit balance rows
       // (reippp-co-balance + rmippp-co-balance) so this total matches the IPP Office @ May 2026.
       $("totalCommercialOp").textContent = fmt(capOf(DATA.filter(p => p.status === "Online")), 0) + " MW";
+      const priced = DATA.filter(p => p.Scope === "Project" && Number.isFinite(p.ppaPrice));
+      const wavg = weightedPpa(priced);
+      $("ppaWavg").textContent = wavg == null ? "—" : "R " + fmt(wavg, 2);
     }
 
     // Official IPP Office dashboard @ May 2026 — programme-level capacities (MW)

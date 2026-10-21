@@ -181,84 +181,66 @@
     return { s: s, e: s + size - 1, maxStart: maxStart };
   }
 
-  function updateWindowControls() {
-    var w = currentWindow();
-    var slider = el('africaWindowRange');
-    if (slider) slider.max = String(w.maxStart);
-    var lbl = el('africaRangeLabel');
-    if (lbl) lbl.textContent = state.years[w.s] + ' – ' + state.years[w.e];
-  }
-
   // ---------- charts ----------
-  function setChart(ctx, config) {
-    return new Chart(ctx, config);
+  function drawAfrica(id, traces, opts) {
+    if (window.DataPlots && typeof window.DataPlots.draw === 'function') {
+      window.DataPlots.draw(id, traces, opts || {});
+      return;
+    }
+    var host = el(id);
+    if (!host || typeof Plotly === 'undefined') return;
+    Plotly.react(host, traces, {
+      autosize: true,
+      margin: { l: 30, r: 6, t: 4, b: 18 },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: '#fff',
+      showlegend: false,
+      hovermode: traces[0] && traces[0].type === 'pie' ? 'closest' : 'x unified',
+      font: { family: 'Segoe UI, system-ui, sans-serif', size: 9, color: '#343a40' }
+    }, { responsive: true, displayModeBar: false });
   }
 
   function renderLineChart() {
-    var ctx = el('africaLineChart');
-    if (!ctx || !state.years.length) return;
-    if (lineChart) lineChart.destroy();
+    var host = el('africaLineChart');
+    if (!host || !state.years.length) return;
     var w = currentWindow();
     var labels = state.years.slice(w.s, w.e + 1).map(String);
+    var hover = state.metric === 'access'
+      ? '%{y:.1f}%'
+      : '%{y:,.0f}';
 
-    var datasets = [];
+    var traces = [];
     AFRICA_ISO3.forEach(function (iso, i) {
       if (!state.pop[iso]) return;
       var color = PALETTE[i % PALETTE.length];
-      datasets.push({
-        label: AFRICA_NAMES[iso] || iso,
-        data: state.years.slice(w.s, w.e + 1).map(function (_, j) {
+      var name = AFRICA_NAMES[iso] || iso;
+      traces.push({
+        type: 'scatter',
+        mode: 'lines',
+        name: name,
+        x: labels,
+        y: state.years.slice(w.s, w.e + 1).map(function (_, j) {
           return metricValue(iso, w.s + j);
         }),
-        borderColor: color,
-        backgroundColor: color,
-        borderWidth: 1.6,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        tension: 0.25,
-        spanGaps: true
+        line: { color: color, width: 1.4 },
+        hovertemplate: name + '<br>%{x}: ' + hover + '<extra></extra>',
+        connectgaps: true
       });
     });
 
-    lineChart = setChart(ctx, {
-      type: 'line',
-      data: { labels: labels, datasets: datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        interaction: { mode: 'nearest', intersect: false },
-        plugins: {
-          legend: datasets.length <= 12 ? { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } : { display: false },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              label: function (ci) {
-                var v = ci.parsed.y;
-                if (v == null) return ci.dataset.label + ': —';
-                if (state.metric === 'access') return ci.dataset.label + ': ' + v.toFixed(1) + '%';
-                return ci.dataset.label + ': ' + Math.round(v).toLocaleString();
-              }
-            }
-          }
-        },
-        spanGaps: true,
-        scales: {
-          y: { title: { display: true, text: metricLabel(state.metric) } }
-        }
-      }
+    drawAfrica('africaLineChart', traces, {
+      yTitle: metricLabel(state.metric),
+      tickformat: state.metric === 'access' ? '.0f' : '~s'
     });
+    lineChart = host;
   }
 
   function renderDetailChart() {
-    var ctx = el('africaPieChart');
-    if (!ctx || !state.years.length) return;
-    if (detailChart) detailChart.destroy();
+    var host = el('africaPieChart');
+    if (!host || !state.years.length) return;
     var w = currentWindow();
-    // For "without access", use the latest year where both pop + access exist
     var summaryIdx = (state.metric === 'without') ? latestCompleteYearIndex() : null;
     var yrIdx = summaryIdx !== null ? summaryIdx : w.e;
-    var yr = state.years[yrIdx]; // year shown
 
     var rows = [];
     AFRICA_ISO3.forEach(function (iso, i) {
@@ -272,31 +254,20 @@
     });
 
     if (state.metric === 'access') {
-      // horizontal bar: top 15 by access %
       rows.sort(function (a, b) { return (b.value || 0) - (a.value || 0); });
       var top = rows.slice(0, 15);
-      detailChart = setChart(ctx, {
+      drawAfrica('africaPieChart', [{
         type: 'bar',
-        data: {
-          labels: top.map(function (r) { return r.name; }),
-          datasets: [{
-            label: 'Access % (' + yr + ')',
-            data: top.map(function (r) { return r.value; }),
-            backgroundColor: top.map(function (r) { return r.color; })
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: { legend: { display: false } },
-          scales: { x: { title: { display: true, text: 'Access to electricity (%)' } } }
-        }
-      });
+        orientation: 'h',
+        x: top.map(function (r) { return r.value; }),
+        y: top.map(function (r) { return r.name; }),
+        marker: { color: top.map(function (r) { return r.color; }) },
+        hovertemplate: '%{y}<br>%{x:.1f}%<extra></extra>'
+      }], { yTitle: 'Access to electricity (%)' });
+      detailChart = host;
       return;
     }
 
-    // pie/doughnut: share of metric by country, top 8 + Others
     rows = rows.filter(function (r) { return r.value > 0; });
     rows.sort(function (a, b) { return b.value - a.value; });
     var shown = rows.slice(0, 8);
@@ -311,34 +282,17 @@
       colors.push('#adb5bd');
     }
 
-    detailChart = setChart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: colors,
-          borderColor: '#fff',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
-          tooltip: {
-            callbacks: {
-              label: function (ci) {
-                var tot = values.reduce(function (s, x) { return s + x; }, 0);
-                var pct = tot ? (ci.parsed / tot * 100).toFixed(1) : '0.0';
-                return ci.label + ': ' + Math.round(ci.parsed).toLocaleString() + ' (' + pct + '%)';
-              }
-            }
-          }
-        }
-      }
-    });
+    drawAfrica('africaPieChart', [{
+      type: 'pie',
+      labels: labels,
+      values: values,
+      marker: { colors: colors, line: { color: '#fff', width: 1 } },
+      hole: 0.42,
+      textinfo: 'none',
+      hovertemplate: '%{label}<br>%{value:,.0f} (%{percent})<extra></extra>',
+      sort: false
+    }], {});
+    detailChart = host;
   }
 
   // ---------- summary ----------
@@ -389,7 +343,6 @@
 
   // ---------- render all ----------
   function renderAll() {
-    updateWindowControls();
     renderLineChart();
     renderDetailChart();
     renderSummary();
@@ -412,29 +365,16 @@
       align(rawPop, rawAccess);
       state.lastUpdated = Date.now();
       renderAll();
+      document.querySelectorAll('.data-tile .plotly-host').forEach(function (host) {
+        if (window.DataPlots && window.DataPlots.size) window.DataPlots.size(host);
+        else if (typeof Plotly !== 'undefined') Plotly.Plots.resize(host);
+      });
     } catch (e) {
       if (summary) summary.innerHTML = '<span class="text-danger">⚠️ ' + e.message + '</span>';
     } finally {
       state.loading = false;
       if (btn) { btn.disabled = false; btn.innerHTML = '↻ Refresh from API'; }
     }
-  }
-
-  // ---------- timeframe ----------
-  function setAfricaTimeframe(years, button) {
-    var full = state.years.length;
-    if (!full) return;
-    state.windowSize = years === 9999 ? full : years;
-    var maxStart = Math.max(0, full - state.windowSize);
-    state.windowStart = maxStart;
-    var slider = el('africaWindowRange');
-    if (slider) slider.value = String(maxStart);
-
-    var group = button.parentElement;
-    Array.prototype.forEach.call(group.querySelectorAll('button'), function (b) { b.classList.remove('active'); });
-    button.classList.add('active');
-
-    renderAll();
   }
 
   // ---------- CSV download ----------
@@ -473,14 +413,6 @@
       });
     });
 
-    var slider = el('africaWindowRange');
-    if (slider) {
-      slider.addEventListener('input', function () {
-        state.windowStart = parseInt(slider.value, 10) || 0;
-        renderAll();
-      });
-    }
-
     var refresh = el('africaRefreshBtn');
     if (refresh) refresh.addEventListener('click', function () { loadAfricaData(); });
 
@@ -491,7 +423,6 @@
   }
 
   window.loadAfricaData = loadAfricaData;
-  window.setAfricaTimeframe = setAfricaTimeframe;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

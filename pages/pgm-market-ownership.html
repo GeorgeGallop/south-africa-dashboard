@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PGM Market Ownership • PGMs • Mining</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <p class="text-muted small mb-2"><a href="mining.html">Mining</a> · <a href="pgms.html">PGMs</a> · Market Ownership</p>
+    <h1 class="display-4 fw-bold text-sa-green">PGM Market Ownership</h1>
+    <h5 class="text-muted">Who owns the platinum market globally — and who actually runs it in South Africa</h5>
+
+    <div class="d-flex flex-wrap gap-2 my-3">
+      <a href="pgms.html" class="btn btn-sm btn-outline-success">Overview</a>
+      <a href="platinum.html" class="btn btn-sm btn-outline-success">Platinum</a>
+      <a href="palladium.html" class="btn btn-sm btn-outline-success">Palladium</a>
+      <a href="rhodium.html" class="btn btn-sm btn-outline-success">Rhodium</a>
+      <a href="ruthenium.html" class="btn btn-sm btn-outline-success">Ruthenium</a>
+      <a href="iridium.html" class="btn btn-sm btn-outline-success">Iridium</a>
+      <a href="osmium.html" class="btn btn-sm btn-outline-success">Osmium</a>
+      <a href="pgm-market-ownership.html" class="btn btn-sm btn-success">Market Ownership</a>
+    </div>
+
+    <!-- The Big Four -->
+    <div class="row mt-4">
+      <div class="col-lg-12">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="h4">Platinum's Big Four — by market capitalisation</h2>
+            <p class="text-muted small mb-3">The ranking below circulated in October 2026. It measures <strong>stock-market value</strong>, not ounces mined — an important distinction, because Sibanye-Stillwater is mostly gold and US palladium, while Northam is almost purely a South African PGM producer.</p>
+            <div class="table-responsive">
+              <table class="table table-sm table-striped align-middle">
+                <thead>
+                  <tr class="table-dark">
+                    <th>Company</th>
+                    <th class="text-end">Market cap</th>
+                    <th>What it is</th>
+                    <th>Primary listing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Valterra Platinum</strong></td>
+                    <td class="text-end fw-bold">$23.1bn</td>
+                    <td>World's largest PGM producer by ounces (formerly Anglo American Platinum / Amplats)</td>
+                    <td>JSE (primary)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Impala Platinum (Implats)</strong></td>
+                    <td class="text-end fw-bold">$12.9bn</td>
+                    <td>SA + Zimbabwe + Canada; owns Impala Rustenburg, Zimplats, RBPlat</td>
+                    <td>JSE (primary)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sibanye-Stillwater</strong></td>
+                    <td class="text-end fw-bold">$8.2bn</td>
+                    <td>Diversified: SA PGM + gold, plus Stillwater palladium in the US</td>
+                    <td>JSE / NYSE</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Northam Platinum</strong></td>
+                    <td class="text-end fw-bold">$7.2bn</td>
+                    <td>Pure-play SA PGM: Zondereinde, Booysendal, Eland</td>
+                    <td>JSE</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small text-muted mb-0">Market caps move daily with the platinum price and the rand; the ordering has shuffled repeatedly since 2023 as the PGM price cycle turned. Treat the figures as a snapshot, not a fixed hierarchy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global supply -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="fw-bold text-sa-green">1. The global supply map</h3>
+        <p>The world mines roughly <strong>5.5–5.6 million ounces of platinum a year</strong> (plus palladium and the minor PGMs in the same basket). Supply is extraordinarily concentrated: one country — South Africa — produces about <strong>71%</strong> of it, and one geological feature, the Bushveld Complex, contains around <strong>91% of known reserves</strong>.</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th>Primary supply, 2025</th>
+                <th class="text-end">'000 oz</th>
+                <th>Share</th>
+                <th>Who produces it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>South Africa</strong></td>
+                <td class="text-end">3,957</td>
+                <td>~71%</td>
+                <td>Valterra, Implats, Sibanye, Northam, ARM, Tharisa, juniors</td>
+              </tr>
+              <tr>
+                <td><strong>Russia</strong></td>
+                <td class="text-end">650</td>
+                <td>~12%</td>
+                <td>Nornickel (MMC Norilsk Nickel) — also the world's largest palladium producer</td>
+              </tr>
+              <tr>
+                <td><strong>Zimbabwe</strong></td>
+                <td class="text-end">513</td>
+                <td>~9%</td>
+                <td>Zimplats (Implats 87%), Mimosa (Sibanye 50% / Implats 50%), Unki (Valterra)</td>
+              </tr>
+              <tr>
+                <td><strong>North America</strong></td>
+                <td class="text-end">224</td>
+                <td>~4%</td>
+                <td>Stillwater (Sibanye-Stillwater), Montana — palladium-heavy</td>
+              </tr>
+              <tr>
+                <td><strong>Others</strong></td>
+                <td class="text-end">213</td>
+                <td>~4%</td>
+                <td>Canada, Colombia, Finland, Botswana</td>
+              </tr>
+              <tr class="fw-bold">
+                <td>Total primary</td>
+                <td class="text-end">5,557</td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td>Secondary (recycling)</td>
+                <td class="text-end">1,547</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted">Johnson Matthey PGM Market Report (May 2026) platinum basis. The palladium market looks different: Russia is the largest single source there, which is why palladium carries a geopolitical premium platinum does not.</p>
+
+        <h3 class="fw-bold text-sa-green mt-5">2. The producers, ranked by what they actually mine</h3>
+        <p>Market cap and production rank differently. On <em>ounces of PGM produced</em>, South Africa's four majors look like this (approximate 6E PGM output, company reports, 2024–26):</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th>Producer</th>
+                <th>Core assets</th>
+                <th class="text-end">Approx. PGM output</th>
+                <th>Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Valterra Platinum</strong></td>
+                <td>Mogalakwena, Amandelbult, Rustenburg, Unki (Zimbabwe), Mototolo JV</td>
+                <td class="text-end">~4.0 Moz</td>
+                <td>World #1 by ounces; lowest-cost large producer because of Mogalakwena's open pit</td>
+              </tr>
+              <tr>
+                <td><strong>Implats</strong></td>
+                <td>Impala Rustenburg, Impala Canada, Zimplats (87%), RBPlat, Two Rivers (49% JV with ARM)</td>
+                <td class="text-end">~3.4 Moz</td>
+                <td>Second-largest; the most geographically spread of the four</td>
+              </tr>
+              <tr>
+                <td><strong>Sibanye-Stillwater</strong></td>
+                <td>Rustenburg/Kroondal, Marikana (ex-Lonmin), Stillwater (US), Mimosa (50%)</td>
+                <td class="text-end">~1.8–2.0 Moz</td>
+                <td>Third in PGMs but larger by revenue because of gold and US palladium</td>
+              </tr>
+              <tr>
+                <td><strong>Northam Platinum</strong></td>
+                <td>Zondereinde, Booysendal, Eland</td>
+                <td class="text-end">~0.9–1.0 Moz</td>
+                <td>Pure-play, highest-growth of the four on a smaller base</td>
+              </tr>
+              <tr>
+                <td><strong>African Rainbow Minerals</strong></td>
+                <td>Two Rivers (49%), Modikwa (41.5% with Valterra)</td>
+                <td class="text-end">~0.3 Moz (attributable)</td>
+                <td>BEE-controlled JV partner rather than an operator of its own mines</td>
+              </tr>
+              <tr>
+                <td><strong>Tharisa, Sedibelo, Wesizwe, Siyanda, Ivanplats</strong></td>
+                <td>Smaller or developing PGM operations; several are chrome-PGM co-producers</td>
+<td class="text-end">under 0.3 Moz each</td>
+                <td>Together under 5% of SA output; Platreef (Ivanhoe) is the largest new project</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Add it up and the <strong>four majors control well over 90% of South African PGM production</strong> and roughly two-thirds of world supply. There is no other mineral market on earth that concentrated outside of iron ore and, arguably, cobalt.</p>
+
+        <h3 class="fw-bold text-sa-green mt-5">3. The other half of the ownership story: refining</h3>
+        <p>Mining is only the first gate. Because PGMs come out of a mixed basket, whoever owns the smelter and refinery controls the metal's route to market — and in PGMs that means a handful of South African complexes:</p>
+        <ul>
+          <li><strong>Valterra's integrated complex</strong> — Mogalakwena and Amandelbult concentrators feed the Polokwane smelter and base-metals refinery, with final precious-metal separation at the Precious Metals Refinery in Springs. It is the largest PGM refining complex in the world and toll-treats matte for other producers.</li>
+          <li><strong>Implats' Springs refinery</strong> — refines Impala Rustenburg, Zimplats and Two Rivers material, and historically much of the sector's toll matte.</li>
+          <li><strong>Sibanye's and Northam's smelters</strong> — both operate smelters (Marikana/Rustenburg and Zondereinde respectively) but rely on toll refining arrangements for part of their final product.</li>
+          <li><strong>The fabricator-refiners</strong> — Johnson Matthey, Heraeus, Umicore, BASF and Japan's Tanaka also refine, recycle and fabricate. They are the gatekeepers on the <em>demand</em> side, converting sponge into the catalyst coatings the carmakers actually buy.</li>
+        </ul>
+        <p>This is the market's real chokepoint. South Africa mines the metal, but a handful of companies on two continents decide what form it leaves in and who can buy it.</p>
+
+        <h3 class="fw-bold text-sa-green mt-5">4. Who sets the price</h3>
+        <p>No producer sets the platinum price. It emerges from a layered market:</p>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th>Layer</th>
+                <th>Who</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Benchmark</strong></td>
+                <td>LPPM (London Platinum and Palladium Market)</td>
+                <td>Sets Good Delivery standards and the loco London / loco Zurich delivery rules; the platinum and palladium fixings are administered by the LME on the LPPM's behalf</td>
+              </tr>
+              <tr>
+                <td><strong>Futures</strong></td>
+                <td>NYMEX / CME, Tokyo (TOCOM), Guangzhou Futures Exchange (GFEX)</td>
+                <td>Price discovery and hedging. GFEX's PGM contracts, launched in 2025, gave Chinese buyers a domestic benchmark for the first time</td>
+              </tr>
+              <tr>
+                <td><strong>Bullion banks & market makers</strong></td>
+                <td>HSBC, ICBC Standard Bank, Standard Chartered, Mitsubishi and others</td>
+                <td>Provide liquidity, vault metal and quote the fix; they sit between producers and fabricators</td>
+              </tr>
+              <tr>
+                <td><strong>Trading houses & refiners</strong></td>
+                <td>Johnson Matthey, Heraeus, Umicore, Tanaka</td>
+                <td>Buy sponge, lease metal, recycle and sell fabricated product — the physical offtake channel</td>
+              </tr>
+              <tr>
+                <td><strong>Investment</strong></td>
+                <td>abrdn, BlackRock (iShares) and other ETF providers; South African investors via JSE-listed platinum ETFs (Absa NewPlatinum, 1nvestPlatinum)</td>
+                <td>Absorb or release above-ground metal; ETF flows can move the price more than a mine closure</td>
+              </tr>
+              <tr>
+                <td><strong>Industry body</strong></td>
+                <td>World Platinum Investment Council (WPIC)</td>
+                <td>Producer-funded marketing body; publishes the quarterly supply/demand balance the market trades on</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>That structure matters for South Africa: the country is a <strong>price taker</strong>. Producers are exposed to a dollar price set in London and New York, with a rand cost base — which is why a 30% move in the platinum price swings the entire sector's profitability.</p>
+
+        <h3 class="fw-bold text-sa-green mt-5">5. Who owns what in South Africa</h3>
+        <p>Ownership of the South African PGM industry has been reshaped three times in a decade: by BEE transactions after 2004, by the 2023–24 consolidation around Royal Bafokeng Platinum, and by Anglo American's exit from Amplats in 2025.</p>
+
+        <h4 class="h5 mt-4">Valterra Platinum (formerly Anglo American Platinum)</h4>
+        <p>Amplats was 78%-owned by Anglo American for most of its life. Anglo's 2024–25 restructuring ended that: the platinum business was <strong>demerged and renamed Valterra Platinum</strong>, with Anglo shareholders receiving the shares directly. The result is a widely held JSE-listed company with no controlling shareholder — the largest PGM producer in the world now has a genuinely dispersed register, in which South African institutional money (including the PIC on behalf of the GEPF) is a significant voice.</p>
+
+        <h4 class="h5 mt-4">Impala Platinum — the consolidator</h4>
+        <p>Implats won the 2023–24 battle for <strong>Royal Bafokeng Platinum (RBPlat)</strong>, beating Northam, and now controls the Bafokeng mines that sit next to its Rustenburg operations. It also owns 87% of <strong>Zimplats</strong>, all of <strong>Impala Canada</strong>, and 49% of <strong>Two Rivers</strong> (the rest held by African Rainbow Minerals). No single shareholder controls Implats; it is institutionally owned, with South African pension money prominent.</p>
+
+        <h4 class="h5 mt-4">Sibanye-Stillwater — the diversifier</h4>
+        <p>Sibanye grew out of Gold Fields' old gold assets, then bought Rustenburg from Anglo, Lonmin's Marikana operation, and the US <strong>Stillwater</strong> palladium mine. It is the only one of the four with material production outside Africa, and the only one whose share price is driven as much by gold as by PGMs.</p>
+
+        <h4 class="h5 mt-4">Northam — the pure play</h4>
+        <p>Northam operates Zondereinde and Booysendal and has grown output while the others shrank. It is the smallest of the four by ounces but the most PGM-pure in its earnings — and it remains a JSE-only listing with a substantial BEE shareholder base.</p>
+
+        <h4 class="h5 mt-4">The layers beneath the majors</h4>
+        <ul>
+          <li><strong>BEE and community ownership.</strong> The Royal Bafokeng Nation remains a landowner and royalty beneficiary of the Bafokeng operations. Empowerment vehicles, employee share schemes and community trusts hold meaningful minorities across the sector — a legacy of the Mineral and Petroleum Resources Development Act and the 2018 Mining Charter.</li>
+          <li><strong>The PIC and GEPF.</strong> The Public Investment Corporation manages the Government Employees Pension Fund, which is one of the largest single pools of institutional capital on the JSE. Its holdings across Valterra, Implats, Sibanye and Northam make it the most influential domestic shareholder bloc in the sector — and, as the PIC's own governance crisis showed, a sometimes contested one.</li>
+          <li><strong>IDC and the state.</strong> The Industrial Development Corporation has funded PGM beneficiation and junior mining, and the state's broader mineral-beneficiation policy aims to keep more smelting and fuel-cell manufacturing in South Africa.</li>
+          <li><strong>Chinese and Japanese strategic interest.</strong> Chinese groups have bought into junior PGM and chrome-PGM projects, and Japanese trading houses have long financed and offtaken South African PGM concentrate. No Chinese or Japanese company controls a major South African PGM producer — yet.</li>
+        </ul>
+
+        <h3 class="fw-bold text-sa-green mt-5">6. So who actually "runs" the PGM market?</h3>
+        <p>Five groups of actors, in rough order of leverage over the price:</p>
+        <ol>
+          <li><strong>Chinese and European carmakers and catalyst makers.</strong> Autocatalysts are still ~40% of platinum demand and the majority of palladium and rhodium demand. Four fabricators — Johnson Matthey, BASF, Umicore and Heraeus — plus a growing Chinese domestic industry decide how many ounces the world needs each year. No mine can outvote that.</li>
+          <li><strong>The four South African majors.</strong> They control the overwhelming majority of supply, and their investment decisions (Booysendal, Platreef, Mogalakwena expansion, shaft closures) set the medium-term balance. Collectively they can also support the price by closing uneconomic ounces — which is exactly what happened in 2024–26.</li>
+          <li><strong>The bullion banks and the London/Zurich market.</strong> They turn metal into a tradeable, financeable commodity, set the daily benchmark and hold the vault stocks that cushion deficits.</li>
+          <li><strong>Investors and ETF flows.</strong> In a market this small — a few million ounces a year — a modest shift in ETF holdings or Chinese retail buying can outweigh a mine's annual output.</li>
+          <li><strong>Governments.</strong> South Africa sets the fiscal, power, labour and export framework; Zimbabwe taxes and part-processes its ore; Russia's isolation shapes palladium supply; and China's exchange and import rules shape demand.</li>
+        </ol>
+
+        <h3 class="fw-bold text-sa-green mt-5">7. What to watch</h3>
+        <ul>
+          <li><strong>Anglo American's exit is complete — what next?</strong> A dispersed Valterra register makes the company a potential target for consolidation, and any bid would redraw the sector's ownership map.</li>
+          <li><strong>Further consolidation.</strong> After RBPlat, the market expects more combinations among the mid-tier (Sedibelo, Wesizwe, Siyanda) rather than among the majors.</li>
+          <li><strong>Refining capacity.</strong> If South Africa's smelters and refineries keep closing, more matte will be shipped abroad for processing — a quiet transfer of value out of the country.</li>
+          <li><strong>The hydrogen bid.</strong> If PEM electrolysers and fuel cells scale, platinum and iridium demand becomes strategic rather than cyclical, and South Africa's ownership advantage in reserves becomes a geopolitical asset.</li>
+          <li><strong>China's pricing power.</strong> GFEX contracts, Chinese jewellery and a possible strategic reserve all point to Beijing having more influence over the platinum price than any single producer.</li>
+        </ul>
+
+        <h5 class="mt-4">Sources</h5>
+        <p class="text-muted small">Johnson Matthey PGM Market Report (May 2026); USGS Mineral Commodity Summaries 2026 (Platinum-Group Metals); World Platinum Investment Council quarterly reports; company annual reports and results announcements for Valterra Platinum, Impala Platinum, Sibanye-Stillwater, Northam Platinum and African Rainbow Minerals; Minerals Council South Africa; LPPM and LME market documentation; market-capitalisation graphic as circulated October 2026. Output and share figures are approximate and rounded — company reporting periods and 6E basket definitions differ.</p>
+      </div>
+    </div>
+  </div>
+  <style>
+    .table td { vertical-align: top; }
+    .table { table-layout: auto; }
+    .table th { vertical-align: bottom; white-space: nowrap; }
+  </style>
+</body>
+</html>

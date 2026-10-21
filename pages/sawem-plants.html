@@ -48,7 +48,8 @@
         Full generation registry (Eskom fleet + every IPP / private project) read from a single canonical source:
         <code>data/power/plants.csv</code>. It uses the same column structure as the SAWEM simulation dashboard's
         Plants table, plus <strong>Scope</strong> (Project / Allocation / Target), <strong>Programme</strong>,
-        <strong>Bid Window</strong>, <strong>Province</strong> and <strong>Source</strong> links for every figure.
+        <strong>Bid Window</strong>, <strong>PPA Price (R/MWh)</strong> (Eskom strike tariff where published),
+        <strong>Province</strong> and <strong>Source</strong> links for every figure.
         Edit the CSV and refresh this page to update the table.
       </p>
     </header>
@@ -194,7 +195,7 @@
 
     // ---- Column set mirrors south-africa-dashboard-main/data/power/plants.csv ----
     const NUMERIC_KEYS = new Set([
-      "capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y"
+      "capacity","units","inputCost","variableCost","marginalCost","efficiency","heatRate","rampRate","minUp","minDown","x","y","ppaPrice"
     ]);
 
     let PLANTS = [];
@@ -203,19 +204,24 @@
     let filterApi = null;
 
     // ---- CSV parsing (handles quoted fields) ----
+    function parseFields(line) {
+      const vals = [];
+      let cur = "", inQ = false;
+      for (const ch of line) {
+        if (ch === '"') { inQ = !inQ; continue; }
+        if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
+        cur += ch;
+      }
+      vals.push(cur.trim());
+      return vals;
+    }
+
     function parseCSV(text) {
       const lines = text.trim().split("\n").map(l => l.trim()).filter(l => l);
       if (lines.length < 2) return { headers: [], rows: [] };
-      const headers = lines[0].split(",").map(h => h.trim());
+      const headers = parseFields(lines[0]);
       const rows = lines.slice(1).map(line => {
-        const vals = [];
-        let cur = "", inQ = false;
-        for (const ch of line) {
-          if (ch === '"') { inQ = !inQ; continue; }
-          if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; continue; }
-          cur += ch;
-        }
-        vals.push(cur.trim());
+        const vals = parseFields(line);
         const obj = {};
         headers.forEach((h, i) => {
           let v = vals[i] == null ? "" : vals[i].trim();
@@ -265,6 +271,7 @@
       { k: "Province", label: "Province", num: false },
       { k: "Programme", label: "Programme", num: false },
       { k: "BidWindow", label: "Bid Window", num: false },
+      { k: "ppaPrice", label: "PPA Price (R/MWh)", num: true },
       { k: "efficiency", label: "Efficiency (%)", num: true },
       { k: "heatRate", label: "Heat Rate (kJ/kWh)", num: true },
       { k: "marginalCost", label: "Marginal Cost ($/MWh)", num: true },

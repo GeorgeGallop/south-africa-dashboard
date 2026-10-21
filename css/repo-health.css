@@ -1,0 +1,448 @@
+/* Repository-health page styles. Built on top of Bootstrap 5 and the
+   dashboard's existing .card / .list-group look. Uses the SA flag palette:
+   green #007A4D, gold #FFCD00, blue #002395. */
+
+:root {
+  --rh-green: #007A4D;
+  --rh-green-soft: #e6f3ee;
+  --rh-gold: #FFCD00;
+  --rh-gold-soft: #fff7db;
+  --rh-blue: #002395;
+  --rh-blue-soft: #e7ebfa;
+  --rh-ink: #212529;
+  --rh-muted: #6c757d;
+  --rh-line: #e6e8eb;
+}
+
+body.rh-body {
+  background: #f6f7f9;
+}
+
+/* ---------------- toolbar ---------------- */
+
+.rh-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--rh-line);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.rh-toolbar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.rh-status {
+  font-size: 0.85rem;
+  color: var(--rh-muted);
+  min-height: 1.2em;
+  width: 100%;
+}
+
+#rh-progress {
+  visibility: hidden;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--rh-line);
+}
+
+#rh-progress .progress-bar {
+  background: var(--rh-green);
+}
+
+/* ---------------- table of contents ---------------- */
+
+.rh-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.75rem 0;
+}
+
+.rh-toc__link {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--rh-line);
+  color: var(--rh-ink);
+  text-decoration: none;
+}
+
+.rh-toc__link:hover {
+  background: var(--rh-green);
+  border-color: var(--rh-green);
+  color: #fff;
+}
+
+/* ---------------- stat cards ---------------- */
+
+.rh-stat {
+  border-width: 2px !important;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.rh-stat--green { border-color: var(--rh-green); }
+.rh-stat--gold  { border-color: var(--rh-gold); }
+.rh-stat--blue  { border-color: var(--rh-blue); }
+
+.rh-stat .card-body { padding: 0.9rem 1rem; }
+
+.rh-stat__label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rh-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.rh-stat__icon { font-size: 1rem; }
+
+.rh-stat__value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--rh-ink);
+}
+
+.rh-stat__sub { font-size: 0.75rem; }
+
+/* ---------------- section cards ---------------- */
+
+.rh-section {
+  border: 1px solid var(--rh-line);
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-margin-top: 1rem;
+}
+
+.rh-section--green { border-top: 4px solid var(--rh-green); }
+.rh-section--gold  { border-top: 4px solid var(--rh-gold); }
+.rh-section--blue  { border-top: 4px solid var(--rh-blue); }
+
+.rh-section__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid var(--rh-line);
+}
+
+.rh-section__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rh-section__sub {
+  font-size: 0.82rem;
+  color: var(--rh-muted);
+}
+
+.rh-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.rh-note {
+  background: #fafbfc;
+  font-size: 0.78rem;
+  color: var(--rh-muted);
+}
+
+/* ---------------- badges ---------------- */
+
+.rh-badge {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* ---------------- bars ---------------- */
+
+.rh-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #eef1f4;
+  overflow: hidden;
+}
+
+.rh-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.rh-bar__fill--green { background: var(--rh-green); }
+.rh-bar__fill--gold  { background: var(--rh-gold); }
+.rh-bar__fill--blue  { background: var(--rh-blue); }
+
+/* ---------------- breakdown lists ---------------- */
+
+.rh-break__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.rh-break__list { display: grid; gap: 0.6rem; }
+
+.rh-break-row__head,
+.rh-cat__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.rh-break-row__name,
+.rh-cat__name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rh-break-row__meta,
+.rh-cat__meta { white-space: nowrap; }
+
+.rh-cat-grid {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .rh-cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------------- legend ---------------- */
+
+.rh-legend {
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.rh-legend summary {
+  cursor: pointer;
+  color: var(--rh-green);
+  font-weight: 600;
+}
+
+.rh-legend__list {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+/* ---------------- data table ---------------- */
+
+.rh-table {
+  border: 1px solid var(--rh-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.rh-table__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--rh-line);
+  background: #fafbfc;
+}
+
+.rh-search { max-width: 320px; }
+
+.rh-table__count { white-space: nowrap; }
+
+.rh-table__scroll { overflow-x: auto; }
+
+.rh-grid thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--rh-line);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--rh-muted);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.rh-grid td { vertical-align: middle; font-size: 0.86rem; }
+
+.rh-sortable { cursor: pointer; user-select: none; }
+.rh-sortable:hover { color: var(--rh-ink); }
+.rh-sort { color: var(--rh-green); }
+
+.rh-pager {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  border-top: 1px solid var(--rh-line);
+}
+
+.rh-pager__label { font-size: 0.8rem; color: var(--rh-muted); }
+
+/* ---------------- paths & links ---------------- */
+
+.rh-path {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  color: #0b4d38;
+  background: var(--rh-green-soft);
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+.rh-path--bad {
+  color: #8a1207;
+  background: #fdecea;
+}
+
+.rh-filelink { display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.rh-open {
+  font-size: 0.72rem;
+  color: var(--rh-blue);
+  text-decoration: none;
+  border: 1px solid var(--rh-blue-soft);
+  border-radius: 999px;
+  padding: 0 0.45rem;
+}
+
+.rh-open:hover { background: var(--rh-blue); color: #fff; }
+
+.rh-size { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------------- duplicates ---------------- */
+
+.rh-dupes { display: grid; gap: 0.75rem; }
+
+.rh-dupe {
+  border: 1px solid var(--rh-line);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  background: #fff;
+}
+
+.rh-dupe__head {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.rh-dupe__reason { font-weight: 600; font-size: 0.85rem; }
+.rh-dupe__size { font-size: 0.78rem; margin-left: auto; }
+
+.rh-dupe__list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+}
+
+/* ---------------- code block ---------------- */
+
+.rh-code {
+  background: #0f1720;
+  color: #d6e2ea;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  max-height: 380px;
+  overflow: auto;
+  margin: 0;
+}
+
+@media (max-width: 575px) {
+  .rh-stat__value { font-size: 1.35rem; }
+  .rh-section__head { flex-direction: column; align-items: flex-start; }
+}
+/* ---------------- inline SVG icons ---------------- */
+
+.rh-icon {
+  vertical-align: -2px;
+  margin-right: 0.15rem;
+  color: var(--rh-green);
+  flex: none;
+}
+
+.rh-stat--gold .rh-icon { color: #b58900; }
+.rh-stat--blue .rh-icon { color: var(--rh-blue); }
+
+/* ---------------- layout helpers ---------------- */
+
+.rh-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.rh-page-head h1 {
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.2rem);
+  font-weight: 800;
+  margin: 0;
+  color: var(--rh-green);
+}
+
+.rh-page-head p {
+  margin: 0.25rem 0 0;
+  color: var(--rh-muted);
+  max-width: 60ch;
+}
+
+.rh-subhead {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rh-blue);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--rh-blue-soft);
+}
+
+.rh-empty {
+  border: 1px dashed var(--rh-line);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--rh-muted);
+}
+
+.rh-foot {
+  color: var(--rh-muted);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--rh-line);
+  margin-top: 2rem;
+  padding-top: 1rem;
+}

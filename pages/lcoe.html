@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Levelised Cost of Energy • Power</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .lcoe-chart-wrap { position: relative; }
+    .lcoe-chart-wrap svg { width: 100%; height: auto; display: block; }
+    .lcoe-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid #ced4da; background: #fff; color: #212529;
+      border-radius: 20px; padding: 4px 12px; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: border-color .15s, opacity .15s, background .15s;
+    }
+    .lcoe-chip:hover { border-color: #007A4D; }
+    .lcoe-chip.is-off { opacity: 0.45; background: #f1f3f5; }
+    .lcoe-chip[aria-pressed="true"] { background: #f8f9fa; }
+    .lcoe-swatch {
+      display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+      margin-right: 6px; vertical-align: middle;
+    }
+    .lcoe-tooltip {
+      position: absolute; z-index: 5; pointer-events: none;
+      background: #ffffff; border: 1px solid #dee2e6; border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.13);
+      padding: 8px 10px; min-width: 220px; max-width: 300px;
+      font-size: 0.78rem;
+    }
+    .lcoe-tooltip-title { font-weight: 700; margin-bottom: 6px; color: #007A4D; }
+    .lcoe-tooltip-row { display: flex; align-items: center; gap: 6px; line-height: 1.5; }
+    .lcoe-tooltip-label { flex: 1 1 auto; }
+    .lcoe-tooltip-value { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .lcoe-stack { display: flex; height: 18px; border-radius: 4px; overflow: hidden; margin-top: 4px; background: #eef1f3; }
+    .lcoe-stack-segment { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.65rem; font-weight: 700; }
+    .lcoe-breakdown-row { margin-bottom: 14px; }
+    .lcoe-kpi { border-left: 4px solid #007A4D; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <p class="text-muted small mb-2"><a href="power.html">Power</a> · Levelised Cost of Energy</p>
+    <h1 class="display-4 fw-bold text-sa-green">Levelised Cost of Energy</h1>
+    <h5 class="text-muted">What each generating technology costs per megawatt-hour in South Africa — and how that has moved since 2010</h5>
+
+    <div class="d-flex flex-wrap gap-2 my-3">
+      <a href="power.html" class="btn btn-sm btn-outline-success">Power Overview</a>
+      <a href="renewable-energy-development-zones.html" class="btn btn-sm btn-outline-success">REDZs</a>
+      <a href="lcoe.html" class="btn btn-sm btn-success">LCOE</a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <p class="lead mb-3">Lazard publishes a yearly LCOE comparison for the United States. South Africa has no exact equivalent, so the closest public benchmark is the <strong>EPRI supply-side cost report prepared for Eskom's Integrated Resource Plan</strong>, supplemented by the actual prices won in the <strong>REIPPPP</strong> bid windows. This page assembles that data into the Lazard-style view: a cost range per technology, tracked over time, in rands.</p>
+        <p class="mb-0 small text-muted">Everything on this page is driven by one file — <code>js/lcoe-data.js</code>. Change a number there and the chart, table and CSV all follow. The values below are indicative compilations anchored on published bid outcomes and EPRI/IRP modelling, not verbatim EPRI output.</p>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 lcoe-kpi">
+          <div class="card-body py-3">
+            <div class="text-muted small text-uppercase fw-bold">Solar PV · 2024</div>
+            <div class="h4 mb-0 fw-bold text-sa-green">R420–750</div>
+            <div class="small text-muted">per MWh, midpoint R585</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 lcoe-kpi" style="border-left-color:#E3A008;">
+          <div class="card-body py-3">
+            <div class="text-muted small text-uppercase fw-bold">Onshore wind · 2024</div>
+            <div class="h4 mb-0 fw-bold text-sa-green">R430–700</div>
+            <div class="small text-muted">per MWh, midpoint R565</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 lcoe-kpi" style="border-left-color:#37474F;">
+          <div class="card-body py-3">
+            <div class="text-muted small text-uppercase fw-bold">New coal · 2024</div>
+            <div class="h4 mb-0 fw-bold">R1,100–1,600</div>
+            <div class="small text-muted">per MWh, midpoint R1,350</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 lcoe-kpi" style="border-left-color:#455A64;">
+          <div class="card-body py-3">
+            <div class="text-muted small text-uppercase fw-bold">Diesel peaking · 2024</div>
+            <div class="h4 mb-0 fw-bold text-danger">R4,400–6,500</div>
+            <div class="small text-muted">per MWh, midpoint R5,450</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+          <div>
+            <h2 class="h4 mb-1">The chart</h2>
+            <p class="small text-muted mb-0" id="lcoeCount">Loading…</p>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="lcoeScaleBtn" aria-pressed="false">Log scale: off</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="lcoeAllBtn">Show all</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="lcoeNoneBtn">Hide all</button>
+            <button type="button" class="btn btn-sm btn-success" id="lcoeCsvBtn">⬇ Download CSV</button>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 my-3" id="lcoeLegend" role="group" aria-label="Technologies shown"></div>
+
+        <div class="lcoe-chart-wrap">
+          <svg id="lcoeChart" viewBox="0 0 940 470" role="img" aria-label="Levelised cost of energy ranges for South African generation technologies"></svg>
+          <div id="lcoeTooltip" class="lcoe-tooltip" hidden></div>
+        </div>
+
+        <p class="small text-muted mb-0 mt-2" id="lcoeCsvNote">Exports the rows currently shown.</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">The numbers behind the chart</h2>
+        <p class="small text-muted">This is the table the CSV contains: one row per technology per year, with the low, high and midpoint of the modelled LCOE range.</p>
+        <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
+          <table class="table table-sm table-striped align-middle mb-0">
+            <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
+              <tr>
+                <th>Technology</th>
+                <th class="text-end">Year</th>
+                <th class="text-end">Low</th>
+                <th class="text-end">High</th>
+                <th class="text-end">Midpoint</th>
+              </tr>
+            </thead>
+            <tbody id="lcoeTableBody"></tbody>
+          </table>
+        </div>
+        <p class="small text-muted mb-0 mt-2">All values ZAR per megawatt-hour, nominal money of the stated year.</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">What the cost is made of</h2>
+        <p class="small text-muted">The same midpoint, split into its components for the latest year in the dataset. The share tells you which assumption matters: fuel exposure makes gas and coal hostage to commodity prices, while a 75% capital share makes renewables hostage to the cost of money.</p>
+        <div class="d-flex flex-wrap gap-3 mb-3 small">
+          <span><span class="lcoe-swatch" style="background:#007A4D;"></span>Capital incl. financing</span>
+          <span><span class="lcoe-swatch" style="background:#C62828;"></span>Fuel or charging energy</span>
+          <span><span class="lcoe-swatch" style="background:#E3A008;"></span>O&M</span>
+          <span><span class="lcoe-swatch" style="background:#6c757d;"></span>Grid, decommissioning, other</span>
+        </div>
+        <div id="lcoeBreakdown"></div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">Why the South African numbers differ from Lazard's US figures</h2>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle">
+            <thead class="table-dark">
+              <tr><th style="width:24%;">Driver</th><th>Effect on South African LCOE</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cost of capital</strong></td>
+                <td>The single largest difference. A higher WACC raises the cost of every capital-heavy technology — solar, wind, nuclear, CSP — much more than it raises gas. South African project finance typically prices several hundred basis points above US utility finance, which can add 30–50% to a solar LCOE even with identical hardware costs.</td>
+              </tr>
+              <tr>
+                <td><strong>Solar resource</strong></td>
+                <td>Northern Cape irradiation is among the best on earth, around 2,100–2,300 kWh/m²/year versus 1,600–1,900 in much of the US. This pushes capacity factors up and LCOE down, partly offsetting the financing penalty.</td>
+              </tr>
+              <tr>
+                <td><strong>Wind resource</strong></td>
+                <td>Eastern Cape and Karoo wind is strong and steady, supporting capacity factors in the mid-30s to low 40s — competitive with good US sites.</td>
+              </tr>
+              <tr>
+                <td><strong>Coal and gas fuel</strong></td>
+                <td>Domestic coal is cheap at the mine but expensive to transport; gas has no domestic supply at scale and must be imported as LNG. Both make South African thermal LCOE more volatile than the US benchmark.</td>
+              </tr>
+              <tr>
+                <td><strong>Dry cooling</strong></td>
+                <td>Water constraints force dry cooling on new thermal plant, which cuts capital efficiency and raises the cost per unit of output by several percent.</td>
+              </tr>
+              <tr>
+                <td><strong>Local content and logistics</strong></td>
+                <td>REIPPPP local-content thresholds, port capacity and inland transport add cost relative to a US build, though the effect is modest next to financing.</td>
+              </tr>
+              <tr>
+                <td><strong>Currency</strong></td>
+                <td>Plant is largely imported and priced in dollars or euros; the rand cost therefore moves with the exchange rate independently of technology cost. At roughly R18–19 to the dollar, a US$40/MWh solar plant lands near R730–760/MWh before local costs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">How to read this without being misled</h2>
+        <ul class="mb-0">
+          <li><strong>Technology LCOE is not system cost.</strong> The cheapest energy is not necessarily the cheapest system. Solar and wind are cheapest per MWh delivered, but a system with a high share of them also needs storage, transmission and firm capacity — costs that sit outside a technology LCOE and get recovered elsewhere.</li>
+          <li><strong>Bid prices are not modelled LCOE.</strong> REIPPPP outcomes are actual contracted tariffs, which include the developer's return and any risk premium, and are struck at a moment in time. They are the best market signal for solar and wind, but they are not a technology cost model.</li>
+          <li><strong>Nominal years are not comparable in real terms.</strong> A 2024 rand is worth less than a 2010 rand. Coal's apparent rise is partly inflation; solar's fall is real even after it.</li>
+          <li><strong>The range matters more than the midpoint.</strong> Lazard publishes ranges because the honest answer is a band, driven by resource, financing and utilisation. A single number invites false precision.</li>
+          <li><strong>Firm capacity has a price.</strong> Compare a solar-plus-4-hour-battery line, not bare solar, against nuclear or coal when the question is what keeps the lights on at 20:00.</li>
+          <li><strong>Capacity factor is doing a lot of work.</strong> Nuclear and coal assume high utilisation; peaking plant assumes very little. Change the assumption and the ranking moves.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h4">Method and sources</h2>
+        <p class="mb-2"><strong>Method.</strong> Unsubsidised, utility-scale, full-lifecycle LCOE per technology, expressed in ZAR/MWh in nominal money of the stated year, presented as a low–high range rather than a point estimate. Midpoint lines are the arithmetic mean of the range, not a weighted central case. Solar PV and onshore wind low ends are anchored on REIPPPP bid-window tariffs; thermal, nuclear, storage, CSP and offshore wind ranges follow EPRI/IRP modelling and IRENA benchmarks, escalated to the stated year.</p>
+        <h3 class="h6 mt-4">Primary sources</h3>
+        <ul class="small">
+          <li><strong>EPRI</strong>, <em>Supply-Side Cost and Performance Data for Eskom Integrated Resource Planning: 2023–2024 Update</em> — the closest South African equivalent to Lazard; LCOE and full cost/performance data for coal with and without CCS, CCGT and OCGT, nuclear (EPR, AP1000, SMR), solar PV with battery, CSP, offshore wind, storage and conversion options. Published by the Department of Mineral Resources and Energy for the IRP process.</li>
+          <li><strong>Department of Mineral Resources and Energy</strong>, Integrated Resource Plan 2019 and subsequent IRP inputs — the policy demand case and cost assumptions.</li>
+          <li><strong>REIPPPP bid-window results</strong>, Independent Power Producer Office — actual winning tariffs, Bid Window 1 (2011) through Bid Window 7 (2023/24). The most reliable market signal for solar PV and onshore wind in South Africa.</li>
+          <li><strong>IRENA</strong>, <em>Renewable Power Generation Costs</em> (annual) — global and African regional LCOE benchmarks for solar, wind and CSP.</li>
+          <li><strong>CSIR and Meridian Economics</strong> analyses of IRP cost assumptions — useful correctives where official modelling diverges from observed market prices.</li>
+          <li><strong>Lazard</strong>, <em>Levelized Cost of Energy+</em> — the methodology and presentation this page follows, for US figures.</li>
+        </ul>
+        <p class="small text-muted mb-0">Caveat: the ranges here are an indicative compilation for comparison and teaching. They are not official EPRI, IRP or Lazard output, and they are not a substitute for the EPRI tables when a decision depends on the number. Where a figure matters, take it from the EPRI report and the bid-window record directly — and edit <code>js/lcoe-data.js</code> so this page reflects your source.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/lcoe-data.js"></script>
+  <script src="../js/lcoe-chart.js"></script>
+  <script src="../js/lcoe-table.js"></script>
+  <script src="../js/lcoe-csv.js"></script>
+  <script src="../js/lcoe-cost-mix.js"></script>
+  <script src="../js/lcoe-app.js"></script>
+</body>
+</html>

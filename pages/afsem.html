@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfSEM • Africa Continental Master Plan • Power • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .afsem-hero {
+      background: linear-gradient(135deg, #e3f2fd 0%, #fff8e1 50%, #e8f5e9 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.35rem; font-weight: 800; color: #002395; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .afsem-section { scroll-margin-top: 1rem; }
+    .afsem-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .stack-step {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.95rem;
+      height: 100%;
+    }
+    .stack-step .step-n {
+      display: inline-block;
+      background: #002395;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-bottom: 0.45rem;
+    }
+    .stack-step h3 { font-size: 1rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .warn-fact {
+      background: #fdeceb;
+      border-left: 4px solid #c62828;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    table.afsem-table td, table.afsem-table th { vertical-align: middle; font-size: 0.88rem; }
+    .tag {
+      display: inline-block;
+      background: #eaeefb;
+      border: 1px solid #bcc7ef;
+      color: #002395;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin: 0.1rem 0.15rem;
+    }
+    .tag.gold { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .tag.green { background: #e8f3ee; border-color: #b7d8c8; color: #145c38; }
+    .hover-effect:hover { transform: scale(1.03); transition: 0.3s; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="africa-continental-master-plan.html" class="btn btn-light btn-sm">🌍 CMP</a>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="afsem-hero mb-4">
+      <p class="small text-muted mb-1">Power · Africa Continental Master Plan · AfSEM</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">⚖️ African Single Electricity Market</h1>
+      <p class="lead mb-3">AfSEM is the market layer of the continental energy project. The CMP plans the wires. AfSEM is the rules, institutions and trading arrangements that would let 55 member states buy and sell across those wires. Adopted February 2021. Launched 3 June 2021. Target: fully operational by 2040.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#what">What it is</a>
+        <a class="btn btn-sm btn-outline-success" href="#five">Five tracks</a>
+        <a class="btn btn-sm btn-outline-success" href="#roadmap">Roadmap</a>
+        <a class="btn btn-sm btn-outline-success" href="#htoc">HTOC</a>
+        <a class="btn btn-sm btn-outline-success" href="#sa">SA plug-in</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">Feb 2021</div>
+          <div class="label">Adopted</div>
+          <div class="sub">34th AU Summit — policy, roadmap, governance</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">3 Jun 2021</div>
+          <div class="label">Public launch</div>
+          <div class="sub">African Single Electricity Market</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">55</div>
+          <div class="label">Member states</div>
+          <div class="sub">~1.3 billion people on the design</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">2040</div>
+          <div class="label">Operational</div>
+          <div class="sub">full AfSEM target year</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="afsem-section" id="what">
+      <h2>What it is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>AfSEM is the AU’s project to treat Africa as one electricity market. The 34th Assembly adopted a policy paper, a roadmap and a governance structure in February 2021. The public launch followed on 3 June 2021. The design covers all 55 AU member states.</p>
+          <p>Two jobs sit under the slogan. First, <strong>harmonise regulation</strong> so a megawatt in one pool can be scheduled, metered and paid for in another. Second, <strong>integrate generation, transmission and distribution masterplans</strong> so the CMP’s interconnectors actually have a market to land in. Continental guidelines call for an independent regulator, an independent transmission system operator and an independent distribution system operator — as a model, not as a single company in Addis running every grid.</p>
+          <p class="mb-0">AfSEM is an Agenda 2063 flagship under Aspiration 2 (an integrated Africa) and a named STYIP / Decade of Acceleration priority alongside AfCFTA, SAATM and the African Passport. The CMP is the sister project: physical planning. See <a href="africa-continental-master-plan.html">Africa Continental Master Plan</a>.</p>
+        </div>
+      </div>
+      <div class="key-fact mb-3">
+        <strong>CMP is the backbone. AfSEM is the market.</strong> A ratified masterplan without tradable capacity is a PDF. A market without interconnectors is five pools with a continental logo. Both have to move, and they move on different clocks.
+      </div>
+    </section>
+
+    <section class="afsem-section" id="five">
+      <h2>Five readiness tracks</h2>
+      <p class="text-muted">The 2021 package is organised around five strategic documents / work areas. They are the checklist, not a claim that each one is finished.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">1</span>
+            <h3>Regulatory readiness</h3>
+            <p class="small mb-0">Licensing, codes, third-party access, dispute resolution. A continental independent-regulator guideline that national regulators and pool secretariats can actually use.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">2</span>
+            <h3>Technical / operational readiness</h3>
+            <p class="small mb-0">Grid codes, frequency and voltage, scheduling, metering, system operations across pool seams. HTOC sits here.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">3</span>
+            <h3>Market readiness</h3>
+            <p class="small mb-0">Day-ahead and balancing products, wheeling, credit and collateral, how a SAPP trade becomes an EAPP or WAPP trade.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">4</span>
+            <h3>Liberalisation / unbundling</h3>
+            <p class="small mb-0">Utility restructuring so generation, transmission and supply can contract with each other. Vertically integrated monopolies cannot host a continental market on paper alone.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">5</span>
+            <h3>Institutions and governance</h3>
+            <p class="small mb-0">Who decides, who monitors, who sanctions. STC-TTIIE is the political council. HTOC is the operators’ committee. CEPA is the planning desk on the CMP side.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="step-n">GUIDELINE</span>
+            <h3>Independent TSO / DSO / regulator</h3>
+            <p class="small mb-0">Continental model, not a single African ISO. South Africa’s domestic version of the TSO piece is NTCSA. SAWEM is the domestic market piece.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="afsem-section" id="roadmap">
+      <h2>Roadmap</h2>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm afsem-table">
+          <thead class="table-light">
+            <tr>
+              <th>Phase</th>
+              <th>What the 2021 roadmap said</th>
+              <th>What 2025–26 actually looks like</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2020–2025</td>
+              <td>Preparation and governance. First market phase “as early as 2023.”</td>
+              <td>Institutions are standing up (HTOC, CEPA). The 2023 first-phase date was roadmap language, not a completed market.</td>
+            </tr>
+            <tr>
+              <td>2025–2040</td>
+              <td>Market build-out on the back of CMP interconnectors and pool coupling.</td>
+              <td>Live work is corridor bankability plus operator committees. Full AfSEM remains a 2040 target.</td>
+            </tr>
+            <tr>
+              <td>2040</td>
+              <td>Fully operational single market.</td>
+              <td>Still the official destination. Delivery is measured in energised lines and tradable capacity, not communiqués.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warn-fact mb-3">
+        Treat “as early as 2023” as the 2021 paper’s optimism, not as a claim that phase 1 closed on time. The 2025–2026 record is HTOC and CEPA meetings, two validated pre-feasibility studies, and a 2040 operational target that has not moved.
+      </div>
+    </section>
+
+    <section class="afsem-section" id="htoc">
+      <h2>HTOC and the political council</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>The <strong>Harmonisation of Transmission Operations Committee (HTOC)</strong> is AfSEM’s technical body. Pool operators and TSOs sit there to align codes, scheduling and the seams between regions.</p>
+          <ul>
+            <li><strong>Inaugural meeting</strong> — 30 June–1 July 2025.</li>
+            <li><strong>Formalisation</strong> — 28–30 September 2026, Addis Ababa: governance manual and technical working groups.</li>
+            <li><strong>STC-TTIIE</strong> — energy ministers, the political council above HTOC.</li>
+            <li><strong>CEPA</strong> — Continental Energy Planning Agency, the CMP planning desk (workshop 3–5 June 2026; Steering Committee 5 June 2026). HTOC operates the market rules; CEPA is supposed to keep the studies moving.</li>
+          </ul>
+          <p class="mb-0 src-note">Five pools remain the day-to-day operators. Dual membership (Angola and DRC in SAPP+CAPP; Tanzania and DRC in SAPP+EAPP; Libya in EAPP+COMELEC) is a feature of the map and a headache for a single set of rules.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="afsem-section" id="sa">
+      <h2>How South Africa plugs in</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Three nested markets, one country:</p>
+          <ul>
+            <li><strong>SAWEM</strong> — the domestic wholesale market being stood up. System marginal price, vesting, market code. See <a href="sawem.html">SAWEM</a> and <a href="sawem-market-structure.html">Market Structure</a>.</li>
+            <li><strong>NTCSA</strong> — the independent transmission system operator. This is Pretoria’s version of the AfSEM TSO guideline. See <a href="ntcsa.html">NTCSA</a>.</li>
+            <li><strong>SAPP</strong> — the regional pool. Day-ahead and other SAPP products are the existing cross-border market South Africa already sits in. See <a href="sapp.html">SAPP</a>.</li>
+            <li><strong>AfSEM</strong> — the continental layer those three would eventually report into. Not live. 2040 is the target.</li>
+          </ul>
+          <p class="mb-0">The CMP corridor that makes this more than a governance diagram is <strong>DRC–South Africa (Inga 3)</strong>: ~3,000 MW over 3,000+ km. Until that line, or ZTK plus the East African spine, carries firm energy, AfSEM for Pretoria is SAPP plus a continental committee. Creditworthy offtake, a working TSO and a transmission code neighbours will accept are the binding constraints — the same ones this dashboard already tracks under SAWEM and NTCSA.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="afsem-section" id="barriers">
+      <h2>What still blocks a single market</h2>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <div class="stack-step">
+            <h3>Wires</h3>
+            <p class="small mb-0">Most pool seams are thin or missing. ZTK is due around 2029. Inga 3 transmission is still pre-feasibility. North Core and Kenya–Tanzania are the exceptions already in construction.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <h3>Utilities</h3>
+            <p class="small mb-0">Many members still run vertically integrated, cash-strapped utilities. AfSEM’s unbundling track is the politically hardest of the five.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <h3>Credit</h3>
+            <p class="small mb-0">A continental market needs counterparties that pay. Offtaker risk is why CEPA’s first job is bankability of two interconnectors, not a day-ahead screen in Addis.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <h3>Rules</h3>
+            <p class="small mb-0">Five pools, overlapping membership, different codes. HTOC exists because the codes do not yet agree. Harmonisation is a multi-year operators’ fight, not a summit decision.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <a href="africa-continental-master-plan.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🌍</h1>
+              <h5 class="card-title text-sa-green">CMP Overview</h5>
+              <p class="card-text small text-muted">Phases, governance, the 2040 demand case, and the priority interconnector list.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="power-pools.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🔌</h1>
+              <h5 class="card-title text-sa-green">Power Pools</h5>
+              <p class="card-text small text-muted">SAPP, WAPP, CAPP, EAPP, COMELEC — the five regional markets AfSEM is meant to join.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>African Union / AFREC, AfSEM policy paper, roadmap and governance structure — adopted at the 34th AU Summit (February 2021); public launch 3 June 2021.</li>
+          <li>AUDA-NEPAD Continental Power System Master Plan (synthesis 15 September 2023) and 2025 annual report (AfSEM operational by 2040; fivefold capacity aim).</li>
+          <li>HTOC inaugural meeting 30 June–1 July 2025; formalisation 28–30 September 2026, Addis Ababa (governance manual and technical working groups).</li>
+          <li>STC-TTIIE as AfSEM political council; CEPA workshop and Steering Committee, Addis Ababa 3–5 June 2026.</li>
+          <li>AU Agenda 2063 STYIP / Decade of Acceleration — AfSEM listed with AfCFTA, SAATM and the African Passport. Dashboard page: <a href="au-agenda-2063.html">AU Agenda 2063</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="africa-continental-master-plan.html" class="btn btn-outline-secondary">🌍 CMP Overview</a>
+      <a href="power-pools.html" class="btn btn-outline-secondary">🔌 Power Pools</a>
+      <a href="sapp.html" class="btn btn-outline-secondary">SAPP</a>
+      <a href="sawem.html" class="btn btn-outline-secondary">SAWEM</a>
+      <a href="ntcsa.html" class="btn btn-outline-secondary">NTCSA</a>
+      <a href="power.html" class="btn btn-outline-secondary">⚡ Power</a>
+    </div>
+  </div>
+</body>
+</html>

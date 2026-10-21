@@ -7,15 +7,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="../js/africa-data.js" defer></script>
-  <script src="../js/pink-sheet.js" defer></script>
+  <script src="../js/africa-data.js?v=4" defer></script>
+  <script src="../js/pink-sheet.js?v=4" defer></script>
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
-    <div class="container-fluid">
+<body class="data-page">
+  <nav class="navbar navbar-expand-lg navbar-dark data-nav">
+    <div class="container-fluid py-1">
       <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
       <div class="d-flex gap-2">
         <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
@@ -25,329 +25,618 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <h1 class="display-5 fw-bold text-sa-green">📊 Economic Data</h1>
-    <p class="lead">USD/ZAR Exchange Rate, GDP, Inflation, Access to Electricity, Population, and Commodity Prices — from your CSVs.</p>
-
-    <!-- USD/ZAR -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">💱 USD to ZAR Exchange Rate</h5>
+  <div class="data-board">
+    <header class="data-board-head">
+      <div>
+        <h1>📊 Economic Data</h1>
+        <p>Click a chart to expand it full screen.</p>
       </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-rate" class="fs-3 fw-bold text-sa-green">Loading data...</div>
-          <div class="btn-group currency-btn-group" role="group">
-            <button onclick="setTimeframeZar(30, this)" class="btn btn-outline-success btn-sm">30 Days</button>
-            <button onclick="setTimeframeZar(90, this)" class="btn btn-outline-success btn-sm">3 Months</button>
-            <button onclick="setTimeframeZar(365, this)" class="btn btn-outline-success btn-sm">1 Year</button>
-            <button onclick="setTimeframeZar(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
+      <div class="data-board-note" id="commodity-prices"></div>
+    </header>
+
+    <div class="data-grid" id="dataGrid">
+
+      <article class="card data-tile" data-tile="zar">
+        <header class="data-tile-head">
+          <h2>💱 USD/ZAR</h2>
+          <span class="data-tile-stat" id="current-rate">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="zarChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://fred.stlouisfed.org/series/DEXSFUS" target="_blank" rel="noopener">FRED DEXSFUS</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="gdp">
+        <header class="data-tile-head">
+          <h2>📊 GDP</h2>
+          <span class="data-tile-stat" id="current-gdp">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="gdpChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?locations=ZA" target="_blank" rel="noopener">World Bank NY.GDP.MKTP.CD</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="gdp-pc">
+        <header class="data-tile-head">
+          <h2>💰 GDP/capita</h2>
+          <span class="data-tile-stat" id="current-gdp-pc">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="gdpPcChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?locations=ZA" target="_blank" rel="noopener">World Bank NY.GDP.PCAP.CD</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="inflation">
+        <header class="data-tile-head">
+          <h2>📈 Inflation</h2>
+          <span class="data-tile-stat" id="current-inflation">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="inflationChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://fred.stlouisfed.org/series/FPCPITOTLZGZAF" target="_blank" rel="noopener">FRED FPCPITOTLZGZAF</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="gdp-pc-growth">
+        <header class="data-tile-head">
+          <h2>📈 Real GDP/cap YoY</h2>
+          <span class="data-tile-stat" id="current-gdp-pc-growth">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="gdpPcGrowthChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.KD.ZG?locations=ZA" target="_blank" rel="noopener">World Bank NY.GDP.PCAP.KD.ZG</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="exports">
+        <header class="data-tile-head">
+          <h2>📤 Exports by partner</h2>
+          <span class="data-tile-stat" id="current-exports">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="exportsChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener">UN Comtrade</a> merchandise exports (FOB, current US$) · top 10 partners + rest</p>
+      </article>
+
+      <article class="card data-tile" data-tile="imports">
+        <header class="data-tile-head">
+          <h2>📥 Imports by partner</h2>
+          <span class="data-tile-stat" id="current-imports">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="importsChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener">UN Comtrade</a> merchandise imports (current US$) · top 10 partners + rest</p>
+      </article>
+
+      <article class="card data-tile" data-tile="fdi">
+        <header class="data-tile-head">
+          <h2>🌍 FDI inflows</h2>
+          <span class="data-tile-stat" id="current-fdi">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="fdiChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/BX.KLT.DINV.CD.WD?locations=ZA" target="_blank" rel="noopener">World Bank BX.KLT.DINV.CD.WD</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="access">
+        <header class="data-tile-head">
+          <h2>⚡ SAPP access %</h2>
+          <span class="data-tile-stat" id="current-access">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="accessChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS" target="_blank" rel="noopener">World Bank EG.ELC.ACCS.ZS</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="pop-access">
+        <header class="data-tile-head">
+          <h2>👥 SAPP population</h2>
+          <span class="data-tile-stat" id="current-pop-access">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="popAccessChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/SP.POP.TOTL" target="_blank" rel="noopener">World Bank SP.POP.TOTL</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="pop-without">
+        <header class="data-tile-head">
+          <h2>🚫 SAPP without access</h2>
+          <span class="data-tile-stat" id="current-pop-without">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="popWithoutChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS" target="_blank" rel="noopener">World Bank WDI</a> (pop × (1 − access %))</p>
+      </article>
+
+      <article class="card data-tile" data-tile="africa-line" id="africa-section">
+        <header class="data-tile-head">
+          <h2>🌍 Africa access series</h2>
+          <span class="data-tile-stat">World Bank · 54 countries</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="africaLineChart" class="plotly-host"></div></div>
+        <div class="data-tile-controls">
+          <div id="africaSummary" class="data-africa-summary text-muted small">Loading population + electricity access for 54 African countries from the World Bank API…</div>
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="text-muted small fw-semibold">Show:</span>
+            <div class="btn-group btn-group-sm" role="group">
+              <button class="btn btn-outline-success active" data-africa-metric="without">🚫 Without access</button>
+              <button class="btn btn-outline-success" data-africa-metric="access">⚡ Access %</button>
+              <button class="btn btn-outline-success" data-africa-metric="pop">👥 Population</button>
+            </div>
+            <button id="africaRefreshBtn" class="btn btn-outline-success btn-sm">↻ Refresh</button>
+            <button id="africaDownloadBtn" class="btn btn-outline-success btn-sm">⬇ CSV</button>
           </div>
         </div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS" target="_blank" rel="noopener">World Bank API</a> · <a href="https://data.worldbank.org/indicator/SP.POP.TOTL" target="_blank" rel="noopener">SP.POP.TOTL</a></p>
+      </article>
 
-        <canvas id="zarChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="zarStartLabel"></span>
-            <span id="zarEndLabel"></span>
-          </div>
-          <div class="d-flex gap-2 align-items-center">
-            <input id="zarStartRange" type="range" class="form-range flex-grow-1" />
-            <input id="zarEndRange" type="range" class="form-range flex-grow-1" />
-          </div>
+      <article class="card data-tile" data-tile="africa-pie">
+        <header class="data-tile-head">
+          <h2>🌍 Africa breakdown</h2>
+          <span class="data-tile-stat">Latest year in range</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="africaPieChart" class="plotly-host"></div></div>
+        <div class="data-tile-controls">
+          <p class="small text-muted mb-0">Shares the World Bank metric from the Africa series tile. Expand that tile to change the metric.</p>
         </div>
-      </div>
+        <p class="data-source-note">Source: <a href="https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS" target="_blank" rel="noopener">World Bank API</a></p>
+      </article>
+
+      <article class="card data-tile" data-tile="gold">
+        <header class="data-tile-head">
+          <h2>🏅 Gold</h2>
+          <span class="data-tile-stat">$/oz</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="goldChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Pink Sheet</a> · <a href="https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Annual.xlsx" target="_blank" rel="noopener">annual xlsx</a></p>
+      </article>
+      <article class="card data-tile" data-tile="gold-share">
+        <header class="data-tile-head">
+          <h2>🏅 Gold production</h2>
+          <span class="data-tile-stat" id="current-gold-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="goldShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (SA mine, kg→t) · world <a href="https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries" target="_blank" rel="noopener">USGS MCS</a> via <a href="https://ourworldindata.org/explorers/minerals" target="_blank" rel="noopener">OWID</a></p>
+      </article>
+      <article class="card data-tile" data-tile="platinum">
+        <header class="data-tile-head">
+          <h2>💎 Platinum</h2>
+          <span class="data-tile-stat">$/oz</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="platinumChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Pink Sheet</a> · <a href="https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Annual.xlsx" target="_blank" rel="noopener">annual xlsx</a></p>
+      </article>
+      <article class="card data-tile" data-tile="platinum-share">
+        <header class="data-tile-head">
+          <h2>💎 Platinum production</h2>
+          <span class="data-tile-stat" id="current-platinum-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="platinumShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (mine, kg→t) · world <a href="https://www.usgs.gov/centers/national-minerals-information-center/platinum-group-metals-statistics-and-information" target="_blank" rel="noopener">USGS PGMs</a> via <a href="https://ourworldindata.org/explorers/minerals" target="_blank" rel="noopener">OWID</a></p>
+      </article>
+      <article class="card data-tile" data-tile="rhodium">
+        <header class="data-tile-head">
+          <h2>🔴 Rhodium</h2>
+          <span class="data-tile-stat">$/oz</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="rhodiumChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://matthey.com/products-and-markets/pgms-and-circularity/pgm-management" target="_blank" rel="noopener">Johnson Matthey PGM prices</a></p>
+      </article>
+      <article class="card data-tile" data-tile="rhodium-share">
+        <header class="data-tile-head">
+          <h2>🔴 Rhodium production</h2>
+          <span class="data-tile-stat" id="current-rhodium-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="rhodiumShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (mine rhodium, kg→t; country sum for world). Split series starts 2018.</p>
+      </article>
+      <article class="card data-tile" data-tile="coal">
+        <header class="data-tile-head">
+          <h2>⚫ Coal SA</h2>
+          <span class="data-tile-stat">$/tonne</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="coalChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Pink Sheet</a> · <a href="https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Annual.xlsx" target="_blank" rel="noopener">annual xlsx</a></p>
+      </article>
+      <article class="card data-tile" data-tile="coal-share">
+        <header class="data-tile-head">
+          <h2>⚫ Coal production</h2>
+          <span class="data-tile-stat" id="current-coal-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="coalShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (hard coal) · world <a href="https://ourworldindata.org/grapher/coal-production-by-country" target="_blank" rel="noopener">OWID / Energy Institute</a></p>
+      </article>
+      <article class="card data-tile" data-tile="iron">
+        <header class="data-tile-head">
+          <h2>🪨 Iron ore</h2>
+          <span class="data-tile-stat">$/dmtu</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="ironOreChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Pink Sheet</a> · <a href="https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Annual.xlsx" target="_blank" rel="noopener">annual xlsx</a></p>
+      </article>
+      <article class="card data-tile" data-tile="iron-share">
+        <header class="data-tile-head">
+          <h2>🪨 Iron ore production</h2>
+          <span class="data-tile-stat" id="current-iron-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="ironShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (usable/gross ore) · world <a href="https://www.usgs.gov/centers/national-minerals-information-center/iron-ore-statistics-and-information" target="_blank" rel="noopener">USGS iron ore</a> via <a href="https://ourworldindata.org/explorers/minerals" target="_blank" rel="noopener">OWID</a></p>
+      </article>
+      <article class="card data-tile" data-tile="manganese">
+        <header class="data-tile-head">
+          <h2>🔋 Manganese</h2>
+          <span class="data-tile-stat">$/dmtu</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="manganeseChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.usgs.gov/centers/national-minerals-information-center/manganese-statistics-and-information" target="_blank" rel="noopener">USGS manganese</a></p>
+      </article>
+      <article class="card data-tile" data-tile="manganese-share">
+        <header class="data-tile-head">
+          <h2>🔋 Manganese production</h2>
+          <span class="data-tile-stat" id="current-manganese-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="manganeseShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (manganese ore, gross weight; world = country sum)</p>
+      </article>
+      <article class="card data-tile" data-tile="ferrochrome">
+        <header class="data-tile-head">
+          <h2>🟢 Ferrochrome</h2>
+          <span class="data-tile-stat">$/lb</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="ferrochromeChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.usgs.gov/centers/national-minerals-information-center/chromium-statistics-and-information" target="_blank" rel="noopener">USGS chromium</a></p>
+      </article>
+      <article class="card data-tile" data-tile="chromium-share">
+        <header class="data-tile-head">
+          <h2>🟢 Chromium production</h2>
+          <span class="data-tile-stat" id="current-chromium-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="chromiumShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (chromite ore, gross weight) · world <a href="https://www.usgs.gov/centers/national-minerals-information-center/chromium-statistics-and-information" target="_blank" rel="noopener">USGS chromium</a> via <a href="https://ourworldindata.org/explorers/minerals" target="_blank" rel="noopener">OWID</a></p>
+      </article>
+      <article class="card data-tile" data-tile="vanadium">
+        <header class="data-tile-head">
+          <h2>⚡ Vanadium</h2>
+          <span class="data-tile-stat">$/lb</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="vanadiumChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.usgs.gov/centers/national-minerals-information-center/vanadium-statistics-and-information" target="_blank" rel="noopener">USGS vanadium</a></p>
+      </article>
+      <article class="card data-tile" data-tile="vanadium-share">
+        <header class="data-tile-head">
+          <h2>⚡ Vanadium production</h2>
+          <span class="data-tile-stat" id="current-vanadium-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="vanadiumShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (mine, metal content; world = country sum)</p>
+      </article>
+      <article class="card data-tile" data-tile="diamond">
+        <header class="data-tile-head">
+          <h2>💎 Diamonds</h2>
+          <span class="data-tile-stat">Index</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="diamondChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.usgs.gov/centers/national-minerals-information-center/diamond-industrial-statistics-and-information" target="_blank" rel="noopener">USGS diamonds</a></p>
+      </article>
+      <article class="card data-tile" data-tile="diamond-share">
+        <header class="data-tile-head">
+          <h2>💎 Diamond production</h2>
+          <span class="data-tile-stat" id="current-diamond-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="diamondShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (gem + industrial, carats; world = country sum)</p>
+      </article>
+      <article class="card data-tile" data-tile="uranium">
+        <header class="data-tile-head">
+          <h2>☢️ Uranium</h2>
+          <span class="data-tile-stat" id="current-uranium">$/lb</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="uraniumChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.cameco.com/invest/markets/uranium-price" target="_blank" rel="noopener">Cameco</a> spot (UxC / TradeTech industry average)</p>
+      </article>
+      <article class="card data-tile" data-tile="uranium-share">
+        <header class="data-tile-head">
+          <h2>☢️ Uranium production</h2>
+          <span class="data-tile-stat" id="current-uranium-share">Loading…</span>
+          <button type="button" class="data-tile-toggle" aria-label="Expand chart">⛶</button>
+        </header>
+        <div class="data-tile-chart"><div id="uraniumShareChart" class="plotly-host"></div></div>
+        <p class="data-source-note">Source: <a href="https://www.bgs.ac.uk/mineralsuk/statistics/world-mineral-statistics/" target="_blank" rel="noopener">BGS World Mineral Statistics</a> (mine, metal content) · world <a href="https://ourworldindata.org/explorers/minerals" target="_blank" rel="noopener">OWID / BGS</a></p>
+      </article>
+
     </div>
-
-    <!-- GDP -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">📊 South Africa GDP (current US$)</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-gdp" class="fs-3 fw-bold text-sa-green">Loading GDP data...</div>
-          <div class="btn-group gdp-btn-group" role="group">
-            <button onclick="setGdpTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setGdpTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setGdpTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-
-        <canvas id="gdpChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="gdpStartLabel"></span>
-            <span id="gdpEndLabel"></span>
-          </div>
-          <div class="d-flex gap-2 align-items-center">
-            <input id="gdpStartRange" type="range" class="form-range flex-grow-1" />
-            <input id="gdpEndRange" type="range" class="form-range flex-grow-1" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Inflation -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">📈 South Africa Inflation Rate (%)</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-inflation" class="fs-3 fw-bold text-sa-green">Loading inflation data...</div>
-          <div class="btn-group inflation-btn-group" role="group">
-            <button onclick="setInflationTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setInflationTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setInflationTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-
-        <canvas id="inflationChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="inflationStartLabel"></span>
-            <span id="inflationEndLabel"></span>
-          </div>
-          <div class="d-flex gap-2 align-items-center">
-            <input id="inflationStartRange" type="range" class="form-range flex-grow-1" />
-            <input id="inflationEndRange" type="range" class="form-range flex-grow-1" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Access to Electricity (SAPP) -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">⚡ Access to Electricity (SAPP • 12 countries)</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-access" class="fs-3 fw-bold text-sa-green">Loading access data...</div>
-          <div class="text-muted small">SAPP members (by year)</div>
-          <div class="btn-group access-btn-group" role="group">
-            <button onclick="setAccessTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setAccessTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setAccessTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-
-        <canvas id="accessChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="accessStartLabel"></span>
-            <span id="accessEndLabel"></span>
-          </div>
-          <div class="d-flex align-items-center">
-            <input id="accessWindowRange" type="range" class="form-range flex-grow-1" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Population with access (SAPP) -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">👥 Population (SAPP • 12 countries)</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-pop-access" class="fs-3 fw-bold text-sa-green">Loading population (with access)...</div>
-          <div class="text-muted small">SAPP members (by year)</div>
-          <div class="btn-group pop-access-btn-group" role="group">
-            <button onclick="setPopAccessTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setPopAccessTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setPopAccessTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-
-        <canvas id="popAccessChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="popAccessStartLabel"></span>
-            <span id="popAccessEndLabel"></span>
-          </div>
-          <div class="d-flex align-items-center">
-            <input id="popAccessWindowRange" type="range" class="form-range flex-grow-1" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Population without access (SAPP) -->
-    <div class="card shadow-sm mt-4">
-      <div class="card-header bg-light">
-        <h5 class="mb-0">🚫 Population without Access to Electricity (SAPP • 12 countries)</h5>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-column flex-md-row gap-2">
-          <div id="current-pop-without" class="fs-3 fw-bold text-sa-green">Loading population (without access)...</div>
-          <div class="text-muted small">SAPP members (by year)</div>
-          <div class="btn-group pop-without-btn-group" role="group">
-            <button onclick="setPopWithoutTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setPopWithoutTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setPopWithoutTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-
-        <canvas id="popWithoutChart" height="170"></canvas>
-
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="popWithoutStartLabel"></span>
-            <span id="popWithoutEndLabel"></span>
-          </div>
-          <div class="d-flex align-items-center">
-            <input id="popWithoutWindowRange" type="range" class="form-range flex-grow-1" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- AFRICA: World Bank API — population, access %, computed without-access -->
-    <div class="card shadow-sm mt-4" id="africa-section">
-      <div class="card-header bg-light d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-        <h5 class="mb-0">🌍 Africa — Electricity Access & Population (World Bank API)</h5>
-        <div class="d-flex flex-wrap gap-2">
-          <button id="africaRefreshBtn" class="btn btn-outline-success btn-sm">↻ Refresh from API</button>
-          <button id="africaDownloadBtn" class="btn btn-outline-success btn-sm">⬇ Download CSV</button>
-        </div>
-      </div>
-      <div class="card-body">
-        <div id="africaSummary" class="mb-3 text-muted small">Loading population + electricity access for 54 African countries from the World Bank API…</div>
-
-        <!-- Metric selector -->
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-          <span class="text-muted small fw-semibold">Show:</span>
-          <div class="btn-group btn-group-sm" role="group">
-            <button class="btn btn-outline-success active" data-africa-metric="without">🚫 Population without access</button>
-            <button class="btn btn-outline-success" data-africa-metric="access">⚡ Access %</button>
-            <button class="btn btn-outline-success" data-africa-metric="pop">👥 Total population</button>
-          </div>
-        </div>
-
-        <!-- Time series -->
-        <div class="d-flex justify-content-between align-items-center mb-2 flex-column flex-md-row gap-2">
-          <div class="fw-semibold">Time series — all 54 African countries</div>
-          <div class="btn-group africa-btn-group btn-group-sm" role="group">
-            <button onclick="setAfricaTimeframe(10, this)" class="btn btn-outline-success btn-sm">10 Years</button>
-            <button onclick="setAfricaTimeframe(20, this)" class="btn btn-outline-success btn-sm">20 Years</button>
-            <button onclick="setAfricaTimeframe(9999, this)" class="btn btn-outline-success btn-sm active">All Time</button>
-          </div>
-        </div>
-        <canvas id="africaLineChart" height="200"></canvas>
-
-        <!-- Year range slider -->
-        <div class="mt-2">
-          <div class="d-flex justify-content-between small text-muted">
-            <span id="africaRangeLabel"></span>
-          </div>
-          <input id="africaWindowRange" type="range" class="form-range" />
-        </div>
-
-        <hr class="my-4">
-
-        <!-- Country breakdown chart -->
-        <div class="fw-semibold mb-2">Country breakdown — latest year in the selected range</div>
-        <canvas id="africaPieChart" height="220"></canvas>
-      </div>
-    </div>
-
   </div>
 
-    <div class="container-fluid mt-4 px-0" id="commodity-prices">
-    <h2 class="display-6 fw-bold text-sa-green mt-4 mb-2">⛏️ Mining Commodity Prices</h2>
-    <p class="text-muted mb-3 small">Annual average prices (nominal USD) for South Africa's major mining commodities.</p>
-
-    <div class="row g-2">
-      <!-- Gold -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🏅 Gold ($/oz)</h6></div>
-          <div class="card-body p-1"><canvas id="goldChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Platinum -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">💎 Platinum ($/oz)</h6></div>
-          <div class="card-body p-1"><canvas id="platinumChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Rhodium -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🔴 Rhodium ($/oz)</h6></div>
-          <div class="card-body p-1"><canvas id="rhodiumChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Coal -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">⚫ Coal SA ($/tonne)</h6></div>
-          <div class="card-body p-1"><canvas id="coalChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Iron Ore -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🪨 Iron Ore ($/dmtu)</h6></div>
-          <div class="card-body p-1"><canvas id="ironOreChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Manganese -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🔋 Manganese ($/dmtu)</h6></div>
-          <div class="card-body p-1"><canvas id="manganeseChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Ferrochrome -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">🟢 Ferrochrome ($/lb)</h6></div>
-          <div class="card-body p-1"><canvas id="ferrochromeChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Vanadium -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">⚡ Vanadium ($/lb)</h6></div>
-          <div class="card-body p-1"><canvas id="vanadiumChart" height="80"></canvas></div>
-        </div>
-      </div>
-      <!-- Diamonds -->
-      <div class="col-lg-4 col-xl-3 col-xxl-2">
-        <div class="card shadow-sm h-100">
-          <div class="card-header bg-light py-1"><h6 class="mb-0" style="font-size:0.8rem">💎 Diamond Index</h6></div>
-          <div class="card-body p-1"><canvas id="diamondChart" height="80"></canvas></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
+  <div class="data-backdrop" id="dataBackdrop" hidden></div>
 
   <style>
-    .chart-range-controls input[type="range"] { min-width: 120px; }
+    html, body.data-page {
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-width: 100%;
+      background: #e9ecef;
+    }
+    body.data-page {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+    }
+    body.data-expanded {
+      overflow: hidden;
+      height: 100%;
+    }
+    .data-nav {
+      background: linear-gradient(to right, #007A4D, #FFCD00, #002395);
+      min-height: 48px;
+      flex: 0 0 auto;
+    }
+    .data-nav .navbar-brand { font-size: 1rem; }
+    .data-board {
+      flex: 0 0 auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+    }
+    .data-board-head {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 10px 4px;
+    }
+    .data-board-head h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #007A4D;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .data-board-head p {
+      margin: 0;
+      font-size: 0.72rem;
+      color: #6c757d;
+    }
+    .data-board-note {
+      font-size: 0.68rem;
+      color: #6c757d;
+      margin: 0;
+      max-width: 42%;
+      text-align: right;
+    }
+    .data-board-note p { margin: 0; font-size: inherit; }
+    .data-grid {
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: calc((100vh - 96px) / 3);
+      gap: 8px;
+      padding: 0 8px 8px;
+    }
+    .data-tile {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      margin: 0;
+      border: 2px solid #111;
+      box-shadow: 3px 3px 0 #111;
+      background: #fff;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .data-tile-head {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px 3px;
+      border-bottom: 1px solid #dee2e6;
+      min-width: 0;
+    }
+    .data-tile-head h2 {
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin: 0;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .data-tile-stat {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: #007A4D;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: right;
+    }
+    .data-freq {
+      flex: 0 0 auto;
+      display: inline-flex;
+      border: 1px solid #111;
+      overflow: hidden;
+      margin-left: 2px;
+    }
+    .data-freq-btn {
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      padding: 1px 5px;
+      border: 0;
+      background: #fff;
+      color: #111;
+      cursor: pointer;
+      line-height: 1.35;
+    }
+    .data-freq-btn + .data-freq-btn { border-left: 1px solid #111; }
+    .data-freq-btn.is-active { background: #FFCD00; }
+    .data-freq-full { display: none; }
+    .data-freq-short { display: inline; }
+    .data-tile.is-expanded .data-freq-full { display: inline; }
+    .data-tile.is-expanded .data-freq-short { display: none; }
+    .data-tile-toggle {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border: 1px solid #111;
+      background: #FFCD00;
+      font-size: 0.72rem;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+    }
+    .data-tile-chart {
+      flex: 1 1 auto;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .data-tile-chart .plotly-host,
+    .data-tile-chart .js-plotly-plot,
+    .data-tile-chart .plot-container,
+    .data-tile-chart .svg-container,
+    .data-tile-chart .main-svg {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+    .data-tile:not(.is-expanded) .data-tile-chart .modebar { display: none !important; }
+    .plotly-notifier { display: none !important; }
+    .data-tile-placeholder {
+      min-width: 0;
+      min-height: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .data-tile-controls {
+      display: none;
+      flex: 0 0 auto;
+      padding: 8px 10px 10px;
+      border-top: 1px solid #dee2e6;
+      background: #f8f9fa;
+      overflow: auto;
+    }
+    .data-source-note,
+    .pink-source-note {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 1px 6px 3px;
+      font-size: 0.58rem;
+      line-height: 1.25;
+      color: #6c757d;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-top: 1px solid #f0f0f0;
+    }
+    .data-source-note a,
+    .pink-source-note a {
+      color: #007A4D;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .data-source-note a:hover,
+    .pink-source-note a:hover { text-decoration: underline; }
+    .data-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 16, 0.62);
+      z-index: 1040;
+    }
+    body.data-expanded .data-backdrop { display: block; }
+    .data-tile.is-expanded {
+      position: fixed;
+      inset: 16px 20px;
+      z-index: 1050;
+      cursor: default;
+      box-shadow: 8px 8px 0 #111;
+      display: flex;
+      flex-direction: column;
+    }
+    .data-tile.is-expanded .data-tile-head {
+      padding: 10px 14px 8px;
+    }
+    .data-tile.is-expanded .data-tile-head h2 { font-size: 1.05rem; }
+    .data-tile.is-expanded .data-tile-stat { font-size: 0.85rem; }
+    .data-tile.is-expanded .data-freq-btn { font-size: 0.7rem; padding: 3px 8px; }
+    .data-tile.is-expanded .data-tile-chart { flex: 1 1 auto; min-height: 0; }
+    .data-tile.is-expanded .data-tile-controls {
+      display: block;
+      max-height: 28vh;
+    }
+    .data-tile.is-expanded .data-source-note,
+    .data-tile.is-expanded .pink-source-note {
+      font-size: 0.78rem;
+      padding: 8px 12px 10px;
+      white-space: normal;
+    }
+    .data-africa-summary .fs-4 { font-size: 1.15rem !important; }
+    @media (max-width: 1200px) {
+      .data-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .data-board-note { display: none; }
+    }
+    @media (max-width: 700px) {
+      .data-nav .navbar-brand { font-size: 0.85rem; }
+      .data-nav .btn { padding: 0.12rem 0.4rem; font-size: 0.72rem; }
+      .data-board-head p { display: none; }
+      .data-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+        padding: 0 5px 5px;
+        width: 100%;
+      }
+      .data-tile { box-shadow: 2px 2px 0 #111; }
+      .data-tile.is-expanded { inset: 8px; }
+      .data-tile-head h2 { font-size: 0.62rem; }
+      .data-tile-stat { display: none; }
+      .data-source-note { font-size: 0.5rem; padding: 0 3px 2px; }
+    }
   </style>
 
   <script>
     // ------------------------
     // Charts + full data caches
     // ------------------------
-    let zarChart, gdpChart, inflationChart;
-    let accessChart, popAccessChart, popWithoutChart;
+    const plotRegistry = {};
 
     let rateHistory = [];
     let gdpHistory = [];
+    let gdpPcHistory = [];
     let inflationHistory = [];
+    let gdpPcGrowthHistory = [];
+    let fdiHistory = [];
+    let tradeExportsPack = null;
+    let tradeImportsPack = null;
 
     // Exactly the 12 countries the user wants shown in the bottom charts.
     const SAPP_CANONICAL = [
@@ -411,6 +700,11 @@
       "#dc3545","#17a2b8","#6610f2","#28a745","#e83e8c","#343a40"
     ];
 
+    const TRADE_COLORS = [
+      "#c0392b","#2980b9","#2c3e50","#27ae60","#8e44ad","#d35400",
+      "#16a085","#f39c12","#1abc9c","#e74c3c","#34495e"
+    ];
+
     // Access caches
     let accessYears = [];
     let accessValuesByCountry = {};
@@ -427,14 +721,12 @@
     // Full label/value arrays
     let zarLabelsFull = [], zarValuesFull = [];
     let gdpLabelsFull = [], gdpValuesFull = [];
+    let gdpPcLabelsFull = [], gdpPcValuesFull = [];
     let inflationLabelsFull = [], inflationValuesFull = [];
+    let gdpPcGrowthLabelsFull = [], gdpPcGrowthValuesFull = [];
+    let fdiLabelsFull = [], fdiValuesFull = [];
 
     let fullAccessLabels = [], fullPopAccessLabels = [], fullPopWithoutLabels = [];
-
-    // Bottom chart window sizes (10/20/all-time)
-    let accessWindowSize = 9999;
-    let popAccessWindowSize = 9999;
-    let popWithoutWindowSize = 9999;
 
     // ------------------------
     // Utilities
@@ -442,77 +734,355 @@
     function parseNumberLoose(value) {
       if (value === null || value === undefined) return null;
       if (typeof value === 'number' && Number.isFinite(value)) return value;
-      const s = String(value).replace(/,/g, '').trim();
+      let s = String(value).replace(/,/g, '').trim();
       if (!s) return null;
+      let neg = false;
+      if (/^\(.*\)$/.test(s)) {
+        neg = true;
+        s = s.slice(1, -1).trim();
+      }
       const n = parseFloat(s);
       if (Number.isNaN(n)) return null;
-      return n;
+      return neg ? -n : n;
     }
 
-    function setButtonActive(groupSelector, btn, activeClass="active") {
-      document.querySelectorAll(groupSelector + " button").forEach(b => b.classList.remove(activeClass));
-      if (btn) btn.classList.add(activeClass);
+    function parseYearValueCsv(text) {
+      const parsed = Papa.parse(text, { header: true, dynamicTyping: false, skipEmptyLines: true });
+      const fields = (parsed.meta && parsed.meta.fields) ? parsed.meta.fields : [];
+      const yearKey = fields[0];
+      const valKey = fields[1];
+      return parsed.data
+        .map(function (row) {
+          const year = String(row[yearKey] == null ? '' : row[yearKey]).trim();
+          if (!/^\d{4}$/.test(year)) return null;
+          const v = parseNumberLoose(row[valKey]);
+          if (v == null) return null;
+          return { time: year, value: v };
+        })
+        .filter(Boolean)
+        .sort(function (a, b) { return parseInt(a.time, 10) - parseInt(b.time, 10); });
     }
 
-    function clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
+    function downsampleSeries(labels, values, maxPoints) {
+      const n = labels.length;
+      if (n <= maxPoints) return { labels: labels.slice(), values: values.slice() };
+      const step = Math.ceil(n / maxPoints);
+      const L = [], V = [];
+      for (let i = 0; i < n; i += step) {
+        L.push(labels[i]);
+        V.push(values[i]);
+      }
+      if (L[L.length - 1] !== labels[n - 1]) {
+        L.push(labels[n - 1]);
+        V.push(values[n - 1]);
+      }
+      return { labels: L, values: V };
     }
 
-    function commonLineStyle() {
+    function yearlyAverage(labels, values) {
+      const buckets = {};
+      for (let i = 0; i < labels.length; i++) {
+        const y = String(labels[i]).slice(0, 4);
+        const v = Number(values[i]);
+        if (!Number.isFinite(v)) continue;
+        if (!buckets[y]) buckets[y] = { sum: 0, n: 0 };
+        buckets[y].sum += v;
+        buckets[y].n += 1;
+      }
+      const years = Object.keys(buckets).sort();
       return {
-        borderWidth: 3,
-        tension: 0.2,
-        pointRadius: 3,
-        pointHoverRadius: 7,
-        pointHitRadius: 12
+        labels: years,
+        values: years.map(function (y) { return buckets[y].sum / buckets[y].n; })
       };
     }
 
-    function commonChartOptions(yTitle) {
-      return {
-        responsive: true,
-        maintainAspectRatio: true,
-        interaction: { mode: 'nearest', intersect: false },
-        plugins: {
-          legend: { display: true, position: 'bottom', labels: { boxWidth: 12 } },
-          tooltip: { enabled: true }
-        },
-        spanGaps: true,
-        scales: {
-          y: { title: { display: true, text: yTitle } }
+    const PLOT_CONFIG = {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false
+    };
+
+    function tileIsExpanded(el) {
+      const tile = el && el.closest ? el.closest('.data-tile') : null;
+      return !!(tile && tile.classList.contains('is-expanded'));
+    }
+
+    function dataPlotLayout(opts) {
+      opts = opts || {};
+      const expanded = !!opts.expanded;
+      const isPie = !!opts.pie;
+      const nTraces = opts.nTraces || 1;
+      const showLegend = expanded && !isPie && nTraces > 1 && nTraces <= 16;
+      const layout = {
+        autosize: true,
+        margin: expanded
+          ? (isPie ? { l: 16, r: 16, t: 12, b: 16 } : { l: 54, r: 16, t: 10, b: showLegend ? 58 : 42 })
+          : { l: opts.alwaysTitle ? 44 : 30, r: 6, t: 4, b: 18 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: '#ffffff',
+        font: { family: 'Segoe UI, system-ui, sans-serif', size: expanded ? 12 : 9, color: '#343a40' },
+        showlegend: isPie ? !!expanded : showLegend,
+        hovermode: isPie ? 'closest' : 'x unified',
+        hoverlabel: { bgcolor: '#fff', font: { size: expanded ? 12 : 10 }, bordercolor: '#111' }
+      };
+      if (layout.showlegend) {
+        layout.legend = isPie
+          ? { orientation: 'v', x: 1.02, y: 0.5, font: { size: 11 }, bgcolor: 'rgba(255,255,255,0.9)' }
+          : { orientation: 'h', y: -0.22, font: { size: 10 }, bgcolor: 'rgba(255,255,255,0.9)' };
+      }
+      if (!isPie) {
+        layout.xaxis = {
+          type: opts.xType || '-',
+          showgrid: false,
+          zeroline: false,
+          automargin: true,
+          tickfont: { size: expanded ? 11 : 8 },
+          nticks: expanded ? 10 : 4
+        };
+        layout.yaxis = {
+          showgrid: true,
+          gridcolor: '#eef1f4',
+          zeroline: false,
+          automargin: true,
+          tickfont: { size: expanded ? 11 : 8 },
+          nticks: expanded ? 8 : 4
+        };
+        if ((expanded || opts.alwaysTitle) && opts.yTitle) {
+          layout.yaxis.title = {
+            text: opts.yTitle,
+            font: { size: expanded ? 11 : 9, color: '#6c757d' },
+            standoff: expanded ? 8 : 4
+          };
         }
+        if (opts.tickformat) layout.yaxis.tickformat = opts.tickformat;
+        if (opts.ticksuffix) layout.yaxis.ticksuffix = opts.ticksuffix;
+        if (opts.tickprefix) layout.yaxis.tickprefix = opts.tickprefix;
+        if (opts.yToZero) layout.yaxis.rangemode = 'tozero';
+        if (opts.autorange) {
+          layout.xaxis.autorange = true;
+          layout.yaxis.autorange = true;
+        }
+        if (opts.annotation) {
+          layout.annotations = [{
+            text: opts.annotation,
+            xref: 'paper',
+            yref: 'paper',
+            x: 0.5,
+            y: 0.5,
+            showarrow: false,
+            font: { size: expanded ? 14 : 10, color: '#6c757d' }
+          }];
+        }
+        if (opts.zeroline) {
+          layout.yaxis.zeroline = true;
+          layout.yaxis.zerolinecolor = '#adb5bd';
+          layout.yaxis.zerolinewidth = 1;
+        }
+        if (opts.y2Title || opts.dualAxis) {
+          layout.margin = layout.margin || {};
+          layout.margin.r = expanded ? 52 : 34;
+          layout.yaxis.rangemode = 'tozero';
+          layout.yaxis2 = {
+            overlaying: 'y',
+            side: 'right',
+            showgrid: false,
+            zeroline: false,
+            rangemode: 'tozero',
+            automargin: true,
+            tickfont: { size: expanded ? 11 : 8 },
+            nticks: expanded ? 8 : 4
+          };
+          if (opts.y2OnLeft) {
+            // Overlay axis on the left is drawn after the primary axis, so a
+            // y2 line sits on top of y filled areas (the BI share-chart layout).
+            layout.yaxis.side = 'right';
+            layout.yaxis.showgrid = false;
+            layout.yaxis2.side = 'left';
+            layout.yaxis2.showgrid = true;
+            layout.yaxis2.gridcolor = '#eef1f4';
+            layout.margin.l = expanded ? 54 : (opts.alwaysTitle ? 48 : 36);
+          }
+          if ((expanded || opts.alwaysTitle) && opts.y2Title) {
+            layout.yaxis2.title = {
+              text: opts.y2Title,
+              font: { size: expanded ? 11 : 9, color: '#6c757d' },
+              standoff: expanded ? 6 : 2
+            };
+          }
+          if (opts.y2tickformat) layout.yaxis2.tickformat = opts.y2tickformat;
+          if (opts.y2ticksuffix) layout.yaxis2.ticksuffix = opts.y2ticksuffix;
+          if (opts.legendCompact) {
+            layout.showlegend = true;
+            layout.legend = {
+              orientation: 'h',
+              y: expanded ? -0.22 : 1.08,
+              x: 0,
+              font: { size: expanded ? 10 : 7 },
+              bgcolor: 'rgba(255,255,255,0.85)'
+            };
+            if (!expanded) layout.margin.t = 16;
+          }
+        }
+      }
+      return layout;
+    }
+
+    function lineTrace(name, x, y, color, extra) {
+      extra = extra || {};
+      return {
+        type: 'scatter',
+        mode: 'lines',
+        name: name,
+        x: x,
+        y: y,
+        line: { color: color, width: extra.width || 1.7, shape: extra.spline ? 'spline' : 'linear' },
+        hovertemplate: extra.hover || (name + '<br>%{x}: %{y}<extra></extra>'),
+        connectgaps: true
       };
     }
 
-    // Dual slider (top charts)
-    function setupDualRangeControls(cfg) {
-      const { startEl, endEl, startLabelEl, endLabelEl, fullLabels, updateFn } = cfg;
-      const max = fullLabels.length - 1;
-
-      startEl.min = 0; startEl.max = max; endEl.min = 0; endEl.max = max;
-      startEl.value = 0; endEl.value = max;
-
-      const renderLabels = () => {
-        const s = parseInt(startEl.value, 10);
-        const e = parseInt(endEl.value, 10);
-        startLabelEl.textContent = fullLabels[s];
-        endLabelEl.textContent = fullLabels[e];
-      };
-
-      const apply = () => {
-        let s = parseInt(startEl.value, 10);
-        let e = parseInt(endEl.value, 10);
-        if (s > e) { const tmp = s; s = e; e = tmp; }
-        startEl.value = String(s);
-        endEl.value = String(e);
-        renderLabels();
-        updateFn(s, e);
-      };
-
-      startEl.addEventListener('input', apply);
-      endEl.addEventListener('input', apply);
-      renderLabels();
+    function shouldRankHover(traces) {
+      if (!traces || traces.length < 2) return false;
+      return traces.every(function (t) {
+        return (!t.type || t.type === 'scatter') && !t.stackgroup;
+      });
     }
+
+    function formatRankValue(v, opts) {
+      opts = opts || {};
+      if (v == null || !Number.isFinite(v)) return '—';
+      var title = String(opts.yTitle || '');
+      if (opts.ticksuffix === '%' || title.indexOf('%') !== -1) {
+        return v.toFixed(1) + '%';
+      }
+      if (opts.tickformat === '~s' || Math.abs(v) >= 1e5) {
+        if (Math.abs(v) >= 1e9) return (v / 1e9).toFixed(2) + 'bn';
+        if (Math.abs(v) >= 1e6) return (v / 1e6).toFixed(1) + 'm';
+        if (Math.abs(v) >= 1e3) return (v / 1e3).toFixed(1) + 'k';
+      }
+      if (Math.abs(v) >= 100) return Math.round(v).toLocaleString();
+      return (Math.round(v * 100) / 100).toLocaleString();
+    }
+
+    function withRankedHover(traces, opts) {
+      opts = opts || {};
+      var expanded = !!opts.expanded;
+      var clones = traces.map(function (t) {
+        return Object.assign({}, t, { hoverinfo: 'skip', hovertemplate: null });
+      });
+      var xs = clones[0].x || [];
+      var hovertext = xs.map(function (_, i) {
+        var rows = [];
+        clones.forEach(function (t) {
+          var y = t.y ? t.y[i] : null;
+          if (y == null || !Number.isFinite(Number(y))) return;
+          rows.push({ name: t.name, y: Number(y) });
+        });
+        rows.sort(function (a, b) { return b.y - a.y; });
+        var n = rows.length;
+        var pick = [];
+        if (expanded || n <= 14) {
+          rows.forEach(function (r, idx) { pick.push({ r: r, rank: idx + 1 }); });
+        } else {
+          var k;
+          for (k = 0; k < 8 && k < n; k++) pick.push({ r: rows[k], rank: k + 1 });
+          var hidden = n - 8 - 3;
+          if (hidden > 0) pick.push({ gap: hidden });
+          for (k = Math.max(8, n - 3); k < n; k++) pick.push({ r: rows[k], rank: k + 1 });
+        }
+        return pick.map(function (item) {
+          if (item.gap) return '<i>… ' + item.gap + ' more …</i>';
+          return item.rank + '. ' + item.r.name + ': <b>' + formatRankValue(item.r.y, opts) + '</b>';
+        }).join('<br>');
+      });
+      var envelope = xs.map(function (_, i) {
+        var m = null;
+        clones.forEach(function (t) {
+          var y = t.y ? t.y[i] : null;
+          if (y == null || !Number.isFinite(Number(y))) return;
+          m = m == null ? Number(y) : Math.max(m, Number(y));
+        });
+        return m;
+      });
+      clones.push({
+        type: 'scatter',
+        mode: 'lines',
+        name: '',
+        x: xs,
+        y: envelope,
+        line: { width: 0, color: 'rgba(0,0,0,0)' },
+        hoverinfo: 'text',
+        text: hovertext,
+        hovertext: hovertext,
+        hovertemplate: '%{text}<extra></extra>',
+        showlegend: false,
+        hoverlabel: {
+          align: 'left',
+          bgcolor: 'rgba(255,255,255,0.97)',
+          bordercolor: '#111',
+          font: { size: expanded ? 12 : 10, family: 'Segoe UI, system-ui, sans-serif' }
+        }
+      });
+      return clones;
+    }
+
+    function sizePlot(el) {
+      if (!el || typeof Plotly === 'undefined' || !el.parentElement) return;
+      const box = el.parentElement;
+      const w = box.clientWidth;
+      const h = box.clientHeight;
+      if (w < 8 || h < 8) return;
+      const fl = el._fullLayout;
+      if (fl && Math.abs(fl.width - w) < 2 && Math.abs(fl.height - h) < 2) return;
+      Plotly.relayout(el, { width: w, height: h, autosize: false });
+    }
+
+    function drawPlot(id, traces, opts) {
+      opts = opts || {};
+      plotRegistry[id] = { traces: traces, opts: opts };
+      const el = document.getElementById(id);
+      if (!el || typeof Plotly === 'undefined') return;
+      const expanded = tileIsExpanded(el);
+      const first = traces[0] || {};
+      const layout = dataPlotLayout(Object.assign({}, opts, {
+        expanded: expanded,
+        nTraces: traces.length,
+        pie: first.type === 'pie'
+      }));
+      if (first.type === 'bar' && first.orientation === 'h' && opts.yTitle) {
+        layout.xaxis = layout.xaxis || {};
+        layout.xaxis.title = { text: opts.yTitle, font: { size: expanded ? 11 : 9, color: '#6c757d' } };
+        if (layout.yaxis) layout.yaxis.title = undefined;
+      }
+      var plotTraces = traces;
+      if (!opts.skipRankHover && shouldRankHover(traces)) {
+        plotTraces = withRankedHover(traces, Object.assign({}, opts, { expanded: expanded }));
+        layout.hoverlabel = layout.hoverlabel || {};
+        layout.hoverlabel.align = 'left';
+        layout.hoverlabel.namelength = -1;
+      }
+      const config = Object.assign({}, PLOT_CONFIG, {
+        displayModeBar: !!expanded,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d']
+      });
+      return Plotly.react(el, plotTraces, layout, config).then(function () { sizePlot(el); });
+    }
+
+    function redrawPlot(id) {
+      const rec = plotRegistry[id];
+      if (rec) drawPlot(id, rec.traces, rec.opts);
+      else sizePlot(document.getElementById(id));
+    }
+
+    window.DataPlots = {
+      draw: drawPlot,
+      size: sizePlot,
+      redraw: redrawPlot,
+      layout: dataPlotLayout,
+      lineTrace: lineTrace,
+      isExpanded: tileIsExpanded,
+      config: PLOT_CONFIG
+    };
 
     // ------------------------
     // Data loading
@@ -521,21 +1091,44 @@
       await Promise.all([
         loadRateData(),
         loadGdpData(),
+        loadGdpPcData(),
         loadInflationData(),
+        loadGdpPcGrowthData(),
+        loadExportsData(),
+        loadImportsData(),
+        loadFdiData(),
         loadAccessToElectricityData(),
         loadPopulationWithAccessData(),
         loadPopulationWithoutAccessData()
       ]);
 
       // Full arrays for top charts
-      zarLabelsFull = rateHistory.map(x => x.time);
-      zarValuesFull = rateHistory.map(x => x.rate);
+      zarLabelsFull = rateHistory.map(function (x) {
+        const t = x.time;
+        if (t instanceof Date && !isNaN(t.getTime())) {
+          const y = t.getFullYear();
+          const m = String(t.getMonth() + 1).padStart(2, '0');
+          const d = String(t.getDate()).padStart(2, '0');
+          return y + '-' + m + '-' + d;
+        }
+        return String(t);
+      });
+      zarValuesFull = rateHistory.map(function (x) { return Number(x.rate); });
 
       gdpLabelsFull = gdpHistory.map(x => x.time);
-      gdpValuesFull = gdpHistory.map(x => x.gdp);
+      gdpValuesFull = gdpHistory.map(x => x.gdp / 1e9);
+
+      gdpPcLabelsFull = gdpPcHistory.map(x => x.time);
+      gdpPcValuesFull = gdpPcHistory.map(x => x.value);
 
       inflationLabelsFull = inflationHistory.map(x => x.time);
       inflationValuesFull = inflationHistory.map(x => x.inflation);
+
+      gdpPcGrowthLabelsFull = gdpPcGrowthHistory.map(x => x.time);
+      gdpPcGrowthValuesFull = gdpPcGrowthHistory.map(x => x.value);
+
+      fdiLabelsFull = fdiHistory.map(x => x.time);
+      fdiValuesFull = fdiHistory.map(x => x.value / 1e9);
 
       // Full arrays for bottom charts
       fullAccessLabels = accessYears;
@@ -545,71 +1138,15 @@
       // Create charts on full range initially
       createZarChart();
       createGdpChart();
+      createGdpPcChart();
       createInflationChart();
+      createGdpPcGrowthChart();
+      createExportsChart();
+      createImportsChart();
+      createFdiChart();
       createAccessChart();
       createPopAccessChart();
       createPopWithoutChart();
-
-      // Top chart sliders
-      setupDualRangeControls({
-        startEl: document.getElementById('zarStartRange'),
-        endEl: document.getElementById('zarEndRange'),
-        startLabelEl: document.getElementById('zarStartLabel'),
-        endLabelEl: document.getElementById('zarEndLabel'),
-        fullLabels: zarLabelsFull,
-        updateFn: (s,e) => updateZarRange(s,e)
-      });
-
-      setupDualRangeControls({
-        startEl: document.getElementById('gdpStartRange'),
-        endEl: document.getElementById('gdpEndRange'),
-        startLabelEl: document.getElementById('gdpStartLabel'),
-        endLabelEl: document.getElementById('gdpEndLabel'),
-        fullLabels: gdpLabelsFull,
-        updateFn: (s,e) => updateGdpRange(s,e)
-      });
-
-      setupDualRangeControls({
-        startEl: document.getElementById('inflationStartRange'),
-        endEl: document.getElementById('inflationEndRange'),
-        startLabelEl: document.getElementById('inflationStartLabel'),
-        endLabelEl: document.getElementById('inflationEndLabel'),
-        fullLabels: inflationLabelsFull,
-        updateFn: (s,e) => updateInflationRange(s,e)
-      });
-
-      // Bottom single sliders
-      accessWindowSize = fullAccessLabels.length || 9999;
-      popAccessWindowSize = fullPopAccessLabels.length || 9999;
-      popWithoutWindowSize = fullPopWithoutLabels.length || 9999;
-
-      updateAccessWindowFromStart(0);
-      updatePopAccessWindowFromStart(0);
-      updatePopWithoutWindowFromStart(0);
-
-      const accessSlider = document.getElementById('accessWindowRange');
-      if (accessSlider) {
-        accessSlider.addEventListener('input', () => {
-          const startIdx = parseInt(accessSlider.value, 10);
-          updateAccessWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
-        });
-      }
-
-      const popAccessSlider = document.getElementById('popAccessWindowRange');
-      if (popAccessSlider) {
-        popAccessSlider.addEventListener('input', () => {
-          const startIdx = parseInt(popAccessSlider.value, 10);
-          updatePopAccessWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
-        });
-      }
-
-      const popWithoutSlider = document.getElementById('popWithoutWindowRange');
-      if (popWithoutSlider) {
-        popWithoutSlider.addEventListener('input', () => {
-          const startIdx = parseInt(popWithoutSlider.value, 10);
-          updatePopWithoutWindowFromStart(Number.isFinite(startIdx) ? startIdx : 0);
-        });
-      }
     }
 
     async function loadRateData() {
@@ -620,7 +1157,18 @@
 
         rateHistory = parsed.data
           .filter(row => row.observation_date && row.DEXSFUS)
-          .map(row => ({ time: row.observation_date, rate: parseFloat(row.DEXSFUS) }))
+          .map(function (row) {
+            var t = row.observation_date;
+            if (t instanceof Date && !isNaN(t.getTime())) {
+              var y = t.getFullYear();
+              var m = String(t.getMonth() + 1).padStart(2, '0');
+              var d = String(t.getDate()).padStart(2, '0');
+              t = y + '-' + m + '-' + d;
+            } else {
+              t = String(t);
+            }
+            return { time: t, rate: parseFloat(row.DEXSFUS) };
+          })
           .sort((a,b) => new Date(a.time) - new Date(b.time));
 
         if (rateHistory.length) {
@@ -654,11 +1202,154 @@
         const el = document.getElementById('current-gdp');
         if (gdpHistory.length) {
           const latest = gdpHistory[gdpHistory.length - 1];
-          el.innerHTML = `In ${latest.time}: <strong>$${latest.gdp.toLocaleString(undefined,{maximumFractionDigits:0})}</strong>`;
+          el.innerHTML = `In ${latest.time}: <strong>$${(latest.gdp / 1e9).toFixed(1)} bn</strong>`;
         }
       } catch (e) {
         document.getElementById('current-gdp').innerHTML = `<span class="text-danger">Error loading GDP.csv</span>`;
       }
+    }
+
+    async function loadGdpPcData() {
+      const el = document.getElementById('current-gdp-pc');
+      try {
+        const response = await fetch('../data/economy/GDP%20Per%20Capita.csv');
+        const text = await response.text();
+        gdpPcHistory = parseYearValueCsv(text);
+        if (gdpPcHistory.length) {
+          const latest = gdpPcHistory[gdpPcHistory.length - 1];
+          el.innerHTML = `In ${latest.time}: <strong>$${latest.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>`;
+        }
+      } catch (e) {
+        el.innerHTML = `<span class="text-danger">Error loading GDP Per Capita.csv</span>`;
+      }
+    }
+
+    async function loadGdpPcGrowthData() {
+      const el = document.getElementById('current-gdp-pc-growth');
+      try {
+        const response = await fetch('../data/economy/GDP%20Per%20Capita%20Growth.csv');
+        const text = await response.text();
+        gdpPcGrowthHistory = parseYearValueCsv(text);
+        if (gdpPcGrowthHistory.length) {
+          const latest = gdpPcGrowthHistory[gdpPcGrowthHistory.length - 1];
+          const sign = latest.value > 0 ? '+' : '';
+          el.innerHTML = `In ${latest.time}: <strong>${sign}${latest.value.toFixed(2)}%</strong>`;
+        }
+      } catch (e) {
+        el.innerHTML = `<span class="text-danger">Error loading GDP Per Capita Growth.csv</span>`;
+      }
+    }
+
+    async function loadFdiData() {
+      const el = document.getElementById('current-fdi');
+      try {
+        const response = await fetch('../data/economy/FDI.csv');
+        const text = await response.text();
+        fdiHistory = parseYearValueCsv(text);
+        if (fdiHistory.length) {
+          const latest = fdiHistory[fdiHistory.length - 1];
+          const bn = latest.value / 1e9;
+          el.innerHTML = `In ${latest.time}: <strong>$${bn.toFixed(1)} bn</strong>`;
+        }
+      } catch (e) {
+        el.innerHTML = `<span class="text-danger">Error loading FDI.csv</span>`;
+      }
+    }
+
+    function parsePartnerWideCsv(text) {
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      const fields = (parsed.meta && parsed.meta.fields) ? parsed.meta.fields : [];
+      const partners = fields.filter(function (f) { return f && f !== 'Year'; });
+      const years = [];
+      const byPartner = {};
+      partners.forEach(function (p) { byPartner[p] = []; });
+      parsed.data.forEach(function (row) {
+        const y = String(row.Year == null ? '' : row.Year).trim();
+        if (!/^\d{4}$/.test(y)) return;
+        years.push(y);
+        partners.forEach(function (p) {
+          const v = parseNumberLoose(row[p]);
+          byPartner[p].push(v == null ? 0 : v / 1e9);
+        });
+      });
+      return { years: years, partners: partners, byPartner: byPartner };
+    }
+
+    function tradeLatestTotal(pack) {
+      if (!pack || !pack.years.length) return null;
+      const i = pack.years.length - 1;
+      let total = 0;
+      let topName = null;
+      let topVal = -Infinity;
+      pack.partners.forEach(function (p) {
+        const v = Number(pack.byPartner[p][i] || 0);
+        total += v;
+        if (p !== 'Rest of world' && v > topVal) {
+          topVal = v;
+          topName = p;
+        }
+      });
+      return { year: pack.years[i], total: total, topName: topName, topVal: topVal };
+    }
+
+    function setTradeStat(id, pack, errLabel) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const latest = tradeLatestTotal(pack);
+      if (!latest) {
+        el.innerHTML = `<span class="text-danger">Error loading ${errLabel}</span>`;
+        return;
+      }
+      el.innerHTML = `In ${latest.year}: <strong>$${latest.total.toFixed(1)} bn</strong>`;
+    }
+
+    async function loadExportsData() {
+      try {
+        const response = await fetch('../data/economy/SA_exports_by_partner.csv');
+        const text = await response.text();
+        tradeExportsPack = parsePartnerWideCsv(text);
+        setTradeStat('current-exports', tradeExportsPack, 'exports');
+      } catch (e) {
+        document.getElementById('current-exports').innerHTML = `<span class="text-danger">Error loading exports</span>`;
+      }
+    }
+
+    async function loadImportsData() {
+      try {
+        const response = await fetch('../data/economy/SA_imports_by_partner.csv');
+        const text = await response.text();
+        tradeImportsPack = parsePartnerWideCsv(text);
+        setTradeStat('current-imports', tradeImportsPack, 'imports');
+      } catch (e) {
+        document.getElementById('current-imports').innerHTML = `<span class="text-danger">Error loading imports</span>`;
+      }
+    }
+
+    function areaTrace(name, x, y, color) {
+      return {
+        type: 'scatter',
+        mode: 'lines',
+        name: name,
+        x: x,
+        y: y,
+        stackgroup: 'one',
+        fillcolor: color,
+        line: { color: color, width: 0.6 },
+        hovertemplate: name + '<br>%{x}: %{y:.1f} bn<extra></extra>',
+        connectgaps: true
+      };
+    }
+
+    function tradeAreaTraces(pack) {
+      if (!pack || !pack.years.length) return [];
+      const named = pack.partners.filter(function (p) { return p !== 'Rest of world'; });
+      const order = [];
+      if (pack.partners.indexOf('Rest of world') !== -1) order.push('Rest of world');
+      named.forEach(function (p) { order.push(p); });
+      return order.map(function (p, i) {
+        const color = p === 'Rest of world' ? '#ced4da' : TRADE_COLORS[(i - (order[0] === 'Rest of world' ? 1 : 0) + TRADE_COLORS.length) % TRADE_COLORS.length];
+        return areaTrace(p, pack.years, pack.byPartner[p], color);
+      });
     }
 
     async function loadInflationData() {
@@ -669,7 +1360,13 @@
 
         inflationHistory = parsed.data
           .filter(row => row.observation_date && row.FPCPITOTLZGZAF != null)
-          .map(row => ({ time: row.observation_date.substring(0,4), inflation: parseFloat(row.FPCPITOTLZGZAF) }))
+          .map(function (row) {
+            var t = row.observation_date;
+            var year;
+            if (t instanceof Date && !isNaN(t.getTime())) year = String(t.getFullYear());
+            else year = String(t).substring(0, 4);
+            return { time: year, inflation: parseFloat(row.FPCPITOTLZGZAF) };
+          })
           .sort((a,b) => parseInt(a.time,10) - parseInt(b.time,10));
 
         const el = document.getElementById('current-inflation');
@@ -798,363 +1495,167 @@
     }
 
     // ------------------------
-    // Create charts (full range)
+    // Create / update Plotly charts
     // ------------------------
     function createZarChart() {
       if (!zarLabelsFull.length) return;
-      const ctx = document.getElementById('zarChart');
-      zarChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: zarLabelsFull,
-          datasets: [{
-            label: 'USD/ZAR',
-            data: zarValuesFull,
-            borderColor: '#007A4D',
-            backgroundColor: 'rgba(0, 122, 77, 0.1)',
-            pointBackgroundColor: '#007A4D',
-            pointBorderColor: '#007A4D',
-            ...commonLineStyle()
-          }]
-        },
-        options: commonChartOptions('ZAR per 1 USD')
-      });
+      updateZarRange(0, zarLabelsFull.length - 1);
     }
 
     function createGdpChart() {
       if (!gdpLabelsFull.length) return;
-      const ctx = document.getElementById('gdpChart');
-      gdpChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: gdpLabelsFull,
-          datasets: [{
-            label: 'GDP (current US$)',
-            data: gdpValuesFull,
-            borderColor: '#002395',
-            backgroundColor: 'rgba(0, 35, 149, 0.1)',
-            pointBackgroundColor: '#002395',
-            pointBorderColor: '#002395',
-            ...commonLineStyle()
-          }]
-        },
-        options: commonChartOptions('GDP in current US$')
-      });
+      updateGdpRange(0, gdpLabelsFull.length - 1);
+    }
+
+    function createGdpPcChart() {
+      if (!gdpPcLabelsFull.length) return;
+      updateGdpPcRange(0, gdpPcLabelsFull.length - 1);
     }
 
     function createInflationChart() {
       if (!inflationLabelsFull.length) return;
-      const ctx = document.getElementById('inflationChart');
-      inflationChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: inflationLabelsFull,
-          datasets: [{
-            label: 'Inflation Rate (%)',
-            data: inflationValuesFull,
-            borderColor: '#FFCD00',
-            backgroundColor: 'rgba(255, 205, 0, 0.1)',
-            pointBackgroundColor: '#FFCD00',
-            pointBorderColor: '#FFCD00',
-            ...commonLineStyle()
-          }]
-        },
-        options: commonChartOptions('Inflation Rate (%)')
+      updateInflationRange(0, inflationLabelsFull.length - 1);
+    }
+
+    function createGdpPcGrowthChart() {
+      if (!gdpPcGrowthLabelsFull.length) return;
+      updateGdpPcGrowthRange(0, gdpPcGrowthLabelsFull.length - 1);
+    }
+
+    function createFdiChart() {
+      if (!fdiLabelsFull.length) return;
+      updateFdiRange(0, fdiLabelsFull.length - 1);
+    }
+
+    function createExportsChart() {
+      if (!tradeExportsPack || !tradeExportsPack.years.length) return;
+      drawPlot('exportsChart', tradeAreaTraces(tradeExportsPack), {
+        yTitle: 'US$ bn', tickformat: '.0f', alwaysTitle: true
+      });
+    }
+
+    function createImportsChart() {
+      if (!tradeImportsPack || !tradeImportsPack.years.length) return;
+      drawPlot('importsChart', tradeAreaTraces(tradeImportsPack), {
+        yTitle: 'US$ bn', tickformat: '.0f', alwaysTitle: true
       });
     }
 
     function createAccessChart() {
-      const ctx = document.getElementById('accessChart');
-      if (!ctx || !fullAccessLabels.length) return;
-
-      const datasets = accessCountriesOrdered.map((country, i) => {
-        const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (accessValuesByCountry[country] || []),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          ...commonLineStyle(),
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointBackgroundColor: color,
-          pointBorderColor: color
-        };
-      });
-
-      accessChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels: fullAccessLabels, datasets },
-        options: commonChartOptions('Access value')
-      });
+      if (!fullAccessLabels.length) return;
+      updateAccessRange(0, fullAccessLabels.length - 1);
     }
 
     function createPopAccessChart() {
-      const ctx = document.getElementById('popAccessChart');
-      if (!ctx || !fullPopAccessLabels.length) return;
-
-      const datasets = popAccessCountriesOrdered.map((country, i) => {
-        const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (popAccessValuesByCountry[country] || []),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          ...commonLineStyle(),
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointBackgroundColor: color,
-          pointBorderColor: color
-        };
-      });
-
-      popAccessChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels: fullPopAccessLabels, datasets },
-        options: commonChartOptions('Population value')
-      });
+      if (!fullPopAccessLabels.length) return;
+      updatePopAccessRange(0, fullPopAccessLabels.length - 1);
     }
 
     function createPopWithoutChart() {
-      const ctx = document.getElementById('popWithoutChart');
-      if (!ctx || !fullPopWithoutLabels.length) return;
+      if (!fullPopWithoutLabels.length) return;
+      updatePopWithoutRange(0, fullPopWithoutLabels.length - 1);
+    }
 
-      const datasets = popWithoutCountriesOrdered.map((country, i) => {
+    function updateZarRange(s, e) {
+      if (!zarLabelsFull.length) return;
+      const tile = document.querySelector('.data-tile[data-tile="zar"]');
+      const expanded = tile && tile.classList.contains('is-expanded');
+      const sliceL = zarLabelsFull.slice(s, e + 1);
+      const sliceV = zarValuesFull.slice(s, e + 1);
+      const sampled = expanded
+        ? downsampleSeries(sliceL, sliceV, 1200)
+        : yearlyAverage(sliceL, sliceV);
+      drawPlot('zarChart', [
+        lineTrace('USD/ZAR', sampled.labels, sampled.values, '#007A4D', {
+          spline: !expanded,
+          hover: 'USD/ZAR<br>%{x}: %{y:.4f}<extra></extra>'
+        })
+      ], { yTitle: 'ZAR per 1 USD', xType: expanded ? 'date' : '-' });
+    }
+
+    function refreshZarPlot() {
+      if (!zarLabelsFull.length) return;
+      updateZarRange(0, zarLabelsFull.length - 1);
+    }
+
+    function updateGdpRange(s, e) {
+      if (!gdpLabelsFull.length) return;
+      drawPlot('gdpChart', [
+        lineTrace('GDP', gdpLabelsFull.slice(s, e + 1), gdpValuesFull.slice(s, e + 1), '#002395', {
+          spline: true,
+          hover: 'GDP<br>%{x}: %{y:.1f} bn<extra></extra>'
+        })
+      ], { yTitle: 'US$ bn', tickformat: '.0f', alwaysTitle: true });
+    }
+
+    function updateGdpPcRange(s, e) {
+      if (!gdpPcLabelsFull.length) return;
+      drawPlot('gdpPcChart', [
+        lineTrace('GDP/capita', gdpPcLabelsFull.slice(s, e + 1), gdpPcValuesFull.slice(s, e + 1), '#0d6efd', {
+          spline: true,
+          hover: 'GDP/capita<br>%{x}: $%{y:,.0f}<extra></extra>'
+        })
+      ], { yTitle: 'US$', tickprefix: '$', tickformat: ',.0f', alwaysTitle: true });
+    }
+
+    function updateInflationRange(s, e) {
+      if (!inflationLabelsFull.length) return;
+      drawPlot('inflationChart', [
+        lineTrace('Inflation', inflationLabelsFull.slice(s, e + 1), inflationValuesFull.slice(s, e + 1), '#E6B800', {
+          spline: true,
+          hover: 'Inflation<br>%{x}: %{y:.2f}%<extra></extra>'
+        })
+      ], { yTitle: 'Inflation %' });
+    }
+
+    function updateGdpPcGrowthRange(s, e) {
+      if (!gdpPcGrowthLabelsFull.length) return;
+      drawPlot('gdpPcGrowthChart', [
+        lineTrace('Real GDP/cap YoY', gdpPcGrowthLabelsFull.slice(s, e + 1), gdpPcGrowthValuesFull.slice(s, e + 1), '#6f42c1', {
+          spline: true,
+          hover: 'Real GDP/cap YoY<br>%{x}: %{y:.2f}%<extra></extra>'
+        })
+      ], { yTitle: '%', ticksuffix: '%', tickformat: '.1f', alwaysTitle: true, zeroline: true });
+    }
+
+    function updateFdiRange(s, e) {
+      if (!fdiLabelsFull.length) return;
+      drawPlot('fdiChart', [
+        lineTrace('FDI inflows', fdiLabelsFull.slice(s, e + 1), fdiValuesFull.slice(s, e + 1), '#198754', {
+          spline: true,
+          hover: 'FDI inflows<br>%{x}: %{y:.1f} bn<extra></extra>'
+        })
+      ], { yTitle: 'US$ bn', tickformat: '.0f', alwaysTitle: true, zeroline: true });
+    }
+
+    function updateAccessRange(s, e) {
+      if (!fullAccessLabels.length) return;
+      const labels = fullAccessLabels.slice(s, e + 1);
+      const traces = accessCountriesOrdered.map(function (country, i) {
         const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (popWithoutValuesByCountry[country] || []),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          ...commonLineStyle(),
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointBackgroundColor: color,
-          pointBorderColor: color
-        };
+        return lineTrace(country, labels, (accessValuesByCountry[country] || []).slice(s, e + 1), color);
       });
-
-      popWithoutChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels: fullPopWithoutLabels, datasets },
-        options: commonChartOptions('Population value')
-      });
+      drawPlot('accessChart', traces, { yTitle: 'Access %' });
     }
 
-    // ------------------------
-    // Update chart ranges
-    // ------------------------
-    function updateZarRange(s,e) {
-      if (!zarChart) return;
-      zarChart.data.labels = zarLabelsFull.slice(s, e+1);
-      zarChart.data.datasets[0].data = zarValuesFull.slice(s, e+1);
-      zarChart.update();
-    }
-
-    function updateGdpRange(s,e) {
-      if (!gdpChart) return;
-      gdpChart.data.labels = gdpLabelsFull.slice(s, e+1);
-      gdpChart.data.datasets[0].data = gdpValuesFull.slice(s, e+1);
-      gdpChart.update();
-    }
-
-    function updateInflationRange(s,e) {
-      if (!inflationChart) return;
-      inflationChart.data.labels = inflationLabelsFull.slice(s, e+1);
-      inflationChart.data.datasets[0].data = inflationValuesFull.slice(s, e+1);
-      inflationChart.update();
-    }
-
-    function updateAccessRange(s,e) {
-      if (!accessChart) return;
-      accessChart.data.labels = fullAccessLabels.slice(s, e+1);
-      accessChart.data.datasets = accessCountriesOrdered.map((country, i) => {
+    function updatePopAccessRange(s, e) {
+      if (!fullPopAccessLabels.length) return;
+      const labels = fullPopAccessLabels.slice(s, e + 1);
+      const traces = popAccessCountriesOrdered.map(function (country, i) {
         const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (accessValuesByCountry[country] || []).slice(s, e+1),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          borderWidth: 3,
-          tension: 0.2,
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointHitRadius: 12,
-          pointBackgroundColor: color,
-          pointBorderColor: color,
-          spanGaps: true
-        };
+        return lineTrace(country, labels, (popAccessValuesByCountry[country] || []).slice(s, e + 1), color);
       });
-      accessChart.update();
+      drawPlot('popAccessChart', traces, { yTitle: 'Population', tickformat: '~s' });
     }
 
-    function updatePopAccessRange(s,e) {
-      if (!popAccessChart) return;
-      popAccessChart.data.labels = fullPopAccessLabels.slice(s, e+1);
-      popAccessChart.data.datasets = popAccessCountriesOrdered.map((country, i) => {
+    function updatePopWithoutRange(s, e) {
+      if (!fullPopWithoutLabels.length) return;
+      const labels = fullPopWithoutLabels.slice(s, e + 1);
+      const traces = popWithoutCountriesOrdered.map(function (country, i) {
         const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (popAccessValuesByCountry[country] || []).slice(s, e+1),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          borderWidth: 3,
-          tension: 0.2,
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointHitRadius: 12,
-          pointBackgroundColor: color,
-          pointBorderColor: color,
-          spanGaps: true
-        };
+        return lineTrace(country, labels, (popWithoutValuesByCountry[country] || []).slice(s, e + 1), color);
       });
-      popAccessChart.update();
-    }
-
-    function updatePopWithoutRange(s,e) {
-      if (!popWithoutChart) return;
-      popWithoutChart.data.labels = fullPopWithoutLabels.slice(s, e+1);
-      popWithoutChart.data.datasets = popWithoutCountriesOrdered.map((country, i) => {
-        const color = chartColors[i % chartColors.length];
-        return {
-          label: country,
-          data: (popWithoutValuesByCountry[country] || []).slice(s, e+1),
-          borderColor: color,
-          backgroundColor: 'rgba(0,0,0,0)',
-          borderWidth: 3,
-          tension: 0.2,
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          pointHitRadius: 12,
-          pointBackgroundColor: color,
-          pointBorderColor: color,
-          spanGaps: true
-        };
-      });
-      popWithoutChart.update();
-    }
-
-    // ------------------------
-    // Bottom chart window logic
-    // ------------------------
-    function updateAccessWindowFromStart(startIdx) {
-      const fullLen = fullAccessLabels.length;
-      if (!fullLen) return;
-      const windowSize = clamp(accessWindowSize === 9999 ? fullLen : accessWindowSize, 1, fullLen);
-      const maxStart = Math.max(0, fullLen - windowSize);
-      const s = clamp(startIdx, 0, maxStart);
-      const e = s + windowSize - 1;
-
-      document.getElementById('accessStartLabel').textContent = fullAccessLabels[s] ?? '';
-      document.getElementById('accessEndLabel').textContent = fullAccessLabels[e] ?? '';
-
-      const slider = document.getElementById('accessWindowRange');
-      if (slider) { slider.max = String(maxStart); slider.value = String(s); }
-
-      updateAccessRange(s, e);
-    }
-
-    function updatePopAccessWindowFromStart(startIdx) {
-      const fullLen = fullPopAccessLabels.length;
-      if (!fullLen) return;
-      const windowSize = clamp(popAccessWindowSize === 9999 ? fullLen : popAccessWindowSize, 1, fullLen);
-      const maxStart = Math.max(0, fullLen - windowSize);
-      const s = clamp(startIdx, 0, maxStart);
-      const e = s + windowSize - 1;
-
-      document.getElementById('popAccessStartLabel').textContent = fullPopAccessLabels[s] ?? '';
-      document.getElementById('popAccessEndLabel').textContent = fullPopAccessLabels[e] ?? '';
-
-      const slider = document.getElementById('popAccessWindowRange');
-      if (slider) { slider.max = String(maxStart); slider.value = String(s); }
-
-      updatePopAccessRange(s, e);
-    }
-
-    function updatePopWithoutWindowFromStart(startIdx) {
-      const fullLen = fullPopWithoutLabels.length;
-      if (!fullLen) return;
-      const windowSize = clamp(popWithoutWindowSize === 9999 ? fullLen : popWithoutWindowSize, 1, fullLen);
-      const maxStart = Math.max(0, fullLen - windowSize);
-      const s = clamp(startIdx, 0, maxStart);
-      const e = s + windowSize - 1;
-
-      document.getElementById('popWithoutStartLabel').textContent = fullPopWithoutLabels[s] ?? '';
-      document.getElementById('popWithoutEndLabel').textContent = fullPopWithoutLabels[e] ?? '';
-
-      const slider = document.getElementById('popWithoutWindowRange');
-      if (slider) { slider.max = String(maxStart); slider.value = String(s); }
-
-      updatePopWithoutRange(s, e);
-    }
-
-    // ------------------------
-    // Top chart timeframe buttons
-    // ------------------------
-    function setTimeframeZar(days, button) {
-      setButtonActive('.currency-btn-group', button);
-      const fullLen = zarLabelsFull.length;
-      if (!fullLen) return;
-      const max = fullLen - 1;
-      const startIdx = days === 9999 ? 0 : Math.max(0, fullLen - days);
-
-      document.getElementById('zarStartRange').value = String(startIdx);
-      document.getElementById('zarEndRange').value = String(max);
-      document.getElementById('zarStartRange').dispatchEvent(new Event('input'));
-      document.getElementById('zarEndRange').dispatchEvent(new Event('input'));
-    }
-
-    function setGdpTimeframe(years, button) {
-      setButtonActive('.gdp-btn-group', button);
-      const fullLen = gdpLabelsFull.length;
-      if (!fullLen) return;
-      const max = fullLen - 1;
-      const startIdx = years === 9999 ? 0 : Math.max(0, fullLen - years);
-
-      document.getElementById('gdpStartRange').value = String(startIdx);
-      document.getElementById('gdpEndRange').value = String(max);
-      document.getElementById('gdpStartRange').dispatchEvent(new Event('input'));
-      document.getElementById('gdpEndRange').dispatchEvent(new Event('input'));
-    }
-
-    function setInflationTimeframe(years, button) {
-      setButtonActive('.inflation-btn-group', button);
-      const fullLen = inflationLabelsFull.length;
-      if (!fullLen) return;
-      const max = fullLen - 1;
-      const startIdx = years === 9999 ? 0 : Math.max(0, fullLen - years);
-
-      document.getElementById('inflationStartRange').value = String(startIdx);
-      document.getElementById('inflationEndRange').value = String(max);
-      document.getElementById('inflationStartRange').dispatchEvent(new Event('input'));
-      document.getElementById('inflationEndRange').dispatchEvent(new Event('input'));
-    }
-
-    function setAccessTimeframe(years, button) {
-      setButtonActive('.access-btn-group', button);
-      const fullLen = fullAccessLabels.length;
-      if (!fullLen) return;
-      accessWindowSize = years === 9999 ? fullLen : years;
-      const maxStart = Math.max(0, fullLen - accessWindowSize);
-      updateAccessWindowFromStart(maxStart);
-    }
-
-    function setPopAccessTimeframe(years, button) {
-      setButtonActive('.pop-access-btn-group', button);
-      const fullLen = fullPopAccessLabels.length;
-      if (!fullLen) return;
-      popAccessWindowSize = years === 9999 ? fullLen : years;
-      const maxStart = Math.max(0, fullLen - popAccessWindowSize);
-      updatePopAccessWindowFromStart(maxStart);
-    }
-
-    function setPopWithoutTimeframe(years, button) {
-      setButtonActive('.pop-without-btn-group', button);
-      const fullLen = fullPopWithoutLabels.length;
-      if (!fullLen) return;
-      popWithoutWindowSize = years === 9999 ? fullLen : years;
-      const maxStart = Math.max(0, fullLen - popWithoutWindowSize);
-      updatePopWithoutWindowFromStart(maxStart);
+      drawPlot('popWithoutChart', traces, { yTitle: 'Population without access', tickformat: '~s' });
     }
 
     // ------------------------
@@ -1170,62 +1671,490 @@
       { id: 'ferrochromeChart',file: '../data/power/ferrochrome_prices.csv',label: 'FeCr ($/lb)',               color: '#28a745',  valueCol: 'Ferrochrome_USD_per_lb' },
       { id: 'vanadiumChart',   file: '../data/power/vanadium_prices.csv',   label: 'V ($/lb)',                  color: '#6610f2',  valueCol: 'Vanadium_USD_per_lb' },
       { id: 'diamondChart',    file: '../data/power/diamond_prices.csv',    label: 'Diamond Index (2000=100)',  color: '#17a2b8',  valueCol: 'Diamond_Price_Index' },
+      { id: 'uraniumChart',    file: '../data/power/uranium_prices.csv',    label: 'Uranium ($/lb)',            color: '#65a30d',  valueCol: 'Uranium_USD_per_lb' },
     ];
 
     async function loadCommodityPrices() {
-      for (const c of COMMODITY_FILES) {
+      await Promise.all(COMMODITY_FILES.map(async function (c) {
         try {
+          // Gold, Platinum, Coal SA, Iron Ore are drawn from the official
+          // World Bank Pink Sheet (see pink-sheet.js) — skip here to avoid
+          // canvas conflicts.
+          if (['goldChart','platinumChart','coalChart','ironOreChart'].indexOf(c.id) !== -1) return;
           const resp = await fetch(c.file);
           const text = await resp.text();
           const parsed = Papa.parse(text, { header: true, dynamicTyping: true, skipEmptyLines: true });
           const years = parsed.data.map(r => String(r.Year));
           const values = parsed.data.map(r => r[c.valueCol]);
-          const canvas = document.getElementById(c.id);
-          if (!canvas) continue;
-          // Gold, Platinum, Coal SA, Iron Ore are drawn from the official
-          // World Bank Pink Sheet (see pink-sheet.js) — skip here to avoid
-          // canvas conflicts.
-          if (['goldChart','platinumChart','coalChart','ironOreChart'].indexOf(c.id) !== -1) continue;
-          new Chart(canvas, {
-            type: 'line',
-            data: {
-              labels: years,
-              datasets: [{
-                label: c.label,
-                data: values,
-                borderColor: c.color,
-                backgroundColor: c.color + '22',
-                pointBackgroundColor: c.color,
-                pointBorderColor: c.color,
-                borderWidth: 2,
-                pointRadius: 2,
-                pointHoverRadius: 6,
-                tension: 0.2,
-                spanGaps: true
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: true,
-              plugins: { legend: { display: false }, tooltip: { enabled: true } },
-              scales: {
-                x: { ticks: { maxTicksLimit: 8, font: { size: 9 } } },
-                y: { ticks: { font: { size: 9 } } }
+          if (!document.getElementById(c.id)) return;
+          if (c.id === 'uraniumChart') {
+            const el = document.getElementById('current-uranium');
+            for (let i = values.length - 1; i >= 0; i--) {
+              if (values[i] != null && Number.isFinite(Number(values[i]))) {
+                el.innerHTML = `In ${years[i]}: <strong>$${Number(values[i]).toFixed(2)}/lb</strong>`;
+                break;
               }
             }
-          });
+          }
+          drawPlot(c.id, [
+            lineTrace(c.label, years, values, c.color, {
+              spline: true,
+              hover: c.label + '<br>%{x}: %{y:.2f}<extra></extra>'
+            })
+          ], { yTitle: c.label });
         } catch (e) {
           console.error(`Failed to load ${c.file}:`, e);
         }
+      }));
+      document.querySelectorAll('.data-tile').forEach(resizeTileChart);
+    }
+
+    const SHARE_CHARTS = [
+      { key: 'gold',        id: 'goldShareChart',        stat: 'current-gold-share',        label: 'Gold',        unit: 'tonnes',           saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'platinum',    id: 'platinumShareChart',    stat: 'current-platinum-share',    label: 'Platinum',    unit: 'tonnes',           saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'rhodium',     id: 'rhodiumShareChart',     stat: 'current-rhodium-share',     label: 'Rhodium',     unit: 'tonnes',           saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'coal',        id: 'coalShareChart',        stat: 'current-coal-share',        label: 'Coal',        unit: 'million tonnes',   saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'iron_ore',    id: 'ironShareChart',        stat: 'current-iron-share',        label: 'Iron ore',    unit: 'million tonnes',   saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'manganese',   id: 'manganeseShareChart',   stat: 'current-manganese-share',   label: 'Manganese',   unit: 'million tonnes',   saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'chromium',    id: 'chromiumShareChart',    stat: 'current-chromium-share',    label: 'Chromium',    unit: 'million tonnes',   saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'vanadium',    id: 'vanadiumShareChart',    stat: 'current-vanadium-share',    label: 'Vanadium',    unit: 'thousand tonnes',  saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'diamond',     id: 'diamondShareChart',     stat: 'current-diamond-share',     label: 'Diamonds',    unit: 'million carats',   saColor: '#e67e22', restColor: '#f7dc6f' },
+      { key: 'uranium',     id: 'uraniumShareChart',     stat: 'current-uranium-share',     label: 'Uranium',     unit: 'tonnes',           saColor: '#e67e22', restColor: '#f7dc6f' }
+    ];
+    const MONTHLY_P2041_PDF = 'https://www.statssa.gov.za/publications/P2041/P2041August2026.pdf';
+    const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let yearlyByKey = {};
+    let monthlyByKey = {};
+
+    function formatShareQty(v, unit) {
+      if (v == null || !Number.isFinite(Number(v))) return '—';
+      v = Number(v);
+      if (unit === 'tonnes') {
+        if (Math.abs(v) >= 1000) return (v / 1000).toFixed(1) + ' kt';
+        if (Math.abs(v) >= 100) return Math.round(v).toLocaleString() + ' t';
+        return v.toFixed(1) + ' t';
+      }
+      if (unit === 'million tonnes') return v.toFixed(v >= 100 ? 0 : 1) + ' Mt';
+      if (unit === 'thousand tonnes') return v.toFixed(v >= 100 ? 0 : 1) + ' kt';
+      if (unit === 'million carats') return v.toFixed(1) + ' Mct';
+      return v.toFixed(1) + ' ' + unit;
+    }
+
+    function shareHoverQty(unit) {
+      if (unit === 'tonnes') return '%{y:.1f} t';
+      if (unit === 'million tonnes') return '%{y:.1f} Mt';
+      if (unit === 'thousand tonnes') return '%{y:.1f} kt';
+      if (unit === 'million carats') return '%{y:.2f} Mct';
+      return '%{y:.1f}';
+    }
+
+    function drawShareChart(cfg, rows) {
+      const years = rows.map(r => String(r.year));
+      const sa = rows.map(r => r.sa);
+      const rest = rows.map(r => r.rest);
+      const world = rows.map(r => r.world);
+      const share = rows.map(r => r.share_pct);
+      const unit = cfg.unit || rows[0].unit;
+      const qtyHover = shareHoverQty(unit);
+      // Areas on primary y (drawn first, shown on the right). % line on y2
+      // overlay (drawn last, shown on the left) so the line sits on top.
+      const traces = [
+        {
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Rest of world',
+          x: years,
+          y: world,
+          yaxis: 'y',
+          fill: 'tozeroy',
+          fillcolor: 'rgba(247,220,111,0.95)',
+          line: { color: cfg.restColor, width: 0.6 },
+          hovertemplate: 'Rest of world<br>%{x}: ' + qtyHover.replace('%{y', '%{customdata') + '<extra></extra>',
+          customdata: rest,
+          connectgaps: false,
+          zorder: 1
+        },
+        {
+          type: 'scatter',
+          mode: 'lines',
+          name: 'South Africa',
+          x: years,
+          y: sa,
+          yaxis: 'y',
+          fill: 'tozeroy',
+          fillcolor: 'rgba(230,126,34,0.95)',
+          line: { color: cfg.saColor, width: 0.6 },
+          hovertemplate: 'South Africa<br>%{x}: ' + qtyHover + '<extra></extra>',
+          connectgaps: false,
+          zorder: 2
+        },
+        {
+          type: 'scatter',
+          mode: 'lines',
+          name: '% of world',
+          x: years,
+          y: share,
+          yaxis: 'y2',
+          line: { color: '#111', width: 2.4 },
+          hovertemplate: '% of world<br>%{x}: %{y:.1f}%<extra></extra>',
+          connectgaps: false,
+          cliponaxis: false,
+          zorder: 10
+        }
+      ];
+      drawPlot(cfg.id, traces, {
+        yTitle: unit,
+        y2Title: '% of world',
+        dualAxis: true,
+        y2OnLeft: true,
+        alwaysTitle: true,
+        y2ticksuffix: '%',
+        y2tickformat: '.0f',
+        legendCompact: true,
+        skipRankHover: true
+      });
+      const el = document.getElementById(cfg.stat);
+      if (el) {
+        const last = rows[rows.length - 1];
+        el.innerHTML = `${last.year}: <strong>${formatShareQty(last.sa, unit)}</strong> · ${Number(last.share_pct).toFixed(1)}% of world`;
+      }
+    }
+
+    function shareTileFor(cfg) {
+      const host = document.getElementById(cfg.id);
+      return host && host.closest ? host.closest('.data-tile') : null;
+    }
+
+    function formatMonthLabel(ym) {
+      const parts = String(ym || '').split('-');
+      const month = Number(parts[1]);
+      if (!parts[0] || !month || month < 1 || month > 12) return String(ym || '');
+      return MONTH_NAMES[month - 1] + ' ' + parts[0];
+    }
+
+    function formatYoyPct(v) {
+      if (v === '' || v == null || !Number.isFinite(Number(v))) return '';
+      v = Number(v);
+      return (v > 0 ? '+' : '') + v.toFixed(1) + '% y/y';
+    }
+
+    function monthlyNoteHtml(cfg) {
+      if (cfg.key === 'platinum') {
+        return 'Source: <a href="' + MONTHLY_P2041_PDF + '" target="_blank" rel="noopener">Stats SA P2041</a> Mining: Production and sales · unadjusted PGM volume index 2019=100 (Table 4), scaled to 2019 SA platinum tonnes.';
+      }
+      return 'Source: <a href="' + MONTHLY_P2041_PDF + '" target="_blank" rel="noopener">Stats SA P2041</a> Mining: Production and sales · unadjusted volume index 2019=100 (Table 4) · physical = 2019 annual / 12 × index / 100.';
+    }
+
+    function restoreYearlyNote(cfg) {
+      const tile = shareTileFor(cfg);
+      const note = tile && tile.querySelector('.data-source-note');
+      if (note && note.dataset.yearlyHtml) note.innerHTML = note.dataset.yearlyHtml;
+    }
+
+    function setShareSourceNote(cfg, html) {
+      const tile = shareTileFor(cfg);
+      const note = tile && tile.querySelector('.data-source-note');
+      if (!note) return;
+      if (!note.dataset.yearlyHtml) note.dataset.yearlyHtml = note.innerHTML;
+      note.innerHTML = html;
+    }
+
+    function drawMonthlyChart(cfg) {
+      const rows = (monthlyByKey[cfg.key] || []).slice().sort(function (a, b) {
+        return String(a.date).localeCompare(String(b.date));
+      });
+      const el = document.getElementById(cfg.stat);
+      if (!rows.length) {
+        drawPlot(cfg.id, [{
+          type: 'scatter',
+          mode: 'lines',
+          name: 'South Africa',
+          x: [],
+          y: [],
+          line: { color: cfg.saColor, width: 0.6 }
+        }], {
+          yTitle: cfg.unit,
+          alwaysTitle: true,
+          skipRankHover: true,
+          annotation: 'No Stats SA monthly series'
+        });
+        if (el) el.textContent = 'No Stats SA monthly series';
+        setShareSourceNote(cfg, 'Stats SA P2041 has no monthly series for ' + cfg.label.toLowerCase() + ' (covers gold, PGMs, coal, iron ore, manganese, chromium, diamonds).');
+        return;
+      }
+      const unit = rows[0].unit || cfg.unit;
+      const qtyHover = shareHoverQty(unit);
+      const saName = cfg.key === 'platinum' ? 'South Africa (PGMs)' : 'South Africa';
+      const traces = [{
+        type: 'scatter',
+        mode: 'lines',
+        name: saName,
+        x: rows.map(function (r) { return r.date + '-01'; }),
+        y: rows.map(function (r) { return Number(r.sa); }),
+        fill: 'tozeroy',
+        fillcolor: 'rgba(230,126,34,0.95)',
+        line: { color: cfg.saColor, width: 0.6 },
+        customdata: rows.map(function (r) { return formatYoyPct(r.yoy_pct) || '—'; }),
+        hovertemplate: saName + '<br>%{x|%b %Y}: ' + qtyHover + '<br>%{customdata}<extra></extra>',
+        connectgaps: false
+      }];
+      drawPlot(cfg.id, traces, {
+        yTitle: unit,
+        xType: 'date',
+        alwaysTitle: true,
+        yToZero: true,
+        autorange: true,
+        skipRankHover: true
+      });
+      const last = rows[rows.length - 1];
+      const yoy = formatYoyPct(last.yoy_pct);
+      const prefix = cfg.key === 'platinum' ? 'PGMs · ' : '';
+      if (el) {
+        el.innerHTML = prefix + formatMonthLabel(last.date) + ': <strong>' + formatShareQty(last.sa, unit) + '</strong>' + (yoy ? ' · ' + yoy : '');
+      }
+      setShareSourceNote(cfg, monthlyNoteHtml(cfg));
+    }
+
+    function purgePlot(id) {
+      const el = document.getElementById(id);
+      if (el && typeof Plotly !== 'undefined' && el.classList.contains('js-plotly-plot')) {
+        Plotly.purge(el);
+      }
+      delete plotRegistry[id];
+    }
+
+    function setShareFreq(cfg, freq) {
+      const tile = shareTileFor(cfg);
+      if (!tile) return;
+      tile.setAttribute('data-freq', freq);
+      tile.querySelectorAll('.data-freq-btn').forEach(function (btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-freq') === freq);
+      });
+      purgePlot(cfg.id);
+      if (freq === 'monthly') {
+        drawMonthlyChart(cfg);
+      } else {
+        const rows = yearlyByKey[cfg.key] || [];
+        restoreYearlyNote(cfg);
+        if (!rows.length) {
+          const el = document.getElementById(cfg.stat);
+          if (el) el.textContent = 'No series';
+          return;
+        }
+        drawShareChart(cfg, rows);
+      }
+      resizeTileChart(tile);
+    }
+
+    function ensureShareFreqToggle(cfg) {
+      const tile = shareTileFor(cfg);
+      if (!tile) return;
+      const head = tile.querySelector('.data-tile-head');
+      if (!head || head.querySelector('.data-freq')) return;
+      const note = tile.querySelector('.data-source-note');
+      if (note && !note.dataset.yearlyHtml) note.dataset.yearlyHtml = note.innerHTML;
+      const wrap = document.createElement('div');
+      wrap.className = 'data-freq';
+      wrap.setAttribute('role', 'group');
+      wrap.setAttribute('aria-label', 'Yearly or monthly');
+      wrap.innerHTML =
+        '<button type="button" class="data-freq-btn is-active" data-freq="yearly" title="Yearly" aria-label="Yearly">' +
+          '<span class="data-freq-full">Yearly</span><span class="data-freq-short">Yr</span></button>' +
+        '<button type="button" class="data-freq-btn" data-freq="monthly" title="Monthly" aria-label="Monthly">' +
+          '<span class="data-freq-full">Monthly</span><span class="data-freq-short">Mo</span></button>';
+      const expand = head.querySelector('.data-tile-toggle');
+      if (expand) head.insertBefore(wrap, expand);
+      else head.appendChild(wrap);
+      wrap.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const btn = e.target.closest('.data-freq-btn');
+        if (!btn) return;
+        setShareFreq(cfg, btn.getAttribute('data-freq'));
+      });
+    }
+
+    async function loadProductionShareCharts() {
+      try {
+        const pack = await Promise.all([
+          fetch('../data/power/sa_world_production.csv').then(function (r) { return r.text(); }),
+          fetch('../data/economy/sa_mining_production_monthly.csv').then(function (r) {
+            return r.ok ? r.text() : '';
+          }).catch(function () { return ''; })
+        ]);
+        const yearlyParsed = Papa.parse(pack[0], {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          comments: '#'
+        });
+        yearlyByKey = {};
+        yearlyParsed.data.forEach(function (r) {
+          if (!r.commodity || r.sa == null || r.world == null || r.share_pct == null) return;
+          if (!Number.isFinite(Number(r.sa)) || !Number.isFinite(Number(r.world))) return;
+          (yearlyByKey[r.commodity] || (yearlyByKey[r.commodity] = [])).push(r);
+        });
+        monthlyByKey = {};
+        if (pack[1]) {
+          const monthlyParsed = Papa.parse(pack[1], {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            comments: '#'
+          });
+          monthlyParsed.data.forEach(function (r) {
+            if (!r.commodity || r.date == null || r.sa == null) return;
+            if (!Number.isFinite(Number(r.sa))) return;
+            (monthlyByKey[r.commodity] || (monthlyByKey[r.commodity] = [])).push(r);
+          });
+        }
+        SHARE_CHARTS.forEach(function (cfg) {
+          ensureShareFreqToggle(cfg);
+          const rows = (yearlyByKey[cfg.key] || []).slice().sort(function (a, b) { return a.year - b.year; });
+          yearlyByKey[cfg.key] = rows;
+          if (!rows.length) {
+            const el = document.getElementById(cfg.stat);
+            if (el) el.textContent = 'No series';
+            return;
+          }
+          drawShareChart(cfg, rows);
+        });
+      } catch (e) {
+        console.error('Failed to load sa_world_production.csv', e);
+        SHARE_CHARTS.forEach(function (cfg) {
+          const el = document.getElementById(cfg.stat);
+          if (el) el.innerHTML = '<span class="text-danger">Error loading production</span>';
+        });
+      }
+      document.querySelectorAll('.data-tile').forEach(resizeTileChart);
+    }
+
+    function plotHostForTile(tile) {
+      return tile && tile.querySelector('.plotly-host');
+    }
+
+    function resizeTileChart(tile) {
+      const host = plotHostForTile(tile);
+      if (!host) return;
+      if (tile.getAttribute('data-tile') === 'zar' && zarLabelsFull.length) {
+        refreshZarPlot();
+        return;
+      }
+      redrawPlot(host.id);
+    }
+
+    function ensurePlaceholder(tile) {
+      if (tile.previousElementSibling && tile.previousElementSibling.classList.contains('data-tile-placeholder')) return;
+      const ph = document.createElement('div');
+      ph.className = 'data-tile-placeholder';
+      ph.setAttribute('aria-hidden', 'true');
+      tile.parentNode.insertBefore(ph, tile);
+    }
+
+    function removePlaceholder(tile) {
+      const ph = tile.previousElementSibling;
+      if (ph && ph.classList.contains('data-tile-placeholder')) ph.remove();
+    }
+
+    function afterLayout(tile, fn) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { fn(tile); });
+      });
+    }
+
+    function collapseTile(tile) {
+      if (!tile) return;
+      tile.classList.remove('is-expanded');
+      removePlaceholder(tile);
+      const btn = tile.querySelector('.data-tile-toggle');
+      if (btn) { btn.textContent = '\u26F6'; btn.setAttribute('aria-label', 'Expand chart'); }
+      if (!document.querySelector('.data-tile.is-expanded')) {
+        document.body.classList.remove('data-expanded');
+        const backdrop = document.getElementById('dataBackdrop');
+        if (backdrop) backdrop.hidden = true;
+      }
+      afterLayout(tile, resizeTileChart);
+    }
+
+    function expandTile(tile) {
+      document.querySelectorAll('.data-tile.is-expanded').forEach(function (t) {
+        if (t !== tile) collapseTile(t);
+      });
+      ensurePlaceholder(tile);
+      tile.classList.add('is-expanded');
+      document.body.classList.add('data-expanded');
+      const backdrop = document.getElementById('dataBackdrop');
+      if (backdrop) backdrop.hidden = false;
+      const btn = tile.querySelector('.data-tile-toggle');
+      if (btn) { btn.textContent = '\u2715'; btn.setAttribute('aria-label', 'Close chart'); }
+      afterLayout(tile, resizeTileChart);
+    }
+
+    function initDataBoard() {
+      const backdrop = document.getElementById('dataBackdrop');
+      document.querySelectorAll('.data-tile').forEach(function (tile) {
+        tile.addEventListener('click', function (e) {
+          if (e.target.closest('.data-tile-controls')) return;
+          if (e.target.closest('.data-source-note, .pink-source-note')) return;
+          if (e.target.closest('.data-freq')) return;
+          if (e.target.closest('.data-tile-toggle')) {
+            e.stopPropagation();
+            if (tile.classList.contains('is-expanded')) collapseTile(tile);
+            else expandTile(tile);
+            return;
+          }
+          if (!tile.classList.contains('is-expanded')) expandTile(tile);
+        });
+        const controls = tile.querySelector('.data-tile-controls');
+        if (controls) controls.addEventListener('click', function (e) { e.stopPropagation(); });
+      });
+      if (backdrop) {
+        backdrop.addEventListener('click', function () {
+          document.querySelectorAll('.data-tile.is-expanded').forEach(collapseTile);
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.data-tile.is-expanded').forEach(collapseTile);
+        }
+      });
+      window.addEventListener('resize', function () {
+        document.querySelectorAll('.data-tile').forEach(function (tile) {
+          const host = plotHostForTile(tile);
+          if (host) sizePlot(host);
+        });
+      });
+      if (typeof ResizeObserver !== 'undefined') {
+        document.querySelectorAll('.data-tile-chart').forEach(function (box) {
+          new ResizeObserver(function () {
+            var host = box.querySelector('.plotly-host');
+            if (host) sizePlot(host);
+          }).observe(box);
+        });
+      }
+      var q = new URLSearchParams(window.location.search).get('expand');
+      if (q) {
+        var wanted = document.querySelector('.data-tile[data-tile="' + q + '"]');
+        if (wanted) setTimeout(function () { expandTile(wanted); }, 700);
       }
     }
 
     window.onload = function() {
-      loadCSVData();
+      initDataBoard();
+      loadCSVData().finally(function () {
+        [0, 80, 250, 700].forEach(function (ms) {
+          setTimeout(function () {
+            document.querySelectorAll('.data-tile').forEach(resizeTileChart);
+          }, ms);
+        });
+      });
       loadCommodityPrices();
+      loadProductionShareCharts();
       // Replace Gold/Platinum/Coal/Iron Ore charts with official World Bank Pink Sheet data
       if (typeof window.loadPinkSheet === 'function') {
-        window.loadPinkSheet();
+        Promise.resolve(window.loadPinkSheet()).finally(function () {
+          document.querySelectorAll('.data-tile').forEach(resizeTileChart);
+        });
       }
     };
   </script>

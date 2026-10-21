@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SADC Regional Gas Master Plan Phase 1 • Gas • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .content-card { border: 3px solid #ddd; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.08); }
+    .content-card h5, .content-card h6 { font-weight: 800; }
+    .rule-box { border: 3px solid #000; padding: 1.25rem; box-shadow: 6px 6px 0 rgba(0,0,0,0.1); }
+    .pdf-btn {
+      display: inline-block;
+      border: 3px solid #007A4D;
+      border-radius: 0;
+      color: #007A4D;
+      background: #f0faf4;
+      padding: 0.9rem 1.6rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 5px 5px 0 rgba(0,122,77,0.25);
+      transition: all 0.15s ease;
+    }
+    .pdf-btn:hover { background: #007A4D; color: white; box-shadow: 3px 3px 0 rgba(0,122,77,0.25); transform: translate(2px,2px); }
+    .pdf-btn-alt {
+      display: inline-block;
+      border: 3px solid #002395;
+      border-radius: 0;
+      color: #002395;
+      background: #f0f4ff;
+      padding: 0.9rem 1.6rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 5px 5px 0 rgba(0,35,149,0.2);
+    }
+    .pdf-btn-alt:hover { background: #002395; color: white; }
+    .pdf-frame {
+      border: 3px solid #000;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+      height: 85vh;
+      min-height: 720px;
+      background: #f8f9fa;
+    }
+    .pdf-frame iframe { width: 100%; height: 100%; border: 0; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="gas.html" class="btn btn-light btn-sm">🔥 Gas</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="display-4 fw-bold" style="color: #002395;">🌐 SADC Regional Gas Master Plan — Phase 1</h1>
+    <h5 class="text-muted mb-4">DBSA-sponsored draft for the Southern African Development Community. Consolidated report, 2020.</h5>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <p class="lead fw-bold">This is the regional counterpart to South Africa’s national <a href="gas_master_plan.html">Gas Master Plan</a>. The 37th and 38th SADC Summits (2017–2018) directed the Secretariat to operationalise a Regional Gas Committee and write a Regional Gas Master Plan (RGMP). Phase 1 is the supply, demand, infrastructure, and institutional study — 289 pages, a 30-year horizon, and a map of how Mozambique, Angola, Tanzania, Namibia, and South Africa could become one gas market rather than a set of stranded national projects.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="alert alert-light border border-dark p-3" style="border-width: 3px !important; border-radius: 0; box-shadow: 5px 5px 0 rgba(0,0,0,0.1);">
+          <strong>Client:</strong> SADC<br>
+          <strong>Sponsor:</strong> Development Bank of Southern Africa<br>
+          <strong>Consultants:</strong> Africa International Advisors<br>
+          <strong>Status:</strong> Draft Phase 1 (Nov 2020)<br>
+          <strong>Length:</strong> 289 pages
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="p-4 text-center" style="background: #f0faf4; border: 3px solid #007A4D; border-radius: 0; box-shadow: 6px 6px 0 rgba(0,122,77,0.15);">
+          <h5 class="fw-bold text-success mb-2">📄 Read the Full Report</h5>
+          <p class="small mb-3 text-muted">Saved locally in the dashboard data folder. Open in a new tab or scroll the embedded copy below.</p>
+          <a href="../data/gas/SADC-DBSA-RGMP-Phase-1-Consolidated-Report.pdf" target="_blank" class="pdf-btn">Download / Open the RGMP PDF ↓</a>
+          <a href="https://www.dbsa.org/sites/default/files/media/documents/2021-04/SADC%20DBSA%20RGMP%20Phase%201%20Consolidated%20Report.pdf" target="_blank" rel="noreferrer" class="pdf-btn-alt ms-2">Original (dbsa.org)</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Why a regional plan</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>SADC member states need energy that is secure, available, and affordable — and a transition fuel that can also be a chemical feedstock (ammonia/urea, methanol, GTL diesel) and a transport fuel. Country-level volumes are often too small to FID midstream infrastructure on their own. The RGMP’s answer is <strong>demand aggregation across geographic nodes</strong>, plus LNG as the short-term stimulus while pipelines and domestic fields catch up.</p>
+      <p class="mb-0">Enablement is framed as molecule access and affordability; infrastructure tariffs, third-party access, and regional aggregation; and security of supply from multiple sources (LNG plus domestic). The study also scores capital, policy, institutions, skills, and energy-system structure in each member state.</p>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #c62828; padding-left: 16px;">Supply and demand (Phase 1 numbers)</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="rule-box h-100" style="border-color: #c62828;">
+          <h6 class="fw-bold text-danger">Supply</h6>
+          <p class="small mb-0">Mozambique sits in front with <strong>more than 100 tcf</strong> proven. Current production (Mozambique, Angola, Tanzania, South Africa) was about <strong>9.6 bcm / 360 PJ/a</strong>. The study then forecast production to ~50 bcm (~2,035 PJ/a) by 2026, driven mainly by LNG export trains. Angola was the only SADC LNG producer at 5.2 mtpa; regional liquefaction was expected to reach <strong>36.7 mtpa</strong> once Mozambique Area 1 and Area 4 trains come on. Most of that cargo is committed to international markets; domestic allocations would have to be traded as molecules or as downstream products (power, fertiliser).</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="rule-box h-100" style="border-color: #007A4D;">
+          <h6 class="fw-bold text-success">Demand</h6>
+          <p class="small mb-0">Forecasts cover ten SADC states plus Ethiopia and Kenya. South Africa is the region’s largest consumer and the outlier that already imports via <strong>ROMPCO</strong>. Base case: ~<strong>400 PJ/a of gas-to-power by 2030</strong> (about half of non-petrochemical demand) as the anchor, then total aggregated demand ~<strong>1,427 PJ/a by 2050</strong>. High case is ~41% above base (Sasol coal-to-liquids switching, more GTP, three urea plants). Low case is ~30% below (no methanol plant, one urea plant, weaker GTP after 2030).</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">Infrastructure: hub-and-spoke first, pipelines later</h3>
+    <div class="content-card card p-4 mb-4">
+      <p>Regional gas infrastructure was described as nascent. Short-term stimulus is <strong>imported LNG</strong> into planned or discussed terminals at Maputo, Coega, Richards Bay, Saldanha, Walvis Bay, and Port Louis. The preferred near-term architecture is a <strong>hub-and-spoke</strong>: conventional LNG into an FSRU, then small-scale LNG by ship, road, or rail as a virtual pipeline until volumes justify a conventional terminal and steel pipe.</p>
+      <p>Existing backbone: <strong>ROMPCO</strong> plus Sasol and Transnet Lilly in South Africa — the base for linking Richards Bay / Maputo LNG into Gauteng, KZN, and Mpumalanga. Longer term: a ~2,600 km Mozambique north–south line from Rovuma to Temane/ROMPCO; Mtwara–Dar extended inland and possibly toward Kenya; and a west-coast link from producing sites through Botswana and Namibia toward Angola.</p>
+      <p class="mb-0">Power overlay: ~<strong>8,800 MW</strong> of planned new gas-to-power in the region, plus ~<strong>14,000 MW</strong> of existing plant that could switch to gas, including ~<strong>5,500 MW</strong> of Mpumalanga coal (Camden, Komati, Grootvlei) as a fast-track CCGT offtake that would justify a conventional LNG train and ROMPCO looping. SAPP still needs Angola, Malawi, and Tanzania connected.</p>
+    </div>
+
+    <div class="content-card card p-4 mb-4">
+      <h6 class="fw-bold">South Africa route-to-market in the report</h6>
+      <ul class="small mb-0">
+        <li>Loop ROMPCO to support new Mpumalanga gas-to-power demand.</li>
+        <li>Import LNG first at Coega, then Richards Bay, where coastal GTP sits — complement with pipeline, including possible reversal of the Lilly line into Mpumalanga.</li>
+        <li>Connect the existing grid toward Mozambique Rovuma over the longer term.</li>
+      </ul>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #00695c; padding-left: 16px;">Recommendations</h3>
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="rule-box h-100" style="border-color: #00695c;">
+          <h6 class="fw-bold" style="color:#00695c;">Regional</h6>
+          <p class="small mb-0">Harmonise energy law and policy; build east, west, and northern economic corridors; extend SAPP and relieve congestion; create a wholesale aggregator modelled on SAPP brokerage, and eventually a physical gas hub with third-party access. Transform RERA into SARERA with powers over cross-border energy trade and tariffs. The report also floats a Southern African Gas Pool (SAGP) and a Regional Petroleum and Gas Association (REPGA), with a warning not to overlap mandates.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="rule-box h-100" style="border-color: #002395;">
+          <h6 class="fw-bold" style="color:#002395;">National and market</h6>
+          <p class="small mb-0">Adopt SADC Model Energy Guidelines into national IEPs. Protect investors without abandoning state interest. Build gas skills at existing regional training centres. Policy and institutional mandates first, so aggregation can actually happen; GTP and petrochemicals as the first affordable anchors; LNG where volumes do not yet justify pipe; LPG and small-scale LNG for access in thinner markets.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #007A4D; padding-left: 16px;">Full document</h3>
+    <p class="text-muted">Embedded from the local copy (large file, ~23 MB). If the viewer does not load in this browser, use the download button above.</p>
+    <div class="pdf-frame mb-4">
+      <iframe src="../data/gas/SADC-DBSA-RGMP-Phase-1-Consolidated-Report.pdf" title="SADC Regional Gas Master Plan Phase 1 PDF"></iframe>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3" style="border-left: 8px solid #002395; padding-left: 16px;">About this document</h3>
+    <div class="content-card card p-4 mb-4">
+      <table class="table table-sm small">
+        <tr><th>Full title</th><td>Draft Report: The SADC Regional Gas Master Plan (RGMP) — Phase One. Consolidated Report.</td></tr>
+        <tr><th>Client</th><td>Southern African Development Community (SADC) and member-state beneficiaries</td></tr>
+        <tr><th>Sponsor</th><td>Development Bank of Southern Africa (DBSA)</td></tr>
+        <tr><th>Consultants</th><td>Africa International Advisors</td></tr>
+        <tr><th>Mandate</th><td>37th SADC Summit (Pretoria, August 2017) and 38th Summit (Namibia, August 2018)</td></tr>
+        <tr><th>Date</th><td>November 2020 (Word metadata); posted on dbsa.org April 2021</td></tr>
+        <tr><th>Horizon</th><td>30-year scenario study (to 2050)</td></tr>
+        <tr><th>Local copy</th><td><a href="../data/gas/SADC-DBSA-RGMP-Phase-1-Consolidated-Report.pdf" target="_blank">data/gas/SADC-DBSA-RGMP-Phase-1-Consolidated-Report.pdf</a></td></tr>
+        <tr><th>Original source</th><td><a href="https://www.dbsa.org/sites/default/files/media/documents/2021-04/SADC%20DBSA%20RGMP%20Phase%201%20Consolidated%20Report.pdf" target="_blank" rel="noreferrer">dbsa.org (SADC DBSA RGMP Phase 1 Consolidated Report.pdf)</a></td></tr>
+      </table>
+      <p class="small mb-0">Draft Phase 1 study, not a gazetted South African policy. It is the SADC-level counterpart to the DMRE <a href="gas_master_plan.html">Gas Master Plan</a> and the industrial <a href="gas-roadmap.html">IGUA-SA Gas Roadmap</a>. Copyright is reserved to SADC; contact <a href="mailto:registry@sadc.int">registry@sadc.int</a>.</p>
+    </div>
+
+    <hr>
+    <p class="text-muted"><strong>Sources &amp; further reading:</strong></p>
+    <ul>
+      <li><a href="../data/gas/SADC-DBSA-RGMP-Phase-1-Consolidated-Report.pdf" target="_blank">SADC Regional Gas Master Plan Phase 1 — Full PDF ↓</a></li>
+      <li><a href="https://www.dbsa.org/sites/default/files/media/documents/2021-04/SADC%20DBSA%20RGMP%20Phase%201%20Consolidated%20Report.pdf" target="_blank" rel="noreferrer">Original PDF on dbsa.org</a></li>
+      <li><a href="gas_master_plan.html">Gas Master Plan 2024 (South Africa)</a></li>
+      <li><a href="gas-roadmap.html">IGUA-SA Gas Roadmap for South Africa 2025–2042</a></li>
+      <li><a href="gas-for-africa.html">Gas for Africa 2025</a></li>
+      <li><a href="gas.html">Gas Overview</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

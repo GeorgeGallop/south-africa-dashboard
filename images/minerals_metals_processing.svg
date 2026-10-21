@@ -1,27 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" width="600" height="250">
-  <!-- Background -->
-  <rect width="600" height="250" fill="#f0f0f0"/>
-  <!-- Title -->
-  <text x="300" y="40" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="24" fill="#007A4D">MINERALS & METALS PROCESSING</text>
-  <!-- From mine -->
-  <rect x="20" y="70" width="140" height="60" rx="8" fill="#8B7355"/>
-  <text x="90" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">⛏️ Mine / Ore</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" width="900" height="240">
+  <rect width="900" height="240" fill="#f6f7f5"/>
+  <text x="450" y="36" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="bold" fill="#007A4D">MINERALS & METALS PROCESSING</text>
+
+  <!-- Stage 1: Mine / Ore -->
+  <rect x="20" y="70" width="150" height="64" rx="8" fill="#8B7355"/>
+  <text x="95" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">1 &#183; Mine / Ore</text>
+  <text x="95" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#f0e6d8">run-of-mine</text>
+
   <!-- Arrow 1 -->
-  <line x1="160" y1="100" x2="210" y2="100" stroke="#007A4D" stroke-width="3"/>
-  <polygon points="210,93 225,100 210,107" fill="#007A4D"/>
-  <!-- Concentration -->
-  <rect x="225" y="70" width="140" height="60" rx="8" fill="#002395"/>
-  <text x="295" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Concentration</text>
+  <line x1="171" y1="102" x2="186" y2="102" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="186,95 194,102 186,109" fill="#007A4D"/>
+
+  <!-- Stage 2: Concentration -->
+  <rect x="194" y="70" width="150" height="64" rx="8" fill="#002395"/>
+  <text x="269" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">2 &#183; Concentration</text>
+  <text x="269" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#d6dcf0">flotation &#183; gravity</text>
+
   <!-- Arrow 2 -->
-  <line x1="365" y1="100" x2="415" y2="100" stroke="#007A4D" stroke-width="3"/>
-  <polygon points="415,93 430,100 415,107" fill="#007A4D"/>
-  <!-- Smelting -->
-  <rect x="430" y="70" width="150" height="60" rx="8" fill="#CC3333"/>
-  <text x="505" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Smelting</text>
-  <!-- Minerals list below -->
-  <text x="300" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#555">PGMs · Gold · Copper · Iron Ore · Manganese · Chrome · Vanadium</text>
-  <!-- Output arrow -->
-  <line x1="505" y1="130" x2="505" y2="180" stroke="#CC3333" stroke-width="2" stroke-dasharray="5,3"/>
-  <polygon points="498,180 505,195 512,180" fill="#CC3333"/>
-  <text x="505" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#333" font-weight="bold">→ Alloys, Steel, Refined Metals</text>
+  <line x1="345" y1="102" x2="360" y2="102" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="360,95 368,102 360,109" fill="#007A4D"/>
+
+  <!-- Stage 3: Smelting -->
+  <rect x="368" y="70" width="150" height="64" rx="8" fill="#CC3333"/>
+  <text x="443" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">3 &#183; Smelting</text>
+  <text x="443" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#f5d9d9">furnace &#183; matte</text>
+
+  <!-- Arrow 3 -->
+  <line x1="519" y1="102" x2="534" y2="102" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="534,95 542,102 534,109" fill="#007A4D"/>
+
+  <!-- Stage 4: Refining -->
+  <rect x="542" y="70" width="150" height="64" rx="8" fill="#6a1b9a"/>
+  <text x="617" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">4 &#183; Refining</text>
+  <text x="617" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#e4d5f0">pure metal</text>
+
+  <!-- Arrow 4 -->
+  <line x1="693" y1="102" x2="708" y2="102" stroke="#007A4D" stroke-width="3"/>
+  <polygon points="708,95 716,102 708,109" fill="#007A4D"/>
+
+  <!-- Stage 5: Alloying -->
+  <rect x="716" y="70" width="164" height="64" rx="8" fill="#007A4D"/>
+  <text x="798" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">5 &#183; Alloying</text>
+  <text x="798" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#d6ecdf">steel &#183; ferroalloys</text>
+
+  <!-- Commodities line -->
+  <text x="450" y="170" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#555555">PGMs &#183; Gold &#183; Copper &#183; Iron Ore &#183; Manganese &#183; Chrome &#183; Vanadium &#183; Coal</text>
+
+  <!-- Output line -->
+  <line x1="798" y1="134" x2="798" y2="186" stroke="#007A4D" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="791,186 798,200 805,186" fill="#007A4D"/>
+  <text x="450" y="212" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#222222" font-weight="bold">Refined metals &#183; Alloys &#183; Steel &#183; Stainless &#183; Export products</text>
 </svg>

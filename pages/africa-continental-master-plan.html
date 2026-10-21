@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Africa Continental Master Plan • Power • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .cmp-hero {
+      background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 45%, #e3f2fd 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.35rem; font-weight: 800; color: #007A4D; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .cmp-section { scroll-margin-top: 1rem; }
+    .cmp-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .stack-step {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.95rem;
+      height: 100%;
+    }
+    .stack-step .step-n {
+      display: inline-block;
+      background: #007A4D;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-bottom: 0.45rem;
+    }
+    .stack-step h3 { font-size: 1rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    table.cmp-table td, table.cmp-table th { vertical-align: middle; font-size: 0.86rem; }
+    .tag {
+      display: inline-block;
+      background: #e8f3ee;
+      border: 1px solid #b7d8c8;
+      color: #145c38;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin: 0.1rem 0.15rem;
+    }
+    .tag.gold { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .tag.blue { background: #eaeefb; border-color: #bcc7ef; color: #002395; }
+    .hover-effect:hover { transform: scale(1.03); transition: 0.3s; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="cmp-hero mb-4">
+      <p class="small text-muted mb-1">Power · Africa Continental Master Plan</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">🌍 Africa Continental Master Plan</h1>
+      <p class="lead mb-3">The CMP is the generation-and-transmission plan that is supposed to wire Africa’s five power pools into one grid. AfSEM is the market that would trade across those wires. Planning closed in 2023. Phase III — implementation — started in 2025.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#what">What it is</a>
+        <a class="btn btn-sm btn-outline-success" href="#stack">The stack</a>
+        <a class="btn btn-sm btn-outline-success" href="#phases">Phases</a>
+        <a class="btn btn-sm btn-outline-success" href="#corridors">Priority corridors</a>
+        <a class="btn btn-sm btn-outline-success" href="#now">Where it is now</a>
+        <a class="btn btn-sm btn-outline-success" href="#sa">South Africa</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">878 → 2,368</div>
+          <div class="label">TWh demand</div>
+          <div class="sub">2021 baseline → 2040 CMP case</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">5×</div>
+          <div class="label">capacity aim</div>
+          <div class="sub">AUDA-NEPAD 2025: fivefold by 2040</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">15 Sep 2023</div>
+          <div class="label">synthesis</div>
+          <div class="sub">continental plan ratified</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">2040</div>
+          <div class="label">AfSEM live</div>
+          <div class="sub">full single market target</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="cmp-section" id="what">
+      <h2>What it is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>The Continental Power System Master Plan (CMP) is Africa’s long-term electricity infrastructure plan. Energy ministers tasked <strong>AUDA-NEPAD</strong> with it in 2019. The African Union Commission and <strong>AFREC</strong> lead the political and data side, with AfDB, the EU, IRENA, Power Africa and Germany’s BMZ as the main technical and money partners.</p>
+          <p>It is the physical layer of the continental energy project: generation, transmission, and a short list of cross-border interconnectors that would let surplus hydro, solar and gas move between regions. The market layer is the <a href="afsem.html">African Single Electricity Market (AfSEM)</a>. Together they are Agenda 2063 energy flagships and a named priority of the AU–EU Green Energy Initiative and Global Gateway.</p>
+          <p class="mb-0">The five <a href="power-pools.html">power pools</a> — SAPP, WAPP, CAPP/PEAC, EAPP and COMELEC — are the regional building blocks. The CMP is supposed to join them.</p>
+        </div>
+      </div>
+      <div class="key-fact mb-3">
+        <strong>Keep the two 2040 numbers apart.</strong> The CMP demand case runs from <strong>878 TWh in 2021 to 2,368 TWh in 2040</strong>. AUDA-NEPAD’s 2025 annual report separately says the CMP aims to <strong>increase Africa’s energy capacity fivefold by 2040</strong>. Demand and installed capacity are different rulers.
+      </div>
+    </section>
+
+    <section class="cmp-section" id="stack">
+      <h2>The stack</h2>
+      <p class="text-muted">Three layers. The CMP is the wires. The pools are the regions. AfSEM is the market.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">1 · PLAN</span>
+            <h3>CMP</h3>
+            <p class="small mb-0">Continental generation and transmission masterplan. Priority interconnectors, project preparation, and the CEPA planning desk that is supposed to cut study time in half.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">2 · REGIONS</span>
+            <h3>Power pools</h3>
+            <p class="small mb-0">SAPP (Gaborone), WAPP (Cotonou), CAPP/PEAC (Brazzaville), EAPP (Addis Ababa), COMELEC (Algiers). Dual members sit in more than one pool. South Africa’s pool is SAPP.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">3 · MARKET</span>
+            <h3>AfSEM</h3>
+            <p class="small mb-0">Single African electricity market: regulatory, technical and market readiness, plus independent regulator / TSO / DSO as continental guidelines. Target: operational by 2040.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmp-section" id="phases">
+      <h2>Phases</h2>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm cmp-table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>When</th>
+              <th>What</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2019</td>
+              <td>Energy ministers task AUDA-NEPAD with a continental masterplan.</td>
+              <td><span class="tag">Mandate</span></td>
+            </tr>
+            <tr>
+              <td>2020–2023</td>
+              <td>Planning decade: demand, generation, transmission and pool studies folded into one synthesis.</td>
+              <td><span class="tag">Done</span></td>
+            </tr>
+            <tr>
+              <td>15 Sep 2023</td>
+              <td>CMP synthesis report ratified. The plan exists as a document.</td>
+              <td><span class="tag">Ratified</span></td>
+            </tr>
+            <tr>
+              <td>2015–2025</td>
+              <td>AU energy strategy decade. Agenda 2063 first ten-year plan closed; CMP sat inside that story.</td>
+              <td><span class="tag gold">Closed</span></td>
+            </tr>
+            <tr>
+              <td>2025 onward</td>
+              <td>Phase III / implementation. CEPA, HTOC, bankability of the first interconnectors. 2025+ is delivery.</td>
+              <td><span class="tag blue">Live</span></td>
+            </tr>
+            <tr>
+              <td>2040</td>
+              <td>Full AfSEM operational. CMP demand case at 2,368 TWh. Fivefold capacity aim.</td>
+              <td><span class="tag gold">Target</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src-note mb-0">The preparation bottleneck the CMP is trying to break: typical interconnector studies take 6–8 years. The CEPA / Phase III pitch is to cut that toward about four years — roughly half.</p>
+    </section>
+
+    <section class="cmp-section" id="governance">
+      <h2>Who runs it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <ul class="mb-2">
+            <li><strong>AUDA-NEPAD</strong> — implementing agency for the CMP. Owns the masterplan, the priority list, and the project-preparation pipeline.</li>
+            <li><strong>AUC + AFREC</strong> — political and energy-data lead. AfSEM policy sits here.</li>
+            <li><strong>STC-TTIIE</strong> — AU Specialised Technical Committee on Transport, Transcontinental and Interregional Infrastructure, and Energy. Energy ministers are the political council.</li>
+            <li><strong>CEPA</strong> — Continental Energy Planning Agency, the new desk meant to keep studies moving. Workshop in Addis Ababa 3–5 June 2026; inaugural Steering Committee on 5 June 2026.</li>
+            <li><strong>HTOC</strong> — Harmonisation of Transmission Operations Committee, AfSEM’s technical body. Inaugural meeting 30 June–1 July 2025; formalised 28–30 September 2026 in Addis with a governance manual and technical working groups.</li>
+            <li><strong>Partners</strong> — AfDB (feasibility follow-on), EU / Global Gateway, IRENA, Power Africa, BMZ.</li>
+          </ul>
+          <p class="mb-0 src-note">The five power pools remain the operators of their own markets. CMP and AfSEM sit above them as continental planning and rules, not as a sixth pool.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmp-section" id="corridors">
+      <h2>Priority interconnectors</h2>
+      <p>Up to <strong>twenty CMP priority interconnectors</strong> are on the books with the power pools. The first two pre-feasibility studies were validated in June 2026: <strong>Burundi–Tanzania</strong> and <strong>DRC–Angola</strong>. One of those already has AfDB follow-on funding into full feasibility. Four more were in drafting at the same workshop: Egypt–Libya, Rwanda–Tanzania, Angola–Zambia, Botswana–Namibia.</p>
+      <p>SAPP’s named four in the 2025–26 CEPA work are BONA, DRC–Angola, Angola–Zambia (~2,000 MW / ~1,200 km) and DRC–South Africa (Inga 3, 3,000+ km / ~3,000 MW). A Gaborone workshop in August 2026 bundled BONA with BOSA and BOZA. ANNA (Angola–Namibia, Baynes) is the PIDA western seam.</p>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm cmp-table">
+          <thead class="table-light">
+            <tr>
+              <th>Corridor</th>
+              <th>Pools</th>
+              <th>Size (where named)</th>
+              <th>Status (2026)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Burundi – Tanzania</td>
+              <td>EAPP</td>
+              <td>—</td>
+              <td>Pre-feasibility validated, June 2026</td>
+            </tr>
+            <tr>
+              <td>DRC – Angola</td>
+              <td>SAPP / CAPP</td>
+              <td>—</td>
+              <td>Pre-feasibility validated; AfDB feasibility funding</td>
+            </tr>
+            <tr>
+              <td>Botswana – Namibia (BONA)</td>
+              <td>SAPP</td>
+              <td>—</td>
+              <td>EU-financed pre-feasibility; target Nov 2026</td>
+            </tr>
+            <tr>
+              <td>Angola – Zambia</td>
+              <td>SAPP / CAPP</td>
+              <td>~2,000 MW / ~1,200 km</td>
+              <td>Pre-feasibility drafting</td>
+            </tr>
+            <tr>
+              <td>DRC – South Africa (Inga 3)</td>
+              <td>SAPP / CAPP</td>
+              <td>~3,000 MW / 3,000+ km</td>
+              <td>Pre-feasibility / PIDA E.30.15</td>
+            </tr>
+            <tr>
+              <td>Botswana – South Africa (BOSA)</td>
+              <td>SAPP</td>
+              <td>—</td>
+              <td>Gaborone Aug 2026 workshop; strengthens live 400 kV</td>
+            </tr>
+            <tr>
+              <td>Botswana – Zambia (BOZA)</td>
+              <td>SAPP</td>
+              <td>—</td>
+              <td>Gaborone Aug 2026 workshop</td>
+            </tr>
+            <tr>
+              <td>Angola – Namibia (ANNA)</td>
+              <td>SAPP / CAPP</td>
+              <td>tied to Baynes 880 MW</td>
+              <td>PIDA planned</td>
+            </tr>
+            <tr>
+              <td>Egypt – Libya (ELTAM section)</td>
+              <td>EAPP / COMELEC</td>
+              <td>—</td>
+              <td>Pre-feasibility drafting</td>
+            </tr>
+            <tr>
+              <td>Rwanda – Tanzania</td>
+              <td>EAPP</td>
+              <td>—</td>
+              <td>Pre-feasibility drafting</td>
+            </tr>
+            <tr>
+              <td>Zambia – Tanzania (ZTK)</td>
+              <td>SAPP / EAPP</td>
+              <td>~400 MW / ~700 km, 330 kV</td>
+              <td>Under construction; seam ~2029</td>
+            </tr>
+            <tr>
+              <td>Kenya – Tanzania</td>
+              <td>EAPP</td>
+              <td>~2,000 MW / ~510 km, 400 kV</td>
+              <td>Under construction</td>
+            </tr>
+            <tr>
+              <td>Egypt – Sudan</td>
+              <td>EAPP</td>
+              <td>~3,000 MW / ~770 km</td>
+              <td>PIDA first-stage continental interconnection</td>
+            </tr>
+            <tr>
+              <td>WAPP North Core</td>
+              <td>WAPP</td>
+              <td>330 kV / ~875 km</td>
+              <td>Under construction (Nigeria–Niger–Benin/Togo–Burkina)</td>
+            </tr>
+            <tr>
+              <td>Malawi – Mozambique (Matambo–Phombeya)</td>
+              <td>SAPP</td>
+              <td>400 kV / ~300 MW / ~210 km</td>
+              <td>Commissioning / operational building block</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src-note">Alignments on the simulation map are schematic country-to-country corridors, not surveyed centre-lines. Existing SAPP building blocks already on the ground include Cahora Bassa HVDC, Caprivi / Zambezi HVDC, Namibia–SA 400 kV, Botswana–SA 400 kV and Zimbabwe–SA 400 kV.</p>
+    </section>
+
+    <section class="cmp-section" id="pools">
+      <h2>Five power pools</h2>
+      <p class="text-muted">Regional operators. Dual members: Angola and DRC sit in SAPP and CAPP; Tanzania and DRC sit in SAPP and EAPP; Libya sits in EAPP and COMELEC.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6 col-lg-4">
+          <a href="sapp.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag gold">SAPP</span>
+              <h3 class="mt-2">Southern African Power Pool</h3>
+              <p class="small mb-0">Gaborone. Twelve operating members under SADC. South Africa’s pool. Cahora Bassa, the Inga spine and ZTK all bite here.</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="wapp.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag">WAPP</span>
+              <h3 class="mt-2">West African Power Pool</h3>
+              <p class="small mb-0">Cotonou. ECOWAS. CLSG, OMVG and North Core are the live backbone.</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="capp.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag">CAPP / PEAC</span>
+              <h3 class="mt-2">Central African Power Pool</h3>
+              <p class="small mb-0">Brazzaville. ECCAS. Grand Inga in the DRC is the continental hinge.</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="eapp.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag blue">EAPP</span>
+              <h3 class="mt-2">Eastern Africa Power Pool</h3>
+              <p class="small mb-0">Addis Ababa. Nile / Horn / Great Lakes. ZTK is the EAPP–SAPP seam around 2029.</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="comelec.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag blue">COMELEC</span>
+              <h3 class="mt-2">Comité Maghrébin de l’Électricité</h3>
+              <p class="small mb-0">Algiers. Maghreb interconnection exists and is often electrically open. ELTAM is the CMP north-coast candidate.</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="power-pools.html" class="text-decoration-none text-reset">
+            <div class="stack-step hover-effect">
+              <span class="tag gold">Hub</span>
+              <h3 class="mt-2">Power Pools page</h3>
+              <p class="small mb-0">Five pool cards plus the continental connectivity map. Lives under this nest.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmp-section" id="now">
+      <h2>Where it is now (2025–2026)</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>The strategy decade is over. The live work is packaging interconnectors so a bank will look at them, and standing up the two desks that are supposed to keep studies from dying in drawers.</p>
+          <ul class="mb-2">
+            <li><strong>November 2025, Luanda</strong> — Africa Energy Bankability Forum session on CMP interconnectors.</li>
+            <li><strong>June 2026, Addis</strong> — CEPA workshop 3–5 June; inaugural CEPA Steering Committee 5 June. First two pre-feasibility studies validated (Burundi–Tanzania, DRC–Angola).</li>
+            <li><strong>June 2025 then September 2026</strong> — HTOC inaugural meeting, then formalisation in Addis with a governance manual and working groups. That is AfSEM’s operating committee, not a new pool.</li>
+            <li><strong>August 2026, Gaborone</strong> — SAPP implementation-framework workshop covering BONA, BOSA and BOZA together.</li>
+          </ul>
+          <p class="mb-0">What is not done: a live continental market, Grand Inga at generation scale, or a completed DRC–South Africa HVDC. Those remain studies and politics. The honest 2026 picture is a ratified plan, a short validated corridor list, and institutions that have just started meeting.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cmp-section" id="sa">
+      <h2>South Africa’s place in it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Pretoria’s regional plug is <a href="sapp.html">SAPP</a>. The domestic market being stood up is <a href="sawem.html">SAWEM</a>, with <a href="ntcsa.html">NTCSA</a> as the transmission system operator. AfSEM is the continental layer those two would eventually sit under. The CMP flagship that actually bites Pretoria is <strong>Grand Inga / DRC–South Africa</strong> — a 3,000+ km, ~3,000 MW transfer of Inga hydropower via Zambia and Zimbabwe.</p>
+          <p>South Africa already trades on live SAPP paths: Cahora Bassa HVDC from Mozambique, the Namibia 400 kV, Botswana 400 kV, and the constrained Zimbabwe–Matimba line. BOSA is the CMP strengthening of the Botswana path. ZTK (~2029) is the north-bound seam that would eventually let East African hydro and geothermal show up in SAPP.</p>
+          <p class="mb-0">AfCFTA is ratified. The African Passport is not. Energy integration can move on interconnectors and pool rules without free movement of people; it cannot move without a creditworthy offtaker, a functioning TSO, and a transmission code that neighbouring pools will accept. That is the NTCSA / SAWEM / SAPP problem, not an Addis communiqué problem.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <a href="afsem.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">⚖️</h1>
+              <h5 class="card-title text-sa-green">AfSEM</h5>
+              <p class="card-text small text-muted">African Single Electricity Market — launch, five readiness tracks, HTOC, and how SAWEM and SAPP would plug in by 2040.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="power-pools.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🔌</h1>
+              <h5 class="card-title text-sa-green">Power Pools</h5>
+              <p class="card-text small text-muted">SAPP, WAPP, CAPP, EAPP and COMELEC — the five regional operators the CMP is meant to join.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>AUDA-NEPAD, Continental Power System Master Plan synthesis (ratified 15 September 2023) and 2025 annual report (fivefold capacity aim by 2040; 878 TWh / 2,368 TWh demand case).</li>
+          <li>African Union / AFREC, African Single Electricity Market (AfSEM) policy paper, roadmap and governance — 34th AU Summit, February 2021; public launch 3 June 2021.</li>
+          <li>EU / EEAS and Capacity4dev CEPA workshop, Addis Ababa 3–5 June 2026 (Burundi–Tanzania and DRC–Angola validated; inaugural CEPA Steering Committee 5 June 2026).</li>
+          <li>AUDA-NEPAD / SAPP, “A Single African Electricity Market Is Within Reach” (BONA, DRC–Angola, Angola–Zambia, DRC–South Africa); Gaborone implementation-framework workshop, August 2026 (BONA, BOSA, BOZA).</li>
+          <li>HTOC inaugural meeting 30 June–1 July 2025; formalisation 28–30 September 2026, Addis Ababa.</li>
+          <li>Africa Energy Bankability Forum, Luanda, November 2025. PIDA PAP2 envelopes E.30.14 (Egypt–Sudan) and E.30.15 (INGA 3 Transmission Interconnector).</li>
+          <li>Dashboard: <a href="afsem.html">AfSEM</a>, <a href="power-pools.html">Power Pools</a>, <a href="sapp.html">SAPP</a>, <a href="au-agenda-2063.html">AU Agenda 2063</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="power.html" class="btn btn-outline-secondary">⚡ Power</a>
+      <a href="afsem.html" class="btn btn-outline-secondary">⚖️ AfSEM</a>
+      <a href="power-pools.html" class="btn btn-outline-secondary">🔌 Power Pools</a>
+      <a href="sapp.html" class="btn btn-outline-secondary">SAPP</a>
+      <a href="sawem.html" class="btn btn-outline-secondary">SAWEM</a>
+      <a href="au-agenda-2063.html" class="btn btn-outline-secondary">🌍 Agenda 2063</a>
+    </div>
+  </div>
+</body>
+</html>

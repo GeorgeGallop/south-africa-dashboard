@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>African Economic Research Consortium • Thesis • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .aerc-hero {
+      background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 45%, #e3f2fd 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.35rem; font-weight: 800; color: #007A4D; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .aerc-section { scroll-margin-top: 1rem; }
+    .aerc-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .stack-step {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.95rem;
+      height: 100%;
+    }
+    .stack-step .step-n {
+      display: inline-block;
+      background: #007A4D;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      margin-bottom: 0.45rem;
+    }
+    .stack-step h3 { font-size: 1rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    table.aerc-table td, table.aerc-table th { vertical-align: middle; font-size: 0.88rem; }
+    .tag {
+      display: inline-block;
+      background: #e8f3ee;
+      border: 1px solid #b7d8c8;
+      color: #145c38;
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin: 0.1rem 0.15rem;
+    }
+    .tag.gold { background: #fff6da; border-color: #f2dd9a; color: #8a6d00; }
+    .tag.blue { background: #eaeefb; border-color: #bcc7ef; color: #002395; }
+    .hover-effect:hover { transform: scale(1.03); transition: 0.3s; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="thesis.html" class="btn btn-light btn-sm">📄 Thesis</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="aerc-hero mb-4">
+      <p class="small text-muted mb-1">Thesis · African Economic Research Consortium</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">📚 African Economic Research Consortium</h1>
+      <p class="lead mb-3">Nairobi-based capacity-building network founded in 1988. The job is to put African economists in the room where African economic policy is made — through research grants, collaborative master’s and PhD programmes, and policy outreach. Slogan: <em>Bringing rigour and evidence to economic policy making in Africa.</em></p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#what">What it is</a>
+        <a class="btn btn-sm btn-outline-success" href="#birth">How it was born</a>
+        <a class="btn btn-sm btn-outline-success" href="#people">People</a>
+        <a class="btn btn-sm btn-outline-success" href="#research">Influential research</a>
+        <a class="btn btn-sm btn-outline-success" href="#training">Training</a>
+        <a class="btn btn-sm btn-outline-success" href="#sa">South Africa</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">1988</div>
+          <div class="label">Founded</div>
+          <div class="sub">Nairobi; Delaware 501(c)(3)</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">4,000+</div>
+          <div class="label">Graduate trainees</div>
+          <div class="sub">35-year evaluation, ~283 / year</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">3</div>
+          <div class="label">Pillars</div>
+          <div class="sub">Research · training · policy outreach</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="num">2025–35</div>
+          <div class="label">Strategy</div>
+          <div class="sub">“Reinventing AERC” for inclusive prosperity</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="aerc-section" id="what">
+      <h2>What it is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>AERC is a public non-profit devoted to <strong>independent, rigorous inquiry into the management of African economies</strong>. Headquarters sit in Nairobi (Middle East Bank Towers, Jakaya Kikwete Road). Legal form is a Delaware corporation with US 501(c)(3) status, established August 1988. Operations are funded by a consortium: bilateral and multilateral agencies, African trade and development banks, African central banks, and private foundations. The donors <em>are</em> the Consortium — that is the name.</p>
+          <p>The mission statement rests on two premises: development is more likely where the economy is soundly managed; sound management is more likely where a locally based cadre of professional economists does policy-relevant research. The organisation then builds that cadre through three programmes that are supposed to feed each other: <strong>research</strong> (thematic grants and collaborative projects), <strong>postgraduate training</strong> (CMAP, CPP, CMAAE), and <strong>policy outreach</strong> (biannual plenaries, Senior Policy Seminars, the Central Bank Governors’ Forum).</p>
+          <p class="mb-0">Vision, in AERC’s own words: <em>sustained development in sub-Saharan Africa grounded in sound economic management and an informed society.</em></p>
+        </div>
+      </div>
+      <div class="key-fact mb-3">
+        <strong>It is a network, not a campus.</strong> Researchers, universities and policymakers across the continent are the product. Alumni sit in central banks, finance ministries, economics departments and policy institutes. The 2024 evaluation treated graduate training as the part that clearly worked.
+      </div>
+    </section>
+
+    <section class="aerc-section" id="birth">
+      <h2>How it was born</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Late 1980s. Structural adjustment was being pushed on African governments. University funding was falling. Economists were leaving. Research that existed was often written for other economies, or written and then ignored. A small group of African scholars and Africanists decided the gap between research and policy was the problem to fix.</p>
+          <p>The immediate precursor was the <strong>1984 Macroeconomic Analysis Network Project for Eastern and Southern Africa</strong> — East African university economists working with the University of Toronto’s economics department, funded by Canada’s International Development Research Centre (IDRC), on structural adjustment. That network taught the method AERC still uses: pool expertise, put experienced economists in as resource persons, let the region set the research questions.</p>
+          <p>One donor backed the idea, then a small group. That group of agencies became the Consortium. AERC was formally established in Nairobi in 1988. A research programme in 1989. Biannual research-workshop plenaries from 1990. A postgraduate training programme from 1992. Publishing and communications followed. West African researchers, especially Nigerians, pulled the network out of its East African starting set.</p>
+          <p class="mb-0">William Lyakurwa, later a long-serving Executive Director, wrote that the AERC model was never a preconceived design. It evolved from operational experience. That is still the honest description.</p>
+        </div>
+      </div>
+
+      <div class="table-responsive mb-3">
+        <table class="table table-sm aerc-table">
+          <thead class="table-light">
+            <tr><th>Year</th><th>What happened</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1984</td><td>IDRC-funded East Africa–Toronto macroeconomic network — the seed.</td></tr>
+            <tr><td>1988</td><td>AERC established, Nairobi. Capacity-building institution for SSA economic policy.</td></tr>
+            <tr><td>1989</td><td>Research programme: improve policy quality and researchers’ technical skills together.</td></tr>
+            <tr><td>1990</td><td>Biannual Research Workshop plenary launched — still the flagship gathering.</td></tr>
+            <tr><td>1992</td><td>Collaborative Master’s Programme (CMAP) in economics.</td></tr>
+            <tr><td>1996</td><td>Senior Policy Seminars — take the research to ministers and governors.</td></tr>
+            <tr><td>1999–2007</td><td>Growth Project. Cambridge University Press volumes, 2007/2008.</td></tr>
+            <tr><td>2002</td><td>Collaborative PhD Programme (CPP). UCT is a host degree-awarding university.</td></tr>
+            <tr><td>2005</td><td>Collaborative Master’s in Agricultural and Applied Economics (CMAAE). Pretoria and Stellenbosch sit in it.</td></tr>
+            <tr><td>2014</td><td>African Central Bank Governors’ Forum. SARB is a member. Livingstone Resolution.</td></tr>
+            <tr><td>2017</td><td>Eight-week bridging programme for master’s and PhD candidates from fragile and post-conflict states.</td></tr>
+            <tr><td>2020</td><td>Strategic Plan 2020–2025.</td></tr>
+            <tr><td>2024</td><td>Independent evaluation (June). Inaugural AERC Fellows induction, including SARB Governor Lesetja Kganyago.</td></tr>
+            <tr><td>2025</td><td>Strategic Plan 2025–2035: “Reinventing the AERC for delivering Africa’s inclusive economic prosperity.” Private Sector Platform launched. Annual Summit.</td></tr>
+            <tr><td>Mar 2026</td><td>Victor Murinde’s ED tenure ends (27 March). Abbi Kedir appointed Interim Executive Director.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="aerc-section" id="stack">
+      <h2>The three pillars</h2>
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">1 · RESEARCH</span>
+            <h3>Thematic + collaborative</h3>
+            <p class="small mb-0">Thematic grants for early-career African researchers, organised in five groups, with biannual workshops and resource persons. Collaborative projects put senior African researchers with counterparts off the continent on bigger questions (growth, trade, aid, climate, SDRs).</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">2 · TRAINING</span>
+            <h3>CMAP · CPP · CMAAE</h3>
+            <p class="small mb-0">A shared curriculum across dozens of African public universities. Joint Facility for Electives / Shared Facility for Specialisation. Scholarships. The bridging programme for fragile-state candidates. This is the 4,000+ graduate pipeline.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stack-step">
+            <span class="step-n">3 · OUTREACH</span>
+            <h3>Seminars, governors, fellows</h3>
+            <p class="small mb-0">Senior Policy Seminars from 1996. Biannual plenaries. The 12-member Central Bank Governors’ Forum from 2014. AERC Fellows (from 2024). Visiting scholars into targeted central banks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="aerc-section" id="people">
+      <h2>The people</h2>
+      <p class="text-muted">AERC’s most durable product is a cadre. These are the names that built it, ran it, or came out of it into the jobs the mission describes.</p>
+
+      <h3 class="h5 fw-bold text-sa-green mt-3">Founding generation</h3>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <div class="stack-step">
+            <span class="tag">Founder</span>
+            <h3 class="mt-2">Benno Ndulu (1947–2021)</h3>
+            <p class="small mb-0">Founder member. First Director of Research, then first African Executive Director. Dar es Salaam, Northwestern PhD. Later World Bank lead economist, Governor of the Bank of Tanzania (2008–2018), and economic adviser to President Cyril Ramaphosa on South Africa’s Presidential Economic Advisory Council. The Growth Project is his monument. ISS honorary doctorate 1997 for capacity building and African research.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <span class="tag">Founder</span>
+            <h3 class="mt-2">Ernest Aryeetey</h3>
+            <p class="small mb-0">Associated with AERC from 1988: resource person, Programme Committee (2005–2009), now Chair of the Board and Director at Large. Former Vice-Chancellor of the University of Ghana, former Secretary-General of ARUA, former director of Brookings’ Africa Growth Initiative. Informal finance and microfinance. Co-evaluated the 2015–2020 strategy with Frances Stewart.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <span class="tag gold">ED</span>
+            <h3 class="mt-2">William Lyakurwa</h3>
+            <p class="small mb-0">Long-serving Executive Director. Wrote the institutional history of the AERC model — how a 1980s research network became a continent-wide training and policy machine. Foreword, with Olusanya Ajakaiye, to the Growth Project volumes.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stack-step">
+            <span class="tag blue">Seed</span>
+            <h3 class="mt-2">IDRC + University of Toronto</h3>
+            <p class="small mb-0">The 1984 East Africa–Toronto macroeconomic network, IDRC-funded, is the documented precursor. First one donor, then a small group, then the Consortium. Current funders still include IDRC, World Bank, Sida, Norad, FCDO, Hewlett, Gates, DAAD, Kenya National Treasury, Afreximbank, TDB, and the Governors’ Forum itself.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h5 fw-bold text-sa-green mt-3">Directors who came through the network</h3>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag">Alumnus → ED</span>
+            <h3 class="mt-2">Njuguna Ndung’u</h3>
+            <p class="small mb-0">AERC Director of Training, then Governor of the Central Bank of Kenya (2007–2015), then Executive Director (2018–2022), then Kenya’s Cabinet Secretary for the National Treasury (2022–2024). The pipeline working as designed.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag">Alumna</span>
+            <h3 class="mt-2">Adelaide Matlanyane</h3>
+            <p class="small mb-0">CMAP alumna. Programme Committee member then chair (2010–2014), succeeding Ndulu. First woman Governor of the Central Bank of Lesotho (2012–2021). Later Minister of Finance and Development Planning. AERC Director at Large. PhD, University of Pretoria.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag gold">ED 2023</span>
+            <h3 class="mt-2">Théophile Azomahou</h3>
+            <p class="small mb-0">Beninese. First Executive Director from francophone West Africa. Appointed 20 April 2023 after Ndung’u went to the Kenyan Treasury. Had been Director of Training from January 2021. CERDI / CNRS / Clermont Auvergne.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag gold">ED to Mar 2026</span>
+            <h3 class="mt-2">Victor Murinde</h3>
+            <p class="small mb-0">Executive Director through the 2025–2035 strategy launch and the 2025 Annual Summit. Tenure ended 27 March 2026. Had been opening CMAAE’s Pretoria shared facility as ED by August 2024.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag gold">Interim ED</span>
+            <h3 class="mt-2">Abbi M. Kedir</h3>
+            <p class="small mb-0">Director of Research from 2023 (Sheffield / UNECA / Ethiopia). Appointed Interim Executive Director 31 March 2026. IMF Climate and Development Taskforce; AUDA-NEPAD technical advisory group.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="stack-step">
+            <span class="tag blue">SA</span>
+            <h3 class="mt-2">Lesetja Kganyago</h3>
+            <p class="small mb-0">SARB Governor. Institutional director for the Central Bank Governors’ Forum on the AERC Board. Inducted as an AERC Fellow, December 2024. The South African monetary-policy plug into the network.</p>
+          </div>
+        </div>
+      </div>
+      <p class="src-note">Other Fellows inducted in 2024 include Aryeetey, Ahmadou Aly Mbaye, Matlanyane, Chris Adam, Stefan Dercon, Lemma Senbet, Kevin Urama (AfDB), Andrew Dabalen (World Bank). Bank of Ghana Governor Johnson Asiama and Deputy Governor Zakari Mumuni are AERC alumni — Murinde noted both on a July 2025 courtesy call.</p>
+    </section>
+
+    <section class="aerc-section" id="research">
+      <h2>The most valuable things to come out of it</h2>
+
+      <h3 class="h5 fw-bold mt-3">1. A continent-wide economics PhD and master’s factory</h3>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>When AERC started, few SSA universities offered a serious master’s, let alone a PhD, in economics. The 2024 evaluation: more than <strong>4,000 graduate trainees</strong> over 35 years, about 283 a year. Universities in SSA went from 178 in 1988 to more than 830. Graduate enrolment from 2.9% to 9.4% (2021). AERC did not cause all of that. It is the specialised economics layer inside it — shared core courses, a Joint Facility for Electives, scholarships, resource persons who actually mark the work.</p>
+          <p class="mb-0">Makerere’s School of Economics, a partner since 1988, went from one or two PhD faculty to a bench. That is the typical national story AERC tells, and it is the one the evaluation treats as real.</p>
+        </div>
+      </div>
+
+      <h3 class="h5 fw-bold">2. The Growth Project (the research that travelled)</h3>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Launched 1999. Published 2007–2008 by Cambridge University Press as <em>The Political Economy of Economic Growth in Africa, 1960–2000</em> — Volume 1 the synthesis, Volume 2 twenty-six country studies covering three-quarters of the region’s population. Coordinated by <strong>Benno Ndulu</strong> and <strong>Stephen O’Connell</strong>, with Robert Bates, Paul Collier, Chukwuma Soludo, Augustin Fosu, Jan Willem Gunning, Jean-Paul Azam, Anke Hoeffler and a large African country-study roster. AERC + Harvard + Oxford.</p>
+          <p>It is still the most ambitious post-independence growth assessment done <em>by African research economists</em> rather than only about them. The frame: Africa’s opportunities were unusually hard (landlocked, resource-scarce, resource-rich traps); politics then failed to harness them; the transmission was “syndromes” — packages of policies, institutions and behaviour. Coastal successes and the 1990s reforms sit in the same book as the failures.</p>
+          <p class="mb-0">If you need one AERC research object to have read, this is it. Country chapters filled holes that had no prior empirical literature (Burundi, Chad, Togo among them).</p>
+        </div>
+      </div>
+
+      <h3 class="h5 fw-bold">3. Thematic research as a career ladder</h3>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Thematic research is how AERC began and is still the primary capacity-building modality for early-career researchers. Five groups, reviewed as the policy agenda moves:</p>
+          <ul class="mb-2">
+            <li><strong>A</strong> — Poverty, labour markets and income distribution</li>
+            <li><strong>B</strong> — Macroeconomic policy and growth</li>
+            <li><strong>C</strong> — Finance and resource mobilisation</li>
+            <li><strong>D</strong> — Production, trade and economic integration</li>
+            <li><strong>E</strong> — Agriculture, climate change and natural resource management</li>
+          </ul>
+          <p class="mb-0">Gender, governance and institutions cut across. Biannual workshops are the quality gate: present, get torn apart by resource persons, revise, maybe get published in the AERC Research Paper series. Collaborative (senior) projects have covered aid dependence, Africa in world trade, East Asia comparisons, SDR/RST financing with the Gates Foundation, and climate.</p>
+        </div>
+      </div>
+
+      <h3 class="h5 fw-bold">4. People in the jobs</h3>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p class="mb-0">Central bank governors, finance ministers, national treasury secretaries, think-tank directors. Ndung’u, Matlanyane, Ndulu, Asiama, Kganyago’s fellowship, Kenya’s Principal Secretary Chris Kiptoo on the board. The 2014 Governors’ Forum (12 banks, including SARB, CBN, BoG, BoT, BoU, BoZ) is the African-stakeholdership bet: core funding from the continent so the research agenda is not only a donor product.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="aerc-section" id="training">
+      <h2>The training architecture</h2>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm aerc-table">
+          <thead class="table-light">
+            <tr><th>Programme</th><th>From</th><th>What it is</th><th>SA in it</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CMAP</strong> — Collaborative Master’s in Economics</td>
+              <td>1992</td>
+              <td>26 public universities in 21 SSA countries, categories A/B/C. Weaker departments send students to stronger ones. Joint Facility for Electives.</td>
+              <td>No SA university on the current CMAP list. Botswana, Namibia, Zimbabwe, Malawi, Mauritius sit nearby.</td>
+            </tr>
+            <tr>
+              <td><strong>CPP</strong> — Collaborative PhD in Economics</td>
+              <td>2002</td>
+              <td>Host and non-host degree-awarding universities. Core year at a regional host, electives at the JFE, thesis at the home DAU. University of Abomey-Calavi (Benin) added as a non-host.</td>
+              <td><strong>University of Cape Town is a host DAU</strong>, alongside Dar es Salaam, Ibadan, Yaoundé II, Félix Houphouët-Boigny.</td>
+            </tr>
+            <tr>
+              <td><strong>CMAAE</strong> — Agricultural and Applied Economics master’s</td>
+              <td>2005</td>
+              <td>17 departments in 13 Eastern, Central and Southern African countries. Shared Facility for Specialisation and Electives hosted with the University of Pretoria (123 students in 2024; 43% women).</td>
+              <td><strong>University of Pretoria</strong> (accredited + SFSE co-host) and <strong>Stellenbosch</strong>.</td>
+            </tr>
+            <tr>
+              <td><strong>Bridge programme</strong></td>
+              <td>2017</td>
+              <td>Eight weeks of macro, micro and quantitative methods for master’s/PhD candidates from conflict and post-conflict states.</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="aerc-section" id="now">
+      <h2>Where it is now</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>The 2025–2035 strategy is billed as a reset: make AERC the locus of excellence for research that matches Africa’s current problems; twin African doctoral training with top global universities; embed government and private-sector practitioners in the work. A Private Sector Platform launched December 2025. The Annual Summit is the new flagship week around the old biannual plenary.</p>
+          <p>Leadership has been a revolving door in the 2020s: Ndung’u out to Kenya’s Treasury (2022), Azomahou in as first francophone West African ED (April 2023), Murinde through the strategy launch, then out on 27 March 2026, Abbi Kedir interim from 31 March 2026. The Board Chair, Aryeetey, is the continuity — he has been in the network since the first year.</p>
+          <p class="mb-0">Money still comes from the old mix (Hewlett, Gates, IDRC, World Bank, Sida, Norad, FCDO, DAAD) plus African institutions (Afreximbank, TDB, Kenya Treasury, the Governors’ Forum). The 2025 Cause IQ filing: about $8.6 million revenue, $6.4 million expenses, $29 million assets. The evaluation’s caution is the same one AERC was founded to solve: research that is excellent and unused. Outreach and the Governors’ Forum are the current answer to that.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="aerc-section" id="sa">
+      <h2>South Africa’s place in it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Pretoria and Cape Town are inside the training machine and the governors’ club. They were not in the 1984 East African seed.</p>
+          <ul>
+            <li><strong>UCT</strong> — CPP host degree-awarding university. African economics PhDs take core courses in Cape Town.</li>
+            <li><strong>University of Pretoria</strong> — CMAAE accredited department and co-host of the Shared Facility for Specialisation and Electives. Matlanyane’s PhD is from here.</li>
+            <li><strong>Stellenbosch</strong> — CMAAE network.</li>
+            <li><strong>SARB</strong> — member of the 12-bank Governors’ Forum. Kganyago sits on the AERC Board for that forum and was inducted as an AERC Fellow in 2024.</li>
+            <li><strong>Benno Ndulu</strong> — sat on Ramaphosa’s Presidential Economic Advisory Council. The founding research director of AERC was, at the end of his life, in Pretoria’s economic-policy room.</li>
+          </ul>
+          <p class="mb-0">On this dashboard, AERC is the African economics-profession layer under Thesis. Power Futures Lab at UCT GSB is the power-sector research shop — a different network, same country, overlapping policy audience (SARB, National Treasury, NERSA, DMRE). Use both.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <a href="power-futures-lab.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🔬</h1>
+              <h5 class="card-title text-sa-green">Power Futures Lab</h5>
+              <p class="card-text small text-muted">UCT GSB. Anton Eberhard’s MIR (2001) → PFL (2021). The power-sector publications archive, now also under Thesis.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="au-agenda-2063.html" class="text-decoration-none">
+          <div class="card h-100 shadow-sm hover-effect">
+            <div class="card-body text-center py-5">
+              <h1 class="display-1 mb-3">🌍</h1>
+              <h5 class="card-title text-sa-green">AU Agenda 2063</h5>
+              <p class="card-text small text-muted">The political blueprint AERC’s growth and trade work is supposed to inform. Flagships, STYIP, South Africa’s chair of the ministerial committee.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>AERC, <a href="https://aercafrica.org/about-us/" target="_blank" rel="noopener">About Us</a> — founding story, vision/mission, journey 1988–2025; <a href="https://aercafrica.org/leadership/" target="_blank" rel="noopener">Leadership</a>; <a href="https://aercafrica.org/thematic-research/" target="_blank" rel="noopener">Thematic Research</a>; CMAP / CPP / CMAAE programme pages.</li>
+          <li>William Lyakurwa, “African Economic Research Consortium (AERC): Shaping the Policy Making Process and Its Outcomes” — 1984 IDRC/Toronto precursor, Delaware 501(c)(3), evolution of the model.</li>
+          <li>Ndulu, O’Connell, Bates, Collier, Soludo et al., <em>The Political Economy of Economic Growth in Africa, 1960–2000</em>, Cambridge University Press (2007/2008). Growth Project launched 1999.</li>
+          <li>AERC Evaluation Report, June 2024 (pre-press) — 4,000+ graduate trainees; university and enrolment backdrop.</li>
+          <li>AERC news: Azomahou appointed 20 April 2023; Fellows induction 3 December 2024; Murinde tenure ended 27 March 2026; Kedir interim ED 31 March 2026; 2025–2035 strategy; CMAAE SFSE Pretoria August 2024.</li>
+          <li>AERC memorial pages for Benno Ndulu (founder member, first African ED, Ramaphosa PEAC).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="thesis.html" class="btn btn-outline-secondary">📄 Thesis</a>
+      <a href="power-futures-lab.html" class="btn btn-outline-secondary">🔬 Power Futures Lab</a>
+      <a href="au-agenda-2063.html" class="btn btn-outline-secondary">🌍 Agenda 2063</a>
+      <a href="https://aercafrica.org/about-us/" class="btn btn-outline-secondary" target="_blank" rel="noopener">aercafrica.org</a>
+    </div>
+  </div>
+</body>
+</html>

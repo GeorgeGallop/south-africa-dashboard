@@ -15,8 +15,8 @@
  *      headline counts far more than one buried in the body.
  *   2. IDF taken from the actual fetched corpus, so rare, specific terms
  *      ("brulpadda") outweigh common ones ("power", "South Africa").
- *   3. A keyword-coverage multiplier so a story hitting five of your terms
- *      beats one hitting a single term — the key behaviour that was missing.
+ *   3. A keyword-coverage multiplier (saturating after 8 group hits) so a
+ *      long default list does not treat 5 real matches as ~1% coverage.
  *   4. Phrase bonuses: "load shedding" as an exact phrase outranks the two
  *      words appearing far apart.
  *   5. Glued-form matching so "loadshedding" and "load shedding" find each
@@ -45,7 +45,13 @@
     // How strongly raw relevance outranks the recency/credibility tie-breakers.
     RELEVANCE_SCALE: 20,
     // Reward for covering more of the typed keywords (0..1 coverage).
-    COVERAGE_BOOST: 0.6,
+    // Coverage saturates after this many distinct group hits so a long default
+    // list (300+ groups) does not shrink 5 real matches to ~0.01.
+    COVERAGE_SATURATE: 8,
+    COVERAGE_BOOST: 1.2,
+    // Additive lift per matched group so two-hit stories beat one-hit stories
+    // even when BM25 of a common word is similar.
+    HIT_COUNT_WEIGHT: 0.45,
     // Phrase-hit bonus as a multiple of the summed IDF of the phrase's words.
     PHRASE_TERM_MULT: 0.8,
     PHRASE_TITLE_MULT: 1.6,
@@ -192,6 +198,8 @@
       var key = doc.tokens[i];
       if (key.length < CONFIG.PREFIX_MIN_LEN) continue;
       if (Math.abs(key.length - term.length) > CONFIG.PREFIX_MAX_LEN_DIFF) continue;
+      // Digits mean a distinct ticker/id (south ≠ south32).
+      if (/\d/.test(term) || /\d/.test(key)) continue;
       if (key.indexOf(term) === 0 || term.indexOf(key) === 0) {
         var value = doc.tf[key] * CONFIG.PREFIX_DISCOUNT;
         if (value > best) best = value;
@@ -263,6 +271,7 @@
       var matchedGroups = 0;
       var phraseBonus = 0;
       var matchedTerms = [];
+      var matchedPhrases = [];
 
       for (var g = 0; g < parsed.groups.length; g++) {
         var group = parsed.groups[g];
@@ -272,7 +281,9 @@
           groupMatched = matchTerm(group.terms[0], doc) > 0;
         } else {
           var hit = phraseHit(group, pf);
-          var gluedHit = group.glued ? matchTerm(group.glued, doc) > 0 : false;
+          // Glued forms are exact n-grams only. Prefix matching would let
+          // "eskomdebt" hit any story that merely contains "eskom".
+          var gluedHit = group.glued ? !!doc.tf[group.glued] : false;
           var allTerms = true;
           for (var t = 0; t < group.terms.length; t++) {
             if (matchTerm(group.terms[t], doc) <= 0) { allTerms = false; break; }
@@ -286,8 +297,18 @@
           }
         }
 
-        if (groupMatched) matchedGroups++;
+        if (groupMatched) {
+          matchedGroups++;
+          matchedPhrases.push(group.phrase);
+        }
       }
+
+      matchedPhrases.sort(function (a, b) {
+        var aw = a.indexOf(' ') >= 0 ? 1 : 0;
+        var bw = b.indexOf(' ') >= 0 ? 1 : 0;
+        if (bw !== aw) return bw - aw;
+        return b.length - a.length;
+      });
 
       for (var m = 0; m < parsed.allTerms.length; m++) {
         if (matchTerm(parsed.allTerms[m], doc) > 0 && matchedTerms.indexOf(parsed.allTerms[m]) === -1) {
@@ -295,15 +316,19 @@
         }
       }
 
-      var coverage = parsed.groups.length ? (matchedGroups / parsed.groups.length) : 0;
-      var relevance = bm25(doc) * (1 + CONFIG.COVERAGE_BOOST * coverage) + phraseBonus;
+      var saturate = CONFIG.COVERAGE_SATURATE || 8;
+      var coverage = parsed.groups.length ? Math.min(1, matchedGroups / Math.min(parsed.groups.length, saturate)) : 0;
+      var relevance = bm25(doc) * (1 + CONFIG.COVERAGE_BOOST * coverage) +
+                      phraseBonus +
+                      (CONFIG.HIT_COUNT_WEIGHT * matchedGroups);
 
       return {
         item: pool[index],
         relevance: relevance,
         coverage: coverage,
         matchedGroups: matchedGroups,
-        matchedTerms: matchedTerms
+        matchedTerms: matchedTerms,
+        matchedPhrases: matchedPhrases
       };
     }
 
@@ -331,7 +356,7 @@
         continue;
       }
       if (phraseHit(group, pf).phrase) return true;
-      if (group.glued && matchTerm(group.glued, doc) > 0) return true;
+      if (group.glued && doc.tf[group.glued]) return true;
 
       var allTerms = true;
       for (var t = 0; t < group.terms.length; t++) {
@@ -349,8 +374,8 @@
    * opts.importanceOf(item)        -> number   fallback score when no keywords
    * opts.maxStoryAgeMs             -> number   recency window
    *
-   * Returns an array of { item, rankScore, relevance, coverage, matchedTerms }
-   * sorted best-first.
+   * Returns an array of { item, rankScore, relevance, coverage, matchedTerms,
+   * matchedPhrases, matchedGroups } sorted best-first.
    */
   function rankItems(items, parsed, opts) {
     opts = opts || {};
@@ -362,7 +387,7 @@
     var scored = hasKeywords
       ? createScorer(items, parsed).scoreAll()
       : items.map(function (item) {
-          return { item: item, relevance: 0, coverage: 0, matchedGroups: 0, matchedTerms: [] };
+          return { item: item, relevance: 0, coverage: 0, matchedGroups: 0, matchedTerms: [], matchedPhrases: [] };
         });
 
     var ranked = scored.map(function (s) {
@@ -390,6 +415,7 @@
         coverage: s.coverage,
         matchedGroups: s.matchedGroups,
         matchedTerms: s.matchedTerms,
+        matchedPhrases: s.matchedPhrases || [],
         freshness: freshness,
         credibility: credibility
       };

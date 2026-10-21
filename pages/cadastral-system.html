@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastral System • Bills &amp; Legislation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .status-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+    .status-open { background: #198754; color: #fff; }
+    .status-consolidation { background: #ffc107; color: #212529; }
+    .status-approved { background: #0d6efd; color: #fff; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 34%; background: #f8f9fa; }
+    .cad-section { scroll-margin-top: 1rem; }
+    .cad-section > h2 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.35rem;
+      margin: 1.75rem 0 1rem;
+    }
+    .cad-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      height: 100%;
+    }
+    .cad-card h3 { font-size: 1.05rem; font-weight: 800; color: #002395; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.8rem; color: #6c757d; }
+    .toc-mini a { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="bills.html" class="btn btn-light btn-sm">📄 Bills</a>
+        <a href="policy-tracker.html" class="btn btn-light btn-sm">📋 Tracker</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <p class="small text-muted mb-1"><a href="bills.html">Bills &amp; Legislation</a> · DLRRD · DMPR</p>
+    <h1 class="display-6 fw-bold text-sa-green">Cadastral system — South Africa</h1>
+    <p class="lead">The public register of who owns which parcel, and who holds which mineral right. Two separate cadastres are being digitised at once: land (Deeds / Surveyor-General) and mining (DMPR).</p>
+    <p class="mb-4">
+      <span class="status-badge status-approved">eDRS in force</span>
+      <span class="status-badge status-consolidation ms-1">B27-2026 in Parliament</span>
+      <span class="status-badge status-open ms-1">Mining cadastre rolling out</span>
+    </p>
+
+    <table class="table table-bordered fact mb-4">
+      <tbody>
+        <tr><th>As at</th><td>13 October 2026</td></tr>
+        <tr><th>Land cadastre</th><td>Chief Surveyor-General and Deeds Offices, Department of Land Reform and Rural Development (DLRRD)</td></tr>
+        <tr><th>Mining cadastre</th><td>Department of Mineral and Petroleum Resources (DMPR) — replacing SAMRAD</td></tr>
+        <tr><th>Live land statutes</th><td>Land Survey Act 8 of 1997 · Deeds Registries Act 47 of 1937 · Electronic Deeds Registration and Recordal Systems Act 19 of 2019 · Deeds Registries Amendment Act 20 of 2024</td></tr>
+        <tr><th>Live land bill</th><td>Electronic Deeds Registration and Recordal Systems Amendment Bill <a href="https://pmg.org.za/bill/1373/" target="_blank" rel="noreferrer">[B27-2026]</a> — introduced 22 September 2026, under consideration by the National Assembly (s 75)</td></tr>
+        <tr><th>Next land statute</th><td>Land Registration Bill — DLRRD APP 2026/27 targets consultation and approval in 2027, to repeal the 1937 and 2019 Acts</td></tr>
+        <tr><th>Mining cadastre target</th><td>National rollout by 31 March 2027. Western Cape live; Free State, KwaZulu-Natal and Eastern Cape next</td></tr>
+        <tr><th>Portals</th><td>
+          <a href="https://eservices.gov.za/edrs" target="_blank" rel="noreferrer">eDRS (eservices.gov.za/edrs)</a>
+          ·
+          <a href="https://csg.dlrrd.gov.za" target="_blank" rel="noreferrer">Chief Surveyor-General</a>
+        </td></tr>
+      </tbody>
+    </table>
+
+    <div class="card mb-4 toc-mini">
+      <div class="card-body py-3 small">
+        <strong class="d-block mb-2">On this page</strong>
+        <a href="#two">Two cadastres</a> ·
+        <a href="#how">How the land cadastre works</a> ·
+        <a href="#edrs">eDRS</a> ·
+        <a href="#b27">Bill B27-2026</a> ·
+        <a href="#next">Land Registration Bill &amp; communal tenure</a> ·
+        <a href="#mining">Mining cadastre</a> ·
+        <a href="#why">Why it matters here</a> ·
+        <a href="#watch">What to watch</a>
+      </div>
+    </div>
+
+    <section id="two" class="cad-section">
+      <h2>Two cadastres</h2>
+      <p>South Africa keeps two cadastral registers. Surface parcels and mineral rights sit in different systems, under different departments, with different maps.</p>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <div class="cad-card">
+            <h3>Land cadastre — DLRRD</h3>
+            <p class="mb-2">Who owns, leases or holds a real right in a surveyed parcel. The Surveyor-General approves the geometry; the Deeds Office registers the title.</p>
+            <ul class="mb-0 small">
+              <li>Diagrams, general plans, erven, farm portions, sectional-title units</li>
+              <li>Servitudes (including grid, pipeline and rail corridors)</li>
+              <li>Leases, bonds, and recordal of some land-tenure rights</li>
+              <li>Unalienated state land</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="cad-card">
+            <h3>Mining cadastre — DMPR</h3>
+            <p class="mb-2">Who holds a prospecting right, mining right, mining permit or related application over ground. The state owns the minerals; a farm title does not include the gold underneath.</p>
+            <ul class="mb-0 small">
+              <li>Online map of open, held and applied-for ground</li>
+              <li>Replacing SAMRAD (in use since 2011 and widely failed)</li>
+              <li>Overlays the land cadastre; it does not replace it</li>
+              <li>A mining right is not a surface-use right</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="src-note mb-0">SG maps have long shown mineral-right annotations as a layer on the land cadastre. That is a plot of a DMPR right on a survey plan, not a second title in the Deeds Office.</p>
+    </section>
+
+    <section id="how" class="cad-section">
+      <h2>How the land cadastre works</h2>
+      <p>Registration is two-step. First a land surveyor prepares a diagram or general plan. A provincial Surveyor-General (under the Chief Surveyor-General) examines and approves it under the Land Survey Act 8 of 1997. Only then can a conveyancer lodge a deed at the Deeds Office that serves that area. The Deeds Registries Act 47 of 1937 is still the parent statute for title.</p>
+      <p>National Geomatics Management Services (NGMS) is the DLRRD programme that runs surveying, beacons, the cadastral information system and SASDI custodianship of cadastral spatial data (Spatial Data Infrastructure Act 54 of 2003). NGMS takes the largest share of DLRRD’s land-administration budget in 2026/27.</p>
+      <p class="mb-0">What sits in the spatial register: beacons, erven, farm portions, general plans, leases, servitudes, sectional schemes, and unalienated state land. That geometry is what transmission corridors, SEZ boundaries, gas pipelines and mine surface-use sit on.</p>
+    </section>
+
+    <section id="edrs" class="cad-section">
+      <h2>What is being done — electronic deeds (eDRS)</h2>
+      <p>The Electronic Deeds Registration and Recordal Systems Act 19 of 2019 authorised a digital deeds system. Act 20 of 2024 changed the short title to include <em>recordal</em> (so tenure rights that are not full title can be written into the same system) and aligned the 1937 Act.</p>
+      <ul>
+        <li>Section 2 in force 2 December 2019 (duty on the Chief Registrar to build the system).</li>
+        <li>Sections 4–5 in force 2 December 2024 (regulations).</li>
+        <li>Sections 1, 3 and 6 in force 1 April 2025 — Proclamation 250 of 2025. That is the operational launch.</li>
+        <li>Section 7 (offences / remaining provisions) still to be proclaimed.</li>
+      </ul>
+      <p>DLRRD launched eDRS on 1 April 2025. The public information portal is live at <a href="https://eservices.gov.za/edrs" target="_blank" rel="noreferrer">eservices.gov.za/edrs</a>. Conveyancers can lodge from anywhere in the country to the designated registry. A dual process runs for about five years: manual and electronic lodgement at the conveyancer’s discretion. Once a property is registered electronically, it does not go back to paper.</p>
+      <div class="key-fact mb-3">
+        Remaining provisions of the Deeds Registries Amendment Act 20 of 2024 (recordal of land-tenure rights and eDRS alignment) commenced on 1 September 2025 (Proclamation 286). The DLRRD APP 2026/27 target is that by March 2027 eDRS will validate and interface with 80% of identified stakeholders.
+      </div>
+      <p class="mb-0">The 1937 Act and the 2019 Act are both still in force. The department’s own launch statement said they are to be repealed by a new land-registration statute, “expected to be concluded by 2030”.</p>
+    </section>
+
+    <section id="b27" class="cad-section">
+      <h2>What is being done — Bill B27-2026</h2>
+      <p>The Electronic Deeds Registration and Recordal Systems Amendment Bill [B27-2026] is the live parliamentary instrument. Cabinet approved it on 1 July 2026 as largely technical. The explanatory summary was gazetted as Notice 4069 in GG 55110 on 31 July 2026. It was introduced in the National Assembly on 22 September 2026. It is a section 75 bill (does not affect the provinces). PMG lists it as under consideration by the National Assembly; no committee sitting date is published.</p>
+      <p>What the Bill actually changes:</p>
+      <ul>
+        <li><strong>Electronic deed is the original.</strong> A deed generated, registered and executed in the system is the only original and valid copy.</li>
+        <li><strong>Client copies stay valid until the next electronic transaction</strong> on that same property. After that, the electronic version takes over. This is the practical fix for conveyancers still holding paper client copies from the dual-system years.</li>
+        <li><strong>Once electronic, always electronic.</strong> If a transaction on a property is registered electronically, every later transaction on that property must be electronic. The Chief Registrar can issue a directive if the system is not ready for a subsequent transaction.</li>
+        <li><strong>Manual can continue during the transition</strong> by Chief Registrar directive, which keeps the dual process lawful while eDRS is still being built out.</li>
+        <li><strong>Consequential amendments</strong> to the Deeds Registries Act 1937 and the Sectional Titles Act 1986 so preparation, lodgement, registration and execution can be done either manually or electronically.</li>
+      </ul>
+      <p class="mb-0">Text and status: <a href="https://pmg.org.za/bill/1373/" target="_blank" rel="noreferrer">PMG B27-2026</a>. Department copy: <a href="https://www.dlrrd.gov.za" target="_blank" rel="noreferrer">dlrrd.gov.za</a>.</p>
+    </section>
+
+    <section id="next" class="cad-section">
+      <h2>What is being done — the next land statutes</h2>
+      <p>B27-2026 is a patch on the 2019 Act. The replacement statute is the Land Registration Bill. DLRRD’s APP 2026/27 says it is being finalised for consultation and approval by 2027, and that it will repeal both the Deeds Registries Act 1937 and the eDRS Act 2019. A circulating 2026 draft under the working title <em>Land Rights Registration Bill</em> already rewrites the Chief Registrar’s duties, the electronic system, and a Land Rights Registration Regulations Board. Watch the APP date (2027) and the department’s earlier 2030 repeal language; they are the same programme on two clocks.</p>
+      <p>Communal tenure is the other missing register. Millions of people occupy former-homeland and other communal land without a Deeds Office title. The Communal Land Administration Bill (also briefed as the Communal Land Tenure and Administration Bill) is meant to give effect to section 25(6) of the Constitution and to enable recordal of those rights in the deeds system. It has not been tabled. A security-of-tenure policy was still being finalised in 2026; IPILRA (Interim Protection of Informal Land Rights Act 31 of 1996) was extended on 25 September 2026 to 31 December 2027. That extension is the tell that the permanent statute missed its window.</p>
+      <p class="mb-0">Related live land-reform work that hits the same register: the Equitable Access to Land Bill (s 25(5), still pre-Cabinet as of mid-2026); the title-deed conversion of about 2.5 million hectares of PLAS state land that President Ramaphosa restated in October 2026; and the title-deed backlog in townships (Operation Vulindlela’s 80,000-deed target inside a much larger unissued stock). None of those programmes work if diagrams and deeds cannot be issued at volume.</p>
+    </section>
+
+    <section id="mining" class="cad-section">
+      <h2>What is being done — the mining cadastre</h2>
+      <p>SAMRAD, the South African Mineral Resources Administration System, has run mineral-right applications since 2011. It is the reason overlapping applications, missing files and multi-year backlogs became normal. DMPR receives about 2,800 applications a year against a processing capacity of about 2,500. The replacement is an online, map-based mining cadastre: see which ground is open, which is held, and file against it, the way Botswana and Namibia already do.</p>
+      <p>A Canadian-led consortium (Pacific GeoTech Systems announced as preferred bidder in January 2024) is building it. Deadlines have slipped from 2024 to June 2025 to a Western Cape test drive. Soft launch in the Western Cape was October 2025. By June 2026 DG Jacob Mbele told the Junior Indaba the Western Cape had fully migrated off the legacy system, with unassisted applications going through. Next provinces: Free State, KwaZulu-Natal and Eastern Cape — chosen because their data problems are smaller than Mpumalanga, Limpopo and North West.</p>
+      <div class="key-fact mb-3">
+        National completion is now 31 March 2027 (end of DMPR’s 2026/27 financial year). On 7 October 2026 at the Joburg Mining Indaba, Minerals Council president Paul Dunne said DMPR and the Council share joint accountability for that date. It is the third of three Government–Business Partnership mining work streams (the others: unlock more than R50 billion of stuck capex by February 2028, and competitiveness / the Mineral Resources Development Bill).
+      </div>
+      <p class="mb-0">The Mineral Resources Development Bill is the statute that will sit on top of the new register. Public participation is done; the portfolio committee is in deliberation. A revised definition of “land owner” is intended to include holders of unregistered land rights protected by law (Maledu, Baleni, IPILRA). That is why the mining cadastre and the communal-tenure bill have to talk to each other: a mining right is not a surface-use right, and communal occupiers are often not on the Deeds Office search. Dashboard mining pages: <a href="mining.html">Mining</a> · <a href="dmpr.html">DMPR</a>.</p>
+    </section>
+
+    <section id="why" class="cad-section">
+      <h2>Why this matters on this dashboard</h2>
+      <ul>
+        <li><strong>Transmission and gas corridors.</strong> NTCSA servitudes, Eskom lines and the strategic gas pipeline corridor are real rights on surveyed parcels. If the diagram or the deed is wrong, the corridor is wrong.</li>
+        <li><strong>SEZs and industrial land.</strong> Zone proclamations and tenant title sit on the same Deeds/SG stack. See <a href="sez.html">SEZs</a>.</li>
+        <li><strong>Mining overlay.</strong> A prospecting or mining right can sit under farmland, communal land or a transmission servitude. The mining cadastre is the only way to see that overlay without a DMPR file search.</li>
+        <li><strong>Land reform and bankability.</strong> Title deeds for PLAS land, township backlog, and communal recordal are all throughput problems in the same offices that run eDRS.</li>
+        <li><strong>Investment transparency.</strong> SAMRAD’s failure is a stated reason juniors and majors delay exploration spend. The 31 March 2027 mining-cadastre date is now a Government–Business Partnership deliverable, not only a DMPR IT project.</li>
+      </ul>
+    </section>
+
+    <section id="watch" class="cad-section">
+      <h2>What to watch</h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr><th>Item</th><th>Status as at 13 Oct 2026</th><th>Next mark</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>eDRS dual system</td>
+              <td>Live since 1 April 2025</td>
+              <td>80% stakeholder interface by March 2027; paper phased out over ~5 years</td>
+            </tr>
+            <tr>
+              <td>B27-2026</td>
+              <td>In the National Assembly (s 75)</td>
+              <td>Committee programme / clause-by-clause. Watch PMG bill 1373</td>
+            </tr>
+            <tr>
+              <td>Land Registration Bill</td>
+              <td>Drafting / APP target 2027</td>
+              <td>Gazette for comment; repeal of 1937 and 2019 Acts</td>
+            </tr>
+            <tr>
+              <td>Communal Land Administration Bill</td>
+              <td>Not tabled; IPILRA extended to 31 Dec 2027</td>
+              <td>Cabinet then public comment. Tenure policy is the blocker</td>
+            </tr>
+            <tr>
+              <td>Mining cadastre</td>
+              <td>Western Cape live; FS / KZN / EC next</td>
+              <td>National by 31 March 2027, with Minerals Council joint work stream</td>
+            </tr>
+            <tr>
+              <td>Mineral Resources Development Bill</td>
+              <td>Committee deliberation</td>
+              <td>Definition of land owner vs communal / IPILRA rights</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src-note mb-0">Sources: gov.za eDRS launch 1 Apr 2025; Proc 250 of 2025 and Proc 286 of 2025; GG 55110 Notice 4069 (31 Jul 2026); PMG B27-2026; DLRRD APP 2026/27; Miningmx / Daily Maverick / Mining Weekly on the cadastre (May–Oct 2026); Minerals Council Joburg Indaba 7 Oct 2026; SA Legal Academy on IPILRA extension 25 Sep 2026.</p>
+    </section>
+
+    <hr>
+    <a href="bills.html" class="btn btn-outline-secondary">← All bills</a>
+    <a href="policy-tracker.html" class="btn btn-outline-secondary ms-2">Policy Tracker</a>
+    <a href="https://pmg.org.za/bill/1373/" class="btn btn-outline-dark ms-2" target="_blank" rel="noreferrer">PMG B27-2026</a>
+    <a href="mining.html" class="btn btn-outline-dark ms-2">Mining</a>
+    <a href="dmpr.html" class="btn btn-outline-dark ms-2">DMPR</a>
+  </div>
+</body>
+</html>

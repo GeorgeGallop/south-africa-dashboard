@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>crawl probe</title></head>
+<body>
+<script type="module">
+import { crawl } from "../js/repo-health/crawler.js";
+
+const root = new URL("../", location.href).href;
+const r = await crawl(root, {});
+console.log("PROBE_TOTAL", r.files.length);
+console.log("PROBE_DIRS", r.dirs.length);
+console.log("PROBE_ROOTFILES", JSON.stringify(r.files.filter((f) => !f.dir).map((f) => f.path)));
+console.log("PROBE_PYCACHE", JSON.stringify(r.files.filter((f) => f.path.includes("__pycache__")).map((f) => f.path)));
+console.log("PROBE_TMP", JSON.stringify(r.files.filter((f) => f.path.startsWith("_tmp")).map((f) => f.path)));
+console.log("PROBE_SAMPLE", JSON.stringify(r.files.slice(0, 5).map((f) => `${f.path}:${f.size}`)));
+</script>
+</body>
+</html>

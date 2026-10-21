@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/news-ranking.js"></script>
+  <script src="../js/news-ranking.js?v=3"></script>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
@@ -47,31 +47,34 @@
       <div class="card-body py-2 px-3">
         <div class="row g-2 align-items-end">
           <div class="col-12 col-md">
-            <small class="text-muted fw-bold d-block mb-1">Keywords (comma-separated)</small>
-            <input id="keyword-input" type="text" class="form-control form-control-sm"
-              placeholder="eskom, mining, energy, ramaphosa, load shedding"
-              onkeydown="if(event.key==='Enter') loadNews()">
+            <small class="text-muted fw-bold d-block mb-1">Keywords (comma-separated groups)</small>
+            <textarea id="keyword-input" rows="5" class="form-control form-control-sm font-monospace"
+              placeholder="iron ore, Madlanga Commission, municipality, Eskom…"
+              onkeydown="if(event.key==='Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); loadNews(); }"></textarea>
+            <small class="text-muted">Ctrl+Enter to apply. Each comma group is an OR match; phrases like “iron ore” or “Madlanga Commission” stay together.</small>
           </div>
           <div class="col-6 col-md-auto" style="min-width:110px">
             <small class="text-muted fw-bold d-block mb-1">Stories</small>
             <input id="story-count" type="number" class="form-control form-control-sm" value="100" min="10" max="500" step="5">
           </div>
+          <div class="col-6 col-md-auto" style="min-width:130px">
+            <small class="text-muted fw-bold d-block mb-1">Lookback (days)</small>
+            <input id="lookback-days" type="number" class="form-control form-control-sm" value="3" min="1" max="14" step="1"
+              title="Only show articles published within this many days. Default is 3.">
+          </div>
           <div class="col-6 col-md-auto d-flex align-items-end">
             <button id="applyBtn" onclick="loadNews()" class="btn btn-success w-100 fw-bold">⚡ Apply</button>
+          </div>
+          <div class="col-6 col-md-auto d-flex align-items-end">
+            <button onclick="restoreDefaultKeywords()" class="btn btn-outline-success w-100">Default</button>
           </div>
           <div class="col-6 col-md-auto d-flex align-items-end">
             <button onclick="clearFilters()" class="btn btn-outline-secondary w-100">Clear</button>
           </div>
         </div>
-        <!-- Keyword Presets -->
-        <div class="mt-2 pt-2 border-top">
+        <!-- Keyword Presets (filled from KEYWORD_PRESETS) -->
+        <div class="mt-2 pt-2 border-top" id="keyword-presets">
           <small class="text-muted fw-bold d-inline-block me-2">Presets:</small>
-          <button class="btn btn-outline-primary btn-sm me-1 mb-1" onclick="setKeywords('eskom, energy, electricity, renewables, load shedding, power, IPP, coal, gas, nuclear, grid')">⚡ Energy</button>
-          <button class="btn btn-outline-warning btn-sm me-1 mb-1" onclick="setKeywords('mining, gold, platinum, coal, diamonds, iron ore, manganese, chrome, commodities, PGM')">⛏️ Mining</button>
-          <button class="btn btn-outline-danger btn-sm me-1 mb-1" onclick="setKeywords('ramaphosa, ANC, DA, EFF, parliament, election, corruption, state capture, cabinet, policy')">🏛️ Politics</button>
-          <button class="btn btn-outline-success btn-sm me-1 mb-1" onclick="setKeywords('GDP, economy, inflation, rand, SARB, budget, debt, investment, trade, manufacturing')">📈 Economy</button>
-          <button class="btn btn-outline-info btn-sm me-1 mb-1" onclick="setKeywords('gas, LNG, offshore, exploration, pipeline, TotalEnergies, Sasol, Mozambique, Rovuma')">🔥 Gas & LNG</button>
-          <button class="btn btn-outline-dark btn-sm mb-1" onclick="setKeywords('South Africa, Africa')">🌍 All Africa</button>
         </div>
       </div>
     </div>
@@ -100,6 +103,8 @@
       </div>
     </div>
 
+    <div id="keyword-hit-strip" class="hit-strip" style="display:none;"></div>
+
     <!-- HEADLINE LIST -->
     <div id="summary-content">
       <div class="text-center py-5">
@@ -111,52 +116,323 @@
   </div>
 
   <script>
-    const FETCH_TIMEOUT_MS = 10000;
-    const DEFAULT_KEYWORDS = "eskom, energy, mining, ramaphosa, electricity, renewables, coal, gas, economy, loadshedding, IPP, platinum, gold, South Africa, Africa, Transnet, TRIM, South Africa LNG";
+    const FETCH_TIMEOUT_MS = 18000;
+
+    /* Comma-separated groups. A story is kept if it hits ANY group, then
+       ranked by how many of these terms it actually carries. Phrases stay
+       together ("iron ore", "Madlanga Commission"). Built from the whole
+       SA dashboard: power, gas, mining stack, SOEs, policy, GNU politics,
+       municipalities, consumer, logistics, inquiries. */
+    const DEFAULT_KEYWORD_GROUPS = [
+      // Geography & SA frame
+      'South Africa', 'Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Gqeberha',
+      'Richards Bay', 'Saldanha', 'Coega', 'Ngqura', 'Sishen', 'Kolomela', 'Kathu',
+      'Hotazel', 'Lephalale', 'Secunda', 'Sasolburg', 'eMalahleni', 'Rustenburg',
+      'Steelpoort', 'Phalaborwa', 'Musina', 'Mokopane', 'Mossel Bay', 'Saldanha Bay',
+      'Mpumalanga', 'Limpopo', 'Northern Cape', 'Gauteng', 'KwaZulu-Natal',
+      'North West', 'Free State', 'Eastern Cape', 'Western Cape', 'Karoo',
+      'Mozambique', 'Namibia', 'Botswana', 'Zimbabwe', 'SADC', 'SAPP',
+
+      // Power, grid, market reform
+      'Eskom', 'load shedding', 'loadshedding', 'load reduction', 'NTCSA', 'NERSA',
+      'IRP', 'IRP2025', 'TDP', 'TDP2025', 'ITIPP', 'SAWEM', 'NECOM', 'ERTT',
+      'IPP', 'REIPPPP', 'RMIPPPP', 'GIPPPP', 'embedded generation', 'wheeling',
+      'MYPD', 'MYPD5', 'RCA', 'electricity tariff', 'electricity', 'grid',
+      'transmission', 'Koeberg', 'Medupi', 'Kusile', 'Komati', 'Camden',
+      'Grootvlei', 'Hendrina', 'Tutuka', 'Majuba', 'Kendal', 'Duvha', 'Matla',
+      'Lethabo', 'Matimba', 'nuclear', 'renewable', 'solar', 'wind', 'CSP',
+      'battery storage', 'pumped storage', 'Tubatse', 'just energy transition',
+      'JET IP', 'distributed generation', 'vesting contract', 'system marginal price',
+      'unbundling', 'independent transmission', 'power pool', 'Cahora Bassa',
+      'Grand Inga', 'Department of Electricity',
+
+      // Gas, LNG, fuels
+      'LNG', 'FSRU', 'regasification', 'Gas Master Plan', 'Gas Bill', 'Gas Act',
+      'TotalEnergies', 'Brulpadda', 'Luiperd', 'Orange Basin', 'Rovuma', 'ROMPCO',
+      'iGas', 'PetroSA', 'SAPREF', 'SANPC', 'PASA', 'SFF', 'CEF',
+      'shale gas', 'hydraulic fracturing', 'pipeline corridor', 'gas-to-power',
+      'Richards Bay LNG', 'diesel', 'petrol', 'fuel levy', 'fuel price', 'kerosene',
+      'Sasol', 'coal-to-liquids', 'Natref', 'Astron Energy',
+
+      // Mining stack (the materials the dashboard actually tracks)
+      'mining', 'mineral', 'commodity', 'iron ore', 'Kumba', 'Kumba Iron Ore',
+      'manganese', 'chrome', 'chromite', 'ferrochrome', 'PGM', 'platinum',
+      'palladium', 'rhodium', 'ruthenium', 'iridium', 'osmium', 'gold',
+      'coal', 'vanadium', 'diamonds', 'Kimberley Process', 'uranium',
+      'copper', 'nickel', 'zinc', 'titanium', 'zircon', 'ilmenite', 'rutile',
+      'fluorspar', 'phosphate', 'rare earth', 'lithium', 'cobalt', 'steel',
+      'stainless steel', 'smelting', 'beneficiation', 'MPRDA', 'DMPR', 'DMRE',
+      'AEMFC', 'Bushveld', 'Witwatersrand', 'Marikana', 'Harmony Gold',
+      'Gold Fields', 'Anglo American', 'Anglo Platinum', 'Implats',
+      'Sibanye-Stillwater', 'Sibanye', 'Northam', 'Glencore', 'South32',
+      'Exxaro', 'Seriti', 'Rio Tinto', 'ArcelorMittal', 'De Beers',
+      'Petra Diamonds', 'Samancor', 'Merafe', 'Tharisa', 'African Rainbow Minerals',
+      'Vedanta', 'Tronox', 'Richards Bay Minerals', 'Foskor', 'Assore',
+      'Valterra', 'Siyanda', 'ARM',
+
+      // Logistics, ports, rail
+      'Transnet', 'TRIM', 'TNPA', 'TFR', 'train operating company', 'TOC',
+      'National Rail Policy', 'Transport Economic Regulator', 'freight',
+      'logistics', 'port congestion', 'Durban Container Terminal', 'cable theft',
+      'Operation Vulindlela', 'private rail', 'Traxtion',
+
+      // SOEs, development finance, big corporates
+      'IDC', 'DBSA', 'PIC', 'Telkom', 'Denel', 'SAA', 'PRASA', 'Rand Water',
+      'water board', 'Naspers', 'Shoprite', 'Checkers', 'Pick n Pay', 'Spar',
+      'Woolworths',
+
+      // Economy, consumer, labour
+      'GDP', 'inflation', 'CPI', 'rand', 'USDZAR', 'SARB', 'repo rate',
+      'budget', 'MTBPS', 'National Treasury', 'SARS', 'Stats SA', 'unemployment',
+      'cost of living', 'food prices', 'maize', 'maize meal', 'bread',
+      'consumer', 'household', 'retail', 'informal trade', 'spaza',
+      'SASSA', 'NSFAS', 'NHI', 'minimum wage', 'strike', 'NUM', 'NUMSA',
+      'AMCU', 'Cosatu', 'CCMA', 'manufacturing', 'SEZ', 'investment',
+      'ratings agency', 'Moody', 'Fitch',
+
+      // Municipal failure
+      'municipality', 'municipal', 'COGTA', 'SALGA', 'section 139',
+      'municipal debt', 'Eskom debt', 'sewage', 'wastewater', 'water shedding',
+      'cholera', 'Hammanskraal', 'Giyani', 'eThekwini', 'City of Johannesburg',
+      'Tshwane', 'Ekurhuleni', 'Mangaung', 'Buffalo City', 'Nelson Mandela Bay',
+      'Msunduzi', 'Emfuleni', 'Maluti-a-Phofung', 'Madibeng', 'dysfunctional municipality',
+      'collapsed municipality', 'billing crisis', 'prepaid electricity',
+
+      // Politics, GNU, parties
+      'Ramaphosa', 'GNU', 'government of national unity', 'ANC', 'DA', 'EFF',
+      'MK Party', 'IFP', 'PA', 'cabinet', 'Parliament', 'Presidency',
+      'National Assembly', 'election', 'IEC',
+
+      // Inquiries, capture, justice (Madlanga is live)
+      'Madlanga', 'Madlanga Commission', 'Mkhwanazi', 'Blue Capture',
+      'Zondo', 'state capture', 'Phala Phala', 'Khampepe', 'Mpati Commission',
+      'VBS', 'SIU', 'NPA', 'IDAC', 'SAPS', 'crime intelligence',
+      'police capture', 'syndicate', 'corruption', 'Public Protector',
+      'Auditor-General', 'Hawks', 'IPID',
+
+      // Policy, bills, regulators
+      'policy', 'B-BBEE', 'Transformation Fund', 'Economic Inclusion',
+      'Electricity Regulation Act', 'ERA Amendment', 'wholesale pricing',
+      'Competition Commission', 'ICASA', 'Home Affairs', 'visa',
+      'Department of Water', 'DFFE', 'DTIC', 'Infrastructure South Africa',
+      'SIDSSA', 'PICC', 'green hydrogen', 'ammonia', 'Boegoebaai',
+      'artificial intelligence', 'data centre'
+    ].map(function (s) { return s.trim(); }).filter(Boolean);
+
+    const DEFAULT_KEYWORDS = DEFAULT_KEYWORD_GROUPS.join(', ');
+
+    const KEYWORD_PRESETS = [
+      { label: 'Dashboard default', cls: 'btn-success', keys: DEFAULT_KEYWORDS },
+      { label: '⚡ Energy', cls: 'btn-outline-primary', keys: [
+        'Eskom', 'load shedding', 'NTCSA', 'NERSA', 'IRP', 'TDP', 'ITIPP', 'SAWEM',
+        'IPP', 'REIPPPP', 'GIPPPP', 'electricity', 'grid', 'transmission', 'Koeberg',
+        'Medupi', 'Kusile', 'Komati', 'nuclear', 'renewable', 'solar', 'wind',
+        'battery storage', 'JET IP', 'wheeling', 'MYPD', 'unbundling'
+      ].join(', ') },
+      { label: '⛏️ Mining', cls: 'btn-outline-warning', keys: [
+        'mining', 'iron ore', 'Kumba', 'Sishen', 'Kolomela', 'Saldanha',
+        'manganese', 'Hotazel', 'chrome', 'ferrochrome', 'PGM', 'platinum',
+        'palladium', 'rhodium', 'gold', 'coal', 'vanadium', 'diamonds',
+        'uranium', 'titanium', 'zircon', 'copper', 'nickel', 'steel',
+        'smelting', 'beneficiation', 'Bushveld', 'Witwatersrand', 'Marikana',
+        'Anglo American', 'Implats', 'Sibanye', 'Glencore', 'South32',
+        'Exxaro', 'Seriti', 'ArcelorMittal', 'Harmony', 'Gold Fields',
+        'Northam', 'De Beers', 'Samancor', 'Merafe', 'Tharisa', 'ARM',
+        'Kumba Iron Ore', 'Richards Bay Minerals', 'MPRDA', 'DMPR'
+      ].join(', ') },
+      { label: '🔥 Gas & LNG', cls: 'btn-outline-info', keys: [
+        'LNG', 'FSRU', 'regasification', 'Gas Master Plan', 'Gas Bill',
+        'TotalEnergies', 'Brulpadda', 'Luiperd', 'Orange Basin', 'Rovuma',
+        'ROMPCO', 'PetroSA', 'Sasol', 'iGas', 'SANPC', 'PASA', 'shale gas',
+        'Richards Bay LNG', 'gas-to-power', 'GIPPPP', 'pipeline', 'Mozambique'
+      ].join(', ') },
+      { label: '🚛 Logistics', cls: 'btn-outline-secondary', keys: [
+        'Transnet', 'TRIM', 'TNPA', 'freight', 'logistics', 'port', 'rail',
+        'Durban Container Terminal', 'Richards Bay', 'Saldanha', 'cable theft',
+        'Operation Vulindlela', 'National Rail Policy', 'TOC', 'PRASA'
+      ].join(', ') },
+      { label: '🏘️ Municipal', cls: 'btn-outline-danger', keys: [
+        'municipality', 'municipal debt', 'COGTA', 'section 139', 'Eskom debt',
+        'sewage', 'wastewater', 'water shedding', 'cholera', 'Hammanskraal',
+        'eThekwini', 'Johannesburg', 'Tshwane', 'Ekurhuleni', 'Mangaung',
+        'Nelson Mandela Bay', 'Msunduzi', 'Emfuleni', 'Maluti-a-Phofung',
+        'collapsed municipality', 'Rand Water', 'billing'
+      ].join(', ') },
+      { label: '⚖️ Madlanga & capture', cls: 'btn-outline-dark', keys: [
+        'Madlanga', 'Madlanga Commission', 'Mkhwanazi', 'Blue Capture',
+        'Zondo', 'state capture', 'Phala Phala', 'VBS', 'SIU', 'NPA', 'IDAC',
+        'SAPS', 'crime intelligence', 'police capture', 'corruption',
+        'Public Protector', 'Auditor-General', 'Hawks'
+      ].join(', ') },
+      { label: '🏛️ Politics', cls: 'btn-outline-danger', keys: [
+        'Ramaphosa', 'GNU', 'ANC', 'DA', 'EFF', 'MK Party', 'IFP', 'PA',
+        'cabinet', 'Parliament', 'Presidency', 'election', 'IEC', 'policy',
+        'B-BBEE', 'Transformation Fund'
+      ].join(', ') },
+      { label: '🛒 Consumer', cls: 'btn-outline-success', keys: [
+        'inflation', 'CPI', 'food prices', 'maize meal', 'bread', 'petrol',
+        'diesel', 'electricity tariff', 'cost of living', 'unemployment',
+        'SARB', 'repo rate', 'SASSA', 'NSFAS', 'NHI', 'retail', 'Shoprite',
+        'Pick n Pay', 'spaza', 'consumer', 'household'
+      ].join(', ') },
+      { label: '📈 Economy', cls: 'btn-outline-success', keys: [
+        'GDP', 'inflation', 'rand', 'SARB', 'budget', 'MTBPS', 'National Treasury',
+        'debt', 'investment', 'trade', 'manufacturing', 'SEZ', 'unemployment',
+        'ratings agency', 'IDC', 'DBSA', 'PIC'
+      ].join(', ') },
+      { label: '🏗️ Projects', cls: 'btn-outline-primary', keys: [
+        'Operation Vulindlela', 'IRP', 'TDP', 'ITIPP', 'SIDSSA', 'PICC',
+        'Infrastructure South Africa', 'SEZ', 'green hydrogen', 'ammonia',
+        'Boegoebaai', 'Coega', 'Richards Bay LNG', 'Tubatse', 'Komati',
+        'pumped storage', 'data centre'
+      ].join(', ') },
+      { label: '🌍 All Africa', cls: 'btn-outline-dark', keys: 'South Africa, Africa, African Union, SADC' }
+    ];
 
     // ---- RECENCY SCREENING ----
-    // Every story shown must carry a real publication date inside this window.
-    // Anything older — or with no reliable date at all — is dropped before render.
-    const MAX_STORY_AGE_DAYS = 7;
-    const MAX_STORY_AGE_MS = MAX_STORY_AGE_DAYS * 24 * 60 * 60 * 1000;
+    // Every story shown must carry a real publication date inside the lookback
+    // window set next to Keywords (default 3 days). Anything older — or with
+    // no reliable date at all — is dropped before render.
+    const DEFAULT_LOOKBACK_DAYS = 3;
+    const LOOKBACK_MIN_DAYS = 1;
+    const LOOKBACK_MAX_DAYS = 14;
+    const LOOKBACK_STORAGE_KEY = 'sawem-news-lookback-days';
     // Small forward allowance for timezone rounding / clock drift so a story
     // that parses slightly "in the future" is not wrongly treated as bogus.
     const FUTURE_SKEW_MS = 36 * 60 * 60 * 1000;
 
+    function clampLookbackDays(value) {
+      const n = parseInt(value, 10);
+      if (!Number.isInteger(n)) return DEFAULT_LOOKBACK_DAYS;
+      return Math.min(LOOKBACK_MAX_DAYS, Math.max(LOOKBACK_MIN_DAYS, n));
+    }
+
+    function getLookbackDays() {
+      const el = document.getElementById('lookback-days');
+      return clampLookbackDays(el ? el.value : DEFAULT_LOOKBACK_DAYS);
+    }
+
+    function getLookbackMs() {
+      return getLookbackDays() * 24 * 60 * 60 * 1000;
+    }
+
+    function persistLookbackDays(days) {
+      try { localStorage.setItem(LOOKBACK_STORAGE_KEY, String(days)); } catch (e) { /* ignore */ }
+    }
+
+    function loadStoredLookbackDays() {
+      try {
+        const stored = localStorage.getItem(LOOKBACK_STORAGE_KEY);
+        if (stored == null) return DEFAULT_LOOKBACK_DAYS;
+        return clampLookbackDays(stored);
+      } catch (e) {
+        return DEFAULT_LOOKBACK_DAYS;
+      }
+    }
+
+    function setLookbackDays(days, persist) {
+      const clamped = clampLookbackDays(days);
+      const el = document.getElementById('lookback-days');
+      if (el) el.value = String(clamped);
+      if (persist !== false) persistLookbackDays(clamped);
+      return clamped;
+    }
+
+    const GN = (q) =>
+      `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
+
     const availableSources = [
-      // Verified RSS feeds
+      // Direct RSS
       { name: "BBC Africa",        url: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",    credibility: 5, status: "working", tags: ["general", "africa"] },
       { name: "Africanews",        url: "https://www.africanews.com/feed/rss",                    credibility: 4, status: "working", tags: ["general", "africa"] },
       { name: "Al Jazeera English",url: "https://www.aljazeera.com/xml/rss/all.xml",              credibility: 4, status: "working", tags: ["general", "world"] },
       { name: "France 24 Africa",  url: "https://www.france24.com/en/africa/rss",                 credibility: 4, status: "working", tags: ["general", "africa"] },
-      { name: "Mining Weekly",     url: "https://www.miningweekly.com/page/feed",                 credibility: 5, status: "working", tags: ["mining", "commodities"] },
+      { name: "Mining Weekly",     url: "https://www.miningweekly.com/page/latest-news/feed",     credibility: 5, status: "working", tags: ["mining", "commodities"] },
       { name: "ESI Africa",        url: "https://www.esi-africa.com/feed/",                       credibility: 4, status: "working", tags: ["energy", "power"] },
       { name: "Energize",          url: "https://www.energize.co.za/rss.xml",                     credibility: 4, status: "working", tags: ["energy", "power", "south-africa"] },
-      { name: "Mail & Guardian",   url: "https://mg.co.za/feed/",                                 credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
-      { name: "Daily Maverick",    url: "https://www.dailymaverick.co.za/feed/",                  credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
+      { name: "Mail & Guardian",   url: "https://mg.co.za/rss/",                                  credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
+      { name: "Daily Maverick",    url: "https://www.dailymaverick.co.za/dmrss/",                 credibility: 4, status: "working", tags: ["general", "politics", "south-africa"], fallbacks: ["https://www.dailymaverick.co.za/rss/"] },
       { name: "Moneyweb",          url: "https://www.moneyweb.co.za/feed/",                       credibility: 4, status: "working", tags: ["economy", "business", "south-africa"] },
       { name: "The Africa Report", url: "https://www.theafricareport.com/feed/",                  credibility: 4, status: "working", tags: ["general", "africa", "business"] },
       { name: "TechCentral",       url: "https://techcentral.co.za/feed/",                        credibility: 3, status: "working", tags: ["tech", "south-africa"] },
-      { name: "Power Engineering", url: "https://www.powerengineeringint.com/feed/",              credibility: 4, status: "working", tags: ["energy", "power", "global"] },
+      { name: "Power Engineering", url: "https://www.power-eng.com/feed/",                        credibility: 4, status: "working", tags: ["energy", "power", "global"] },
       { name: "Eskom Media",       url: "https://www.eskom.co.za/category/news/feed/",            credibility: 4, status: "working", tags: ["energy", "power", "eskom", "south-africa"] },
       { name: "SABC News",         url: "https://www.sabcnews.com/sabcnews/feed/",                credibility: 4, status: "working", tags: ["general", "politics", "south-africa"] },
       { name: "Business Insider Africa", url: "https://africa.businessinsider.com/rss",           credibility: 4, status: "working", tags: ["economy", "business", "africa"] },
       { name: "DA Newsroom",       url: "https://content.voteda.org/feed/",                       credibility: 4, status: "working", tags: ["politics", "south-africa"] },
       { name: "Freight News",      url: "https://www.freightnews.co.za/rss",                      credibility: 4, status: "working", tags: ["transport", "logistics", "freight", "south-africa"] },
-
-      // Previously failing — corrected to verified working RSS URLs
-      { name: "CNBC Africa",       url: "https://www.cnbcafrica.com/africa/feed/",                credibility: 4, status: "working", tags: ["business", "africa"] },
-      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/page/rss-feed/feed:latest-news-copy", credibility: 4, status: "working", tags: ["engineering", "mining", "south-africa"] },
+      { name: "Engineering News",  url: "https://www.engineeringnews.co.za/page/latest-news/feed", credibility: 4, status: "working", tags: ["engineering", "mining", "south-africa"] },
       { name: "eNCA",              url: "https://www.enca.com/rss.xml",                           credibility: 3, status: "working", tags: ["news", "south-africa"] },
-      { name: "News24",            url: "https://feeds.24.com/articles/news24/SouthAfrica/rss",   credibility: 3, status: "working", tags: ["news", "south-africa"] },
+      // Native rss.xml is the full world wire; keepRe keeps the Africa desk
+      // (category "africa" plus Africa/South Africa in the headline).
+      { name: "Semafor Africa",    url: "https://www.semafor.com/rss.xml",                        credibility: 4, status: "working", tags: ["general", "africa"],
+        keepRe: "\\bafrica\\b|south africa",
+        fallbacks: [GN('site:semafor.com (Africa OR "South Africa")')] },
 
-      // No reliable public RSS — fetch the HTML page and scrape headline links
-      { name: "Business Day",      url: "https://www.businesslive.co.za/",                        type: "html", credibility: 4, status: "working", tags: ["business", "south-africa"] },
-      { name: "Reuters Africa",    url: "https://www.reuters.com/world/africa/",                  type: "html", credibility: 5, status: "working", tags: ["general", "africa"] },
-      { name: "Bloomberg Africa",  url: "https://www.bloomberg.com/africa",                       type: "html", credibility: 5, status: "working", tags: ["business", "africa"] },
-      { name: "Semafor Africa",    url: "https://www.semafor.com/vertical/africa",                type: "html", credibility: 4, status: "working", tags: ["general", "africa"] },
-      { name: "Sasol Media",       url: "https://www.sasol.com/media-centre/media-releases?page=1", type: "html", credibility: 4, status: "working", tags: ["energy", "business", "chemicals", "south-africa"] },
-      { name: "The Common Sense",  url: "https://www.thecommonsense.co.za/",                        type: "html", credibility: 4, status: "working", tags: ["general", "politics", "economy", "south-africa"] }
+      // Publisher RSS is blocked/dead — Google News RSS for the same masthead
+      { name: "Sunday Times",      url: GN("site:sundaytimes.timeslive.co.za"),                   credibility: 4, status: "working", tags: ["news", "politics", "south-africa"],
+        fallbacks: [GN("site:timeslive.co.za")] },
+      { name: "News24",            url: GN("site:news24.com"),                                    credibility: 3, status: "working", tags: ["news", "south-africa"] },
+      { name: "CNBC Africa",       url: GN("site:cnbcafrica.com"),                                credibility: 4, status: "working", tags: ["business", "africa"] },
+      { name: "Business Day",      url: GN("site:businesslive.co.za"),                            credibility: 4, status: "working", tags: ["business", "south-africa"] },
+      { name: "Reuters Africa",    url: GN('site:reuters.com (Africa OR "South Africa")'),        credibility: 5, status: "working", tags: ["general", "africa"] },
+      { name: "Bloomberg Africa",  url: GN('site:bloomberg.com ("South Africa" OR Africa)'),      credibility: 5, status: "working", tags: ["business", "africa"] },
+      { name: "Sasol Media",       url: GN("site:sasol.com"),                                     credibility: 4, status: "working", tags: ["energy", "business", "chemicals", "south-africa"] },
+      { name: "The Common Sense",  url: GN("site:thecommonsense.co.za"),                          credibility: 4, status: "working", tags: ["general", "politics", "economy", "south-africa"] },
+
+      // Mining / commodities
+      { name: "Miningmx",          url: "https://www.miningmx.com/feed/",                         credibility: 5, status: "working", tags: ["mining", "commodities", "south-africa"] },
+      { name: "Mining.com",        url: "https://www.mining.com/feed/",                           credibility: 4, status: "working", tags: ["mining", "commodities", "global"] },
+      { name: "Mining.com Africa", url: "https://www.mining.com/region/africa/feed/",             credibility: 4, status: "working", tags: ["mining", "commodities", "africa"] },
+      { name: "African Mining Market", url: "https://www.africanminingmarket.com/feed/",          credibility: 4, status: "working", tags: ["mining", "commodities", "africa"] },
+      { name: "E & MJ",            url: "https://www.e-mj.com/feed/",                             credibility: 4, status: "working", tags: ["mining", "commodities", "global"] },
+      { name: "Northern Miner",    url: "https://www.northernminer.com/feed/",                    credibility: 3, status: "working", tags: ["mining", "commodities", "global"] },
+      { name: "Harmony Gold",      url: "https://www.harmony.co.za/feed",                         credibility: 3, status: "working", tags: ["mining", "gold", "south-africa"] },
+
+      // South African Government news hub — https://www.gov.za/news
+      // (no public RSS; scrape each listing, Google News as fallback)
+      { name: "gov.za Latest news", url: "https://www.gov.za/news/latest-speeches",
+        type: "html", keepPath: ["/news/media-statements/", "/news/speeches/", "/news/media-advisories/", "/news/cabinet-statements/", "/news/parliamentary-questions"],
+        credibility: 5, status: "working", tags: ["government", "politics", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news')] },
+      { name: "gov.za Cabinet statements", url: "https://www.gov.za/news/cabinet-statements",
+        type: "html", keepPath: ["/news/cabinet-statements/"],
+        credibility: 5, status: "working", tags: ["government", "politics", "cabinet", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/cabinet-statements')] },
+      { name: "gov.za Media advisories", url: "https://www.gov.za/news/media-advisories",
+        type: "html", keepPath: ["/news/media-advisories/"],
+        credibility: 5, status: "working", tags: ["government", "politics", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/media-advisories')] },
+      { name: "gov.za Media statements", url: "https://www.gov.za/news/media-statements",
+        type: "html", keepPath: ["/news/media-statements/"],
+        credibility: 5, status: "working", tags: ["government", "politics", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/media-statements')] },
+      { name: "gov.za Speeches", url: "https://www.gov.za/news/speeches",
+        type: "html", keepPath: ["/news/speeches/"],
+        credibility: 5, status: "working", tags: ["government", "politics", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/speeches')] },
+      { name: "gov.za Parliamentary Q&A", url: "https://www.gov.za/news/parliamentary-questions-and-answers",
+        type: "html", keepPath: ["/news/parliamentary-questions"],
+        credibility: 5, status: "working", tags: ["government", "politics", "parliament", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/parliamentary-questions-and-answers')] },
+      { name: "gov.za Events", url: "https://www.gov.za/news/events",
+        type: "html", keepPath: ["/news/media-advisories/", "/news/events/"],
+        credibility: 5, status: "working", tags: ["government", "events", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/news/events')] },
+      { name: "gov.za State of the Nation", url: "https://www.gov.za/news/state-nation-address",
+        type: "html", keepRe: "state of the nation|\\bsona\\b",
+        keepPath: ["/news/speeches/", "/speeches/", "stateofthenation", "/news/sona", "/sona"],
+        credibility: 5, status: "working", tags: ["government", "politics", "sona", "south-africa"],
+        fallbacks: [GN('site:www.gov.za ("State of the Nation" OR SONA)')] },
+      { name: "gov.za Budget speeches", url: "https://www.gov.za/national-budget-0",
+        type: "html", keepRe: "budget speech|mtbps|medium-term budget|medium term budget",
+        keepPath: ["/news/speeches/", "/news/budget/", "/speeches/", "budgetspeech", "budget-speech"],
+        credibility: 5, status: "working", tags: ["government", "budget", "economy", "south-africa"],
+        fallbacks: [GN('site:www.gov.za ("Budget Speech" OR MTBPS)')] },
+      { name: "gov.za Opinion pieces", url: "https://www.gov.za/blog",
+        type: "html", keepPath: ["/blog/"],
+        credibility: 5, status: "working", tags: ["government", "politics", "south-africa"],
+        fallbacks: [GN('site:www.gov.za/blog')] }
     ];
 
     let selectedSources = availableSources.filter(s => s.status === "working").map(s => s.name);
@@ -173,7 +449,7 @@
     function calculateImportanceScore(item) {
       const text = (item.title + ' ' + (item.description || '') + ' ' + (item.source || '')).toLowerCase();
       const ts = itemTimestamp(item);
-      const ageHours = ts === null ? MAX_STORY_AGE_DAYS * 24 : (Date.now() - ts) / (1000 * 60 * 60);
+      const ageHours = ts === null ? getLookbackDays() * 24 : (Date.now() - ts) / (1000 * 60 * 60);
       let score = Math.max(0, 120 - ageHours * 3);
 
       // Source credibility boost
@@ -191,10 +467,12 @@
       }
 
       // High-value keywords (Africa/South Africa specific)
-      if (/\b(africa|south africa|eskom|load shedding|ramaphosa|mining|commodities|inflation|debt|power|electricity|renewable|hydrogen|investor|rating|policy|platinum|gold|coal|gas|lng|anc|da|eff|parliament|cabinet|sarb|budget|gdp)\b/.test(text)) score += 25;
-      if (/\b(transnet|freight|logistics|rail|shipping|port)\b/.test(text)) score += 25; // Transport & logistics boost
-      if (/\b(south africa|eskom|load shedding)\b/.test(text)) score += 15; // Extra boost for SA-specific
-      if (/\b(mining|platinum|gold|coal|commodities)\b/.test(text)) score += 10; // Mining boost
+      if (/\b(africa|south africa|eskom|load shedding|ramaphosa|mining|commodities|inflation|debt|power|electricity|renewable|hydrogen|investor|rating|policy|platinum|gold|coal|gas|lng|anc|da|eff|parliament|cabinet|sarb|budget|gdp|madlanga|municipality|transnet)\b/.test(text)) score += 25;
+      if (/\b(transnet|freight|logistics|rail|shipping|port)\b/.test(text)) score += 25;
+      if (/\b(south africa|eskom|load shedding)\b/.test(text)) score += 15;
+      if (/\b(mining|platinum|gold|coal|commodities|iron ore|manganese|chrome|ferrochrome|vanadium|pgm|palladium|rhodium|kumba|sishen)\b/.test(text)) score += 10;
+      if (/\b(madlanga|zondo|state capture|mkhwanazi)\b/.test(text)) score += 15;
+      if (/\b(municipality|municipal debt|section 139|sewage|water shedding)\b/.test(text)) score += 12;
 
       // Downrank irrelevant
       if (/\b(celebrity|match|entertainment|festival|recipe|birthday|viral|sports|movie|fashion)\b/.test(text)) score -= 40;
@@ -213,14 +491,35 @@
     }
 
     // ---- KEYWORD PRESETS ----
+    function renderKeywordPresets() {
+      var host = document.getElementById('keyword-presets');
+      if (!host) return;
+      host.innerHTML = '<small class="text-muted fw-bold d-inline-block me-2">Presets:</small>';
+      KEYWORD_PRESETS.forEach(function (p, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm me-1 mb-1 ' + p.cls;
+        btn.textContent = p.label;
+        btn.addEventListener('click', function () { setKeywords(p.keys); });
+        host.appendChild(btn);
+      });
+    }
+
     window.setKeywords = function(keywords) {
       document.getElementById('keyword-input').value = keywords;
+      loadNews();
+    };
+
+    window.restoreDefaultKeywords = function() {
+      document.getElementById('keyword-input').value = DEFAULT_KEYWORDS;
+      setLookbackDays(DEFAULT_LOOKBACK_DAYS);
       loadNews();
     };
 
     window.clearFilters = function() {
       document.getElementById('keyword-input').value = '';
       document.getElementById('story-count').value = '100';
+      setLookbackDays(DEFAULT_LOOKBACK_DAYS);
       loadNews();
     };
 
@@ -292,7 +591,7 @@
     // relevance meter so the ranking is visible, not just felt.
     function buildNewsList(rankedItems, totalGroups) {
       if (rankedItems.length === 0) {
-        return `<div class="text-center py-5 text-muted">No stories published in the last ${MAX_STORY_AGE_DAYS} days match your filters. Try different keywords or select more sources.</div>`;
+        return `<div class="text-center py-5 text-muted">No stories published in the last ${getLookbackDays()} days match your filters. Try a longer lookback, different keywords, or more sources.</div>`;
       }
 
       // Best relevance in this batch, used to scale each meter to 0-100.
@@ -305,33 +604,70 @@
         const sourceName = item.source || '';
         const metaText = `${sourceName} · ${date}`;
         const titleText = truncateTitleForLine(item.title, metaText);
+        const phrases = (entry.matchedPhrases || []).slice(0, 3);
+        const phraseTip = phrases.length ? phrases.join(', ') : 'no phrase hits';
 
         let meter = '';
         if (topRelevance > 0) {
           const pct = Math.max(4, Math.round((entry.relevance / topRelevance) * 100));
-          const tip = `${entry.matchedGroups}/${totalGroups} keywords matched · relative relevance ${pct}%`;
+          const tip = `${entry.matchedGroups} group${entry.matchedGroups === 1 ? '' : 's'} matched (${phraseTip}) · relative relevance ${pct}%`;
           meter = `<span class="relevance-meter" title="${escapeHtml(tip)}"><span class="relevance-fill" style="width:${pct}%"></span></span>` +
                   `<span class="relevance-score" title="${escapeHtml(tip)}">${pct}</span>`;
         }
 
-        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link">${meter}<span class="headline-title">${escapeHtml(titleText)}</span><span class="headline-meta">${metaText}</span></a>`;
+        const chips = phrases.map(p => `<span class="match-chip">${escapeHtml(p)}</span>`).join('');
+        const chipWrap = chips ? `<span class="match-chips" title="${escapeHtml(phraseTip)}">${chips}</span>` : '';
+
+        return `<a href="${item.link}" target="_blank" rel="noopener" class="headline-link">${meter}<span class="headline-title">${escapeHtml(titleText)}</span>${chipWrap}<span class="headline-meta">${metaText}</span></a>`;
       }).join('');
 
       return `<div class="headline-list">${links}</div>`;
     }
 
-    function updateSearchBanner(keywords, count, sources) {
-      const banner = document.getElementById('active-search-banner');
-      if (keywords.length > 0) {
-        banner.style.display = 'block';
-        document.getElementById('banner-keywords').textContent = keywords.join(', ');
-        document.getElementById('banner-count').textContent = `${count} stories requested from ${sources} sources`;
-        document.getElementById('banner-sources').textContent = '';
-      } else {
-        banner.style.display = 'block';
-        document.getElementById('banner-keywords').textContent = '(no keywords — showing all)';
-        document.getElementById('banner-count').textContent = `${count} stories from ${sources} sources`;
+    function buildHitStrip(rankedItems) {
+      const host = document.getElementById('keyword-hit-strip');
+      if (!host) return;
+      const counts = {};
+      rankedItems.forEach(entry => {
+        (entry.matchedPhrases || []).forEach(p => {
+          counts[p] = (counts[p] || 0) + 1;
+        });
+      });
+      const sorted = Object.keys(counts).sort((a, b) => {
+        if (counts[b] !== counts[a]) return counts[b] - counts[a];
+        return b.length - a.length;
+      });
+      if (!sorted.length) {
+        host.style.display = 'none';
+        host.innerHTML = '';
+        return;
       }
+      const shown = sorted.slice(0, 22);
+      const extra = sorted.length - shown.length;
+      const chips = shown.map(p =>
+        `<span class="hit-chip" title="${escapeHtml(p)} matched ${counts[p]} stor${counts[p] === 1 ? 'y' : 'ies'}">${escapeHtml(p)} <b>${counts[p]}</b></span>`
+      ).join('');
+      const more = extra > 0 ? `<span class="text-muted small">+${extra} more</span>` : '';
+      host.style.display = 'flex';
+      host.innerHTML = `<small class="text-muted fw-bold">Keywords that matched this load (${sorted.length} of the active groups):</small>${chips}${more}`;
+    }
+
+    function formatKeywordPreview(keywords) {
+      if (!keywords.length) return '(no keywords — showing all)';
+      if (keywords.length <= 10) return keywords.join(', ');
+      return keywords.slice(0, 8).join(', ') + ' … +' + (keywords.length - 8) + ' more groups';
+    }
+
+    function updateSearchBanner(keywords, count, sources, lookbackDays) {
+      const banner = document.getElementById('active-search-banner');
+      banner.style.display = 'block';
+      document.getElementById('banner-keywords').textContent =
+        (keywords.length ? `${keywords.length} groups · ` : '') + formatKeywordPreview(keywords);
+      document.getElementById('banner-keywords').title = keywords.join(', ');
+      document.getElementById('banner-count').textContent = `${count} stories requested from ${sources} sources`;
+      const days = lookbackDays == null ? getLookbackDays() : lookbackDays;
+      document.getElementById('banner-sources').textContent =
+        `last ${days} day${days === 1 ? '' : 's'}`;
     }
 
     // ---- FETCHING ----
@@ -355,13 +691,11 @@
       } finally { clearTimeout(t); }
     }
 
-    // ---- CORS PROXIES: try several until one returns the raw feed/HTML ----
-    // allorigins is the most reliable of the free public proxies; the rest are fallbacks.
+    // ---- CORS PROXIES: raw-body only (the allorigins /get JSON wrapper is not XML) ----
     const CORS_PROXIES = [
       (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-      (url) => `https://api.cors.lol/?url=${encodeURIComponent(url)}`,
-      (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+      (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+      (url) => `https://api.cors.lol/?url=${encodeURIComponent(url)}`
     ];
 
     async function fetchViaProxies(rawUrl) {
@@ -409,7 +743,8 @@
           pubDate: it.pubDate || '',
           description: it.description || '',
           content: it.content || it.description || '',
-          source: it.source || ''
+          source: it.source || '',
+          category: Array.isArray(it.categories) ? it.categories.join(' ') : (it.category || '')
         }));
       }
       return [];
@@ -417,7 +752,7 @@
 
     // ---- LOCAL CACHE: avoid re-hitting the rate-limited proxies on every load/refresh ----
     // v2: v1 entries carried fabricated "now" timestamps for scraped sources.
-    const CACHE_KEY = 'sawem-news-cache-v2';
+    const CACHE_KEY = 'sawem-news-cache-v5';
     const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
     function loadNewsCache() {
@@ -428,35 +763,88 @@
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch (e) { /* ignore quota errors */ }
     }
 
+    function isFeedXml(text) {
+      if (!text) return false;
+      const head = text.slice(0, 1200).toLowerCase();
+      return head.includes('<rss') || head.includes('<feed') ||
+        (head.includes('<?xml') && (head.includes('<rss') || head.includes('<feed') || head.includes('<channel')));
+    }
+
+    async function fetchRawText(rawUrl) {
+      const errors = [];
+      try {
+        const text = await fetchViaServerApi(rawUrl);
+        if (text && text.trim()) return text;
+      } catch (e) { errors.push(e); }
+      try {
+        const text = await fetchTextWithTimeout(rawUrl, FETCH_TIMEOUT_MS);
+        if (text && text.trim()) return text;
+      } catch (e) { errors.push(e); }
+      try {
+        return await fetchViaProxies(rawUrl);
+      } catch (e) { errors.push(e); }
+      throw errors[errors.length - 1] || new Error('All fetch paths failed');
+    }
+
+    async function fetchRssItems(feedUrl) {
+      try {
+        const xml = await fetchRawText(feedUrl);
+        if (isFeedXml(xml)) {
+          const items = parseFeedXml(xml);
+          if (items.length) return items;
+        }
+      } catch (e) { /* try rss2json */ }
+      const fromJson = await fetchViaRss2Json(feedUrl);
+      if (fromJson.length) return fromJson;
+      throw new Error('Feed empty or blocked');
+    }
+
+    function itemKeepText(item) {
+      return [item.title, item.description, item.content, item.category, item.link]
+        .filter(Boolean).join(' ');
+    }
+
+    function applyKeep(source, items) {
+      if (!source.keepRe || !items || !items.length) return items;
+      try {
+        const re = new RegExp(source.keepRe, 'i');
+        return items.filter(it => re.test(itemKeepText(it)));
+      } catch (e) {
+        return items;
+      }
+    }
+
     async function fetchSourceItems(source, requestedCount) {
       const cache = loadNewsCache();
       const cached = cache[source.name];
       // Serve a fresh-enough cached copy rather than hammering the proxies.
-      if (cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL_MS) && Array.isArray(cached.items)) {
+      if (cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL_MS) &&
+          Array.isArray(cached.items) && cached.items.length > 0) {
         return cached.items.slice(0, Math.max(requestedCount * 2, 50));
       }
 
+      const urls = [source.url].concat(source.fallbacks || []);
       let data = [];
-      try {
-        if (source.type === 'html') {
-          // HTML sources have no RSS feed — scrape the page (server proxy only).
-          const html = await fetchViaServerApi(source.url);
-          data = parseHtmlLinks(html, source.url);
-        } else {
-          // RSS/Atom: server proxy first (reliable), then rss2json as a backup.
-          try {
-            const xml = await fetchViaServerApi(source.url);
-            data = parseFeedXml(xml);
-          } catch (serverErr) {
-            data = await fetchViaRss2Json(source.url);
+      let lastError = null;
+      for (const u of urls) {
+        try {
+          if (source.type === 'html' && !isRssLikeUrl(u)) {
+            const html = await fetchRawText(u);
+            data = applyKeep(source, parseHtmlSource(html, u, source));
+          } else {
+            data = applyKeep(source, await fetchRssItems(u));
           }
+          if (data.length) break;
+        } catch (error) {
+          lastError = error;
         }
-      } catch (error) {
-        // On network failure, fall back to whatever stale cache we have.
+      }
+
+      if (!data.length) {
         if (cached && Array.isArray(cached.items) && cached.items.length > 0) {
           return cached.items.slice(0, Math.max(requestedCount * 2, 50));
         }
-        throw error;
+        throw lastError || new Error('No items');
       }
 
       data = data.slice(0, Math.max(requestedCount * 2, 50));
@@ -476,13 +864,20 @@
       if (doc.querySelector('parsererror')) throw new Error('Invalid XML feed');
       const items = [];
 
+      function categoriesOf(node) {
+        return Array.from(node.querySelectorAll('category'))
+          .map(el => (el.textContent || '').trim())
+          .filter(Boolean)
+          .join(' ');
+      }
+
       // RSS 2.0 (<rss><channel><item>)
       doc.querySelectorAll('rss item').forEach((node) => {
         const title = getXmlText(node, 'title');
         const link = getXmlText(node, 'link');
         const pubDate = getXmlText(node, 'pubDate') || getXmlText(node, 'dc\\:date') || getXmlText(node, 'date');
         const description = getXmlText(node, 'description') || getXmlText(node, 'content\\:encoded') || getXmlText(node, 'summary');
-        if (title && link) items.push({ title, link, pubDate, description, content: description });
+        if (title && link) items.push({ title, link, pubDate, description, content: description, category: categoriesOf(node) });
       });
 
       // Atom (<feed><entry>)
@@ -492,7 +887,7 @@
         const link = linkNode ? (linkNode.getAttribute('href') || getXmlText(node, 'link')) : getXmlText(node, 'link');
         const pubDate = getXmlText(node, 'updated') || getXmlText(node, 'published');
         const description = getXmlText(node, 'summary') || getXmlText(node, 'content');
-        if (title && link) items.push({ title, link, pubDate, description, content: description });
+        if (title && link) items.push({ title, link, pubDate, description, content: description, category: categoriesOf(node) });
       });
 
       return items;
@@ -617,12 +1012,12 @@
       return d ? d.getTime() : null;
     }
 
-    // True only when the story was published no later than a week ago.
-    function isWithinRecencyWindow(timestampMs) {
+    // True only when the story was published inside the current lookback window.
+    function isWithinRecencyWindow(timestampMs, maxAgeMs) {
       if (timestampMs === null || timestampMs === undefined) return false;
       const age = Date.now() - timestampMs;
       if (age < -FUTURE_SKEW_MS) return false;   // implausibly in the future
-      return age <= MAX_STORY_AGE_MS;
+      return age <= (maxAgeMs != null ? maxAgeMs : getLookbackMs());
     }
 
     function dateFromElement(el) {
@@ -670,6 +1065,15 @@
       if (m) { const d = makeDate(+m[1], +m[2] - 1, +m[3]); if (d) return d; }
       m = url.match(/\/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[-/]|$)/);
       if (m) { const d = resolveAmbiguousDate(+m[1], +m[2], +m[3], false); if (d) return d; }
+      // gov.za slugs: ...-07-oct-2026
+      m = url.match(/\/(?:[^/]*-)?(\d{1,2})-([a-z]{3,9})-(\d{4})(?:[-/]|$)/i);
+      if (m) {
+        const monthIdx = MONTH_INDEX[m[2].toLowerCase()];
+        if (monthIdx !== undefined) {
+          const d = makeDate(+m[3], monthIdx, +m[1]);
+          if (d) return d;
+        }
+      }
       return null;
     }
 
@@ -695,12 +1099,81 @@
       return null;
     }
 
+    function isRssLikeUrl(rawUrl) {
+      const u = String(rawUrl || '').toLowerCase();
+      return u.indexOf('news.google.com/rss') !== -1 ||
+             /(?:^|[/?&=])(?:rss|feed|atom)(?:[./?]|$)/.test(u);
+    }
+
+    function urlMatchesKeepPath(url, keepPath) {
+      if (!keepPath) return true;
+      let path;
+      try { path = new URL(url).pathname.toLowerCase(); } catch (e) { return false; }
+      const patterns = Array.isArray(keepPath) ? keepPath : [keepPath];
+      return patterns.some(function (p) {
+        return path.indexOf(String(p).toLowerCase()) !== -1;
+      });
+    }
+
+    function pushHtmlItem(items, seen, title, url, published) {
+      const key = title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 60);
+      if (seen.has(key)) return;
+      seen.add(key);
+      items.push({
+        title,
+        link: url,
+        pubDate: published ? published.toISOString() : '',
+        pubTime: published ? published.getTime() : null,
+        description: '',
+        content: ''
+      });
+    }
+
+    // gov.za listing pages are a Title / Date table. Prefer those rows so
+    // the date in the next column is used instead of nav chrome.
+    function parseGovzaTable(doc, baseUrl, source) {
+      const items = [];
+      const seen = new Set();
+      const rows = doc.querySelectorAll('table tr');
+      rows.forEach(function (tr) {
+        const link = tr.querySelector('td a[href], th a[href]');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const title = (link.textContent || '').trim().replace(/\s+/g, ' ');
+        if (!title || title.length < 18) return;
+        let url;
+        try { url = new URL(href, baseUrl).href; } catch (e) { return; }
+        if (!urlMatchesKeepPath(url, source && source.keepPath)) return;
+        if (/\/(archive|share|facebook|twitter|whatsapp)(\/|$)/i.test(url)) return;
+
+        let published = extractPublishedDate(link, baseUrl);
+        if (!published) {
+          const cells = tr.querySelectorAll('td');
+          for (let i = 0; i < cells.length; i++) {
+            const d = parseAbsoluteDate((cells[i].textContent || '').trim());
+            if (d) { published = d; break; }
+          }
+        }
+        pushHtmlItem(items, seen, title, url, published);
+      });
+      return items;
+    }
+
+    function parseHtmlSource(html, baseUrl, source) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const tableItems = parseGovzaTable(doc, baseUrl, source);
+      if (tableItems.length) return tableItems;
+      return parseHtmlLinks(html, baseUrl, source);
+    }
+
     // ---- GENERIC HTML HEADLINE SCRAPER (for sources without a public RSS feed) ----
-    function parseHtmlLinks(html, baseUrl) {
+    function parseHtmlLinks(html, baseUrl, source) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const items = [];
       const seen = new Set();
-      const skipWords = /\b(home|newsletter|about|contact|subscribe|sign ?in|log ?in|menu|search|more|advertise|privacy|terms|cookies|sitemap|jobs|events|cookie|store|shop|cart|account|profile|register|read ?more)\b/i;
+      const skipWords = /\b(home|newsletter|about|contact|subscribe|sign ?in|log ?in|menu|search|more|advertise|privacy|terms|cookies|sitemap|jobs|cookie|store|shop|cart|account|profile|register|read ?more)\b/i;
+      const pathFiltered = !!(source && source.keepPath);
 
       doc.querySelectorAll('a[href]').forEach((link) => {
         const href = link.getAttribute('href');
@@ -713,25 +1186,18 @@
         const title = ((headingEl ? headingEl.textContent : link.textContent) || '')
           .trim().replace(/\s+/g, ' ');
         if (!title || title.length < 18) return; // too short to be a headline
-        if (skipWords.test(title)) return;
+        if (!pathFiltered && skipWords.test(title)) return;
 
         try {
           const url = new URL(href, baseUrl).href;
-          const key = title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 60);
-          if (seen.has(key)) return;
-          seen.add(key);
+          if (!urlMatchesKeepPath(url, source && source.keepPath)) return;
+          if (/\/(archive|share|facebook|twitter|whatsapp)(\/|$)/i.test(url)) return;
+          if (/#\d{4}$/.test(url) && title.length < 24) return;
 
           // Never invent a timestamp: an undated headline carries an empty pubDate
           // and the recency screen will drop it rather than mislabel it as "now".
           const published = extractPublishedDate(link, baseUrl);
-          items.push({
-            title,
-            link: url,
-            pubDate: published ? published.toISOString() : '',
-            pubTime: published ? published.getTime() : null,
-            description: '',
-            content: ''
-          });
+          pushHtmlItem(items, seen, title, url, published);
         } catch (e) { /* ignore invalid URLs */ }
       });
 
@@ -754,6 +1220,8 @@
       // Immediate visual feedback
       summaryEl.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success" style="width:3rem;height:3rem"></div><div class="mt-3 fw-bold">Searching for stories...</div><div class="text-muted small mt-1" id="loading-status">Contacting sources...</div></div>';
       statusBar.style.display = 'none';
+      const hitStrip = document.getElementById('keyword-hit-strip');
+      if (hitStrip) { hitStrip.style.display = 'none'; hitStrip.innerHTML = ''; }
       applyBtn.disabled = true;
       applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Searching...';
 
@@ -765,6 +1233,8 @@
         const keywordText = document.getElementById('keyword-input').value.trim();
         const rawStoryCount = parseInt(document.getElementById('story-count').value, 10);
         const requestedCount = Number.isInteger(rawStoryCount) && rawStoryCount >= 10 ? rawStoryCount : 100;
+        const lookbackDays = setLookbackDays(getLookbackDays());
+        const lookbackMs = lookbackDays * 24 * 60 * 60 * 1000;
         const perSourceFetchCount = 150;
 
         let allItems = [];
@@ -783,14 +1253,17 @@
           return;
         }
 
-        // Update banner immediately
-        const keywords = keywordText.toLowerCase().split(/[,;\s]+/).map(k => k.trim()).filter(Boolean);
-        updateSearchBanner(keywords, requestedCount, selected.length);
+        // Parse comma/semicolon groups once — phrases like "iron ore" stay together.
+        // Do not split on whitespace; that used to turn "iron ore" into "iron","ore"
+        // in the banner even though ranking still used the phrase.
+        const parsedKeywords = window.NewsRanking.parseKeywords(keywordText);
+        const keywords = parsedKeywords.groups.map(g => g.phrase);
+        updateSearchBanner(keywords, requestedCount, selected.length, lookbackDays);
 
         // Fetch sources in small batches so we don't overwhelm the rate-limited proxies
         // (firing all 24 at once caused every request to fail with "Failed to fetch").
         const results = [];
-        const concurrency = 4;
+        const concurrency = 5;
         let nextIndex = 0;
 
         async function sourceWorker() {
@@ -837,15 +1310,14 @@
         allItems = deduped;
 
         // ---- DATE SCREENING ----
-        // Drop every story that is not verifiably published within the last week:
-        // both those whose date is older than the window and those with no
-        // trustworthy date at all (undated scrapes are not assumed to be current).
+        // Drop every story that is not verifiably published within the lookback
+        // window, plus undated scrapes (those are not assumed to be current).
         let undatedCount = 0;
         let staleCount = 0;
         allItems = allItems.filter(item => {
           const ts = itemTimestamp(item);
           if (ts === null) { undatedCount++; return false; }
-          if (!isWithinRecencyWindow(ts)) { staleCount++; return false; }
+          if (!isWithinRecencyWindow(ts, lookbackMs)) { staleCount++; return false; }
           item.pubTime = ts; // cache the resolved instant for scoring / display
           return true;
         });
@@ -854,7 +1326,6 @@
         // ---- KEYWORD FILTERING & RELEVANCE RANKING (NewsRanking) ----
         // A story is kept if it satisfies at least one keyword group, then ranked
         // by how well it actually matches the keywords (BM25 + coverage + phrases).
-        const parsedKeywords = window.NewsRanking.parseKeywords(keywordText);
         let keywordFilteredCount = 0;
         if (parsedKeywords.groups.length > 0) {
           const before = allItems.length;
@@ -870,7 +1341,7 @@
         const ranked = window.NewsRanking.rankItems(allItems, parsedKeywords, {
           credibilityOf: credibilityOf,
           importanceOf: calculateImportanceScore,
-          maxStoryAgeMs: MAX_STORY_AGE_MS
+          maxStoryAgeMs: lookbackMs
         });
 
         // ---- STORY COUNT ----
@@ -878,6 +1349,7 @@
         const topItems = ranked.slice(0, showCount);
 
         // ---- RENDER ----
+        buildHitStrip(ranked);
         summaryEl.innerHTML = buildNewsList(topItems, parsedKeywords.groups.length);
         window.clearTimeout(loadingTimer);
 
@@ -886,8 +1358,8 @@
         storyCountDisplay.textContent = `📊 ${topItems.length} stories shown (${allItems.length} matched, ${totalFetched} fetched)`;
 
         const filterParts = [];
-        filterParts.push(`🗓️ Within ${MAX_STORY_AGE_DAYS} days`);
-        if (keywords.length > 0) filterParts.push(`🔍 Keywords: ${keywords.join(', ')}`);
+        filterParts.push(`🗓️ Within ${lookbackDays} day${lookbackDays === 1 ? '' : 's'}`);
+        if (keywords.length > 0) filterParts.push(`🔍 ${keywords.length} keyword groups`);
         if (parsedKeywords.groups.length > 0) filterParts.push(`🏆 Ranked by keyword relevance`);
         if (keywordFilteredCount > 0) filterParts.push(`(${keywordFilteredCount} filtered out)`);
         if (dateFilteredCount > 0) filterParts.push(`(🗓️ ${dateFilteredCount} older/undated dropped)`);
@@ -934,8 +1406,9 @@
     }
 
     window.onload = function() {
-      // Pre-fill with default keywords
       document.getElementById('keyword-input').value = DEFAULT_KEYWORDS;
+      setLookbackDays(loadStoredLookbackDays(), false);
+      renderKeywordPresets();
       renderSourceCheckboxes();
       loadNews();
     };
@@ -979,13 +1452,47 @@
       text-align: right; font-size: 0.7rem; font-weight: 700; color: #007A4D;
       font-variant-numeric: tabular-nums;
     }
+    .match-chips {
+      flex-shrink: 0; display: inline-flex; gap: 3px; margin-left: 8px;
+      max-width: 34%; overflow: hidden;
+    }
+    .match-chip {
+      font-size: 0.65rem; font-weight: 600; line-height: 1.45;
+      padding: 0 6px; border-radius: 8px; background: #e8f5ee; color: #007A4D;
+      white-space: nowrap;
+    }
+    .hit-strip {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+      margin-bottom: 10px; padding: 8px 10px;
+      background: #f4faf6; border: 1px solid #cfe8d8; border-radius: 6px;
+    }
+    .hit-chip {
+      font-size: 0.72rem; font-weight: 600; line-height: 1.5;
+      padding: 1px 8px; border-radius: 10px;
+      background: #fff; border: 1px solid #cfe8d8; color: #0d5c38;
+      white-space: nowrap;
+    }
+    .hit-chip b { font-variant-numeric: tabular-nums; color: #007A4D; }
 
     #applyBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+    #keyword-input {
+      min-height: 7.2rem;
+      line-height: 1.35;
+      resize: vertical;
+    }
+    #banner-keywords {
+      max-width: min(70vw, 720px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+    }
 
     @media (max-width: 768px) {
       .headline-link { font-size: 0.84rem; }
       .headline-meta { font-size: 0.72rem; margin-left: 0.4rem; }
       .source-chip { font-size: 0.75rem; }
+      .match-chips { display: none; }
     }
   </style>
 </body>

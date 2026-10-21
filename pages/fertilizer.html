@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fertilizer • Agriculture • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <style>
+    .fert-hero {
+      background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 55%, #e3f2fd 100%);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #dcece4;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card .num { font-size: 1.45rem; font-weight: 800; color: #007A4D; }
+    .stat-card .label { font-size: 0.78rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card .sub { font-size: 0.75rem; color: #999; }
+    .fert-section { scroll-margin-top: 1rem; }
+    .fert-section > h2 {
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: #007A4D;
+      border-bottom: 3px solid #FFCD00;
+      padding-bottom: 0.4rem;
+      margin: 2rem 0 1rem;
+    }
+    .npk-pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.15rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .chart-box { min-height: 320px; }
+    .key-fact {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+    }
+    .src-note { font-size: 0.78rem; color: #6c757d; }
+    table.fert-table { min-width: 720px; }
+    table.fert-table td, table.fert-table th { vertical-align: middle; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="agriculture.html" class="btn btn-light btn-sm">🌾 Agriculture</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 mb-5">
+    <div class="fert-hero mb-4">
+      <p class="small text-muted mb-1">Economy · Agriculture · Fertilizer</p>
+      <h1 class="display-5 fw-bold text-sa-green mb-2">Fertilizer</h1>
+      <p class="lead mb-2">The nutrients that turn South African soils into maize, citrus, sugar and pasture. Local phosphate rock and ammonia sit next to a urea-and-potash import pipe that still sets the farm-gate price.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-success" href="#what">What it is</a>
+        <a class="btn btn-sm btn-outline-success" href="#used-for">Used for</a>
+        <a class="btn btn-sm btn-outline-success" href="#how-made">How it is made</a>
+        <a class="btn btn-sm btn-outline-success" href="#who">Who makes it</a>
+        <a class="btn btn-sm btn-outline-success" href="#sa-plants">SA plants</a>
+        <a class="btn btn-sm btn-outline-success" href="#imports">Imports</a>
+        <a class="btn btn-sm btn-outline-success" href="#data">Data &amp; projections</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card"><div class="num">~$824m</div><div class="label">Import bill 2023</div><div class="sub">Peak &gt;$1.5bn in 2022</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card"><div class="num">~560 kt</div><div class="label">N use / year</div><div class="sub">Stable since ~2007 (BFAP)</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card"><div class="num">100%</div><div class="label">Urea imported</div><div class="sub">No local urea plant</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card"><div class="num">100%</div><div class="label">Potash imported</div><div class="sub">No commercial K mines</div></div>
+      </div>
+    </div>
+
+    <!-- WHAT -->
+    <section id="what" class="fert-section">
+      <h2>What fertilizer is</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>A fertilizer is any material applied to soil or leaves to supply plant nutrients. Commercial mineral fertilizer is built around three macronutrients, written on every bag as an <strong>N-P-K</strong> grade (for example 28-0-0 limestone ammonium nitrate, or 12-32-16 MAP-based blend):</p>
+          <ul>
+            <li><span class="npk-pill" style="background:#1565c0;">N</span> <strong>Nitrogen</strong> — drives leaf growth and yield. Applied as urea (46% N), limestone ammonium nitrate / LAN (~28% N), ammonium sulphate, calcium ammonium nitrate, or as MAP/DAP which also carry phosphorus.</li>
+            <li><span class="npk-pill" style="background:#2e7d32;">P</span> <strong>Phosphorus</strong> (quoted as P<sub>2</sub>O<sub>5</sub>) — root development, energy transfer, early growth. From phosphate rock via phosphoric acid into MAP, DAP, single/triple superphosphate.</li>
+            <li><span class="npk-pill" style="background:#6a1b9a;">K</span> <strong>Potassium</strong> (quoted as K<sub>2</sub>O) — water regulation, drought and disease tolerance. Almost entirely muriate of potash (KCl) plus some sulphate of potash (SOP) for chloride-sensitive crops such as potatoes, tobacco and fruit.</li>
+          </ul>
+          <p class="mb-0">Secondary nutrients (sulphur, calcium, magnesium) and micronutrients (zinc, boron, copper, manganese) ride along in blends or as specialty products. Organic fertilizers — manure, compost, guano — recycle nutrients already in the farm system; they do not replace the imported N and K that commercial grain farming needs at scale.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- USED FOR -->
+    <section id="used-for" class="fert-section">
+      <h2>What it is used for</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Plants cannot make N, P or K from sunlight. Liebig’s law of the minimum still holds: the scarcest nutrient caps the yield. South African soils in the summer-grain belt are typically low in plant-available phosphorus and often acidic; nitrogen is leached or taken off with every harvest; potassium is removed in grain and sugarcane.</p>
+          <p>BFAP and Stellenbosch University (published in <em>SA Grain</em>, September 2025) allocate South African NPK use roughly as:</p>
+          <ul>
+            <li><strong>~73%</strong> field crops — maize first, then sugarcane, wheat, soybeans, sunflower, canola.</li>
+            <li><strong>~15%</strong> horticulture — citrus, deciduous fruit, table grapes, nuts (macadamia NPK use jumped ~195% from 2013–15 to 2021–23).</li>
+            <li><strong>~12%</strong> intensive pastures, mainly dairy in the Western Cape, Eastern Cape and KwaZulu-Natal.</li>
+          </ul>
+          <p class="mb-0">Maize still takes the largest single slice. Soybean expansion is the main reason phosphorus and potassium use has grown faster than nitrogen: soybeans fix their own N but take more P and K, and they displaced about 900&nbsp;000 ha of cereal area while oilseeds added ~1.1 million ha over two decades. Fertilizer is also a cash-flow item — Grain SA has repeatedly flagged that urea and MAP are among the largest variable costs on a Free State maize budget, so a 2022-style price spike cuts application rates the next season.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW MADE -->
+    <section id="how-made" class="fert-section">
+      <h2>How it is made</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="fw-bold text-sa-green">Nitrogen — Haber–Bosch ammonia</h5>
+          <p>Almost all synthetic N starts as <strong>ammonia (NH<sub>3</sub>)</strong>. Nitrogen from air is combined with hydrogen over an iron catalyst at high pressure (Haber–Bosch, 1909). The hydrogen almost always comes from <strong>steam-reforming natural gas or coal-derived synthesis gas</strong> — which is why urea prices track energy prices. From ammonia the plant can make:</p>
+          <ul>
+            <li><strong>Urea</strong> — NH<sub>3</sub> + CO<sub>2</sub> → urea. Highest N analysis, cheapest to ship, 100% imported into South Africa.</li>
+            <li><strong>Nitric acid → ammonium nitrate / LAN / CAN</strong> — Omnia’s Sasolburg nitric-acid complex and Sasol’s LAN route.</li>
+            <li><strong>Ammonium sulphate</strong> — often a by-product of other chemical plants; large import volumes from China.</li>
+          </ul>
+          <h5 class="fw-bold text-sa-green">Phosphorus — rock + sulphuric acid</h5>
+          <p>Phosphate rock (apatite) is digested with sulphuric acid to make <strong>phosphoric acid</strong>, then ammoniated to <strong>MAP</strong> (monoammonium phosphate) or <strong>DAP</strong> (diammonium phosphate). Foskor is South Africa’s only integrated producer of that chain. Sulphur for the acid is imported; ammonia for MAP is imported or bought from Sasol.</p>
+          <h5 class="fw-bold text-sa-green">Potassium — mined, not manufactured</h5>
+          <p class="mb-0">Potash is a mineral (sylvite, carnallite) mined in Canada, Russia, Belarus, Germany, Israel/Jordan (Dead Sea) and Chile (SOP). South Africa has <strong>no commercial potash deposit in production</strong>, so every tonne of KCl and SOP is imported. Blenders in Durban, Endicott and Cape Town then mix N, P and K straights into crop-specific NPK grades.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO -->
+    <section id="who" class="fert-section">
+      <h2>Who makes it — world and South Africa</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="fw-bold text-sa-green">Global producers</h5>
+          <p>The world market is a handful of energy-rich and rock-rich states. Nitrogen is dominated by China, Russia, the Middle East (Saudi Ma’aden / SABIC, Qatar, Oman) and the US (CF Industries). Phosphate is Morocco/OCP, China, the US (Mosaic) and Russia. Potash is Nutrien and Mosaic (Canada), Uralkali / Belaruskal, K+S (Germany), ICL (Israel) and SQM (Chile SOP). Trading houses (Yara, ETG, Gavilon, ICH) sit between those plants and farm gates.</p>
+          <h5 class="fw-bold text-sa-green">South African value chain</h5>
+          <p>The Competition Commission’s Fresh Produce Market Inquiry (final non-confidential report, January 2025) describes four layers:</p>
+          <ol>
+            <li><strong>Raw materials</strong> — Foskor (phosphate rock and phosphoric acid), Sasol (ammonia, LAN), Omnia (nitric acid, ammonium nitrate, calcium nitrate), plus sulphur and imported ammonia into Richards Bay.</li>
+            <li><strong>Straights</strong> — MAP/DAP (Foskor plus imports), urea (imports only), LAN (Sasol), KCl/SOP (imports only).</li>
+            <li><strong>Importers and blenders</strong> — Kynoch/ETG and Yara are the two largest dedicated importers; Omnia both manufactures and imports; co-ops and traders (NWK, Senwes, Profert, Gavilon, SQM, ICH) fill the rest.</li>
+            <li><strong>Retail</strong> — co-op silos, merchant depots, and on-farm delivery into the Free State, North West, Mpumalanga and Western Cape.</li>
+          </ol>
+          <p class="mb-0">Broad-market share bands in that inquiry (2019–2022) put Kynoch, Foskor and Omnia each in the low- to mid-teens percent in some years, with a long tail of “others”. Those bands are ranges, not a league table — blending and imports shift year to year with the maize plantings.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SA PLANTS -->
+    <section id="sa-plants" class="fert-section">
+      <h2>Where South Africa makes it</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>Domestic manufacturing is a phosphate-and-nitrogen story. Phosphate rock is mined at <strong>Phalaborwa</strong> (Limpopo) and railed ~800 km to <strong>Richards Bay</strong> (KwaZulu-Natal) for acid and MAP. Nitrogen chemistry sits on the Sasolburg/Secunda coal-chemicals complex. Everything else is blending at the ports and inland depots.</p>
+          <div class="table-responsive">
+            <table class="table table-sm table-striped fert-table">
+              <thead class="table-dark">
+                <tr>
+                  <th>Site</th>
+                  <th>Operator</th>
+                  <th>What is made</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Phalaborwa, Limpopo</td>
+                  <td><a href="idc.html">Foskor</a> (IDC ~59%)</td>
+                  <td>Phosphate rock concentrate</td>
+                  <td>Only commercial phosphate mine. Nameplate on the order of 2.6–2.9 Mt concentrate. Founded 1951 to end rock imports. ~1.5 bn t ore remaining at current rates.</td>
+                </tr>
+                <tr>
+                  <td>Richards Bay, KZN</td>
+                  <td>Foskor Acid Division</td>
+                  <td>Sulphuric acid, phosphoric acid, MAP/DAP granules</td>
+                  <td>Full capacity cited as 2.2 Mt H<sub>2</sub>SO<sub>4</sub>, ~720 kt P<sub>2</sub>O<sub>5</sub>, ~300 kt MAP/DAP. Only local MAP/phosphoric-acid manufacturer. Rock inbound by Transnet; sulphur and ammonia inbound by sea. Phosphoric acid is also exported (India, Japan, Bangladesh, Netherlands and others).</td>
+                </tr>
+                <tr>
+                  <td>Sasolburg / Secunda</td>
+                  <td><a href="sasol.html">Sasol</a></td>
+                  <td>Ammonia, limestone ammonium nitrate (LAN)</td>
+                  <td>Only local ammonia manufacturer selling into the fertilizer industry. Industry figures put Sasol ammonia sales above 540 kt/year (fertilizer plus industrial uses).</td>
+                </tr>
+                <tr>
+                  <td>Sasolburg, Free State</td>
+                  <td>Omnia Fertilizer</td>
+                  <td>Nitric acid, ammonium nitrate, calcium nitrate, nitrophosphate, NPK granules</td>
+                  <td>Main production campus (Eugene Houdry St). Modern nitric-acid / EnviNOx complex; nitrophosphate plant added so Omnia is less tied to a single phosphoric-acid supplier. Also the group’s explosives feedstock.</td>
+                </tr>
+                <tr>
+                  <td>Endicott, Mpumalanga</td>
+                  <td>Kynoch (ETG)</td>
+                  <td>Granular and liquid blending</td>
+                  <td>Inland blender on the East Rand / Mpumalanga grain corridor.</td>
+                </tr>
+                <tr>
+                  <td>Maydon Wharf, Durban</td>
+                  <td>Kynoch (ETG)</td>
+                  <td>Import terminals + blending</td>
+                  <td>Davey Rd and Methven Rd. Durban handles ~81% of fertilizer product imports.</td>
+                </tr>
+                <tr>
+                  <td>Blackheath, Cape Town</td>
+                  <td>Kynoch (ETG)</td>
+                  <td>Blending</td>
+                  <td>Western Cape fruit, wheat and dairy demand. Cape Town ~15% of import tonnes.</td>
+                </tr>
+                <tr>
+                  <td>Paarl / Cape Town</td>
+                  <td>Yara South Africa</td>
+                  <td>Import, specialty nutrition, crop programmes</td>
+                  <td>Norwegian-owned. One of the two largest dedicated importers with Kynoch/ETG.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="src-note mb-0">Sources: Foskor / IDC parliamentary replies; Competition Commission FPMI 2025; Omnia IAR 2024; Kynoch site list; International PtX Hub green-ammonia paper (Jan 2026) on port shares. Richards Bay fertilizer <em>product</em> imports are small (~1%) because Foskor’s plant is an exporter of acid and a consumer of rock, sulphur and ammonia, not the main urea/KCl discharge berth.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPORTS -->
+    <section id="imports" class="fert-section">
+      <h2>Where it is imported — products, partners, ports</h2>
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <p>South Africa is a net importer of mixed and straight fertilizers even though it mines phosphate and makes ammonia. <strong>Urea is not manufactured locally at all.</strong> Potash is not mined. MAP still has to be topped up because Foskor has often run well below nameplate (IDC: MAP averaged ~59% of capacity over 2013–2022).</p>
+          <div class="key-fact mb-3">
+            Import value was <strong>$824 million in 2023</strong> after a twenty-year peak of <strong>more than $1.5 billion in 2022</strong> when Russia’s invasion of Ukraine and gas prices sent urea, DAP and potash to records. World Bank Pink Sheet annual averages: urea $700/t in 2022 (from $229 in 2020), potash $863/t, DAP $772/t. By 2024 those had halved; 2025 prices firmed again (urea $423, DAP $685).
+          </div>
+          <p><strong>Five-year average import mix, 2019–2023</strong> (TradeMap / Agrekon 2025), tonnes of product:</p>
+          <ul>
+            <li>Urea ~875&nbsp;000 t — ~40–42% of all fertilizer imports by value and volume over a decade.</li>
+            <li>Potassium chloride ~369&nbsp;000 t</li>
+            <li>Ammonium sulphate ~286&nbsp;000 t</li>
+            <li>MAP ~262&nbsp;000 t</li>
+            <li>LAN ~119&nbsp;000 t, CAN ~72&nbsp;000 t, SOP ~67&nbsp;000 t, DAP only ~11&nbsp;000 t (MAP is the local P grade).</li>
+          </ul>
+          <p>Nitrogen products were 56% of import <em>value</em> and 64% of import <em>volume</em> in that window. Volume grew only ~2% a year; value grew ~18% a year — a price story, not a volume explosion.</p>
+          <p><strong>Partners.</strong> Saudi Arabia (urea, MAP), Russia (MAP, urea, KCl), Qatar, China, Germany and Oman are the standing list in the BFAP/SA Grain write-up. Those four plus China supplied 57% of import value in 2019–2023. World Bank WITS (HS chapter 31, 2025) puts the latest year at <strong>$1.09 billion</strong>, led by Russia ($363m), China ($167m), Saudi Arabia ($132m), Oman ($76m), Germany ($50m) and Qatar ($46m). Chile appears for SOP.</p>
+          <p><strong>Ports.</strong> A PtX Hub / industry compilation of five-year average import tonnes: <strong>Durban 81%</strong>, <strong>Cape Town 15%</strong>, Richards Bay ~1%, with small residual volumes at Ngqura/Gqeberha and the Mananga (Eswatini) land border. Maydon Wharf is the physical centre of the urea and potash trade.</p>
+          <p class="mb-0"><strong>Exports</strong> are much smaller and mostly SADC: Zambia, Zimbabwe, Namibia, Botswana and Eswatini took 78% of export value in the BFAP window. Peak export <em>value</em> was $662 million in 2022 (price), while peak export <em>volume</em> was 2015. South Africa is the region’s blender and transshipper, not a bulk urea exporter.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA -->
+    <section id="data" class="fert-section">
+      <h2>Data, charts and projections</h2>
+
+      <div class="row g-3 mb-3">
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">World prices — urea, DAP, potash, phosphate rock</h6>
+              <p class="small text-muted mb-1">World Bank Pink Sheet, annual nominal USD per tonne. The 2022 spike is the Russia–Ukraine / gas shock that pushed SA’s import bill above $1.5bn.</p>
+              <div id="priceChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Pink Sheet</a> (local copy <code>data/power/pink_sheet_annual.json</code>).</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">SA fertilizer use per hectare of arable land</h6>
+              <p class="small text-muted mb-1">Kilograms of N+P<sub>2</sub>O<sub>5</sub>+K<sub>2</sub>O per hectare. Intensity has roughly doubled since the mid-2010s as oilseeds, horticulture and soil-correction programmes lifted P and K.</p>
+              <div id="kghaChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: World Bank WDI <a href="https://data.worldbank.org/indicator/AG.CON.FERT.ZS?locations=ZA" target="_blank" rel="noopener">AG.CON.FERT.ZS</a> (FAO via World Bank). 2024 = 120 kg/ha; 2016 drought low = 57 kg/ha.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">What SA actually imports (product tonnes)</h6>
+              <p class="small text-muted mb-1">2019–2023 annual average. Urea is the bulk N product; MAP is the bulk P product; KCl is all of the potassium.</p>
+              <div id="productChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: TradeMap via Ottermann et al., <em>Agrekon</em> / <em>SA Grain</em> (2025).</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">Import partners, 2025 (HS 31, USD)</h6>
+              <p class="small text-muted mb-1">Latest full-year WITS readout. Russia is again the largest single origin; China and the Gulf cover urea and sulphate.</p>
+              <div id="partnerChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: <a href="https://wits.worldbank.org/trade/comtrade/en/country/ZAF/year/2025/tradeflow/Imports/partner/ALL/product/31" target="_blank" rel="noopener">WITS / UN Comtrade</a>, reporter ZA, HS 31 Fertilizers, 2025. World total $1.087bn.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">Discharge ports (share of import tonnes)</h6>
+              <p class="small text-muted mb-1">Five-year average. Durban is the urea and potash door; Cape Town serves the winter-rainfall and fruit belt.</p>
+              <div id="portChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: International PtX Hub, <em>Green Ammonia and E-Fertiliser Potential in South Africa</em> (Jan 2026), compiling industry / SARS tonnes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">Who uses the NPK on the farm</h6>
+              <p class="small text-muted mb-1">Share of total NPK over the past decade. Maize, sugarcane and dairy pasture dominate the field-crop and pasture slices.</p>
+              <div id="cropChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: BFAP / Stellenbosch, <em>SA Grain</em> September 2025.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">Nitrogen consumption — published points and BFAP baseline</h6>
+              <p class="small text-muted mb-1">N peaked at 648&nbsp;000 t in 2003, fell to 467&nbsp;000 t in 2006 with a cut in planted area, then sat near 560&nbsp;000 t with 0.3% average annual growth through 2024. BFAP holds that rate roughly flat to 2034 as soybean area growth slows.</p>
+              <div id="nChart" class="chart-box"></div>
+              <p class="src-note mb-0">Source: BFAP Baseline and industry stakeholders, as reported in <em>SA Grain</em> (Sept 2025) and Ottermann et al., <em>Agrekon</em>. Dashed segment is the published baseline, not a model run on this page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h6 class="fw-bold text-sa-green">Import bill — the years that were published</h6>
+              <p class="small text-muted mb-1">Value, not volume. 2022 is the price spike; 2023 is the unwind; 2025 is WITS HS 31 (a slightly wider product net than some trade tables).</p>
+              <div id="valueChart" class="chart-box"></div>
+              <p class="src-note mb-0">Sources: BFAP / TradeMap ($1.5bn+ in 2022, $824m in 2023); WITS HS 31 2025 ($1.087bn).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="fw-bold text-sa-green">Projections to the early 2030s</h5>
+          <p>BFAP’s baseline (normal weather) is not a boom in fertilizer tonnes. The story is mix, not volume:</p>
+          <ul>
+            <li><strong>Nitrogen</strong> stays around 560&nbsp;000 t. Cereal hectares ease slightly as marginal maize struggles against global prices; soybeans keep some of the area they already took, and soybeans do not need much bagged N.</li>
+            <li><strong>Phosphorus and potassium</strong> have been the growth nutrients (P +6.3% a year and K +4.4% a year from 2004 to 2024). That pace slows as the soybean land grab matures, but horticulture (trees coming into bearing, especially macadamias) still lifts P and K demand.</li>
+            <li><strong>Foskor</strong> is the swing factor on local P. A sustained recovery at Phalaborwa and Richards Bay cuts MAP imports; another Transnet or acid-plant outage does the opposite. IDC has already recorded a decade of sub-capacity MAP.</li>
+            <li><strong>Green ammonia</strong> is the longer-dated option to delink N from imported gas and from Sasol’s coal-chemicals complex. Several coastal projects are scoped on the <a href="green-hydrogen-ammonia.html">Green Hydrogen &amp; Ammonia</a> page. None of them is a urea plant in the ground today — until one reaches FID, urea remains an import.</li>
+            <li><strong>Risks that cut use, not just prices:</strong> a dry El Niño season, a weak maize price, and rand weakness against dollar-priced urea. 2016 (57 kg/ha) is the recent drought print on the intensity chart.</li>
+          </ul>
+          <p class="mb-0">Policy overlay: fertilizer is registered under the Fertilizers, Farm Feeds, Agricultural Remedies and Stock Remedies Act 36 of 1947. Fertasa is the industry association and runs the SARS import/export portal used by members. Smallholder support programmes create a second, government-tendered demand channel that Who Owns Whom flags as a growth kicker if it is actually funded.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h6 class="fw-bold">Sources</h6>
+        <ul class="small mb-0">
+          <li>Ottermann, Truter, Swanepoel, Meyer, van der Westhuizen, Haarhoff — “Fertiliser industry in SA: this is what it looks like”, <a href="https://sagrainmag.co.za/2025/09/02/fertiliser-industry-in-sa-this-is-what-it-looks-like/" target="_blank" rel="noopener">SA Grain</a>, 2 Sept 2025; peer-reviewed version in <em>Agrekon</em>.</li>
+          <li>Competition Commission, Fresh Produce Market Inquiry final non-confidential report, Jan 2025 (fertilizer chapter).</li>
+          <li>World Bank Pink Sheet annual prices; WDI AG.CON.FERT.ZS; WITS HS 31 2025.</li>
+          <li>IDC / DTIC parliamentary reply on Foskor output 2013–2022; Foskor company materials on Phalaborwa and Richards Bay.</li>
+          <li>International PtX Hub, <em>Green Ammonia and E-Fertiliser Potential in South Africa</em>, 19 Jan 2026 (value-chain volumes and port shares).</li>
+          <li>Omnia Holdings IAR 2024; Kynoch / ETG public site list; Fertasa.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <a href="agriculture.html" class="btn btn-outline-secondary">🌾 Agriculture</a>
+      <a href="foods.html" class="btn btn-outline-secondary">🍎 Foods</a>
+      <a href="agro-processing.html" class="btn btn-outline-secondary">🏭 Agro-Processing</a>
+      <a href="chemicals.html" class="btn btn-outline-secondary">⚗️ Chemicals</a>
+      <a href="green-hydrogen-ammonia.html" class="btn btn-outline-secondary">Green H₂ &amp; ammonia</a>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    var GREEN = '#007A4D', GOLD = '#FFCD00', BLUE = '#002395', PURPLE = '#6a1b9a', ORANGE = '#ef6c00';
+
+    function layout(yTitle) {
+      return {
+        autosize: true,
+        margin: { l: 52, r: 16, t: 12, b: 40 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: '#fff',
+        hovermode: 'x unified',
+        font: { family: 'Segoe UI, system-ui, sans-serif', size: 11, color: '#343a40' },
+        legend: { orientation: 'h', y: -0.22, font: { size: 10 } },
+        xaxis: { showgrid: false, tickfont: { size: 10 } },
+        yaxis: { title: yTitle || '', gridcolor: '#eef1f4', zeroline: false, tickfont: { size: 10 } }
+      };
+    }
+    var cfg = { responsive: true, displayModeBar: false };
+
+    /* ---- Pink Sheet prices ---- */
+    function drawPrices(commodities) {
+      var keys = [
+        { label: 'Urea', color: BLUE },
+        { label: 'DAP', color: GREEN },
+        { label: 'Potassium chloride', color: PURPLE },
+        { label: 'Phosphate rock', color: ORANGE }
+      ];
+      var traces = keys.map(function (k) {
+        var series = commodities[k.label] && commodities[k.label].values;
+        var xs = [], ys = [];
+        if (series) {
+          Object.keys(series).sort(function (a, b) { return Number(a) - Number(b); }).forEach(function (y) {
+            if (Number(y) < 1990) return;
+            xs.push(y);
+            ys.push(series[y]);
+          });
+        }
+        return { type: 'scatter', mode: 'lines', name: k.label, x: xs, y: ys, line: { color: k.color, width: 2 } };
+      });
+      Plotly.newPlot('priceChart', traces, layout('USD / tonne'), cfg);
+    }
+
+    fetch('../data/power/pink_sheet_annual.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (json) {
+        if (json && json.commodities) drawPrices(json.commodities);
+        else Plotly.newPlot('priceChart', [], layout('USD / tonne'), cfg);
+      })
+      .catch(function () {
+        Plotly.newPlot('priceChart', [], layout('USD / tonne'), cfg);
+      });
+
+    /* ---- kg / ha (WDI, embedded so the chart survives if the API is blocked) ---- */
+    var kgha = {
+      1961:17.9,1962:21.6,1963:24.4,1964:28.3,1965:29.8,1966:35.0,1967:38.7,1968:41.4,1969:41.6,
+      1970:45.5,1971:50.4,1972:56.8,1973:56.7,1974:58.3,1975:62.9,1976:66.1,1977:70.5,1978:74.4,1979:78.3,
+      1980:86.3,1981:99.9,1982:91.7,1983:71.1,1984:78.0,1985:71.0,1986:66.1,1987:56.7,1988:65.6,1989:61.7,
+      1990:61.3,1991:57.4,1992:55.7,1993:62.8,1994:55.9,1995:56.8,1996:58.9,1997:55.5,1998:57.1,1999:56.4,
+      2000:53.6,2001:55.7,2002:61.2,2003:55.2,2004:60.3,2005:47.3,2006:62.3,2007:61.0,2008:56.3,2009:55.8,
+      2010:53.8,2011:60.3,2012:61.6,2013:67.5,2014:66.5,2015:62.7,2016:57.3,2017:72.8,2018:90.1,2019:91.8,
+      2020:102.5,2021:115.2,2022:101.4,2023:100.3,2024:120.3
+    };
+    Plotly.newPlot('kghaChart', [{
+      type: 'scatter', mode: 'lines', name: 'kg / ha',
+      x: Object.keys(kgha), y: Object.keys(kgha).map(function (y) { return kgha[y]; }),
+      line: { color: GREEN, width: 2 }, fill: 'tozeroy', fillcolor: 'rgba(0,122,77,0.12)'
+    }], layout('kg nutrients / ha'), cfg);
+
+    Plotly.newPlot('productChart', [{
+      type: 'bar',
+      orientation: 'h',
+      y: ['DAP','SOP','CAN','LAN','MAP','Ammonium sulphate','KCl (potash)','Urea'],
+      x: [10623, 67203, 72493, 119409, 262321, 286119, 368588, 874618],
+      marker: { color: ['#66bb6a', '#8e24aa', '#90caf9', '#1565c0', GREEN, '#4fc3f7', PURPLE, BLUE] },
+      hovertemplate: '%{y}: %{x:,} t/year<extra></extra>'
+    }], Object.assign(layout(''), {
+      margin: { l: 140, r: 16, t: 8, b: 48 },
+      xaxis: { title: 'tonnes / year, 2019–23 avg', showgrid: true, gridcolor: '#eef1f4', zeroline: false, tickfont: { size: 10 } },
+      yaxis: { showgrid: false, tickfont: { size: 10 }, automargin: true }
+    }), cfg);
+
+    Plotly.newPlot('partnerChart', [{
+      type: 'bar',
+      x: ['Russia','China','Saudi Arabia','Oman','Germany','Qatar','Chile','Uzbekistan','Nigeria','UAE'],
+      y: [363, 167, 132, 76, 50, 46, 33, 32, 30, 25],
+      marker: { color: GREEN },
+      hovertemplate: '%{x}: $%{y} million<extra></extra>'
+    }], layout('USD million, 2025'), cfg);
+
+    Plotly.newPlot('portChart', [{
+      type: 'pie',
+      labels: ['Durban','Cape Town','Richards Bay','Mananga / other'],
+      values: [81, 15, 1, 3],
+      hole: 0.45,
+      marker: { colors: [GREEN, GOLD, BLUE, '#90a4ae'] },
+      textinfo: 'label+percent'
+    }], { autosize: true, margin: { t: 8, b: 8, l: 8, r: 8 }, showlegend: false, font: { family: 'Segoe UI, system-ui, sans-serif', size: 11 } }, cfg);
+
+    Plotly.newPlot('cropChart', [{
+      type: 'pie',
+      labels: ['Field crops (~73%)','Horticulture (~15%)','Pastures / dairy (~12%)'],
+      values: [73, 15, 12],
+      hole: 0.45,
+      marker: { colors: [GOLD, GREEN, BLUE] },
+      textinfo: 'label'
+    }], { autosize: true, margin: { t: 8, b: 8, l: 8, r: 8 }, showlegend: false, font: { family: 'Segoe UI, system-ui, sans-serif', size: 11 } }, cfg);
+
+    Plotly.newPlot('nChart', [
+      {
+        type: 'scatter', mode: 'lines+markers', name: '2003 peak to 2006 trough',
+        x: [2003, 2006],
+        y: [648, 467],
+        line: { color: BLUE, width: 2 }, marker: { size: 8 }
+      },
+      {
+        type: 'scatter', mode: 'markers', name: '~560 kt through 2024',
+        x: [2024],
+        y: [560],
+        marker: { size: 9, color: BLUE }
+      },
+      {
+        type: 'scatter', mode: 'lines', name: 'BFAP baseline to 2034',
+        x: [2024, 2034],
+        y: [560, 560],
+        line: { color: BLUE, width: 2, dash: 'dash' }
+      }
+    ], layout('kt nitrogen'), cfg);
+
+    var valueLayout = layout('USD billion');
+    valueLayout.xaxis = {
+      type: 'category',
+      categoryorder: 'array',
+      categoryarray: ['2022 peak', '2023 unwind', '2025 (HS 31)'],
+      showgrid: false,
+      tickfont: { size: 10 }
+    };
+    Plotly.newPlot('valueChart', [{
+      type: 'bar',
+      x: ['2022 peak', '2023 unwind', '2025 (HS 31)'],
+      y: [1.50, 0.824, 1.087],
+      marker: { color: [ORANGE, GREEN, BLUE] },
+      hovertemplate: '%{x}: $%{y:.2f} bn<extra></extra>'
+    }], valueLayout, cfg);
+
+    window.addEventListener('resize', function () {
+      ['priceChart','kghaChart','productChart','partnerChart','portChart','cropChart','nChart','valueChart'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) Plotly.Plots.resize(el);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

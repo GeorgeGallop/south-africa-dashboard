@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Freedom Front Plus • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .sa-green { color: #007A4D; }
+    .ffplus-orange { color: #E36C0A; }
+    .ffplus-green { color: #1b5e20; }
+    .section-card {
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .section-card .card-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 3px solid;
+    }
+    .card-header.fail { background: #c62828; color: white; border-bottom-color: #8e0000; }
+    .card-header.rise { background: #1b5e20; color: white; border-bottom-color: #10451a; }
+    .card-header.era { background: #E36C0A; color: white; border-bottom-color: #b3540a; }
+    .card-header.corrupt { background: #4a148c; color: white; border-bottom-color: #311b92; }
+    .card-header.econ { background: #002395; color: white; border-bottom-color: #001a6b; }
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #E36C0A;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: #E36C0A;
+    }
+    .quotation {
+      border-left: 4px solid #FFCD00;
+      background: #fffde7;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-style: italic;
+    }
+    .stat-fail {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #E36C0A;
+    }
+    .flag-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #E36C0A, #1b5e20);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">&#127482;&#127462; South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">&larr; Back</button>
+        <a href="../index.html" class="btn btn-light btn-sm">&#127968; Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4 px-4">
+    <div class="row">
+      <!-- Quick-nav sidebar -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <nav class="nav nav-pills flex-column sticky-top" style="top: 1rem;">
+          <a class="nav-link" href="#introduction">&#127891; Introduction</a>
+          <a class="nav-link" href="#founding">&#128220; Founding (1994)</a>
+          <a class="nav-link" href="#ideology">&#128218; Ideology</a>
+          <a class="nav-link" href="#leadership">&#128101; Leadership</a>
+          <a class="nav-link" href="#performance">&#128202; Electoral Performance</a>
+          <a class="nav-link" href="#policies">&#128220; Key Policies</a>
+          <a class="nav-link" href="#selfdetermination">&#127988; Self-Determination</a>
+          <a class="nav-link" href="#gnu">&#129309; 2024 GNU Role</a>
+          <a class="nav-link" href="#controversies">&#9888; Controversies</a>
+          <a class="nav-link" href="#sources">&#128218; Sources</a>
+        </nav>
+      </div>
+
+      <div class="col-lg-10">
+        <h1 class="display-4 fw-bold ffplus-orange">&#128737; Freedom Front Plus</h1>
+        <p class="lead text-muted mb-3">South Africa's right-wing, Afrikaner-rooted minority party: born in 1994 from the fears of a negotiated transition, it has evolved into a champion of Afrikaner and Afrikaans-speaking minority self-determination — and, since 2024, a partner in the Government of National Unity.</p>
+        <div class="flag-bar mb-3"></div>
+
+        <!-- ========================================================== -->
+        <!-- INTRODUCTION                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="introduction">
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Constand Viljoen, 1994:</strong><br>
+              &ldquo;We did not take up arms. We chose the ballot. We ask only for a place in this country where our people can live with dignity, speak our language, and govern the affairs that are closest to us.&rdquo;
+            </div>
+            <p>
+              The Freedom Front Plus (FF Plus or FF+; Afrikaans: <em>Vryheidsfront Plus</em>, VF Plus) is a right-wing, conservative political party in South Africa founded on 1 March 1994 by former South African Defence Force general Constand Viljoen. Emerging from the Afrikaner Volksfront during the final months of apartheid, it was established to pursue Afrikaner self-determination through the ballot box rather than armed resistance. For two decades it remained a small, largely Afrikaner party hovering around 1% of the national vote; under Pieter Groenewald it pivoted toward a broader "minorities" platform, surged in 2019 to its best-ever result, and — after a partial retreat in 2024 — entered the Government of National Unity, securing the Correctional Services ministry for its then-leader. <a href="https://www.vfplus.org.za" target="_blank">[FF+ Official Website]</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- FOUNDING                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="founding">
+          <div class="card-header era">&#128220; Founding — From the Afrikaner Volksfront to the Ballot Box (1994)</div>
+          <div class="card-body">
+            <div class="timeline-item">
+              <div class="timeline-year">1993 — The Afrikaner Volksfront</div>
+              <p class="small mb-0">In the final years of apartheid, a coalition of right-wing Afrikaner organisations forms the <strong>Afrikaner Volksfront</strong> (Afrikaner People's Front), an umbrella body demanding a <em>Volkstaat</em> (an autonomous Afrikaner homeland) and resisting the ANC-led negotiated settlement. Its military wing, the <em>Afrikaner Weerstandsbeweging</em> (AWB), and paramilitary networks raise the spectre of armed insurrection ahead of the 1994 election.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">March 1994 — Viljoen Splits and Registers the Freedom Front</div>
+              <p class="small mb-0">General <strong>Constand Viljoen</strong>, a former Chief of the South African Army and the Volksfront's most credible leader, breaks away from its hardline faction, rejecting armed confrontation. He founds the <strong>Freedom Front</strong> on 1 March 1994 and registers it with the Independent Electoral Commission on 4 March 1994, submitting a candidate list days later. The message: Afrikaner grievances would be pursued inside the constitutional process, not on the barricades. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">April 1994 — A Strong First Showing</div>
+              <p class="small mb-0">In South Africa's first democratic election the Freedom Front receives <strong>2.17%</strong> of the national vote (424,555 votes) and <strong>nine seats</strong> in the National Assembly — the largest party outside the Government of National Unity in its first two years. In the provinces it does far better, winning 6.2% in the Transvaal (Gauteng) and 6.0% in the Free State and Northern Cape. Its support is concentrated among farmers, the rural working class, and conservative Afrikaners, and Thabo Mbeki later estimates it represents possibly half the Afrikaner electorate in the rural heartland. <a href="https://www.elections.org.za" target="_blank">[IEC]</a></p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2003 — The "Plus" is Added</div>
+              <p class="small mb-0">Ahead of the 2004 election, the Freedom Front merges with the <strong>Conservative Party</strong> and the <strong>Afrikaner Eenheidsbeweging</strong> (later also the Federal Alliance) to contest as a single entity under the name <strong>Freedom Front Plus (FF Plus / FF+)</strong>, led by Pieter Mulder. The rebranding broadens the party beyond a single-issue Volkstaat platform toward a general conservative, federalist offering. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- IDEOLOGY                                                    -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="ideology">
+          <div class="card-header era">&#128218; Ideology — Afrikaner Nationalism, Conservatism & Federalism</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Pieter Groenewald, party leader (2016&ndash;2025):</strong><br>
+              &ldquo;The FF Plus is no longer only a home for Afrikaners. It is a home for everyone who has been left behind by a state that treats people as members of groups rather than as individuals &mdash; Afrikaans-speakers, Coloured communities, farmers, the forgotten rural poor.&rdquo;
+            </div>
+            <p class="small">The FF Plus is classified as a <strong>right-wing, conservative</strong> party whose beliefs have historically centred on <strong>Afrikaner interests and Afrikaner nationalism</strong>, oriented around <strong>Christian values</strong>. Since 2016 it has deliberately repositioned itself as a defender of minority rights more broadly.</p>
+
+            <h6 class="fw-bold mt-3">1. Afrikaner Nationalism & Minority Self-Determination</h6>
+            <p class="small">The party's original and defining cause is <strong>Afrikaner self-determination</strong> &mdash; the idea that the Afrikaner people, as a distinct cultural and linguistic community, have a collective right to govern the affairs that most directly affect them. This includes the aspiration, at its most ambitious, for a <em>Volkstaat</em>, and at its more incremental, for cultural and local autonomy. The FF Plus frames this not as racial supremacy but as the same right to self-determination it says it supports for all peoples &mdash; a claim anchored in its membership of the UNPO (Unrepresented Nations and Peoples Organization). <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+
+            <h6 class="fw-bold mt-3">2. Conservative & Christian Values</h6>
+            <p class="small">The party draws heavily on conservative Christian morality, the traditional family, and Afrikaner cultural heritage. It champions the Afrikaans language and the institutions built around it &mdash; schools, churches, and universities &mdash; against what it describes as creeping anglicisation and state pressure to transform them along racial lines.</p>
+
+            <h6 class="fw-bold mt-3">3. Federalism</h6>
+            <p class="small">FF Plus supports a <strong>federal</strong> South Africa in which provinces hold far-reaching powers over education, policing, language policy, and economic development, and in which communities can exercise meaningful self-government. It argues that a highly centralised state has failed to serve minorities and has entrenched the power of a national political elite. This places it in broad sympathy with the DA and the IFP on devolution, though the FF Plus goes further in its language of group self-determination. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+
+            <h6 class="fw-bold mt-3">4. Anti-Communism</h6>
+            <p class="small">Rooted in the Cold War politics of the old SADF and the National Party, the FF Plus is strongly anti-communist and rejects state-led economic models. It presents itself as a bulwark against what it sees as the ANC's alliance with Marxist and socialist forces, and against expropriation-driven economic policy.</p>
+
+            <h6 class="fw-bold mt-3">5. The "Broad Church" Pivot</h6>
+            <p class="small">Under Pieter Groenewald (leader from 2016), the party broadened its appeal to <strong>Coloured and Afrikaans-speaking minority communities</strong>, particularly in the Western and Northern Cape. It formalised an alliance with the Bruin Bemagtiging Beweging (Brown Movement), a Coloured interest group, and fielded Coloured candidates prominently &mdash; by the 2021 municipal elections most of its ward councillors in the Western Cape were Coloured. This strategy drove its 2019 surge and its gains at the DA's expense. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LEADERSHIP                                                  -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="leadership">
+          <div class="card-header rise">&#128101; Leadership Through the Years</div>
+          <div class="card-body">
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Constand Viljoen (1994&ndash;2001)</h5>
+                    <p class="small text-muted">The founder. A retired general and former Chief of the South African Army, Viljoen was the figure who gave constitutional politics credibility among conservative Afrikaners. His decision to split from the hardline Afrikaner Volksfront and contest the 1994 election is widely credited with helping avert a right-wing insurrection during the transition. He stepped down as leader in June 2001 and died in 2020.</p>
+                    <a href="https://en.wikipedia.org/wiki/Constand_Viljoen" target="_blank" class="small">[Wikipedia Profile]</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Pieter Mulder (2001&ndash;2016)</h5>
+                    <p class="small text-muted">The consolidator. An academic and long-serving MP, Mulder led the party through its rebranding as the Freedom Front Plus in 2003 and steered it through its long plateau around 1% of the national vote. He served as Deputy Minister of Agriculture, Forestry and Fisheries (2009&ndash;2014) in Jacob Zuma's cabinet, giving the party a foothold in national government for the first time. He stepped down in November 2016.</p>
+                    <a href="https://en.wikipedia.org/wiki/Pieter_Mulder" target="_blank" class="small">[Wikipedia Profile]</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Pieter Groenewald (2016&ndash;2025)</h5>
+                    <p class="small text-muted">The transformer. Groenewald repositioned the FF Plus from an exclusively Afrikaner party into a broader home for minorities, with a special focus on Afrikaans-speaking Coloured communities in the Cape provinces. The strategy produced the party's best-ever national result in 2019 (2.38%, 10 seats). After the 2024 election he became <strong>Minister of Correctional Services</strong> in the GNU, and he chose not to seek re-election as leader in 2025 while retaining his ministerial post.</p>
+                    <a href="https://en.wikipedia.org/wiki/Pieter_Groenewald" target="_blank" class="small">[Wikipedia Profile]</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="fw-bold">Dr. Corn&eacute; Mulder (2025&ndash;Present)</h5>
+                    <p class="small text-muted">The current leader. A long-serving member of Parliament elected from the Western Cape list, Dr. Mulder was elected unopposed as party leader at the FF Plus elective conference in Pretoria on 22 February 2025. He had earlier succeeded Groenewald as the party's parliamentary leader. In March 2026 he announced the merger of the Referendum Party into the FF Plus.</p>
+                    <a href="https://www.vfplus.org.za" target="_blank" class="small">[FF+ Official]</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mt-4">Party Structure & Notable Figures</h5>
+            <ul class="small">
+              <li><strong>Slogan:</strong> <em>Slaan Terug</em> ("Fight Back"). <strong>Colours:</strong> orange and green. <strong>Youth wing:</strong> Vryheidsfront Plus-Jeug.</li>
+              <li><strong>Wouter Wessels</strong> &mdash; Chairperson and national spokesperson, a prominent voice in the party's parliamentary caucus.</li>
+              <li><strong>Helo&iuml;se Denner</strong> &mdash; Chief whip in the National Assembly.</li>
+              <li><strong>Peter Marais</strong> &mdash; former Western Cape premier; his Brown Movement alliance with the FF Plus symbolised the party's outreach to Coloured voters (Marais was the party's 2019 Western Cape premier candidate).</li>
+              <li><strong>Lennit Max</strong> &mdash; the party's 2021 candidate for Mayor of Cape Town.</li>
+              <li><strong>Manicks Mpunwana</strong> &mdash; in 2022 became the first black South African to serve as an FF Plus councillor (Bela-Bela).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ELECTORAL PERFORMANCE                                       -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="performance">
+          <div class="card-header econ">&#128202; Electoral Performance (1994&ndash;2024)</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered small">
+                <thead class="table-dark">
+                  <tr><th>Year</th><th>Votes</th><th>Vote Share</th><th>Seats</th><th>Change</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1994</td><td>424,555</td><td>2.17%</td><td>9</td><td>&mdash;</td><td>Opposition (largest outside the GNU, 1994&ndash;96)</td></tr>
+                  <tr><td>1999</td><td>127,217</td><td>0.80%</td><td>3</td><td>&minus;6</td><td>Opposition</td></tr>
+                  <tr><td>2004</td><td>139,465</td><td>0.89%</td><td>4</td><td>+1</td><td>Opposition (first election as FF+)</td></tr>
+                  <tr><td>2009</td><td>146,796</td><td>0.83%</td><td>4</td><td>0</td><td>Opposition (supplied a deputy minister)</td></tr>
+                  <tr><td>2014</td><td>165,715</td><td>0.90%</td><td>4</td><td>0</td><td>Opposition</td></tr>
+                  <tr><td>2019</td><td>414,864</td><td>2.38%</td><td>10</td><td>+6</td><td>Opposition (best-ever result)</td></tr>
+                  <tr><td>2024</td><td>218,850</td><td>1.36%</td><td>6</td><td>&minus;4</td><td>GNU coalition partner</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small text-muted">Sources: Independent Electoral Commission (IEC), <a href="https://www.elections.org.za" target="_blank">elections.org.za</a>; Wikipedia. From 2024, National Assembly seats are determined by a combination of the national ballot and the nine regional ballots; only national-ballot figures are shown here.</p>
+
+            <h5 class="fw-bold mt-3">The 2019 Surge and 2024 Retreat</h5>
+            <p class="small">The FF Plus spent its first two decades as a stable but marginal force, never far from 1%. Its breakthrough came in 2019, when it grew its vote by roughly 250,000 to 2.38% and won ten seats &mdash; more than the original Freedom Front had won in 1994. Its new supporters were largely Afrikaner and Coloured voters who had previously backed the DA, drawn by the party's "minorities" pitch and by frustration with the DA's internal turmoil. The party also expanded from three provincial legislatures to eight out of nine. In 2024 it gave much of that ground back, losing four seats and falling to 1.36% as the DA reconsolidated and the political landscape fragmented around the ANC's loss of its majority.</p>
+
+            <div class="row g-2 small mt-3">
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <div class="stat-fail">2.38%</div>
+                  <div>2019 &mdash; best-ever national result (10 seats)</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <div class="stat-fail">10 / 400</div>
+                  <div>Peak National Assembly representation (2019)</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded bg-white text-center h-100">
+                  <div class="stat-fail">6 / 400</div>
+                  <div>Current National Assembly seats (2024)</div>
+                </div>
+              </div>
+            </div>
+            <p class="small text-muted mt-2">The FF Plus also holds 2 of 90 NCOP seats and 9 of 487 provincial legislature seats. In the 2021 municipal elections it won 2.3% of the vote nationwide (549,349 votes), its strongest local showing, and became a kingmaker in more than six Western Cape districts.</p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- KEY POLICIES                                                -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="policies">
+          <div class="card-header econ">&#128220; Key Policies</div>
+          <div class="card-body">
+            <p class="small">The FF Plus platform combines cultural self-determination with a broadly conservative, market-friendly, law-and-order agenda. It overlaps with the DA on several economic questions while diverging sharply on the language of group rights.</p>
+
+            <h6 class="fw-bold mt-3">&#127963; Constitutional & Self-Determination</h6>
+            <ul class="small">
+              <li><strong>Self-determination for minorities</strong> &mdash; recognition of the right of Afrikaner and other Afrikaans-speaking communities to govern their own cultural, educational, and local affairs.</li>
+              <li><strong>Federalism</strong> &mdash; far-reaching devolution of powers to provinces, including policing, education, and language policy.</li>
+              <li><strong>Cape independence</strong> &mdash; adopted as an official party position in 2021, with the party putting forward a "Western Cape People's Bill" in the provincial legislature calling for recognition of Western Cape self-determination. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></li>
+              <li><strong>Language rights</strong> &mdash; protection of Afrikaans in schools and universities and opposition to what the party calls the erosion of mother-tongue education.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-4">&#9878;&#65039; Equality & Economic Opportunity</h6>
+            <ul class="small">
+              <li><strong>Abolish affirmative action and B-BBEE</strong> &mdash; replace race-based empowerment with "merit-based appointments," a position it shares with the DA. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></li>
+              <li><strong>Oppose expropriation without compensation</strong> &mdash; the party rejects amending the Constitution to allow land expropriation without compensation and defends property rights and agricultural productivity. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></li>
+              <li><strong>Support agriculture and rural communities</strong> &mdash; protection of commercial farmers, farm workers, and rural towns against crime, land grabs, and regulatory overreach.</li>
+              <li><strong>Market-friendly economics</strong> &mdash; lower taxes, less red tape, and opposition to state-led or nationalising economic models.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-4">&#128737; Safety, Family & Social Policy</h6>
+            <ul class="small">
+              <li><strong>Law and order</strong> &mdash; tougher policing and sentencing, and stronger protection of farming communities against violent crime and farm attacks.</li>
+              <li><strong>Christian values and the family</strong> &mdash; conservative positions on marriage, family, and morality rooted in the party's Christian base.</li>
+              <li><strong>Local autonomy</strong> &mdash; allowing communities and municipalities more say over their own land-use, culture, and service delivery.</li>
+            </ul>
+
+            <h6 class="fw-bold mt-4">&#127757; Foreign Policy</h6>
+            <ul class="small">
+              <li><strong>Support for self-determination abroad</strong> &mdash; the party says it will strengthen ties with countries that "promote self-determination within their own borders," consistent with its own domestic agenda. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></li>
+              <li><strong>Ukraine</strong> &mdash; the FF Plus has called on South Africa to criticise the Russian invasion and condemn Russia's actions, breaking with the ANC government's non-aligned posture.</li>
+              <li><strong>Gaza</strong> &mdash; during the Gaza war the party expressed support for Israel, aligning it with the DA rather than with the ANC and EFF. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SELF-DETERMINATION & CAPE INDEPENDENCE                      -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="selfdetermination">
+          <div class="card-header era">&#127988; Self-Determination, the Volkstaat & Cape Independence</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; On the Volkstaat ideal:</strong><br>
+              &ldquo;The idea was never to carve out a state at the point of a gun. It was to secure, within a democratic South Africa, a place where an Afrikaans community could run its own schools, its own local government, and its own cultural life &mdash; by consent and by law.&rdquo;
+            </div>
+
+            <h6 class="fw-bold mt-3">From Volkstaat to Self-Determination</h6>
+            <p class="small">The Freedom Front was born from the demand for a <em>Volkstaat</em> &mdash; a territorially autonomous Afrikaner homeland. After 1994, as the ANC-led government stalled on the issue, the party's focus shifted from a territorial homeland to a broader, more achievable programme of <strong>cultural and communal self-determination</strong>: control over Afrikaans-language education, community-based institutions, and local governance. The party's involvement in the settlement of <strong>Orania</strong> in the Northern Cape &mdash; where it enjoys consistent landslide electoral victories &mdash; became the practical embodiment of this shift. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+
+            <h6 class="fw-bold mt-3">Cape Independence and CapeXit</h6>
+            <p class="small">In the run-up to the 2021 municipal elections the FF Plus adopted <strong>Cape independence</strong> as an official party position and campaigned jointly with the CapeXit movement in the Western Cape to promote it. It also signed the CapeXit Election Accord. The party's "Western Cape People's Bill," tabled in the Western Cape Provincial Parliament, called for recognition of the province's right to self-determination. The FF Plus presents the Cape agenda not as a narrow Afrikaner project but as a movement that also speaks for Coloured and other Afrikaans-speaking communities who, the party argues, are poorly served by the central state and by the DA's dominance in the province. <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">[Wikipedia]</a></p>
+
+            <h6 class="fw-bold mt-3">A Contested Idea</h6>
+            <p class="small">The party's critics &mdash; both to its left and among Afrikaner moderates &mdash; argue that self-determination language is a coded way of resisting integration into a majority-rule democracy and of preserving white and minority privilege, and that Cape independence would be economically and politically unworkable. The party rejects these characterisations, framing its programme in the international language of minority and indigenous-peoples' rights, symbolised by its membership of the UNPO. <a href="https://en.wikipedia.org/wiki/Unrepresented_Nations_and_Peoples_Organization" target="_blank">[UNPO]</a></p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 2024 GNU ROLE                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="gnu">
+          <div class="card-header rise">&#129309; The 2024 Government of National Unity</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; Dr Pieter Groenewald, June 2024:</strong><br>
+              &ldquo;The FF Plus accepted the invitation to serve in the Government of National Unity because we believe we can make a positive contribution to the rebuilding of South Africa. We go not to bless everything the government does, but to hold it to account from the inside and to fight for the communities we represent.&rdquo;
+            </div>
+            <p class="small">After the 2024 general election, in which the ANC lost its parliamentary majority for the first time, the FF Plus agreed to join the ANC-led <strong>Government of National Unity</strong> &mdash; the broad coalition of ten parties also including the DA, IFP, Patriotic Alliance, GOOD, PAC, UDM, Rise Mzansi, and Al Jama-ah. The FF Plus's participation marked its return to national government a decade after Pieter Mulder's deputy-ministership had ended.</p>
+
+            <h5 class="fw-bold mt-3">GNU Role & Positions</h5>
+            <ul class="small">
+              <li><strong>Dr Pieter Groenewald</strong> &mdash; appointed <strong>Minister of Correctional Services</strong> in the third Ramaphosa cabinet, the FF Plus's senior government post. <a href="https://www.gov.za" target="_blank">[gov.za]</a></li>
+              <li>Following Groenewald's appointment, the party reshuffled its parliamentary leadership: <strong>Dr Corn&eacute; Mulder</strong> became parliamentary leader and <strong>Wouter Wessels</strong> became chief whip.</li>
+              <li>In February 2025 Groenewald stepped down as party leader to focus on his ministerial duties; Mulder was elected leader unopposed, with Groenewald remaining in the cabinet.</li>
+              <li>The party's involvement in the GNU gives it a platform to argue for prison reform, crime reduction, and the protection of minority communities from within the state.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-3">Tensions & Ambiguities</h5>
+            <ul class="small">
+              <li><strong>Opposing the government it serves in:</strong> The FF Plus is ideologically distant from the ANC on land, race policy, and foreign affairs. It has framed its GNU participation as a watchdog role rather than an endorsement of the ANC's programme.</li>
+              <li><strong>The Multi-Party Charter:</strong> The FF Plus had been a signatory to the opposition Multi-Party Charter (from 2023) before entering the ANC-led GNU &mdash; a decision critics say blurs its identity as an opposition force.</li>
+              <li><strong>Minorities and governance:</strong> The party's core supporters want to see tangible delivery for minority and rural communities, and will judge the FF Plus on whether its single cabinet post produces visible results. <a href="https://www.dailymaverick.co.za" target="_blank">[Daily Maverick]</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CONTROVERSIES                                               -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="controversies">
+          <div class="card-header fail">&#9888; Controversies & Debates</div>
+          <div class="card-body">
+            <div class="quotation">
+              <strong>&#128218; A commonly voiced criticism:</strong><br>
+              &ldquo;Self-determination sounds noble in the abstract. But in South Africa it too often means a minority seeking to ring-fence its advantages from a majority that was denied them for centuries.&rdquo;
+            </div>
+
+            <h6 class="fw-bold mt-3">1. The Self-Determination Charge</h6>
+            <p class="small">Critics argue that the FF Plus's language of minority self-determination and a Volkstaat is a softer, more respectable version of the old separatist impulse &mdash; an attempt by a predominantly white, Afrikaans community to insulate itself from majority rule rather than to participate fully in it. The party rejects this, insisting that self-determination is a universal democratic right and pointing to its outreach to Coloured and other minority communities as proof that it is not a whites-only project. <a href="https://www.dailymaverick.co.za" target="_blank">[Daily Maverick]</a></p>
+
+            <h6 class="fw-bold mt-4">2. The 2019 "White Anxiety" Narrative</h6>
+            <p class="small">The party's dramatic 2019 growth was widely analysed as a response to white and minority anxiety amid land-reform debates, farm-attack fears, and the DA's internal turbulence. Analysts noted that the FF Plus benefited from voters who felt the DA was drifting away from its minority base. The party welcomed the support but resisted the framing, arguing its growth reflected a broader demand for minority representation rather than racial fear. <a href="https://www.dailymaverick.co.za" target="_blank">[Daily Maverick]</a></p>
+
+            <h6 class="fw-bold mt-4">3. Orania and Ethnic Enclaves</h6>
+            <p class="small">The FF Plus's association with Orania &mdash; an almost entirely white, Afrikaans settlement in the Northern Cape where the party wins overwhelming majorities &mdash; is a persistent point of controversy. Sympathetic observers cast Orania as a model of community-driven self-reliance; critics see it as a symbol of the racial separation the party is accused of quietly endorsing. The party's own position is that communities should be free to organise culturally and locally, without drawing racial boundaries in law.</p>
+
+            <h6 class="fw-bold mt-4">4. Joining the GNU of the ANC</h6>
+            <p class="small">The decision to join an ANC-led Government of National Unity was contentious for a party that defines itself in opposition to ANC rule. Some supporters and coalition partners saw it as pragmatic governance; others saw it as a contradiction. The FF Plus counters that participating in the GNU, and holding a cabinet portfolio, is the only way to influence policy from inside rather than merely protest from the benches. <a href="https://www.news24.com" target="_blank">[News24]</a></p>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SOURCES                                                     -->
+        <!-- ========================================================== -->
+        <div class="section-card card" id="sources">
+          <div class="card-header" style="background:#002395;color:white;">&#128218; Sources & Further Reading</div>
+          <div class="card-body">
+            <ul class="small">
+              <li><strong>Freedom Front Plus</strong> &mdash; Official party website and policy documents. <a href="https://www.vfplus.org.za" target="_blank">vfplus.org.za</a></li>
+              <li><strong>Wikipedia</strong> &mdash; "Freedom Front Plus" (history, leadership, electoral results, ideology). <a href="https://en.wikipedia.org/wiki/Freedom_Front_Plus" target="_blank">en.wikipedia.org/wiki/Freedom_Front_Plus</a></li>
+              <li><strong>Electoral Commission of South Africa (IEC)</strong> &mdash; National and provincial election results, 1994&ndash;2024. <a href="https://www.elections.org.za" target="_blank">elections.org.za</a></li>
+              <li><strong>Parliamentary Monitoring Group (PMG)</strong> &mdash; "Election Results and Allocation of Seats in Parliament and Provincial Legislatures: 2024." <a href="https://pmg.org.za" target="_blank">pmg.org.za</a></li>
+              <li><strong>South African Government</strong> &mdash; Statements on the Government of National Unity and the appointment of the third Ramaphosa cabinet. <a href="https://www.gov.za" target="_blank">gov.za</a></li>
+              <li><strong>Daily Maverick</strong> &mdash; "White anxiety and the rise of the Freedom Front Plus" (2019) and ongoing GNU coverage. <a href="https://www.dailymaverick.co.za" target="_blank">dailymaverick.co.za</a></li>
+              <li><strong>Mail & Guardian</strong> &mdash; "Election's biggest little winners &mdash; FF+ Freedom Front Plus" (2019). <a href="https://mg.co.za" target="_blank">mg.co.za</a></li>
+              <li><strong>Council on Foreign Relations</strong> &mdash; "Right-Wing White Party Releases Election Manifesto in South Africa" (2019). <a href="https://www.cfr.org" target="_blank">cfr.org</a></li>
+              <li><strong>UNPO</strong> &mdash; Unrepresented Nations and Peoples Organization, of which the FF Plus is a member. <a href="https://unpo.org" target="_blank">unpo.org</a></li>
+              <li><strong>Southern, Neil</strong> (2008). "The Freedom Front Plus: an analysis of Afrikaner politics and ethnic identity in the new South Africa." <em>Contemporary Politics</em>, 14(4), 463&ndash;478.</li>
+              <li><strong>News24</strong> &mdash; FF Plus political coverage and GNU analysis. <a href="https://www.news24.com" target="_blank">news24.com</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="politics.html" class="btn btn-outline-secondary mb-4">&larr; Back to Politics</a>
+
+        <hr>
+        <p class="text-muted text-center">The Freedom Front Plus &mdash; from a defensive Afrikaner party to a broader minorities movement and a partner in the Government of National Unity. Can a party built on minority self-determination find a stable place in a majoritarian democracy?</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -9,6 +9,9 @@ actually saved to disk and survive a browser cache / profile wipe.
   GET  /api/todo  ->  {"items": [...], "savedAt": "..."}
   PUT  /api/todo  ->  writes the JSON body to data/todo.json
 
+  PUT  /api/sidebar-layout  ->  writes js/sidebar-layout.js and the
+       sidebar markup inside index.html (from pages/sidebar-sections.html)
+
 Market data, fetched server-side and cached under data/market-cache.json:
 
   GET  /api/market/equities  ->  JSE last close, day change and market cap
@@ -25,11 +28,14 @@ Then open:
 
 Only Python's standard library is used (no pip install).
 """
+import gzip
 import json
 import os
 import socket
-import urllib.request
+import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -44,15 +50,34 @@ except Exception as _market_exc:  # pragma: no cover - reported at startup
 PORT = int(os.environ.get("PORT", 3101))
 ROOT = Path(__file__).resolve().parent
 TODO_FILE = ROOT / "data" / "todo.json"
+SIDEBAR_JS = ROOT / "js" / "sidebar-layout.js"
+INDEX_HTML = ROOT / "index.html"
+SIDEBAR_MAX_BYTES = 1_500_000
 
 # How long to wait when proxying a remote RSS/HTML feed for the news page.
-# Keep this below the browser-side fetch timeout (FETCH_TIMEOUT_MS = 10s)
+# Keep this below the browser-side fetch timeout (FETCH_TIMEOUT_MS = 18s)
 # so a slow upstream feed fails-server-side before the browser aborts.
-FETCH_TIMEOUT = 8  # seconds
+FETCH_TIMEOUT = 14  # seconds
+FETCH_MAX_BYTES = 5_000_000
+FETCH_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/129.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "application/rss+xml, application/atom+xml, application/xml, "
+        "text/xml, text/html;q=0.9, */*;q=0.8"
+    ),
+    "Accept-Language": "en-ZA,en-GB;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+}
 
 # Files served with a long cache lifetime. The to-do page itself is
 # served normally so edits always show up on refresh.
-NO_CACHE = {"/pages/todo.html"}
+NO_CACHE = {"/pages/todo.html", "/js/sidebar-layout.js", "/pages/sidebar-sections.html"}
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -104,7 +129,140 @@ class Handler(SimpleHTTPRequestHandler):
         )
         self._send_json(200, {"ok": True, "count": len(payload["items"])})
 
+    def _replace_sidebar_inner(self, html, inner):
+        marker = 'id="sidebarRoot"'
+        found = html.find(marker)
+        if found < 0:
+            raise ValueError('index.html has no id="sidebarRoot"')
+        open_start = html.rfind("<div", 0, found)
+        if open_start < 0:
+            raise ValueError("Could not find the sidebarRoot opening tag")
+        gt = html.find(">", open_start)
+        if gt < 0:
+            raise ValueError("sidebarRoot opening tag is not closed")
+        inner_start = gt + 1
+        i = open_start
+        depth = 0
+        n = len(html)
+        inner_end = None
+        while i < n:
+            if html.startswith("<!--", i):
+                end = html.find("-->", i + 4)
+                i = n if end < 0 else end + 3
+                continue
+            if html.startswith("<div", i) and (i + 4 >= n or not html[i + 4].isalnum()):
+                depth += 1
+                i += 4
+                continue
+            if html.startswith("</div>", i):
+                depth -= 1
+                if depth == 0:
+                    inner_end = i
+                    break
+                i += 6
+                continue
+            i += 1
+        if inner_end is None:
+            raise ValueError("Could not find the sidebarRoot closing tag")
+        nl = "\r\n" if "\r\n" in html else "\n"
+        new_inner = nl + inner.strip() + nl + "        "
+        return html[:inner_start] + new_inner + html[inner_end:]
+
+    def _handle_sidebar_put(self):
+        length = int(self.headers.get("Content-Length", 0) or 0)
+        if length > SIDEBAR_MAX_BYTES:
+            self._send_json(413, {"error": "Layout is too large to save"})
+            return
+        raw = self.rfile.read(length)
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except Exception:
+            self._send_json(400, {"error": "Body is not valid JSON"})
+            return
+        if not isinstance(payload, dict):
+            self._send_json(400, {"error": "Expected a JSON object"})
+            return
+
+        layout_js = payload.get("layoutJs")
+        if not isinstance(layout_js, str) or "window.SA_SIDEBAR_LAYOUT" not in layout_js:
+            self._send_json(400, {"error": "layoutJs must be the sidebar-layout.js file text"})
+            return
+        if "<script" in layout_js.lower():
+            self._send_json(400, {"error": "layoutJs must not contain a script tag"})
+            return
+
+        SIDEBAR_JS.parent.mkdir(parents=True, exist_ok=True)
+        SIDEBAR_JS.write_text(layout_js.replace("\r\n", "\n"), encoding="utf-8")
+
+        wrote_html = False
+        sidebar_html = payload.get("sidebarHtml")
+        if isinstance(sidebar_html, str) and sidebar_html.strip():
+            lowered = sidebar_html.lower()
+            if "<script" in lowered or "javascript:" in lowered:
+                self._send_json(400, {"error": "sidebarHtml must not contain script"})
+                return
+            if not INDEX_HTML.exists():
+                self._send_json(500, {"error": "index.html is missing"})
+                return
+            original = INDEX_HTML.read_text(encoding="utf-8")
+            try:
+                updated = self._replace_sidebar_inner(original, sidebar_html)
+            except ValueError as exc:
+                self._send_json(500, {"error": str(exc)})
+                return
+            if 'id="sidebarRoot"' not in updated or "Welcome to South Africa" not in updated:
+                self._send_json(500, {"error": "Refusing to write a damaged index.html"})
+                return
+            INDEX_HTML.write_text(updated, encoding="utf-8")
+            wrote_html = True
+
+        self._send_json(200, {
+            "ok": True,
+            "wroteJs": True,
+            "wroteHtml": wrote_html,
+            "js": "js/sidebar-layout.js",
+            "html": "index.html" if wrote_html else None,
+        })
+
     # ---------- RSS/HTML fetch proxy (used by the news page) ----------
+    def _decode_fetched_body(self, raw, headers):
+        enc = (headers.get("Content-Encoding") or "").lower()
+        if "gzip" in enc or raw[:2] == b"\x1f\x8b":
+            try:
+                raw = gzip.decompress(raw)
+            except Exception:
+                pass
+        if len(raw) > FETCH_MAX_BYTES:
+            raw = raw[:FETCH_MAX_BYTES]
+        return raw
+
+    def _open_remote(self, target):
+        parsed = urllib.parse.urlparse(target)
+        headers = dict(FETCH_HEADERS)
+        if parsed.scheme and parsed.netloc:
+            headers["Referer"] = f"{parsed.scheme}://{parsed.netloc}/"
+        req = urllib.request.Request(target, headers=headers)
+        last_exc = None
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(req, timeout=FETCH_TIMEOUT) as resp:
+                    raw = resp.read(FETCH_MAX_BYTES + 1)
+                    content_type = resp.headers.get("Content-Type", "application/octet-stream")
+                    body = self._decode_fetched_body(raw, resp.headers)
+                    return body, content_type
+            except urllib.error.HTTPError as exc:
+                last_exc = exc
+                # One retry on transient blocks / origin blips.
+                if exc.code not in (403, 429, 502, 503) or attempt:
+                    raise
+                time.sleep(0.4)
+            except Exception as exc:
+                last_exc = exc
+                if attempt:
+                    raise
+                time.sleep(0.4)
+        raise last_exc
+
     def _handle_fetch(self):
         query = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
         target = (query.get("url") or [""])[0]
@@ -117,17 +275,7 @@ class Handler(SimpleHTTPRequestHandler):
             self._send_json(400, {"error": "Only http/https URLs are allowed"})
             return
         try:
-            req = urllib.request.Request(target, headers={
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/120.0.0.0 Safari/537.36"
-                ),
-                "Accept": "application/rss+xml, application/xml, text/xml, text/html, */*",
-            })
-            with urllib.request.urlopen(req, timeout=FETCH_TIMEOUT) as resp:
-                body = resp.read()
-                content_type = resp.headers.get("Content-Type", "application/octet-stream")
+            body, content_type = self._open_remote(target)
             self.send_response(200)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
@@ -149,6 +297,12 @@ class Handler(SimpleHTTPRequestHandler):
                     self._send_json(200, data)
             elif self.command in ("PUT", "POST"):
                 self._handle_put()
+            else:
+                self._send_json(405, {"error": "Method not allowed"})
+            return True
+        if path == "/api/sidebar-layout":
+            if self.command in ("PUT", "POST"):
+                self._handle_sidebar_put()
             else:
                 self._send_json(405, {"error": "Method not allowed"})
             return True

@@ -9,17 +9,12 @@
  * - Order is persisted in localStorage per container (top-level + each collapse
  *   panel) so it survives page reloads.
  */
-(function () {
+window.SASidebarReorder = (function () {
   'use strict';
 
   var STORAGE_KEY = 'sa-dashboard-sidebar-order-v1';
-  var sidebar = document.querySelector('.col-md-3 > .list-group');
-  if (!sidebar) return;
-
-  var containers = [sidebar];
-  sidebar.querySelectorAll('.list-group.ms-3').forEach(function (g) {
-    containers.push(g);
-  });
+  var sidebar = null;
+  var toggleWired = false;
 
   /* ---------- helpers ---------- */
 
@@ -206,16 +201,12 @@
     updateButtons(container);
   }
 
-  containers.forEach(function (c) {
-    enableControls(c);
-    applyOrder(c);
-    updateButtons(c); // refresh disabled states after a persisted reorder
-  });
-
-  /* ---------- show/hide arrows toggle (top-right) ---------- */
-  var TOGGLE_STORAGE_KEY = 'sa-dashboard-reorder-enabled';
-  var toggle = document.getElementById('reorderToggle');
-  if (toggle) {
+  function wireToggle() {
+    if (toggleWired) return;
+    var TOGGLE_STORAGE_KEY = 'sa-dashboard-reorder-enabled';
+    var toggle = document.getElementById('reorderToggle');
+    if (!toggle) return;
+    toggleWired = true;
     var saved = localStorage.getItem(TOGGLE_STORAGE_KEY);
     var enabled = saved === null ? true : saved === 'true';
     toggle.checked = enabled;
@@ -225,4 +216,28 @@
       document.body.classList.toggle('reorder-off', !toggle.checked);
     });
   }
+
+  function init() {
+    sidebar = document.querySelector('.col-md-3 > .list-group') ||
+              document.getElementById('sidebarRoot');
+    if (!sidebar) return;
+    var containers = [sidebar];
+    sidebar.querySelectorAll('.list-group.ms-3').forEach(function (g) {
+      containers.push(g);
+    });
+    containers.forEach(function (c) {
+      enableControls(c);
+      applyOrder(c);
+      updateButtons(c);
+    });
+    wireToggle();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  return { init: init };
 })();

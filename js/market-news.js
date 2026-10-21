@@ -11,10 +11,10 @@
 
   var FEEDS = [
     { name: 'Moneyweb', url: 'https://www.moneyweb.co.za/feed/' },
-    { name: 'Daily Maverick', url: 'https://www.dailymaverick.co.za/feed/' },
-    { name: 'Mail & Guardian', url: 'https://mg.co.za/feed/' },
+    { name: 'Daily Maverick', url: 'https://www.dailymaverick.co.za/dmrss/' },
+    { name: 'Mail & Guardian', url: 'https://mg.co.za/rss/' },
     { name: 'ESI Africa', url: 'https://www.esi-africa.com/feed/' },
-    { name: 'Mining Weekly', url: 'https://www.miningweekly.com/page/feed' },
+    { name: 'Mining Weekly', url: 'https://www.miningweekly.com/page/latest-news/feed' },
     { name: 'TechCentral', url: 'https://techcentral.co.za/feed/' },
     { name: 'SABC News', url: 'https://www.sabcnews.com/sabcnews/feed/' },
     { name: 'Africanews', url: 'https://www.africanews.com/feed/rss' }

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zululand Energy Terminal • Eskom Richards Bay Gas Plant • South Africa Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .section-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 2rem; }
+    .section-card .card-body { padding: 1.8rem; }
+    .insight-box { background: #e3f2fd; border-left: 4px solid #1565c0; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .alert-box { background: #fff3e0; border-left: 4px solid #e65100; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .ok-box { background: #e8f5e9; border-left: 4px solid #007A4D; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+    .stat-card { background: #f5f0f7; border-radius: 12px; padding: 1rem; text-align: center; height: 100%; }
+    .stat-card .num { font-size: 1.35rem; font-weight: 800; color: #2d1b3e; }
+    .stat-card .label { font-size: 0.72rem; color: #6c757d; text-transform: uppercase; }
+    .fact { background: #fff; border: 2px solid #212529; border-radius: 12px; }
+    .fact th { width: 28%; background: #f8f9fa; }
+    .hero { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 16px; }
+    .timeline-item { position: relative; padding-left: 1.4rem; margin-bottom: 0.9rem; border-left: 3px solid #007A4D; }
+    .timeline-item .when { font-weight: 800; color: #007A4D; }
+    .src { font-size: 0.82rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #007A4D, #FFCD00, #002395);">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">🇿🇦 South Africa Dashboard</a>
+      <div class="d-flex gap-2">
+        <button onclick="history.back()" class="btn btn-light btn-sm">← Back</button>
+        <a href="power.html" class="btn btn-light btn-sm">⚡ Power</a>
+        <a href="eskom.html" class="btn btn-light btn-sm">🔌 Eskom</a>
+        <a href="richards-bay-lng.html" class="btn btn-light btn-sm">🔥 Richards Bay LNG</a>
+        <a href="../index.html" class="btn btn-light btn-sm">🏠 Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-3 px-4">
+    <p class="small text-muted mb-1"><a href="power.html">Power</a> · <a href="eskom.html">Eskom</a> · Zululand Energy Terminal</p>
+
+    <div class="hero p-4 mb-4">
+      <h1 class="fw-bold">⚓ Zululand Energy Terminal &amp; Eskom’s Richards Bay gas plant</h1>
+      <p class="mb-0">
+        Two linked projects at Richards Bay: South Africa’s first LNG import terminal at
+        <strong>Berth 207, South Dunes</strong>, developed by <strong>Zululand Energy Terminal (ZET)</strong>,
+        and Eskom’s planned <strong>3&nbsp;000 MW</strong> mid-merit combined-cycle plant in the
+        <strong>Richards Bay Industrial Development Zone</strong>. On 5 June 2026 they signed a
+        Heads of Agreement making Eskom the terminal’s <strong>foundation customer</strong>.
+        That is not yet a terminal-use agreement, a gas supply contract, or a construction go-ahead.
+      </p>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3"><div class="stat-card"><div class="num">3 000 MW</div><div class="label">Eskom CCGT in the RBIDZ</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="num">5 Jun 2026</div><div class="label">Eskom–ZET Heads of Agreement</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="num">~3 mtpa</div><div class="label">Phase 1 LNG (then ~4.5 mtpa)</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="num">2030</div><div class="label">ZET Phase 1 commercial target</div></div></div>
+    </div>
+
+    <table class="table table-bordered fact mb-4">
+      <tbody>
+        <tr><th>What was signed</th><td>Heads of Agreement (HOA) — a framework for a long-term partnership. Next commercial step is a <strong>Terminal Use Agreement</strong>, then financial close.</td></tr>
+        <tr><th>Signed</th><td>Friday 5 June 2026, Pretoria, with Electricity and Energy Minister Dr Kgosientsho Ramokgopa present. Eskom signatory at the ceremony: Group Executive for Strategic Delivery <strong>Alfred Seema</strong>. ZET: director <strong>Oliver Naidu</strong>.</td></tr>
+        <tr><th>Eskom’s role at the terminal</th><td><strong>Foundation customer</strong> on an <strong>open-access</strong> LNG import, storage and regasification terminal. Eskom does not own the terminal.</td></tr>
+        <tr><th>Power plant</th><td>Eskom Richards Bay 3&nbsp;000 MW gas-to-power project in the RBIDZ, KwaZulu-Natal. Primary fuel: regasified LNG. Design life <strong>25 years</strong>. Planned as a <strong>mid-merit</strong> plant (gas, diesel backup in the original EIA). Strategic Integrated Project under the Infrastructure Development Act 23 of 2014; written into <strong>IRP 2025</strong>.</td></tr>
+        <tr><th>How the plant is meant to be built</th><td><strong>Private Sector Participation (PSP)</strong> — partners, project finance, long-term offtake. Engineering News (June 2026) reported a plant cost of up to <strong>R100 billion</strong> and a terminal cost of about <strong>R15 billion</strong>.</td></tr>
+        <tr><th>Terminal</th><td>Zululand Energy Terminal at Berth 207, South Dunes precinct, Port of Richards Bay. 25-year Terminal Operator Agreement with TNPA (signed 10 February 2025; preferred bidder January 2024).</td></tr>
+        <tr><th>Who owns ZET</th><td>Joint venture of <strong>Vopak Terminal Durban</strong> and <strong>Transnet Pipelines</strong>. Vopak Terminal Durban is 70% Royal Vopak (Netherlands) and 30% Reatile Group (South Africa).</td></tr>
+        <tr><th>IRP 2025 gas split</th><td>6&nbsp;000 MW of gas by 2030: <strong>3&nbsp;000 MW Gas IPP programme</strong> + <strong>3&nbsp;000 MW delivered by Eskom</strong> (this plant is the Eskom half).</td></tr>
+        <tr><th>Plant environmental status</th><td>SCA set aside the 2019 environmental authorisation on 17 September 2025 (<em>SDCEA &amp; groundWork v Minister of Forestry, Fisheries and the Environment</em> [2025] ZASCA 134). Eskom must apply again after proper public participation.</td></tr>
+        <tr><th>Terminal timing (June 2026 sheet)</th><td>FID targeted <strong>2028</strong>; Phase 1 commercial operation <strong>2030</strong>; Lilly pipeline tie-in Q4 2030.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">What the deal actually is</h4>
+        <p>South Africa has talked about Richards Bay LNG-to-power for a decade. The June 2026 HOA is the first time the <strong>state utility that wants the megawatts</strong> and the <strong>consortium that won the port concession</strong> put a named commercial framework on paper.</p>
+        <p>It is two projects that only work together:</p>
+        <ol>
+          <li><strong>The molecules and the jetty — Zululand Energy Terminal.</strong> LNG ships into Richards Bay, storage (first a floating storage unit, later an onshore tank), onshore regasification, then a short high-pressure pipe into the existing Lilly gas line near Empangeni. Open access: other industrial users can book capacity too. That is how ZET tries to bank a ~R15 billion terminal.</li>
+          <li><strong>The turbines — Eskom’s 3&nbsp;000 MW Richards Bay plant.</strong> A combined-cycle station in the RBIDZ, mid-merit, 25-year life, PSP-financed, burning the regasified LNG. Eskom’s quote is that foundation-customer status is the “critical enabler” for that programme, with long-term contracting meant to cut LNG price volatility.</li>
+        </ol>
+        <div class="ok-box">
+          <strong>Chicken-and-egg, named.</strong> ZET cannot take FID without a creditworthy offtaker. Eskom cannot run 3 GW of CCGT without a terminal. The HOA is the offtake signal. It is not yet the offtake contract. ZET’s own language after the signing is that the next documents are a <strong>Terminal Use Agreement</strong> and financial close.
+        </div>
+        <p class="mb-0">Dan Marokane (Eskom GCE): gas is the bridge fuel that gives dispatchable backup as coal declines and wind/solar grow; foundation-customer status “minimise[s] volatility and support[s] system reliability while aligning with the IRP 2025 objectives.” Oliver Naidu (ZET director / Vopak South Africa president): Eskom as an anchor customer “strengthens the commercial foundation of the terminal.”</p>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">Who is at the table</h4>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead class="table-light">
+              <tr><th>Party</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Eskom Holdings SOC Ltd</strong></td><td>Foundation customer at ZET. Developer (via PSP) of the 3&nbsp;000 MW RBIDZ plant. Grid connection / transmission upgrades in the Richards Bay–Empangeni area sit with Eskom / NTCSA.</td></tr>
+              <tr><td><strong>Zululand Energy Terminal (ZET)</strong></td><td>JV terminal operator. Designs, finances, builds, operates the LNG import terminal under a 25-year TNPA concession. Website: <a href="https://www.zululandenergyterminal.co.za/" target="_blank" rel="noopener">zululandenergyterminal.co.za</a>.</td></tr>
+              <tr><td><strong>Royal Vopak</strong> (Netherlands)</td><td>70% of Vopak Terminal Durban. Global tank-terminal operator (including Gate LNG in Rotterdam with Gasunie). Oliver Naidu is President of Vopak South Africa and ZET director.</td></tr>
+              <tr><td><strong>Reatile Group</strong></td><td>30% of Vopak Terminal Durban. South African black-owned energy investment holding company.</td></tr>
+              <tr><td><strong>Transnet Pipelines (TPL)</strong></td><td>JV partner in ZET. Owns the Lilly pipeline (Secunda–Empangeni–Durban methane-rich gas line) that the new 25 km spur is meant to join. Group CEO Michelle Phillips has publicly backed the terminal.</td></tr>
+              <tr><td><strong>Transnet National Ports Authority (TNPA)</strong></td><td>Landlord. Awarded the concession (RFP award January 2024) and signed the Terminal Operator Agreement on 10 February 2025.</td></tr>
+              <tr><td><strong>Ministry of Electricity and Energy</strong></td><td>Policy owner (Minister Ramokgopa). IRP 2025 gas allocation. Present at the Pretoria signing.</td></tr>
+              <tr><td><strong>Ministry of Transport + Transnet</strong></td><td>Named as backing the partnership in the joint Eskom–ZET statement — port and pipeline side of the state.</td></tr>
+              <tr><td><strong>ExxonMobil South Africa LNG Ltd</strong></td><td>Second HOA, 17 June 2026, for a potential LNG <em>supply</em> arrangement into the terminal. Andrew Barry (chair, ExxonMobil LNG Market Development Inc.) signed in Richards Bay. Not a cargo SPA yet.</td></tr>
+              <tr><td><strong>Standard Bank</strong></td><td>Reported as financial adviser on the terminal (Global Energy Monitor compilation of earlier project disclosures).</td></tr>
+              <tr><td><strong>Coastal &amp; Environmental Services (CES)</strong></td><td>Environmental assessment practitioner for the terminal and the Lilly connection (Engineering News project sheet, 26 June 2026).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">The terminal (ZET) — what is being built</h4>
+        <p>Site: <strong>South Dunes precinct, Port of Richards Bay</strong>, City of uMhlathuze, Berth 207. Open-access import, storage and regasification. Services listed by ZET / Creamer: receiving, storage, regasification, marine bunkering, vessel reloading, truck loading, and gas transmission — i.e. not only Eskom’s plant.</p>
+        <p><strong>Phase 1</strong> (current planning basis, commercial operation 2030):</p>
+        <ul>
+          <li>Floating storage unit (FSU) of at least <strong>170&nbsp;000 m³</strong> (Vopak’s February 2025 note also quoted a 135&nbsp;000–174&nbsp;000 m³ band).</li>
+          <li>Onshore regasification of about <strong>3 million tonnes a year</strong> (~400 million standard cubic feet a day).</li>
+          <li>Marine works for the FSU, jetty-to-shore cryogenic lines, seawater abstraction/discharge, a gas distribution hub, optional truck loading, bulk services.</li>
+        </ul>
+        <p><strong>Phase 2:</strong> onshore LNG tank of about <strong>220&nbsp;000 m³</strong> (may replace the FSU) plus more send-out, taking the terminal to about <strong>4.5 mtpa</strong> (~600 mmscfd). Creamer’s June 2026 sheet says Phase 2 <em>could</em> also COD as early as Q4 2030 if customers and FID support it.</p>
+        <p><strong>The pipe:</strong> a new <strong>24-inch, 80 bar</strong> buried (1–1.5 m) transmission line, about <strong>25 km</strong> from the RBIDZ gas hub to the existing <strong>Lilly</strong> pipeline near Empangeni. Isolation valves, pigging, overpressure protection. That is the inland industrial offtake path (Secunda / Gauteng users facing the Mozambique “gas cliff”), not a new Richards Bay–Johannesburg trunk on day one.</p>
+        <div class="insight-box mb-0">
+          Customers, including Eskom, <strong>buy their own LNG cargoes</strong> and book capacity on ZET. The terminal is a tolling / open-access facility, not Eskom’s private jetty. That is why the ExxonMobil HOA sits beside the Eskom HOA: one is molecules, one is demand.
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">The power plant — Eskom’s 3 GW in the RBIDZ</h4>
+        <p>This is the plant that has been in EIAs since 2019: a <strong>mid-merit combined-cycle</strong> station, gas primary, diesel as emergency backup in the original application, 3&nbsp;000 MW installed, 25-year life, inside the Richards Bay IDZ so it sits next to the port, Hillside aluminium, Foskor, and the coal terminal rather than in a greenfield town.</p>
+        <p>IRP 2025, as quoted in the 5 June joint statement, wants <strong>6&nbsp;000 MW of gas by 2030</strong>, split:</p>
+        <ul>
+          <li><strong>3&nbsp;000 MW</strong> under the Gas IPP programme — see <a href="ipp-gas-programme.html">GIPPPP</a>.</li>
+          <li><strong>3&nbsp;000 MW delivered by Eskom</strong> — this project.</li>
+        </ul>
+        <p>Eskom’s three stated operational reasons in the joint statement:</p>
+        <ol>
+          <li><strong>Energy security and renewable support</strong> — dispatchable capacity while coal falls and wind/solar rise.</li>
+          <li><strong>Grid stabilisation and less diesel</strong> — sit alongside batteries and pumped hydro; cut OCGT diesel at Ankerlig / Gourikwa for mid-merit hours.</li>
+          <li><strong>The gas cliff</strong> — Pande–Temane / ROMPCO supply to industry is expected to tighten toward 2030. The plant is power-first, but the same terminal is meant to keep industrial gas in the country.</li>
+        </ol>
+        <p class="mb-0">Delivery model is <strong>PSP</strong>, not a classic Eskom-on-balance-sheet Medupi. International capital, a long-term offtake, and (still to be named) private partners. That is also why the SCA set-aside of the old EA matters: lenders will want a clean authorisation, not a 2019 permit the appeal court called a nullity.</p>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">The court problem the HOA does not solve</h4>
+        <p>On <strong>17 September 2025</strong> the Supreme Court of Appeal upheld the appeal by the <strong>South Durban Community Environmental Alliance (SDCEA)</strong> and <strong>groundWork</strong> against the Minister of Forestry, Fisheries and the Environment (<em>479/2023</em> [2025] ZASCA 134, Dambuza JA). The 23 December 2019 environmental authorisation for Eskom’s Richards Bay CCGT is set aside. Eskom must start a fresh application once the public-participation defects are cured.</p>
+        <p>What the court actually found, in short:</p>
+        <ul>
+          <li>Public participation on the environmental impact report was run in English in a municipality where most residents speak <strong>isiZulu</strong> — a large part of the affected public was shut out.</li>
+          <li>Climate-change impacts, need and desirability, alternatives (including renewables), and cumulative effects were not properly assessed under NEMA.</li>
+          <li>The SCA substituted the Minister’s decision rather than sending it back for another rubber stamp.</li>
+        </ul>
+        <p>Eskom’s 18 September 2025 statement (Alfred Seema) accepted the judgment, restated the case for gas as flexible backup, and said it was considering next steps. Reuters, reporting the June 2026 HOA, noted the plant had been stalled by that court order.</p>
+        <div class="alert-box mb-0">
+          <strong>Two environmental processes, not one.</strong> The SCA case is about <em>Eskom’s power station</em>. ZET’s terminal and the 25 km Lilly spur have their own applications (EA, atmospheric emissions licence, water-use licence, coastal-waters discharge, dumping-at-sea) with CES as EAP — still under way as of the 26 June 2026 project sheet. Winning an HOA does not revive the 2019 plant permit.
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">Timeline</h4>
+        <div class="timeline-item"><span class="when">2016–2019.</span> Gas-to-power IPP RFI; Eskom EIA (Savannah Environmental, August 2019). Chief Director grants EA 23 December 2019 for a 3&nbsp;000 MW CCGT in the RBIDZ.</div>
+        <div class="timeline-item"><span class="when">2020–2023.</span> SDCEA and groundWork appeal to the Minister (dismissed), then Pretoria High Court (authorisation upheld).</div>
+        <div class="timeline-item"><span class="when">January 2024.</span> TNPA names the Vopak Terminal Durban / Transnet Pipelines JV preferred bidder for the Richards Bay LNG terminal concession.</div>
+        <div class="timeline-item"><span class="when">10 February 2025.</span> ZET signs a 25-year Terminal Operator Agreement with TNPA. Vopak says the TOA lets ZET move to binding customer contracts; FID then expected in 2026 if offtake lands in time.</div>
+        <div class="timeline-item"><span class="when">17 September 2025.</span> SCA sets aside Eskom’s plant EA. Fresh application required.</div>
+        <div class="timeline-item"><span class="when">5 June 2026.</span> Eskom–ZET Heads of Agreement. Eskom becomes intended foundation customer. Signing in Pretoria with Minister Ramokgopa. Joint statement: IRP 2025 6 GW gas, 3 GW Eskom / 3 GW IPP.</div>
+        <div class="timeline-item"><span class="when">17 June 2026.</span> ZET–ExxonMobil South Africa LNG HOA at the BON Hotel Waterfront, Richards Bay. Supply-side interest, not a cargo SPA.</div>
+        <div class="timeline-item"><span class="when">18 June 2026.</span> ZET issues EPC expressions of interest (close 9 July 2026, <code>tenders@zlet.co.za</code>). Path: EOI → RFI → RFP. EOI marked closed on ZET’s site on 10 July 2026.</div>
+        <div class="timeline-item"><span class="when">26 June 2026 project sheet.</span> Creamer: FID targeted 2028; Phase 1 COD 2030; Lilly connection Q4 2030. (That is later than the February 2025 “FID in 2026” line — offtake and the SCA reset the clock.)</div>
+        <div class="timeline-item mb-0"><span class="when">Still outstanding.</span> Terminal Use Agreement with Eskom; LNG SPAs (ExxonMobil or others); ZET financial close and FID; EPC award; terminal and pipeline licences; a new plant EA and PSP partners; NERSA generation / gas licences as required.</div>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">What is not signed yet</h4>
+        <ul class="mb-0">
+          <li><strong>Terminal Use Agreement</strong> — the capacity booking that actually underwrites the jetty. Named by Naidu as the next step after the HOA.</li>
+          <li><strong>LNG supply (SPA)</strong> — ExxonMobil is an HOA, not volumes, price, or FOB/DES terms. Eskom still has to buy cargoes (or have a PSP partner buy them).</li>
+          <li><strong>FID / financial close</strong> on the terminal (now spoken of as 2028) or on the power station.</li>
+          <li><strong>EPC contract</strong> — EOI only, closed July 2026.</li>
+          <li><strong>A valid environmental authorisation for the 3 GW plant.</strong></li>
+          <li><strong>Named private partners</strong> for the PSP plant, or a published PPA/offtake structure into SAWEM / Eskom Gx.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">How this sits next to GIPPPP and the old Richards Bay page</h4>
+        <p>Do not collapse three things into one:</p>
+        <ul>
+          <li><a href="richards-bay-lng.html">Richards Bay LNG-Power</a> is the long-running <em>concept</em> — port + CCGT + inland gas. This page is the <em>live 2026 commercial structure</em> (ZET concession + Eskom foundation customer).</li>
+          <li><a href="ipp-gas-programme.html">GIPPPP</a> is the <strong>other</strong> 3&nbsp;000 MW: competitive IPP gas, not Eskom Gx. IRP 2025 treats them as a pair.</li>
+          <li>Coega / Ngqura and any East London small-scale TNPA process are separate ports. ZET is Richards Bay only.</li>
+        </ul>
+        <p class="mb-0">Related dashboard pages: <a href="gas_master_plan.html">Gas Master Plan</a>, <a href="gas-roadmap.html">gas roadmap</a>, <a href="gas_lng_fsrus.html">FSRUs</a>, <a href="strategic-gas-pipeline-corridor.html">strategic gas pipeline corridor</a>, <a href="IRP2025.html">IRP 2025</a>, <a href="transnet.html">Transnet</a>, <a href="terminal-operators.html">terminal operators</a>.</p>
+      </div>
+    </div>
+
+    <div class="section-card card">
+      <div class="card-body">
+        <h4 class="fw-bold mb-3">Sources</h4>
+        <p class="small text-muted">Primary documents first, then the reporting trail. Open them; the HOA text itself has not been published, only the joint statement.</p>
+        <h6 class="fw-bold">Official / project</h6>
+        <ul class="src">
+          <li><a href="https://www.eskom.co.za/joint-media-statement-eskom-and-zululand-energy-terminal-sign-heads-of-agreement-to-advance-strategic-gas-to-power-development/" target="_blank" rel="noopener">Eskom — Joint media statement with ZET (5 June 2026)</a></li>
+          <li><a href="https://www.zululandenergyterminal.co.za/eskom-and-zululand-energy-terminal-sign-heads-of-agreement/" target="_blank" rel="noopener">ZET — Eskom HOA post (5 June 2026)</a></li>
+          <li><a href="https://www.zululandenergyterminal.co.za/zululand-energy-terminal-advances-lng-import-project-with-exxonmobil/" target="_blank" rel="noopener">ZET — ExxonMobil HOA (17 June 2026)</a></li>
+          <li><a href="https://www.zululandenergyterminal.co.za/call-for-expressions-of-interest-eoi-from-epc-contractors-for-zululand-energy-terminal-zet/" target="_blank" rel="noopener">ZET — EPC EOI (18 June 2026)</a> · <a href="https://www.zululandenergyterminal.co.za/closed-expressions-of-interest-eoi-from-epc-contractors-for-the-zululand-energy-terminal-zet/" target="_blank" rel="noopener">EOI closed (10 July 2026)</a></li>
+          <li><a href="https://www.vopak.com/newsroom/news/news-zululand-energy-terminal-signs-agreement-operate-south-africas-first-lng" target="_blank" rel="noopener">Royal Vopak — Terminal Operator Agreement with TNPA (10 February 2025)</a></li>
+          <li><a href="https://www.eskom.co.za/eskom-notes-the-supreme-court-of-appeal-judgment-continues-its-commitment-to-strategic-gas-programme/" target="_blank" rel="noopener">Eskom — notes SCA judgment on the plant EA (18 September 2025)</a></li>
+          <li><a href="https://www.saflii.org/za/cases/ZASCA/2025/134.html" target="_blank" rel="noopener">SAFLII — <em>SDCEA &amp; groundWork v Minister</em> [2025] ZASCA 134 (17 September 2025)</a> · <a href="https://www.saflii.org/za/cases/ZASCA/2025/134media.pdf" target="_blank" rel="noopener">SCA media summary (PDF)</a></li>
+          <li><a href="https://cer.org.za/virtual-library/judgments/supreme-court-of-appeal/south-durban-community-environmental-alliance-and-another-v-the-minister-of-forestry-fisheries-and-the-environment-and-others-sca-richards-bay-gas-power-plant-review" target="_blank" rel="noopener">Centre for Environmental Rights — case note</a></li>
+          <li><a href="https://www.zululandenergyterminal.co.za/" target="_blank" rel="noopener">Zululand Energy Terminal — project site</a></li>
+        </ul>
+        <h6 class="fw-bold">Wire and trade press on the HOA</h6>
+        <ul class="src">
+          <li><a href="https://www.reuters.com/business/energy/eskom-signs-lng-deal-supply-its-planned-3000-mw-gas-fired-richards-bay-project-2026-06-05/" target="_blank" rel="noopener">Reuters — Eskom signs LNG deal for 3&nbsp;000 MW Richards Bay project (5 June 2026)</a></li>
+          <li><a href="https://www.engineeringnews.co.za/article/eskom-signs-agreement-with-zululand-energy-terminal-as-it-seeks-to-advance-3-gw-richards-bay-gas-fired-power-project-2026-06-05" target="_blank" rel="noopener">Engineering News / Mining Weekly — Terence Creamer, 5 June 2026</a></li>
+          <li><a href="https://www.power-technology.com/news/eskom-zet-hoa-3000mw-gas-to-power-project/" target="_blank" rel="noopener">Power Technology — Eskom, ZET HoA for 3 GW (5 June 2026)</a></li>
+          <li><a href="https://lngprime.com/africa/vopak-transnet-ink-hoa-with-eskom-for-south-african-lng-terminal/188580/" target="_blank" rel="noopener">LNG Prime — Vopak, Transnet ink HoA with Eskom (5 June 2026)</a></li>
+          <li><a href="https://www.freightnews.co.za/article/eskom-anchors-delayed-richards-bay-lng-terminal" target="_blank" rel="noopener">Freight News — Eskom anchors delayed Richards Bay LNG terminal (5 June 2026)</a></li>
+          <li><a href="https://miningbusinessafrica.co.za/eskom-secures-lng-supply-pathway-for-3gw-gas-to-power-programme/" target="_blank" rel="noopener">Mining Business Africa — Eskom secures LNG pathway (5 June 2026)</a></li>
+          <li><a href="https://energynews.africa/2026/06/06/eskom-signs-deal-to-build-south-africas-first-lng-terminal-for-3000mw-gas-plant/" target="_blank" rel="noopener">Energy News Africa — Eskom signs LNG deal (6 June 2026)</a></li>
+          <li><a href="https://www.kznindustrialnews.co.za/2026/06/09/richards-bay-gas-to-power-agreement-anchors-lng-project/" target="_blank" rel="noopener">KZN Industrial Business News — agreement anchors LNG project (9 June 2026)</a></li>
+        </ul>
+        <h6 class="fw-bold">Terminal design, ExxonMobil, EPC</h6>
+        <ul class="src">
+          <li><a href="https://www.engineeringnews.co.za/print-version/zet-liquefied-natural-gas-import-terminal-project-south-africa-update-2026-06-26" target="_blank" rel="noopener">Engineering News project sheet — ZET LNG import terminal update (26 June 2026)</a> — phases, 3 / 4.5 mtpa, 25 km 24-inch 80 bar spur, FID 2028, COD 2030</li>
+          <li><a href="https://www.engineeringnews.co.za/article/zet-says-exxonmobil-agreement-further-strengthens-lng-terminals-commercial-foundation-2026-06-17" target="_blank" rel="noopener">Engineering News — ExxonMobil HOA; ~R15bn terminal, up to R100bn plant (17 June 2026)</a></li>
+          <li><a href="https://www.energize.co.za/article/epc-process-opens-for-richards-bay-lng-terminal" target="_blank" rel="noopener">Energize — EPC process opens (23 June 2026)</a></li>
+          <li><a href="https://lngprime.com/africa/vopak-transnet-seek-epc-contractor-for-south-african-lng-terminal/189639/" target="_blank" rel="noopener">LNG Prime — Vopak, Transnet seek EPC contractor (19 June 2026)</a></li>
+          <li><a href="https://www.kznindustrialnews.co.za/2026/07/03/rbay-lng-terminal-gains-momentum/" target="_blank" rel="noopener">KZN Industrial — RBay LNG terminal gains momentum (3 July 2026)</a></li>
+          <li><a href="https://iol.co.za/business/economy/2026-06-18-zululand-energy-terminal-signs-lng-supply-agreement-with-exxonmobil-for-richards-bay-project/" target="_blank" rel="noopener">IOL — ZET / ExxonMobil signing in Richards Bay (18 June 2026)</a></li>
+        </ul>
+        <h6 class="fw-bold">SCA set-aside of the plant EA (September 2025)</h6>
+        <ul class="src">
+          <li><a href="https://www.reuters.com/business/energy/south-african-court-annuls-permit-eskom-build-new-gas-power-plant-2025-09-17/" target="_blank" rel="noopener">Reuters — court annuls Eskom gas-plant permit (17 September 2025)</a></li>
+          <li><a href="https://groundup.org.za/article/appeal-court-blocks-eskoms-giant-richards-bay-power-plant" target="_blank" rel="noopener">GroundUp — appeal court blocks the plant (18 September 2025)</a></li>
+          <li><a href="https://www.energize.co.za/article/court-ruling-derails-eskoms-3-000-mw-gas-to-power-plans" target="_blank" rel="noopener">Energize — court derails 3&nbsp;000 MW plans (18 September 2025)</a></li>
+        </ul>
+        <p class="small text-muted mb-0">Secondary compilation: <a href="https://www.gem.wiki/Richards_Bay_Transnet_FSRU" target="_blank" rel="noopener">Global Energy Monitor — Richards Bay Transnet FSRU / ZET</a>. Treat GEM capacity tables as a tracker, not a primary source.</p>
+      </div>
+    </div>
+
+    <p class="text-muted small mb-4">Last assembled 19 October 2026 from the public statements and reporting above. The HOA itself is not on the Eskom or ZET websites.</p>
+  </div>
+</body>
+</html>
